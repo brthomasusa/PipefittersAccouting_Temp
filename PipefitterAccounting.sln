@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F74F6123-DE22-438C-9EB5-94F6014821B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipefittersAccounting.WebApi", "src\PipefittersAccounting.WebApi\PipefittersAccounting.WebApi.csproj", "{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipefittersAccounting.Core", "src\PipefittersAccounting.Core\PipefittersAccounting.Core.csproj", "{EBFF8896-2294-4144-95D1-40A1CDE07E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipefittersAccounting.Infrastructure", "src\PipefittersAccounting.Infrastructure\PipefittersAccounting.Infrastructure.csproj", "{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipefittersAccounting.SharedKernel", "src\PipefittersAccounting.SharedKernel\PipefittersAccounting.SharedKernel.csproj", "{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipefittersAccounting.SharedModel", "src\PipefittersAccounting.SharedModel\PipefittersAccounting.SharedModel.csproj", "{00928270-9D53-4A25-A698-18AA5864C81E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBFF8896-2294-4144-95D1-40A1CDE07E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBFF8896-2294-4144-95D1-40A1CDE07E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBFF8896-2294-4144-95D1-40A1CDE07E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBFF8896-2294-4144-95D1-40A1CDE07E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00928270-9D53-4A25-A698-18AA5864C81E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00928270-9D53-4A25-A698-18AA5864C81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00928270-9D53-4A25-A698-18AA5864C81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00928270-9D53-4A25-A698-18AA5864C81E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{536E11B1-BA8D-4D1C-BF43-ECD127EC92A4} = {F74F6123-DE22-438C-9EB5-94F6014821B8}
+		{EBFF8896-2294-4144-95D1-40A1CDE07E9B} = {F74F6123-DE22-438C-9EB5-94F6014821B8}
+		{A5DF3AD8-CC28-467B-8228-FF5EFB9E3A31} = {F74F6123-DE22-438C-9EB5-94F6014821B8}
+		{6DCC15FF-9A89-4C09-9277-806BA1BAB1EF} = {F74F6123-DE22-438C-9EB5-94F6014821B8}
+		{00928270-9D53-4A25-A698-18AA5864C81E} = {F74F6123-DE22-438C-9EB5-94F6014821B8}
+	EndGlobalSection
+EndGlobal
