@@ -26,11 +26,13 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(opts =>
 .AddEntityFrameworkStores<IdentityContext>()
 .AddDefaultTokenProviders();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
     app.UseSwagger();
     app.UseSwaggerUI();
