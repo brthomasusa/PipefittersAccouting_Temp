@@ -1,13 +1,18 @@
 @page
-@model PipefittersAccounting.WebApi.Pages.Users.CreateModel
+@model PipefittersAccounting.WebApi.Pages.Users.EditorModel
 @{
-    ViewData["Title"] = "Create a new accounting application login";
+    ViewData["Title"] = "Edit an accounting application login";
 }
 
 <h6 class="bg-primary text-white p-2">@ViewData["Title"]</h6>
 
-<form asp-page="Create" method="post">
+<form asp-page="Editor" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label>ID</label>
+        <input name="Id" class="form-control" value="@Model.Id" disabled />
+        <input name="Id" type="hidden" value="@Model.Id" />
+    </div>
     <div class="form-group">
         <label>User Name</label>
         <input name="UserName" class="form-control" value="@Model.UserName" />
@@ -17,9 +22,9 @@
         <input name="Email" class="form-control" value="@Model.Email" />
     </div>
     <div class="form-group">
-        <label>Password</label>
+        <label>New Password</label>
         <input type="password" name="Password" class="form-control" value="@Model.Password" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-secondary" asp-page="List">Back</a>
+    <button type="submit" class="btn btn-warning">Submit</button>
+    <a class="btn btn-secondary" asp-page="list">Back</a>
 </form>
