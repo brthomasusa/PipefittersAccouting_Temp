@@ -2,8 +2,6 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using PipefittersAccounting.Infrastructure.Identity;
 
 namespace PipefittersAccounting.WebApi.Pages.Users

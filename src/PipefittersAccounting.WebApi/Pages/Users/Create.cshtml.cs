@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using PipefittersAccounting.Infrastructure.Identity;
+using PipefittersAccounting.SharedModel.DataXferObjects.Common;
 
 namespace PipefittersAccounting.WebApi.Pages.Users
 {
@@ -11,23 +11,13 @@ namespace PipefittersAccounting.WebApi.Pages.Users
     {
         public UserManager<ApplicationUser> UserManager;
 
+        [BindProperty]
+        public DomainUserDto DomainUser { get; set; } = new() { };
+
         public CreateModel(UserManager<ApplicationUser> usrManager)
         {
             UserManager = usrManager;
         }
-
-        [BindProperty]
-        [Required]
-        public string UserName { get; set; }
-
-        [BindProperty]
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [BindProperty]
-        [Required]
-        public string Password { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -36,11 +26,11 @@ namespace PipefittersAccounting.WebApi.Pages.Users
                 ApplicationUser user = new ApplicationUser
                 {
                     Id = Guid.NewGuid(),
-                    UserName = UserName,
-                    Email = Email
+                    UserName = DomainUser.UserName,
+                    Email = DomainUser.Email
                 };
 
-                IdentityResult result = await UserManager.CreateAsync(user, Password);
+                IdentityResult result = await UserManager.CreateAsync(user, DomainUser.Password);
 
                 if (result.Succeeded)
                 {

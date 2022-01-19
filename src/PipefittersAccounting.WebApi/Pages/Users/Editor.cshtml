@@ -10,20 +10,20 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label>ID</label>
-        <input name="Id" class="form-control" value="@Model.Id" disabled />
-        <input name="Id" type="hidden" value="@Model.Id" />
+        <input name="Id" class="form-control" value="@Model.DomainUser.Id" disabled />
+        <input name="Id" type="hidden" value="@Model.DomainUser.Id" />
     </div>
     <div class="form-group">
         <label>User Name</label>
-        <input name="UserName" class="form-control" value="@Model.UserName" />
+        <input name="UserName" class="form-control" value="@Model.DomainUser.UserName" />
     </div>
     <div class="form-group">
         <label>Email</label>
-        <input name="Email" class="form-control" value="@Model.Email" />
+        <input name="Email" class="form-control" value="@Model.DomainUser.Email" />
     </div>
     <div class="form-group">
         <label>New Password</label>
-        <input type="password" name="Password" class="form-control" value="@Model.Password" />
+        <input type="password" name="Password" class="form-control" value="@Model.DomainUser.Password" />
     </div>
     <button type="submit" class="btn btn-warning">Submit</button>
     <a class="btn btn-secondary" asp-page="list">Back</a>
