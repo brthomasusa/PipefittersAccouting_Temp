@@ -1,0 +1,20 @@
+@page
+@model PipefittersAccounting.WebApi.Pages.Roles.CreateModel
+@{
+    ViewData["Title"] = "Create a new accounting application role";
+}
+
+<h6 class="bg-primary text-white p-2">@ViewData["Title"]</h6>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input name="Id" type="hidden" value="@Model.DomainRole.Id" />
+    </div>
+    <div class="form-group">
+        <label>Role Name</label>
+        <input name="Name" class="form-control" value="@Model.DomainRole.Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="btn btn-secondary" asp-page="List">Back</a>
+</form>

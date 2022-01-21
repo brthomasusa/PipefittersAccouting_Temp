@@ -19,7 +19,6 @@ namespace PipefittersAccounting.WebApi.Pages.Roles
             RoleManager = roleManager;
         }
 
-
         public void OnGet()
         {
             Roles = RoleManager.Roles;

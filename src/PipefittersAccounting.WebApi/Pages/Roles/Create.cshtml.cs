@@ -5,38 +5,33 @@ using Microsoft.AspNetCore.Identity;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.SharedModel.DataXferObjects.Common;
 
-namespace PipefittersAccounting.WebApi.Pages.Users
+namespace PipefittersAccounting.WebApi.Pages.Roles
 {
     public class CreateModel : AdminPageModel
     {
-        public UserManager<ApplicationUser> UserManager;
+        public RoleManager<ApplicationRole> RoleManager;
 
         [BindProperty]
-        public DomainUserDto DomainUser { get; set; } = new() { };
+        public DomainRoleDto DomainRole { get; set; } = new() { };
 
-        public CreateModel(UserManager<ApplicationUser> usrManager)
+        public CreateModel(UserManager<ApplicationUser> userManager,
+                RoleManager<ApplicationRole> roleManager)
         {
-            UserManager = usrManager;
+            RoleManager = roleManager;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new()
-                {
-                    Id = Guid.NewGuid(),
-                    UserName = DomainUser.UserName,
-                    Email = DomainUser.Email
-                };
+                ApplicationRole role = new() { Id = Guid.NewGuid(), Name = DomainRole.Name };
 
-                IdentityResult result = await UserManager.CreateAsync(user, DomainUser.Password);
+                IdentityResult result = await RoleManager.CreateAsync(role);
 
                 if (result.Succeeded)
                 {
                     return RedirectToPage("List");
                 }
-
                 foreach (IdentityError err in result.Errors)
                 {
                     ModelState.AddModelError("", err.Description);

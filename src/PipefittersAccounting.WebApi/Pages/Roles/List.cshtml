@@ -1,6 +1,11 @@
 @page
 @model PipefittersAccounting.WebApi.Pages.Roles.ListModel
 @using PipefittersAccounting.Infrastructure.Identity
+@{
+    ViewData["Title"] = "Accounting application roles";
+}
+
+<h6 class="bg-primary text-white p-2">@ViewData["Title"]</h6>
 
 <table class="table table-sm table-bordered">
     <tr>
@@ -29,4 +34,4 @@
         }
 }
 </table>
-<a class="btn btn-primary" asp-page="create">Create</a>
+<a class="btn btn-primary" asp-page="Create">Create</a>
