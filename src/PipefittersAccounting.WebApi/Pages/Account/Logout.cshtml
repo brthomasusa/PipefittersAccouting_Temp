@@ -1,0 +1,18 @@
+@page
+@model PipefittersAccounting.WebApi.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "You have been logged out.";
+}
+
+<div class="bg-primary text-white text-center p-2">
+    <h5>@ViewData["Title"]</h5>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-2">
+        <a class="btn btn-primary" asp-page="/Users/List">User Management</a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary" asp-page="/Roles/List">Role Management</a>
+    </div>
+</div>

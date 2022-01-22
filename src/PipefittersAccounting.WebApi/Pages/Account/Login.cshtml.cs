@@ -2,11 +2,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using PipefittersAccounting.Infrastructure.Identity;
-using PipefittersAccounting.SharedModel.DataXferObjects.Common;
 
 namespace PipefittersAccounting.WebApi.Pages.Account
 {
@@ -35,14 +33,16 @@ namespace PipefittersAccounting.WebApi.Pages.Account
             if (ModelState.IsValid)
             {
                 Microsoft.AspNetCore.Identity.SignInResult result =
-                    await signInManager.PasswordSignInAsync(UserName, Password,
-                        false, false);
+                    await signInManager.PasswordSignInAsync(UserName, Password, false, false);
+
                 if (result.Succeeded)
                 {
                     return Redirect(ReturnUrl ?? "/");
                 }
+
                 ModelState.AddModelError("", "Invalid username or password");
             }
+
             return Page();
         }
     }
