@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 
@@ -9,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureCors();
 
 builder.Services.AddDbContext<IdentityContext>(opts =>
     opts.UseSqlServer(builder.Configuration[
@@ -26,6 +28,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(opts =>
 .AddEntityFrameworkStores<IdentityContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 
@@ -47,6 +50,7 @@ app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+app.UseCors("CorsPolicy");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

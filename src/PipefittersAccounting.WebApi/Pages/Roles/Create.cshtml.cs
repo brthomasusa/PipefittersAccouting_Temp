@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using PipefittersAccounting.Infrastructure.Identity;
-using PipefittersAccounting.SharedModel.DataXferObjects.Common;
+using PipefittersAccounting.SharedModel.DataXferObjects.Identity;
 
 namespace PipefittersAccounting.WebApi.Pages.Roles
 {

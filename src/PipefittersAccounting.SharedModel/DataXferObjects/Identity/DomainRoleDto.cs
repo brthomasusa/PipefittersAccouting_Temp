@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace PipefittersAccounting.SharedModel.DataXferObjects.Common
+namespace PipefittersAccounting.SharedModel.DataXferObjects.Identity
 {
     public class DomainRoleDto
     {
