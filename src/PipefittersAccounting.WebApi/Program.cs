@@ -10,25 +10,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.ConfigureCors();
-
-builder.Services.AddDbContext<IdentityContext>(opts =>
-    opts.UseSqlServer(builder.Configuration[
-        "ConnectionStrings:IdentityConnection"]));
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(opts =>
-{
-    opts.Password.RequiredLength = 6;
-    opts.Password.RequireNonAlphanumeric = false;
-    opts.Password.RequireLowercase = false;
-    opts.Password.RequireUppercase = false;
-    opts.Password.RequireDigit = false;
-    opts.User.RequireUniqueEmail = true;
-    opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
-})
-.AddEntityFrameworkStores<IdentityContext>()
-.AddDefaultTokenProviders();
-
 builder.Services.AddInfrastructureServices();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity(builder.Configuration);
+builder.Services.ConfigureJWT(builder.Configuration);
 
 var app = builder.Build();
 

@@ -3,7 +3,6 @@
 
 using Microsoft.AspNetCore.Identity;
 using PipefittersAccounting.Infrastructure.Identity;
-using PipefittersAccounting.SharedModel.Interfaces;
 using PipefittersAccounting.SharedModel.DataXferObjects.Identity;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Identity
