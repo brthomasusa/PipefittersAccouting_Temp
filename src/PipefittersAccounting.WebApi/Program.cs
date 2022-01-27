@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using PipefittersAccounting.Infrastructure.Identity;
-using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +18,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -34,6 +30,11 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.All
+});
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
