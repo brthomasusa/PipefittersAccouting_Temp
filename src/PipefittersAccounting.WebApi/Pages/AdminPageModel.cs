@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PipefittersAccounting.WebApi.Pages
 {
-    [Authorize(Roles = "Admins")]
+    // [Authorize(Roles = "Admins")]
     public class AdminPageModel : PageModel
     {
 
