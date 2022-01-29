@@ -14,11 +14,13 @@ namespace PipefittersAccounting.WebApi.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
+        private readonly ILogger<AuthenticationController> _logger;
         private readonly AuthenticationCommandHandler? _cmdHdlr;
 
-        public AuthenticationController(AuthenticationCommandHandler handler)
+        public AuthenticationController(AuthenticationCommandHandler handler, ILogger<AuthenticationController> logger)
         {
             _cmdHdlr = handler;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -29,13 +31,15 @@ namespace PipefittersAccounting.WebApi.Controllers
                 userDto.Id = Guid.NewGuid();
             }
 
-            var result = await _cmdHdlr.Handle(userDto);
+            var result = await _cmdHdlr.HandleUserRegistration(userDto);
+            _logger.LogInformation($"Created login for {userDto.UserName} with email: {userDto.Email}.");
 
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
+                    _logger.LogError($"Creating login for {userDto.UserName} failed. Error code: {error.Code}, error description: {error.Description}.");
                     return BadRequest(ModelState);
                 }
             }
@@ -46,12 +50,15 @@ namespace PipefittersAccounting.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> AuthenticateUser([FromBody] UserForAuthenticationDto userDto)
         {
-            if (!await _cmdHdlr.Handle(userDto))
+            if (!await _cmdHdlr.HandleUserForAuthentication(userDto))
             {
                 return Unauthorized();
             }
 
-            return Ok();
+            return Ok(new
+            {
+                Token = _cmdHdlr.HandleTokenCreation(userDto)
+            });
         }
     }
 }
