@@ -21,7 +21,7 @@ public class WeatherForecastController : ControllerBase
         _logger.LogDebug(1, "NLog injected into WeatherForecastController");
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
