@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Identity
 {
     public class AuthenticationCommandHandler
     {
-        private UserManager<ApplicationUser>? _userManager;
+        private readonly UserManager<ApplicationUser>? _userManager;
         private RoleManager<ApplicationRole>? _roleManager;
         private SignInManager<ApplicationUser> _signInManager;
         private IConfiguration _configuration;
