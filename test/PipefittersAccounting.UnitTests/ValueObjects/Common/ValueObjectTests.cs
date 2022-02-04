@@ -11,6 +11,27 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Common
     public class ValueObjectTests
     {
         [Fact]
+        public void ShouldReturn_Valid_NonDefault_Guid()
+        {
+            Guid entityID = Guid.NewGuid();
+            var result = EntityGuidID.Create(entityID);
+
+            Assert.IsType<EntityGuidID>(result);
+            Assert.Equal(entityID, result);
+        }
+
+        [Fact]
+        public void ShouldRaiseError_Invalid_EntityID_DefaultGuid()
+        {
+            Guid entityID = new Guid();
+            Action action = () => EntityGuidID.Create(entityID);
+
+            var caughtException = Assert.Throws<ArgumentNullException>(action);
+
+            Assert.Equal("The entity Id is required; it can not be a default Guid.", caughtException.ParamName);
+        }
+
+        [Fact]
         public void ShouldReturn_Valid_PersonName()
         {
             var result = PersonName.Create("Doe", "Jon", "D");
