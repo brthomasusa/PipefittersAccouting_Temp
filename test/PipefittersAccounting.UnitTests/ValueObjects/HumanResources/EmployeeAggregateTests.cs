@@ -3,12 +3,58 @@
 
 using System;
 using Xunit;
+using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
 namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
 {
     public class EmployeeAggregateTests
     {
+        [Fact]
+        public void ShouldReturn_Valid_Employee()
+        {
+            Employee employee = new Employee
+            (
+                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
+                PersonName.Create("Doe", "John", "T"),
+                SocialSecurityNumber.Create("235981457"),
+                PhoneNumber.Create("214-874-1234"),
+                Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
+                MaritalStatus.Create("S"),
+                TaxExemption.Create(1),
+                PayRate.Create(20M),
+                StartDate.Create(new DateTime(2022, 2, 3)),
+                true,
+                false
+            );
+
+            Assert.IsType<Employee>(employee);
+        }
+
+        [Fact]
+        public void ShouldReturn_Valid_Employee_NullCheck()
+        {
+            Employee employee = new Employee
+            (
+                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                null,
+                PersonName.Create("Doe", "John", "T"),
+                SocialSecurityNumber.Create("235981457"),
+                PhoneNumber.Create("214-874-1234"),
+                Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
+                MaritalStatus.Create("S"),
+                TaxExemption.Create(1),
+                PayRate.Create(20M),
+                StartDate.Create(new DateTime(2022, 2, 3)),
+                true,
+                false
+            );
+
+            Assert.IsType<Employee>(employee);
+        }
+
         [Fact]
         public void ShouldReturn_Valid_EmployeePayRate()
         {
