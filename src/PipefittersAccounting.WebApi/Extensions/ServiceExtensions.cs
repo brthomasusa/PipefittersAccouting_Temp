@@ -30,6 +30,24 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<AuthenticationCommandHandler>();
         }
 
+        public static void ConfigureEfCoreDbContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    configuration["ConnectionStrings:DefaultConnection"],
+                    msSqlOptions => msSqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+                )
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
+                .UseLazyLoadingProxies()
+            );
+        }
+
+        public static void ConfigureDapper(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<DapperContext>(s => new DapperContext(configuration["ConnectionStrings:DefaultConnection"]));
+        }
+
         public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<IdentityContext>(opts =>

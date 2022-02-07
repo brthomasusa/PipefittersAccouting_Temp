@@ -36,10 +36,13 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
         [Fact]
         public void ShouldReturn_Valid_Employee_NullCheck()
         {
+            // Set any of the input params below to null and run test (it will fail).
+            // Should get specific error message describing missing parameter
+
             Employee employee = new Employee
             (
                 EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                null,
+                EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
                 PhoneNumber.Create("214-874-1234"),
@@ -203,5 +206,164 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
 
             Assert.Contains("The marital status is required.", caughtException.Message);
         }
+
+        [Fact]
+        public void ShouldUpdate_Employee_SupervisorId()
+        {
+            Guid newID = Guid.NewGuid();
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(employee.SupervisorId, newID);
+
+            employee.UpdateSupervisorId(EntityGuidID.Create(newID));
+
+            Assert.Equal(employee.SupervisorId, newID);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_EmployeeName()
+        {
+            PersonName newName = PersonName.Create("Pence", "Michael", "C");
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(newName, employee.EmployeeName);
+
+            employee.UpdateEmployeeName(newName);
+
+            Assert.Equal(newName, employee.EmployeeName);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_SSN()
+        {
+            SocialSecurityNumber newSSN = SocialSecurityNumber.Create("423598145");
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(newSSN, employee.SSN);
+
+            employee.UpdateSSN(newSSN);
+
+            Assert.Equal(newSSN, employee.SSN);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_PhoneNumber()
+        {
+            PhoneNumber phoneNumber = PhoneNumber.Create("817-874-9999");
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(phoneNumber, employee.EmployeeTelephone);
+
+            employee.UpdateEmployeePhoneNumber(phoneNumber);
+
+            Assert.Equal(phoneNumber, employee.EmployeeTelephone);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_Address()
+        {
+            Address address = Address.Create("999 9th Ave", "Apt 9", "Somewhere", "TX", "75211");
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(address, employee.EmployeeAddress);
+
+            employee.UpdateEmployeeAddress(address);
+
+            Assert.Equal(address, employee.EmployeeAddress);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_MaritalStatus()
+        {
+            MaritalStatus status = MaritalStatus.Create("M");
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(status, employee.MaritalStatus);
+
+            employee.UpdateMaritalStatus(status);
+
+            Assert.Equal(status, employee.MaritalStatus);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_TaxExemption()
+        {
+            TaxExemption exemption = TaxExemption.Create(10);
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(exemption, employee.TaxExemptions);
+
+            employee.UpdateTaxExemptions(exemption);
+
+            Assert.Equal(exemption, employee.TaxExemptions);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_PayRate()
+        {
+            PayRate payRate = PayRate.Create(10.25M);
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(payRate, employee.EmployeePayRate);
+
+            employee.UpdateEmployeePayRate(payRate);
+
+            Assert.Equal(payRate, employee.EmployeePayRate);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_StartDate()
+        {
+            StartDate startDate = StartDate.Create(new DateTime(2022, 2, 5));
+            Employee employee = GetEmployee();
+
+            Assert.NotEqual(startDate, employee.EmploymentDate);
+
+            employee.UpdateEmploymentDate(startDate);
+
+            Assert.Equal(startDate, employee.EmploymentDate);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_IsActive()
+        {
+            Employee employee = GetEmployee();
+
+            Assert.True(employee.IsActive);
+
+            employee.UpdateEmployeeStatus(false);
+
+            Assert.False(employee.IsActive);
+        }
+
+        [Fact]
+        public void ShouldUpdate_Employee_IsSupervisor()
+        {
+            Employee employee = GetEmployee();
+
+            Assert.False(employee.IsSupervisor);
+
+            employee.UpdateIsSupervisor(true);
+
+            Assert.True(employee.IsSupervisor);
+        }
+
+        private Employee GetEmployee() =>
+            new Employee
+            (
+                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
+                PersonName.Create("Doe", "John", "T"),
+                SocialSecurityNumber.Create("235981457"),
+                PhoneNumber.Create("214-874-1234"),
+                Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
+                MaritalStatus.Create("S"),
+                TaxExemption.Create(1),
+                PayRate.Create(20M),
+                StartDate.Create(new DateTime(2022, 2, 3)),
+                true,
+                false
+            );
+
     }
 }

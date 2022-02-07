@@ -18,6 +18,8 @@ try
     builder.Services.AddInfrastructureServices();
     builder.Services.AddAuthentication();
     builder.Services.ConfigureIdentity(builder.Configuration);
+    builder.Services.ConfigureEfCoreDbContext(builder.Configuration);
+    builder.Services.ConfigureDapper(builder.Configuration);
     builder.Services.ConfigureJWT(builder.Configuration);
 
     var app = builder.Build();
