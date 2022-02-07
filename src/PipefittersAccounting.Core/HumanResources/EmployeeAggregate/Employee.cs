@@ -1,5 +1,6 @@
 #pragma warning disable CS8618
 
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
@@ -31,6 +32,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
                 throw new ArgumentNullException("A supervisor id is required.");
             }
             Id = agent.ExternalAgent.Id;
+            ExternalAgent = agent.ExternalAgent;
 
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             EmployeeName = employeeName ?? throw new ArgumentNullException("An employee name is required.");
@@ -44,6 +46,8 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             IsActive = isActive;
             IsSupervisor = isSupervisor;
         }
+
+        public virtual ExternalAgent ExternalAgent { get; private set; }
 
         public Guid SupervisorId { get; private set; }
 

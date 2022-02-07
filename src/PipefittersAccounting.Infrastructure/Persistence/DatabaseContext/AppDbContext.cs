@@ -3,6 +3,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Shared;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
 {
@@ -12,6 +13,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
             : base(options)
         { }
 
+        public DbSet<ExternalAgent> ExternalAgents { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
