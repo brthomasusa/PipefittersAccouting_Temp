@@ -5,7 +5,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.SharedKernel
 {
-    public abstract class AggregateRoot<T> : Entity<T>
+    public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot
     {
         private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 

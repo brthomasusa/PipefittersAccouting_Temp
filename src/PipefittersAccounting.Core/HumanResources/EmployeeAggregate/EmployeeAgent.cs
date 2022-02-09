@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 
         public static EmployeeAgent Create(EntityGuidID id)
         {
-            var agent = new ExternalAgent(id, AgentType.Employee);
+            var agent = new ExternalAgent(id, AgentTypeEnum.Employee);
             return new EmployeeAgent(agent);
         }
     }

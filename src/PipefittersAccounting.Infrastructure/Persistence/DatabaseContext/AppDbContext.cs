@@ -14,7 +14,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         { }
 
         public DbSet<ExternalAgent> ExternalAgents { get; set; }
+        public DbSet<AgentType> ExternalAgentTypes { get; set; }
+        public DbSet<EconomicEvent> EconomicEvents { get; set; }
+        public DbSet<EventType> EconomicEventTypes { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

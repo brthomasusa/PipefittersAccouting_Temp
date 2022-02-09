@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Core.Shared
     {
         protected ExternalAgent() { }
 
-        public ExternalAgent(EntityGuidID id, AgentType agentType)
+        public ExternalAgent(EntityGuidID id, AgentTypeEnum agentType)
             : this()
         {
             AgentId = id;
@@ -19,7 +19,7 @@ namespace PipefittersAccounting.Core.Shared
 
         public Guid AgentId { get; private set; }
 
-        public AgentType AgentType { get; private set; }
+        public AgentTypeEnum AgentType { get; private set; }
 
         public virtual Employee Employee { get; private set; }
     }

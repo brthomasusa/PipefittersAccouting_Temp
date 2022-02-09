@@ -1,6 +1,6 @@
 namespace PipefittersAccounting.Core.Shared
 {
-    public enum AgentType : int
+    public enum AgentTypeEnum : int
     {
         Customer = 1,
         Creditor = 2,
