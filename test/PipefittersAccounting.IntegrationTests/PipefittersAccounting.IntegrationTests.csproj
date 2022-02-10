@@ -20,4 +20,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PipefittersAccounting.SharedKernel\PipefittersAccounting.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\src\PipefittersAccounting.Core\PipefittersAccounting.Core.csproj" />
+    <ProjectReference Include="..\..\src\PipefittersAccounting.Infrastructure\PipefittersAccounting.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\PipefittersAccounting.WebApi\PipefittersAccounting.WebApi.csproj" />
+  </ItemGroup>
 </Project>
