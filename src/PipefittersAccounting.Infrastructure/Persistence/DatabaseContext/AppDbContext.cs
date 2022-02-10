@@ -3,6 +3,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Shared;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
@@ -17,7 +18,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<AgentType> ExternalAgentTypes { get; set; }
         public DbSet<EconomicEvent> EconomicEvents { get; set; }
         public DbSet<EventType> EconomicEventTypes { get; set; }
+        public DbSet<DomainUser> DomainUsers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Financier> Financiers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

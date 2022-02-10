@@ -3,7 +3,6 @@
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Shared;
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
 namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 {
@@ -12,6 +11,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         protected EmployeeAgent() { }
 
         private EmployeeAgent(ExternalAgent agent)
+            : this()
         {
             ExternalAgent = agent;
         }

@@ -3,6 +3,7 @@
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
 namespace PipefittersAccounting.Core.Shared
 {
@@ -22,5 +23,6 @@ namespace PipefittersAccounting.Core.Shared
         public AgentTypeEnum AgentType { get; private set; }
 
         public virtual Employee Employee { get; private set; }
+        public virtual Financier Financier { get; private set; }
     }
 }

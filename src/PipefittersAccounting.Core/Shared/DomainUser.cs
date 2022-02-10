@@ -4,7 +4,7 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
-namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
+namespace PipefittersAccounting.Core.Shared
 {
     public class DomainUser : Entity<Guid>
     {
@@ -13,13 +13,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
         public DomainUser(ExternalAgent agent, string userName, string email)
         {
             Id = agent.Id;
-            ExternalAgent = agent;
             UserName = userName;
             Email = email;
         }
 
         public string UserName { get; private set; }
         public string Email { get; private set; }
-        public virtual ExternalAgent ExternalAgent { get; private set; }
     }
 }

@@ -3,10 +3,11 @@
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 {
-    public class Employee : AggregateRoot<Guid>
+    public class Employee : AggregateRoot<Guid>, IAggregateRoot
     {
         protected Employee() { }
 
@@ -29,7 +30,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         {
             if (agent is null)
             {
-                throw new ArgumentNullException("A supervisor id is required.");
+                throw new ArgumentNullException("An ExternalAgent is required.");
             }
             Id = agent.ExternalAgent.Id;
             ExternalAgent = agent.ExternalAgent;
