@@ -10,11 +10,10 @@ namespace PipefittersAccounting.Core.Shared
         private EconomicEvent(EntityGuidID id, EventTypeEnum eventType)
             : this()
         {
-            EventId = id;
+            Id = id;
             EventType = eventType;
         }
 
-        public Guid EventId { get; private set; }
         public EventTypeEnum EventType { get; private set; }
     }
 }

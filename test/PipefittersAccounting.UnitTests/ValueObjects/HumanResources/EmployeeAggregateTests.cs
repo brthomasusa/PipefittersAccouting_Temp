@@ -5,6 +5,7 @@ using System;
 using Xunit;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
 namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources

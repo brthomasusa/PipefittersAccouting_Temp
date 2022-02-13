@@ -14,11 +14,9 @@ namespace PipefittersAccounting.Core.Shared
         public ExternalAgent(EntityGuidID id, AgentTypeEnum agentType)
             : this()
         {
-            AgentId = id;
+            Id = id;
             AgentType = agentType;
         }
-
-        public Guid AgentId { get; private set; }
 
         public AgentTypeEnum AgentType { get; private set; }
 

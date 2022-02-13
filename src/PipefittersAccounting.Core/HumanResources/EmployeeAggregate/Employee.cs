@@ -30,7 +30,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         {
             if (agent is null)
             {
-                throw new ArgumentNullException("An ExternalAgent is required.");
+                throw new ArgumentNullException("An employee agent is required.");
             }
             Id = agent.ExternalAgent.Id;
             ExternalAgent = agent.ExternalAgent;

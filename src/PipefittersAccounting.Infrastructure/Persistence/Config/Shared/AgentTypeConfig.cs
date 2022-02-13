@@ -10,12 +10,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
         {
             entity.ToTable("ExternalAgentTypes", schema: "Shared");
             entity.HasKey(e => e.Id);
-            entity.Property(p => p.Id).HasColumnType("int").HasColumnName("AgentTypeId");
+            entity.HasIndex(e => e.AgentTypeName, "idx_ExternalAgentTypes$AgentTypeName").IsUnique();
+
+            entity.Property(p => p.Id).HasColumnType("integer").HasColumnName("AgentTypeId");
             entity.Property(p => p.AgentTypeName).HasColumnType("NVARCHAR(50)").HasColumnName("AgentTypeName").IsRequired();
-            entity.Property(e => e.CreatedDate)
-                .HasColumnType("datetime2(7)")
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("sysdatetime()");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime2(7)");
             entity.Property(e => e.LastModifiedDate).HasColumnType("datetime2(7)");
         }
     }

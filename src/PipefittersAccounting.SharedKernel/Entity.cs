@@ -6,7 +6,7 @@ namespace PipefittersAccounting.SharedKernel
     {
         public T Id { get; protected set; }
 
-        public DateTime CreatedDate { get; }
+        public DateTime CreatedDate { get; } = DateTime.UtcNow;
 
         public DateTime? LastModifiedDate { get; private set; }
 

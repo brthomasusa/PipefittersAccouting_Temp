@@ -1,8 +1,6 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.Core.Shared
 {
@@ -12,12 +10,14 @@ namespace PipefittersAccounting.Core.Shared
 
         public DomainUser(ExternalAgent agent, string userName, string email)
         {
+            Agent = agent ?? throw new ArgumentNullException("The external agent (employee, customer, etc.) is required.");
             Id = agent.Id;
-            UserName = userName;
-            Email = email;
+            UserName = userName ?? throw new ArgumentNullException("The user name is required.");
+            Email = email ?? throw new ArgumentNullException("The domain user email is required.");
         }
 
         public string UserName { get; private set; }
         public string Email { get; private set; }
+        public virtual ExternalAgent Agent { get; private set; }
     }
 }
