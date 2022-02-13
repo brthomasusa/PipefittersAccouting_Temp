@@ -19,11 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
 
         public async Task<bool> Exists(Guid id) => await _dbContext.Employees.FindAsync(id) != null;
 
-        public async Task AddAsync(Employee entity)
-        {
-            await _dbContext.ExternalAgents.AddAsync(entity.ExternalAgent);
-            await _dbContext.Employees.AddAsync(entity);
-        }
+        public async Task AddAsync(Employee entity) => await _dbContext.Employees.AddAsync(entity);
 
         public void Update(Employee entity) => _dbContext.Employees.Update(entity);
 
