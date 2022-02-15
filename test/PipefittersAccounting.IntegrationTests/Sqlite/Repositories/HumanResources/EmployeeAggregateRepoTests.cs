@@ -1,3 +1,6 @@
+#pragma warning disable CS8600
+#pragma warning disable CS8602
+#pragma warning disable CS8604
 #pragma warning disable CS8625
 
 using System;
@@ -5,6 +8,7 @@ using System.Threading.Tasks;
 using TestSupport.EfHelpers;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
@@ -16,17 +20,13 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
     public class EmployeeAggregateRepoTests
     {
         [Fact]
-        public async Task ShouldInsert_ExternalAgentAndEmployee()
+        public async Task RepositoryAdd_ExternalAgentAndEmployee()
         {
-            // DbContextOptionsDisposable<AppDbContext> options1 = SqliteInMemory.CreateOptions<AppDbContext>();
-            var options = SqliteInMemory.CreateOptions<AppDbContext>();
-            using var context = new AppDbContext(options);
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-
-            context.Database.EnsureCreated();
-            context.SeedDatabase();
 
             Guid agentId = Guid.NewGuid();
             Employee employee = new Employee
@@ -48,9 +48,111 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             await repo.AddAsync(employee);
             await uow.Commit();
 
-            var employeeResult = await repo.Exists(employee.Id);
+            var employeeResult = await context.Employees.FindAsync(agentId);
 
-            Assert.True(employeeResult);
+            Assert.Equal("Dough", employeeResult.EmployeeName.LastName);
+        }
+
+        [Fact]
+        public async Task RepositoryGetByID_Employee()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+
+            Employee employee = await repo.GetByIdAsync(agentId);
+            Employee result = await context.Employees.FindAsync(agentId);
+
+            Assert.Equal(employee.EmployeeName, result.EmployeeName);
+        }
+
+        [Fact]
+        public async Task RepositoryExists_Employee_true()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+
+            bool result = await repo.Exists(agentId);
+            Assert.True(result);
+
+            Employee employee = await context.Employees.FindAsync(agentId);
+            Assert.NotNull(employee);
+        }
+
+        [Fact]
+        public async Task RepositoryExists_Employee_false()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("1234de54-c2ca-417e-827c-a5b87be2d788");
+
+            bool result = await repo.Exists(agentId);
+            Assert.False(result);
+
+            Employee employee = await context.Employees.FindAsync(agentId);
+            Assert.Null(employee);
+        }
+
+        [Fact]
+        public async Task RepositoryUpdate_Employee()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+
+            Employee employee = await context.Employees.FindAsync(agentId);
+            Assert.Equal("Brown", employee.EmployeeName.LastName);
+            Assert.Equal("Jamie", employee.EmployeeName.FirstName);
+
+            PersonName newName = PersonName.Create("Garbor", "ZarZar", "Z");
+            employee.UpdateEmployeeName(newName);
+
+            repo.Update(employee);
+
+            Employee result = await context.Employees.FindAsync(agentId);
+            Assert.Equal("Garbor", result.EmployeeName.LastName);
+            Assert.Equal("ZarZar", result.EmployeeName.FirstName);
+        }
+
+        [Fact]
+        public async Task RepositoryDelete_Employee()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+
+            Employee employee = await context.Employees.FindAsync(agentId);
+            Assert.NotNull(employee);
+            ExternalAgent agent = await context.ExternalAgents.FindAsync(agentId);
+            Assert.NotNull(agent);
+
+            repo.Delete(employee);
+            await uow.Commit();
+
+            employee = await context.Employees.FindAsync(agentId);
+            Assert.Null(employee);
+            agent = await context.ExternalAgents.FindAsync(agentId);
+            Assert.Null(agent);
         }
     }
 }

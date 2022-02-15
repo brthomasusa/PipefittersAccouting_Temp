@@ -1,14 +1,17 @@
-using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using PipefittersAccounting.Infrastructure.Identity;
-using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
+
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
+using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
+using PipefittersAccounting.Infrastructure.Identity;
+using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,7 +30,10 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             return services
-                .AddScoped<AuthenticationCommandHandler>();
+                .AddScoped<AuthenticationCommandHandler>()
+                .AddScoped<IUnitOfWork, AppUnitOfWork>()
+                .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
+                .AddScoped<EmployeeAggregateCommandHandler>();
         }
 
         public static void ConfigureEfCoreDbContext(this IServiceCollection services, IConfiguration configuration)

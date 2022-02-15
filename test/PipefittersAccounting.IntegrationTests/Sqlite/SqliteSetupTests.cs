@@ -16,6 +16,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
         [Fact]
         public void TestSqlite_AgentTypesPrimaryKeyNumbering()
         {
+            // DbContextOptionsDisposable<AppDbContext> options = SqliteInMemory.CreateOptions<AppDbContext>();
             var options = SqliteInMemory.CreateOptions<AppDbContext>();
             using var context = new AppDbContext(options);
 
