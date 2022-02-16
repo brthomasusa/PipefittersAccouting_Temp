@@ -27,7 +27,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                 CreateEmployeeInfo createModel => await EmployeeCreateCommand.Execute(createModel, _employeeRepo, _unitOfWork),
                 EditEmployeeInfo updateModel => await EmployeeEditCommand.Execute(updateModel, _employeeRepo, _unitOfWork),
                 DeleteEmployeeInfo deleteModel => await EmployeeDeleteCommand.Execute(deleteModel, _employeeRepo, _unitOfWork),
-                _ => throw new ArgumentOutOfRangeException("Unknown employee write command.", nameof(writeModel))
+                _ => OperationResult.ExceptionResult(new ArgumentOutOfRangeException("Unknown employee write command.", nameof(writeModel)))
             };
     }
 }

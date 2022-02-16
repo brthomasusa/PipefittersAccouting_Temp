@@ -6,13 +6,16 @@ using Microsoft.IdentityModel.Tokens;
 
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
 using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
+using PipefittersAccounting.Infrastructure.Application.Queries.HumanResources;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 
+
+using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceExtensions
@@ -33,7 +36,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<AuthenticationCommandHandler>()
                 .AddScoped<IUnitOfWork, AppUnitOfWork>()
                 .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
-                .AddScoped<EmployeeAggregateCommandHandler>();
+                .AddScoped<EmployeeAggregateCommandHandler>()
+                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>()
+                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryService>();
         }
 
         public static void ConfigureEfCoreDbContext(this IServiceCollection services, IConfiguration configuration)

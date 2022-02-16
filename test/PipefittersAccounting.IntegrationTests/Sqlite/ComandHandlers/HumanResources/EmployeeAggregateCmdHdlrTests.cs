@@ -19,21 +19,10 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
     public class EmployeeAggregateCmdHdlrTests
     {
         [Fact]
-        public async Task TestSqliteInMemoryFactory()
-        {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
-
-            Employee employee = await context.Employees.FindAsync(new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"));
-
-            Assert.NotNull(employee);
-        }
-
-        [Fact]
         public async Task CmdHdlr_Add_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -52,8 +41,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Add_Employee_Duplicate_ShouldFail()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -72,8 +61,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Edit_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -101,8 +90,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Edit_Employee_BadID_ShouldFail()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -122,8 +111,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Edit_Employee_BadInputData_ShouldFail()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -141,8 +130,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Delete_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
@@ -167,8 +156,8 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         [Fact]
         public async Task CmdHdlr_Delete_Employee_BadID_ShouldFail()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
