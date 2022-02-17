@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
 {
     public class EmployeeDeleteCommand
     {
-        public static async Task<OperationResult> Execute
+        public static async Task<OperationResult<bool>> Execute
         (
             DeleteEmployeeInfo model,
             IEmployeeAggregateRepository repo,
@@ -18,7 +18,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             if (await repo.Exists(model.Id) == false)
             {
                 ArgumentException ex = new ArgumentException($"Delete failed, an employee with id: {model.Id} could not be found!");
-                return OperationResult.ExceptionResult(ex);
+                return OperationResult<bool>.CreateFailure(ex);
             }
 
             try
@@ -28,11 +28,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                 repo.Delete(employee);
                 await unitOfWork.Commit();
 
-                return OperationResult.SuccessResult();
+                return OperationResult<bool>.CreateSuccessResult(true);
             }
             catch (Exception ex)
             {
-                return OperationResult.ExceptionResult(ex);
+                return OperationResult<bool>.CreateFailure(ex);
             }
         }
     }

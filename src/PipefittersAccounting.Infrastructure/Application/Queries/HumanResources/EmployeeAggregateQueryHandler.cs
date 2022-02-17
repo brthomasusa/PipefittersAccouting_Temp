@@ -6,7 +6,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 {
     public class EmployeeAggregateQueryHandler : IEmployeeAggregateQueryHandler
     {
-        public Task<TypedOperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam)
+        private readonly IEmployeeAggregateQueryService _queryService;
+
+        public EmployeeAggregateQueryHandler(IEmployeeAggregateQueryService qrySvc) => _queryService = qrySvc;
+
+        public Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam)
         {
             throw new NotImplementedException();
         }

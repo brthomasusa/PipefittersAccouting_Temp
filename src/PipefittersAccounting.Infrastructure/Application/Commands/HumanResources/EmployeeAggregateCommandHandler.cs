@@ -21,13 +21,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult> Handle(IWriteModel writeModel) =>
+        public async Task<OperationResult<bool>> Handle(IWriteModel writeModel) =>
             writeModel switch
             {
                 CreateEmployeeInfo createModel => await EmployeeCreateCommand.Execute(createModel, _employeeRepo, _unitOfWork),
                 EditEmployeeInfo updateModel => await EmployeeEditCommand.Execute(updateModel, _employeeRepo, _unitOfWork),
                 DeleteEmployeeInfo deleteModel => await EmployeeDeleteCommand.Execute(deleteModel, _employeeRepo, _unitOfWork),
-                _ => OperationResult.ExceptionResult(new ArgumentOutOfRangeException("Unknown employee write command.", nameof(writeModel)))
+                _ => OperationResult<bool>.CreateFailure(new ArgumentOutOfRangeException("Unknown employee write command.", nameof(writeModel)))
             };
     }
 }

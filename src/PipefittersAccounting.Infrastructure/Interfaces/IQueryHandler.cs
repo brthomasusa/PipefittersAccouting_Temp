@@ -6,6 +6,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
 {
     public interface IQueryHandler
     {
-        Task<TypedOperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam);
+        Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam);
     }
 }

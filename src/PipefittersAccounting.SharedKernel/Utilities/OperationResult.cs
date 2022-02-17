@@ -1,43 +1,33 @@
+#pragma warning disable CS8618
 namespace PipefittersAccounting.SharedKernel.Utilities
 {
-    public class OperationResult
+    public class OperationResult<TResult>
     {
-        protected OperationResult()
-        {
-            this.Success = true;
-        }
-        protected OperationResult(string message)
-        {
-            this.Success = false;
-            this.FailureMessage = message;
-        }
-        protected OperationResult(Exception ex)
-        {
-            this.Success = false;
-            this.Exception = ex;
-        }
-        public bool? Success { get; protected set; }
-        public string? FailureMessage { get; protected set; }
-        public Exception? Exception { get; protected set; }
+        private OperationResult() { }
 
-        public static OperationResult SuccessResult()
+        public bool Success { get; private set; }
+        public TResult Result { get; private set; }
+        public string NonSuccessMessage { get; private set; }
+        public Exception Exception { get; private set; }
+
+        public static OperationResult<TResult> CreateSuccessResult(TResult result)
         {
-            return new OperationResult();
+            return new OperationResult<TResult> { Success = true, Result = result };
         }
 
-        public static OperationResult FailureResult(string message)
+        public static OperationResult<TResult> CreateFailure(string nonSuccessMessage)
         {
-            return new OperationResult(message);
+            return new OperationResult<TResult> { Success = false, NonSuccessMessage = nonSuccessMessage };
         }
 
-        public static OperationResult ExceptionResult(Exception ex)
+        public static OperationResult<TResult> CreateFailure(Exception ex)
         {
-            return new OperationResult(ex);
-        }
-
-        public bool IsException()
-        {
-            return this.Exception != null;
+            return new OperationResult<TResult>
+            {
+                Success = false,
+                NonSuccessMessage = String.Format("{0}{1}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace),
+                Exception = ex
+            };
         }
     }
 }

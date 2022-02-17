@@ -6,6 +6,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
 {
     public interface ICommandHandler
     {
-        Task<OperationResult> Handle(IWriteModel writeModel);
+        Task<OperationResult<bool>> Handle(IWriteModel writeModel);
     }
 }

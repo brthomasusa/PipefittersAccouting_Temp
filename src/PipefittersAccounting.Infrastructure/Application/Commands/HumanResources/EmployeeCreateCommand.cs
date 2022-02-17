@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
 {
     public class EmployeeCreateCommand
     {
-        public static async Task<OperationResult> Execute
+        public static async Task<OperationResult<bool>> Execute
         (
             CreateEmployeeInfo model,
             IEmployeeAggregateRepository repo,
@@ -19,7 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             if (await repo.Exists(model.Id))
             {
                 InvalidOperationException ex = new InvalidOperationException($"Can not create this employee, they already exists!");
-                return OperationResult.ExceptionResult(ex);
+                return OperationResult<bool>.CreateFailure(ex);
             }
 
             try
@@ -43,11 +43,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                 await repo.AddAsync(employee);
                 await unitOfWork.Commit();
 
-                return OperationResult.SuccessResult();
+                return OperationResult<bool>.CreateSuccessResult(true);
             }
             catch (Exception ex)
             {
-                return OperationResult.ExceptionResult(ex);
+                return OperationResult<bool>.CreateFailure(ex);
             }
         }
     }

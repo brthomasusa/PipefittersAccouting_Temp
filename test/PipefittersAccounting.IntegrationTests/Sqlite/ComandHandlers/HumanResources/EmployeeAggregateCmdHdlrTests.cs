@@ -30,7 +30,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
             Assert.True(result.Success);
 
             var newEmployee = await context.Employees.FindAsync(model.Id);
@@ -51,7 +51,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
             Assert.IsType<InvalidOperationException>(result.Exception);
@@ -70,7 +70,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
             Assert.True(result.Success);
 
             var updatedEmployee = await context.Employees.FindAsync(model.Id);
@@ -100,7 +100,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Id = Guid.NewGuid();
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
 
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
@@ -121,7 +121,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Telephone = "2144-897-99";
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
 
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
@@ -146,7 +146,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
                 Id = agentId
             };
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
             Assert.True(result.Success);
 
             employee = await context.Employees.FindAsync(agentId);
@@ -168,7 +168,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
                 Id = Guid.NewGuid()
             };
 
-            OperationResult result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.Handle(model);
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
         }
