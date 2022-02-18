@@ -2,6 +2,8 @@
 #pragma warning disable CS8602
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
@@ -10,6 +12,7 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
@@ -34,7 +37,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
         }
 
         [Fact]
-        public async Task TestQueryService_GetEmployee()
+        public async Task TestQueryService_GetEmployeeDetail()
         {
             using SqliteDbContextFactory factory = new();
             using AppDbContext context = factory.CreateInMemoryContext();
@@ -48,6 +51,57 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
             Assert.True(returnValue.Success);
             Assert.IsType<EmployeeDetail>(returnValue.Result);
             Assert.Equal(agentID, returnValue.Result.EmployeeId);
+        }
+
+        [Fact]
+        public async Task TestQueryService_GetEmployeeListItems()
+        {
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
+
+            IEmployeeAggregateQueryService sqliteQrySvc = new EmployeeQueryServiceSqlite(context);
+
+            GetEmployees qryParam = new GetEmployees() { Page = 0, PageSize = 10 };
+
+            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.Query(qryParam);
+
+            Assert.True(returnValue.Success);
+            Assert.IsType<PagedList<EmployeeListItem>>(returnValue.Result);
+            Assert.Equal(9, returnValue.Result.ReadModels.Count);
+        }
+
+        [Fact]
+        public async Task TestQueryService_GetEmployeeListItems_Pagination()
+        {
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
+
+            IEmployeeAggregateQueryService sqliteQrySvc = new EmployeeQueryServiceSqlite(context);
+
+            GetEmployees qryParam = new GetEmployees() { Page = 0, PageSize = 5 };
+
+            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.Query(qryParam);
+
+            Assert.True(returnValue.Success);
+            Assert.IsType<PagedList<EmployeeListItem>>(returnValue.Result);
+            Assert.Equal(5, returnValue.Result.ReadModels.Count);
+        }
+
+        [Fact]
+        public async Task TestQueryService_GetEmployeeManagers()
+        {
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
+
+            IEmployeeAggregateQueryService sqliteQrySvc = new EmployeeQueryServiceSqlite(context);
+
+            GetEmployeeManagers queryParameters = new GetEmployeeManagers { };
+
+            OperationResult<List<EmployeeManager>> returnValue = await sqliteQrySvc.Query(queryParameters);
+
+            Assert.True(returnValue.Success);
+            Assert.IsType<List<EmployeeManager>>(returnValue.Result);
+            Assert.Equal(3, returnValue.Result.Count);
         }
     }
 }

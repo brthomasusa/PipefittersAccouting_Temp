@@ -15,13 +15,13 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly IEmployeeAggregateQueryHandler _qryHdlr;
-        private readonly EmployeeAggregateCommandHandler _cmdHdlr;
+        private readonly IEmployeeAggregateCommandHandler _cmdHdlr;
 
         public EmployeesController
         (
             ILogger<EmployeesController> logger,
             IEmployeeAggregateQueryHandler queryHandler,
-            EmployeeAggregateCommandHandler commandHandler
+            IEmployeeAggregateCommandHandler commandHandler
         )
         {
             _logger = logger;

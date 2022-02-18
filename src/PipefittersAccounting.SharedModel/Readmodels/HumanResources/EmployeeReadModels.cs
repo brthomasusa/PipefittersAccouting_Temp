@@ -53,4 +53,10 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public bool IsSupervisor { get; set; }
         public string? ManagerFullName { get; set; }
     }
+
+    public class EmployeeManager
+    {
+        public Guid ManagerId { get; set; }
+        public string? ManagerFullName { get; set; }
+    }
 }

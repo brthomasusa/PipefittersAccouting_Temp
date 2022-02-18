@@ -20,6 +20,18 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceExtensions
     {
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+        {
+            return services
+                .AddScoped<AuthenticationCommandHandler>()
+                .AddScoped<IUnitOfWork, AppUnitOfWork>()
+                .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
+                .AddScoped<IEmployeeAggregateCommandHandler, EmployeeAggregateCommandHandler>()
+                .AddScoped<IEmployeeAggregateCommandHandlerService, EmployeeCommandHandlerServiceEfCore>()
+                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>()
+                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryService>();
+        }
+
         public static IServiceCollection ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>
             {
@@ -29,17 +41,6 @@ namespace Microsoft.Extensions.DependencyInjection
                            .AllowAnyHeader()
                            .WithExposedHeaders("X-Pagination"));
             });
-
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
-        {
-            return services
-                .AddScoped<AuthenticationCommandHandler>()
-                .AddScoped<IUnitOfWork, AppUnitOfWork>()
-                .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
-                .AddScoped<EmployeeAggregateCommandHandler>()
-                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>()
-                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryService>();
-        }
 
         public static void ConfigureEfCoreDbContext(this IServiceCollection services, IConfiguration configuration)
         {

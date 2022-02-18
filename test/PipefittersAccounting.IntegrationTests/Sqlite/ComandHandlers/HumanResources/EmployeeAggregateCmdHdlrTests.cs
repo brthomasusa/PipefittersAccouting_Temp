@@ -5,14 +5,13 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
-
 
 namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanResources
 {
@@ -26,11 +25,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
             Assert.True(result.Success);
 
             var newEmployee = await context.Employees.FindAsync(model.Id);
@@ -46,12 +45,12 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
             Assert.IsType<InvalidOperationException>(result.Exception);
@@ -66,11 +65,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
             Assert.True(result.Success);
 
             var updatedEmployee = await context.Employees.FindAsync(model.Id);
@@ -95,12 +94,12 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Id = Guid.NewGuid();
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
@@ -116,12 +115,12 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Telephone = "2144-897-99";
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
@@ -135,7 +134,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
             Employee employee = await context.Employees.FindAsync(agentId);
@@ -146,7 +145,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
                 Id = agentId
             };
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.True(result.Success);
 
             employee = await context.Employees.FindAsync(agentId);
@@ -161,14 +160,14 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            EmployeeAggregateCommandHandler cmdHdlr = new EmployeeAggregateCommandHandler(repo, uow);
+            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             DeleteEmployeeInfo model = new DeleteEmployeeInfo()
             {
                 Id = Guid.NewGuid()
             };
 
-            OperationResult<bool> result = await cmdHdlr.Handle(model);
+            OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
         }
