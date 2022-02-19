@@ -217,5 +217,15 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
                 IsActive = true,
                 IsSupervisor = false
             };
+
+        private EmployeeCommandHandlerServiceSqliteInMemory GetCommandHandler()
+        {
+            using SqliteDbContextFactory factory = new();
+            using AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            return new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+        }
     }
 }

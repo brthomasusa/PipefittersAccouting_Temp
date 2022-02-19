@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
-using PipefittersAccounting.SharedModel.Interfaces;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;
 

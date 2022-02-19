@@ -1,4 +1,3 @@
-using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedModel.Interfaces;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;

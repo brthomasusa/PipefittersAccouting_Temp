@@ -16,7 +16,9 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
         {
             try
             {
-                var items = await (from emp in _dbContext.Employees.Where(s => s.IsSupervisor == true)
+                var items = await (from emp in _dbContext.Employees
+                                        .AsNoTracking()
+                                        .Where(s => s.IsSupervisor == true)
                                    select new EmployeeManager
                                    {
                                        ManagerId = emp.Id,
