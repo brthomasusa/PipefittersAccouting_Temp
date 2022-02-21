@@ -22,7 +22,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore
 
             optionsBuilder.UseSqlServer(
                 _connectionString,
-                mySqlOptions => mySqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+                msSqlOptions => msSqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
             )
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors()

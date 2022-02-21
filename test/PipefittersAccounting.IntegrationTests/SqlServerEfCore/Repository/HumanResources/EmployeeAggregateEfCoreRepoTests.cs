@@ -8,23 +8,21 @@ using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.Shared;
-using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
-namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResources
+namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.HumanResources
 {
-    public class EmployeeAggregateRepoTests
+    public class EmployeeAggregateEfCoreRepoTests : TestBaseEfCore
     {
-        [Fact]
-        public async Task RepositoryAdd_ExternalAgentAndEmployee()
-        {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
+        public EmployeeAggregateEfCoreRepoTests() => TestDatabaseInitialization.InitializeData(_dbContext);
 
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+        [Fact]
+        public async Task EfCore_RepositoryAdd_ExternalAgentAndEmployee()
+        {
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = Guid.NewGuid();
             Employee employee = new Employee
@@ -46,75 +44,64 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             await repo.AddAsync(employee);
             await uow.Commit();
 
-            var employeeResult = await context.Employees.FindAsync(agentId);
+            var employeeResult = await _dbContext.Employees.FindAsync(agentId);
 
             Assert.Equal("Dough", employeeResult.EmployeeName.LastName);
         }
 
         [Fact]
-        public async Task RepositoryGetByID_Employee()
+        public async Task EfCore_RepositoryGetByID_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
             Employee employee = await repo.GetByIdAsync(agentId);
-            Employee result = await context.Employees.FindAsync(agentId);
+            Employee result = await _dbContext.Employees.FindAsync(agentId);
 
             Assert.Equal(employee.EmployeeName, result.EmployeeName);
         }
 
         [Fact]
-        public async Task RepositoryExists_Employee_true()
+        public async Task EfCore_RepositoryExists_Employee_true()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
             bool result = await repo.Exists(agentId);
             Assert.True(result);
 
-            Employee employee = await context.Employees.FindAsync(agentId);
+            Employee employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.NotNull(employee);
         }
 
         [Fact]
-        public async Task RepositoryExists_Employee_false()
+        public async Task EfCore_RepositoryExists_Employee_false()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
 
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = new Guid("1234de54-c2ca-417e-827c-a5b87be2d788");
 
             bool result = await repo.Exists(agentId);
             Assert.False(result);
 
-            Employee employee = await context.Employees.FindAsync(agentId);
+            Employee employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.Null(employee);
         }
 
         [Fact]
-        public async Task RepositoryUpdate_Employee()
+        public async Task EfCoreRepositoryUpdate_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
-
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
-            Employee employee = await context.Employees.FindAsync(agentId);
+            Employee employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.Equal("Brown", employee.EmployeeName.LastName);
             Assert.Equal("Jamie", employee.EmployeeName.FirstName);
 
@@ -123,33 +110,30 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
 
             repo.Update(employee);
 
-            Employee result = await context.Employees.FindAsync(agentId);
+            Employee result = await _dbContext.Employees.FindAsync(agentId);
             Assert.Equal("Garbor", result.EmployeeName.LastName);
             Assert.Equal("ZarZar", result.EmployeeName.FirstName);
         }
 
         [Fact]
-        public async Task RepositoryDelete_Employee()
+        public async Task EfCore_RepositoryDelete_Employee()
         {
-            SqliteDbContextFactory factory = new();
-            AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
-            Employee employee = await context.Employees.FindAsync(agentId);
+            Employee employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.NotNull(employee);
-            ExternalAgent agent = await context.ExternalAgents.FindAsync(agentId);
+            ExternalAgent agent = await _dbContext.ExternalAgents.FindAsync(agentId);
             Assert.NotNull(agent);
 
             repo.Delete(employee);
             await uow.Commit();
 
-            employee = await context.Employees.FindAsync(agentId);
+            employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.Null(employee);
-            agent = await context.ExternalAgents.FindAsync(agentId);
+            agent = await _dbContext.ExternalAgents.FindAsync(agentId);
             Assert.Null(agent);
         }
     }
