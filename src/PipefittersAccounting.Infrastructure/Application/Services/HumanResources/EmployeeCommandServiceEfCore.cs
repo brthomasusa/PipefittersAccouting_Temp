@@ -8,12 +8,12 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResources
 {
-    public class EmployeeCommandHandlerServiceEfCore : IEmployeeAggregateCommandHandlerService
+    public class EmployeeCommandServiceEfCore : IEmployeeAggregateCommandService
     {
         private readonly IEmployeeAggregateRepository _employeeRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeCommandHandlerServiceEfCore(IEmployeeAggregateRepository repo, IUnitOfWork unitOfWork)
+        public EmployeeCommandServiceEfCore(IEmployeeAggregateRepository repo, IUnitOfWork unitOfWork)
         {
             _employeeRepo = repo;
             _unitOfWork = unitOfWork;

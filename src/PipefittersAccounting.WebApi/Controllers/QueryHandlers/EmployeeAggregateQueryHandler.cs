@@ -1,8 +1,10 @@
+using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Interfaces;
+using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResources
+namespace PipefittersAccounting.WebApi.Controllers.QueryHandlers
 {
     public class EmployeeAggregateQueryHandler : IEmployeeAggregateQueryHandler
     {
@@ -10,9 +12,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 
         public EmployeeAggregateQueryHandler(IEmployeeAggregateQueryService qrySvc) => _queryService = qrySvc;
 
-        public Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam)
-        {
+        public async Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam) =>
             throw new NotImplementedException();
-        }
+
     }
 }

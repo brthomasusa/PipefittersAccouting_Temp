@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
+using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 
 namespace PipefittersAccounting.WebApi.Controllers.HumanResources
 {

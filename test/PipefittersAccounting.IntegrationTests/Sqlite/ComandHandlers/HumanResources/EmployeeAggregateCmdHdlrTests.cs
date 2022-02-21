@@ -25,7 +25,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
 
@@ -45,7 +45,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             CreateEmployeeInfo model = GetCreateEmployeeInfo();
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
@@ -65,7 +65,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
 
@@ -94,7 +94,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Id = Guid.NewGuid();
@@ -115,7 +115,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             EditEmployeeInfo model = GetEditEmployeeInfo();
             model.Telephone = "2144-897-99";
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
             Employee employee = await context.Employees.FindAsync(agentId);
@@ -160,7 +160,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandHandlerService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
             DeleteEmployeeInfo model = new DeleteEmployeeInfo()
             {

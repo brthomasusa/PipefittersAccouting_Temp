@@ -11,7 +11,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanResources
 {
-    public class EmployeeCommandHandlerServiceSqliteInMemory : IEmployeeAggregateCommandHandlerService
+    public class EmployeeCommandHandlerServiceSqliteInMemory : IEmployeeAggregateCommandService
     {
         private readonly IEmployeeAggregateRepository _employeeRepo;
         private readonly IUnitOfWork _unitOfWork;

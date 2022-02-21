@@ -7,9 +7,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
 {
     public class EmployeeAggregateCommandHandler : IEmployeeAggregateCommandHandler
     {
-        private readonly IEmployeeAggregateCommandHandlerService _cmdHdlrSvc;
+        private readonly IEmployeeAggregateCommandService _cmdHdlrSvc;
 
-        public EmployeeAggregateCommandHandler(IEmployeeAggregateCommandHandlerService cmdHdlrService)
+        public EmployeeAggregateCommandHandler(IEmployeeAggregateCommandService cmdHdlrService)
             => _cmdHdlrSvc = cmdHdlrService;
 
         public async Task<OperationResult<bool>> Handle(IWriteModel writeModel) =>

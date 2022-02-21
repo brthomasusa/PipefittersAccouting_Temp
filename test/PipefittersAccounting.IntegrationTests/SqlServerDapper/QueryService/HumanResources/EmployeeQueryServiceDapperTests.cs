@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
-using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
@@ -32,7 +30,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
-        public async Task Dapper_ShouldReturn_Failure_With_Bad_EmployeeId()
+        public async Task Dapper_ShouldFail_With_Bad_EmployeeId()
         {
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 

@@ -13,8 +13,8 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
-
-
+using PipefittersAccounting.WebApi.Interfaces.HumanResources;
+using PipefittersAccounting.WebApi.Controllers.QueryHandlers;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,9 +27,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IUnitOfWork, AppUnitOfWork>()
                 .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
                 .AddScoped<IEmployeeAggregateCommandHandler, EmployeeAggregateCommandHandler>()
-                .AddScoped<IEmployeeAggregateCommandHandlerService, EmployeeCommandHandlerServiceEfCore>()
+                .AddScoped<IEmployeeAggregateCommandService, EmployeeCommandServiceEfCore>()
                 .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>()
-                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryService>();
+                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>();
         }
 
         public static IServiceCollection ConfigureCors(this IServiceCollection services) =>
