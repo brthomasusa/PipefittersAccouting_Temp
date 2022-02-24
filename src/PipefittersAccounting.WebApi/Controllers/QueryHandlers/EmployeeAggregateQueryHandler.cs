@@ -12,7 +12,7 @@ namespace PipefittersAccounting.WebApi.Controllers.QueryHandlers
 
         public EmployeeAggregateQueryHandler(IEmployeeAggregateQueryService qrySvc) => _queryService = qrySvc;
 
-        public async Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam) =>
+        public Task<OperationResult<IReadModel>> Handle<TQueryParam>(TQueryParam queryParam) =>
             throw new NotImplementedException();
 
     }

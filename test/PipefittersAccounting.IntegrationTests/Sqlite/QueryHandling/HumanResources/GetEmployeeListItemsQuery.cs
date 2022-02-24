@@ -33,7 +33,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
                                        IsSupervisor = emp.IsSupervisor,
                                        ManagerFullName = $"{supv.EmployeeName.FirstName} {supv.EmployeeName.MiddleInitial} {supv.EmployeeName.LastName}"
                                    })
-                                     .Skip(queryParameters.Page)
+                                     .Skip(queryParameters.Page - 1)
                                      .Take(queryParameters.PageSize)
                                      .ToListAsync();
 

@@ -11,7 +11,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore
 {
     public class EfCoreConfigurationTests : TestBaseEfCore
     {
-        public EfCoreConfigurationTests() => TestDatabaseInitialization.InitializeData(_dbContext);
+        public EfCoreConfigurationTests() => _dbContext.Database.ExecuteSqlRaw("EXEC dbo.usp_resetTestDb");
 
         [Fact]
         public void ShouldReturnAt_ExternalAgentEmployees()

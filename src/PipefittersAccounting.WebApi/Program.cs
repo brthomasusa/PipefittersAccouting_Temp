@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
 
+using Microsoft.AspNetCore.Mvc;
+
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
@@ -13,6 +15,12 @@ try
     builder.Services.AddRazorPages();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.AddApiVersioning(config =>
+    {
+        config.DefaultApiVersion = new ApiVersion(1, 0);
+        config.AssumeDefaultVersionWhenUnspecified = true;
+        config.ReportApiVersions = true;
+    });
 
     builder.Services.ConfigureCors();
     builder.Services.AddInfrastructureServices();
@@ -68,4 +76,6 @@ finally
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
     NLog.LogManager.Shutdown();
 }
+
+public partial class Program { }
 

@@ -16,8 +16,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Huma
 {
     public class EmployeeAggregateEfCoreRepoTests : TestBaseEfCore
     {
-        public EmployeeAggregateEfCoreRepoTests() => TestDatabaseInitialization.InitializeData(_dbContext);
-
         [Fact]
         public async Task EfCore_RepositoryAdd_ExternalAgentAndEmployee()
         {
@@ -81,7 +79,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Huma
         [Fact]
         public async Task EfCore_RepositoryExists_Employee_false()
         {
-
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 

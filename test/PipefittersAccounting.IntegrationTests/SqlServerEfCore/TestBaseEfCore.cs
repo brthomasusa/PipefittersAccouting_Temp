@@ -29,6 +29,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore
             .UseLazyLoadingProxies();
 
             _dbContext = new AppDbContext(optionsBuilder.Options);
+            _dbContext.Database.ExecuteSqlRaw("EXEC dbo.usp_resetTestDb");  // This is 4 times as fast (897ms -vs- 4 seconds) as calling
+            // TestDatabaseInitialization.InitializeData(_dbContext);       // TestDatabaseInitialization.InitializeData(_dbContext)
         }
 
         public void Dispose()
