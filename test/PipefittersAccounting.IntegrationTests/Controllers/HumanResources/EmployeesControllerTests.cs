@@ -2,57 +2,59 @@
 #pragma warning disable CS8602
 #pragma warning disable CS8604
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
 using Xunit;
-using Microsoft.AspNetCore.Mvc.Testing;
-
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
-using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.IntegrationTests.Base;
+using PipefittersAccounting.SharedModel.Readmodels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+
 
 namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
 {
-    public class EmployeesControllerTests : IClassFixture<WebApplicationFactory<Program>>
+    public class EmployeesControllerTests : IntegrationTest
     {
-        readonly HttpClient _client;
-
-        public EmployeesControllerTests(WebApplicationFactory<Program> application)
-        {
-            _client = application.CreateClient();
-            ReseedTestDatabase.ReseedDatabase();
-        }
-
+        public EmployeesControllerTests(ApiWebApplicationFactory fixture) : base(fixture) { }
 
         [Fact]
-        public async Task WebApplicationFactory_Setup_Test()
+        public async Task ShouldReturn_AllEmployees_EmployeesController()
         {
-            var response = await _client.GetAsync("api/v1/employees");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["page"] = pagingParams.Page.ToString(),
+                ["pageSize"] = pagingParams.PageSize.ToString()
+            };
+
+            try
+            {
+                List<EmployeeListItem> response = await _client
+                    .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams));
+
+                Assert.True(true);
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                System.Console.Write(ex);
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                System.Console.Write(ex);
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.Write(ex);
+            }
+
         }
 
-        // [Fact]
-        // public async Task ShouldReturn_AllEmployees()
-        // {
-        //     // Arrange
-
-
-        //     // Act
-
-
-        //     // Assert            
-
-        // }
 
     }
 }

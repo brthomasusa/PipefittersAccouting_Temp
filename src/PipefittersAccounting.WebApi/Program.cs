@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
-
 using Microsoft.AspNetCore.Mvc;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -12,6 +11,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddControllersWithViews();
+
     builder.Services.AddRazorPages();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -47,14 +47,14 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
 
     app.UseForwardedHeaders(new ForwardedHeadersOptions
     {
         ForwardedHeaders = ForwardedHeaders.All
     });
 
-    app.UseBlazorFrameworkFiles();
-    app.UseStaticFiles();
     app.UseCors("CorsPolicy");
     app.UseRouting();
     app.UseAuthentication();

@@ -1,0 +1,12 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information"
+        }
+    },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=tcp:mssql-server,1433;Database=Pipefitters_Test;User Id=sa;Password=Info99Gum;TrustServerCertificate=True"
+  }
+}

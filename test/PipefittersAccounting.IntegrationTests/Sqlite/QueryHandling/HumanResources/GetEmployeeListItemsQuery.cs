@@ -37,7 +37,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
                                      .Take(queryParameters.PageSize)
                                      .ToListAsync();
 
-                var pagedList = PagedList<EmployeeListItem>.CreatePagedList(items, count, queryParameters.Page, queryParameters.PageSize);
+                var pagedList = PagedList<EmployeeListItem>.CreatePagedList(items.ToList(), count, queryParameters.Page, queryParameters.PageSize);
 
                 return OperationResult<PagedList<EmployeeListItem>>.CreateSuccessResult(pagedList);
             }

@@ -7,8 +7,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
 {
     public interface IEmployeeAggregateQueryService
     {
-        Task<OperationResult<EmployeeDetail>> Query(GetEmployee queryParameters);
-        Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployees queryParameters);
-        Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagers queryParameters);
+        Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployee queryParameters);
+        Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployees queryParameters);
+        Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagers queryParameters);
     }
 }

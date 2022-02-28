@@ -7,17 +7,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 {
     public class EmployeeAggregateQueryService : IEmployeeAggregateQueryService
     {
-        public Task<OperationResult<EmployeeDetail>> Query(GetEmployee queryParameters)
+        public Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployee queryParameters)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployees queryParameters)
+        public Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployees queryParameters)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagers queryParameters)
+        public Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagers queryParameters)
         {
             throw new NotImplementedException();
         }

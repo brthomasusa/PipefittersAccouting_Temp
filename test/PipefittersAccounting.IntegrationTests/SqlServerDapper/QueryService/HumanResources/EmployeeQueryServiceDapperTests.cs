@@ -21,7 +21,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Guid agentID = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
             GetEmployee qryParam = new GetEmployee() { EmployeeID = agentID };
 
-            OperationResult<EmployeeDetail> result = await queryService.Query(qryParam);
+            OperationResult<EmployeeDetail> result = await queryService.GetEmployeeDetails(qryParam);
 
             Assert.True(result.Success);
             Assert.Equal(agentID, result.Result.EmployeeId);
@@ -37,7 +37,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Guid agentID = new Guid("12300A74-E2D9-4837-B9A4-9E828752716E");
             GetEmployee qryParam = new GetEmployee() { EmployeeID = agentID };
 
-            OperationResult<EmployeeDetail> result = await queryService.Query(qryParam);
+            OperationResult<EmployeeDetail> result = await queryService.GetEmployeeDetails(qryParam);
 
             Assert.False(result.Success);
             Assert.IsType<ArgumentException>(result.Exception);
@@ -51,7 +51,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
             GetEmployeeManagers queryParameters = new GetEmployeeManagers();
-            OperationResult<List<EmployeeManager>> result = await queryService.Query(queryParameters);
+            OperationResult<List<EmployeeManager>> result = await queryService.GetEmployeeManagers(queryParameters);
 
             Assert.True(result.Success);
             Assert.Equal(3, result.Result.Count);
@@ -63,10 +63,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
             GetEmployees queryParameters = new GetEmployees() { Page = 1, PageSize = 10 };
-            OperationResult<PagedList<EmployeeListItem>> result = await queryService.Query(queryParameters);
+            OperationResult<PagedList<EmployeeListItem>> result = await queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(9, result.Result.ReadModels.Count);
+            Assert.Equal(9, result.Result.Count);
         }
 
         [Fact]
@@ -75,16 +75,16 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
             GetEmployees queryParameters = new GetEmployees() { Page = 1, PageSize = 5 };
-            OperationResult<PagedList<EmployeeListItem>> result = await queryService.Query(queryParameters);
+            OperationResult<PagedList<EmployeeListItem>> result = await queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(5, result.Result.ReadModels.Count);
+            Assert.Equal(5, result.Result.Count);
 
             queryParameters = new GetEmployees() { Page = 2, PageSize = 5 };
-            result = await queryService.Query(queryParameters);
+            result = await queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(4, result.Result.ReadModels.Count);
+            Assert.Equal(4, result.Result.Count);
         }
     }
 }

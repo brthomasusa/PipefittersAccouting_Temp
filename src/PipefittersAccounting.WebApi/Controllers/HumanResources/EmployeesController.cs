@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,17 +42,12 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         [Route("list")]
         public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployees getEmployeesParams)
         {
-            OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.Query(getEmployeesParams);
+            OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.GetEmployeeListItems(getEmployeesParams);
 
             if (result.Success)
             {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
                 return result.Result;
-            }
-
-            if (result.Exception is null)
-            {
-                _logger.LogWarning(result.NonSuccessMessage);
-                return StatusCode(400, result.NonSuccessMessage);
             }
 
             _logger.LogError(result.Exception.Message);
@@ -68,7 +64,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
                 EmployeeID = employeeId
             };
 
-            OperationResult<EmployeeDetail> result = await _qrySvc.Query(queryParams);
+            OperationResult<EmployeeDetail> result = await _qrySvc.GetEmployeeDetails(queryParams);
 
             if (result.Success)
             {

@@ -52,4 +52,16 @@ namespace PipefittersAccounting.SharedModel.WriteModels.HumanResources
     {
         public Guid Id { get; set; }
     }
+
+    public class CheckForDuplicateEmployeeName : IWriteModel
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string? MiddleInitial { get; set; }
+    }
+
+    public class CheckForDuplicateSSN : IWriteModel
+    {
+        public string SSN { get; set; }
+    }
 }

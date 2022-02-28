@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using PipefittersAccounting.Infrastructure.Application.Queries.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
@@ -17,13 +14,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 
         public EmployeeAggregateQueryServiceDapper(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<EmployeeDetail>> Query(GetEmployee queryParameters) =>
+        public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployee queryParameters) =>
             await GetEmployeeDetailQueryDapper.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployees queryParameters) =>
+        public async Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployees queryParameters) =>
             await GetEmployeeListItemsQueryDapper.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagers queryParameters) =>
+        public async Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagers queryParameters) =>
             await GetEmployeeManagersQueryDapper.Query(queryParameters, _dapperCtx);
     }
 }

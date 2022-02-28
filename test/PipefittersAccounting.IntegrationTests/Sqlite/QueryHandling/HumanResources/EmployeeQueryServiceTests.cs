@@ -46,7 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
             Guid agentID = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
             GetEmployee qryParam = new GetEmployee() { EmployeeID = agentID };
 
-            OperationResult<EmployeeDetail> returnValue = await sqliteQrySvc.Query(qryParam);
+            OperationResult<EmployeeDetail> returnValue = await sqliteQrySvc.GetEmployeeDetails(qryParam);
 
             Assert.True(returnValue.Success);
             Assert.IsType<EmployeeDetail>(returnValue.Result);
@@ -63,11 +63,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
 
             GetEmployees qryParam = new GetEmployees() { Page = 0, PageSize = 10 };
 
-            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.Query(qryParam);
+            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.GetEmployeeListItems(qryParam);
 
             Assert.True(returnValue.Success);
             Assert.IsType<PagedList<EmployeeListItem>>(returnValue.Result);
-            Assert.Equal(9, returnValue.Result.ReadModels.Count);
+            Assert.Equal(9, returnValue.Result.Count);
         }
 
         [Fact]
@@ -80,11 +80,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
 
             GetEmployees qryParam = new GetEmployees() { Page = 0, PageSize = 5 };
 
-            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.Query(qryParam);
+            OperationResult<PagedList<EmployeeListItem>> returnValue = await sqliteQrySvc.GetEmployeeListItems(qryParam);
 
             Assert.True(returnValue.Success);
             Assert.IsType<PagedList<EmployeeListItem>>(returnValue.Result);
-            Assert.Equal(5, returnValue.Result.ReadModels.Count);
+            Assert.Equal(5, returnValue.Result.Count);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
 
             GetEmployeeManagers queryParameters = new GetEmployeeManagers { };
 
-            OperationResult<List<EmployeeManager>> returnValue = await sqliteQrySvc.Query(queryParameters);
+            OperationResult<List<EmployeeManager>> returnValue = await sqliteQrySvc.GetEmployeeManagers(queryParameters);
 
             Assert.True(returnValue.Success);
             Assert.IsType<List<EmployeeManager>>(returnValue.Result);

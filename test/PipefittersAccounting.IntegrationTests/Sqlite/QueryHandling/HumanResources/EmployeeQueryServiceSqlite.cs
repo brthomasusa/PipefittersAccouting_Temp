@@ -17,13 +17,13 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.QueryHandling.HumanResou
 
         public EmployeeQueryServiceSqlite(AppDbContext ctx) => _dbContext = ctx;
 
-        public async Task<OperationResult<EmployeeDetail>> Query(GetEmployee queryParameters) =>
+        public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployee queryParameters) =>
             await GetEmployeeDetailQuery.Query(queryParameters, _dbContext);
 
-        public Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployees queryParameters) =>
-            GetEmployeeListItemsQuery.Query(queryParameters, _dbContext);
+        public async Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployees queryParameters) =>
+            await GetEmployeeListItemsQuery.Query(queryParameters, _dbContext);
 
-        public Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagers queryParameters) =>
+        public Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagers queryParameters) =>
             GetEmployeeManagersQuery.Query(queryParameters, _dbContext);
     }
 }

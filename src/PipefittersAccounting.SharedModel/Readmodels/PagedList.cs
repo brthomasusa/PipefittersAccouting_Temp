@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace PipefittersAccounting.SharedModel.ReadModels
 {
-    public class PagedList<T>
+    public class PagedList<T> : List<T>
     {
-        private List<T> _readModels = new List<T>();
-
-        public List<T> ReadModels { get => _readModels; }
-
         public MetaData MetaData { get; set; }
 
-        protected PagedList(List<T> items, int count, int pageNumber, int pageSize)
+        public PagedList(List<T> items, int count, int pageNumber, int pageSize)
         {
             MetaData = new MetaData
             {
@@ -21,7 +17,7 @@ namespace PipefittersAccounting.SharedModel.ReadModels
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize)
             };
 
-            _readModels.AddRange(items);
+            AddRange(items);
         }
 
         public static PagedList<T> CreatePagedList(List<T> source, int totalRecords, int pageNumber, int pageSize)
