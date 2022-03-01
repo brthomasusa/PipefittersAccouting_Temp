@@ -34,12 +34,9 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             _logger = logger;
             _qrySvc = queryService;
             _cmdSvc = commandService;
-
-            _logger.LogInformation("Logging injected into EmployeesController");
         }
 
-        [HttpGet]
-        [Route("list")]
+        [HttpGet("list")]
         public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployees getEmployeesParams)
         {
             OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.GetEmployeeListItems(getEmployeesParams);
@@ -54,8 +51,23 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
-        [HttpGet]
-        [Route("details/{employeeId:Guid}")]
+        [HttpGet("managers")]
+        public async Task<ActionResult<List<EmployeeManager>>> GetEmployeeManagers()
+        {
+            GetEmployeeManagers managersParams = new GetEmployeeManagers() { };
+
+            OperationResult<List<EmployeeManager>> result = await _qrySvc.GetEmployeeManagers(managersParams);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
+        [HttpGet("detail/{employeeId:Guid}", Name = "Details")]
         public async Task<ActionResult<EmployeeDetail>> Details(Guid employeeId)
         {
             GetEmployee queryParams =
@@ -81,6 +93,35 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateEmployeeInfo([FromBody] CreateEmployeeInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _cmdSvc.CreateEmployeeInfo(writeModel);
+            if (writeResult.Success)
+            {
+                GetEmployee queryParams = new GetEmployee { EmployeeID = writeModel.Id };
+                OperationResult<EmployeeDetail> queryResult = await _qrySvc.GetEmployeeDetails(queryParams);
+
+                if (queryResult.Success)
+                {
+                    return CreatedAtAction(nameof(Details), new { employeeId = writeModel.Id }, queryResult.Result);
+                }
+                else
+                {
+                    return StatusCode(201, "Create employee succeeded; unable to return newly created employee.");
+                }
+
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
 
     }
 }

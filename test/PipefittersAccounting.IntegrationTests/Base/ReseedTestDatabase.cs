@@ -1,30 +1,29 @@
 using System;
-using System.Data;
 using System.Data.SqlClient;
+using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.IntegrationTests.Base
 {
     public class ReseedTestDatabase
     {
-        public static void ReseedDatabase()
+        public static OperationResult<bool> ReseedDatabase()
         {
             string connectionString = "Server=tcp:mssql-server,1433;Database=Pipefitters_Test;User Id=sa;Password=Info99Gum;MultipleActiveResultSets=true;TrustServerCertificate=true";
 
-            using SqlConnection connection = new SqlConnection(connectionString);
-
-            SqlCommand cmd = new SqlCommand("dbo.usp_resetTestDb", connection)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-
             try
             {
-                connection.Open();
-                cmd.BeginExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand("dbo.usp_resetTestDb", connection);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
     }

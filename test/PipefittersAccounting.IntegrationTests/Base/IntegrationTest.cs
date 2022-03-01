@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Xunit;
+using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.IntegrationTests.Base
 {
@@ -20,7 +21,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            ReseedTestDatabase.ReseedDatabase();
+            OperationResult<bool> result = ReseedTestDatabase.ReseedDatabase();
         }
     }
 }

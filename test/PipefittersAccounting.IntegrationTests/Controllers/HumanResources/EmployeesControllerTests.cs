@@ -2,25 +2,32 @@
 #pragma warning disable CS8602
 #pragma warning disable CS8604
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using Xunit;
 using PipefittersAccounting.IntegrationTests.Base;
 using PipefittersAccounting.SharedModel.Readmodels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
-
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
 {
     public class EmployeesControllerTests : IntegrationTest
     {
-        public EmployeesControllerTests(ApiWebApplicationFactory fixture) : base(fixture) { }
+        public EmployeesControllerTests(ApiWebApplicationFactory fixture) : base(fixture)
+        {
+
+        }
 
         [Fact]
         public async Task ShouldReturn_AllEmployees_EmployeesController()
@@ -55,6 +62,120 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
 
         }
 
+        [Fact]
+        public async Task ShouldReturn_AllEmployees_JsonSerializer_DeserializeAsync()
+        {
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["page"] = "1",
+                ["pageSize"] = "10"
+            };
 
+            using var response = await _client.GetAsync(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams),
+                                                        HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var employeeListItems = await JsonSerializer.DeserializeAsync<List<EmployeeListItem>>(jsonResponse, _options);
+
+            Assert.Equal(9, employeeListItems.Count);
+        }
+
+        [Fact]
+        public async Task ShouldReturn_AllEmployeeManagers()
+        {
+            using var response = await _client.GetAsync($"{_urlRoot}/employees/managers",
+                                                        HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var employeeManagers = await JsonSerializer.DeserializeAsync<List<EmployeeManager>>(jsonResponse, _options);
+
+            Assert.Equal(39, employeeManagers.Count);
+        }
+
+        [Fact]
+        public async Task ShouldReturn_EmployeeDetails_ForOneEmployee()
+        {
+            Guid employeeId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
+            using var response = await _client.GetAsync($"{_urlRoot}/employees/detail/{employeeId}",
+                                                        HttpCompletionOption.ResponseHeadersRead);
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, _options);
+
+            Assert.Equal("Ken", employeeDetails.FirstName);
+            Assert.Equal("Sanchez", employeeDetails.LastName);
+        }
+
+        [Fact]
+        public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromStream()
+        {
+            string uri = $"{_urlRoot}/employees/create";
+            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+
+            var memStream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(memStream, model);
+            memStream.Seek(0, SeekOrigin.Begin);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            using (var requestContent = new StreamContent(memStream))
+            {
+                request.Content = requestContent;
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                using (var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonResponse = await response.Content.ReadAsStreamAsync();
+                    var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, _options);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromString()
+        {
+            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+            var createEmployee = JsonSerializer.Serialize(model);
+            var requestContent = new StringContent(createEmployee, Encoding.UTF8, "application/json");
+
+            string uri = $"{_urlRoot}/employees/create";
+            var response = await _client.PostAsync(uri, requestContent);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var employeeDetails = JsonSerializer.Deserialize<EmployeeDetail>(content, _options);
+
+            Assert.Equal(model.FirstName, employeeDetails.FirstName);
+            Assert.Equal(model.LastName, employeeDetails.LastName);
+        }
+
+        [Fact]
+        public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromRequestMsg()
+        {
+            string uri = $"{_urlRoot}/employees/create";
+            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+            var createEmployee = JsonSerializer.Serialize(model);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(createEmployee, Encoding.UTF8);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var response = await _client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var employeeDetails = JsonSerializer.Deserialize<EmployeeDetail>(content, _options);
+
+            Assert.Equal(model.FirstName, employeeDetails.FirstName);
+            Assert.Equal(model.LastName, employeeDetails.LastName);
+        }
     }
 }

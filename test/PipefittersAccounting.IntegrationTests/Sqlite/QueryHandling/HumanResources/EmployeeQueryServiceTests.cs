@@ -3,18 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;

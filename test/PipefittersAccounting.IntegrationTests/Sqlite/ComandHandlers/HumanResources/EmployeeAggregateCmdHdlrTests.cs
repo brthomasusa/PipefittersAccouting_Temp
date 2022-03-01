@@ -12,6 +12,7 @@ using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResourc
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanResources
 {
@@ -27,7 +28,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
-            CreateEmployeeInfo model = GetCreateEmployeeInfo();
+            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
             Assert.True(result.Success);
@@ -47,7 +48,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
-            CreateEmployeeInfo model = GetCreateEmployeeInfo();
+            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
@@ -67,7 +68,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
-            EditEmployeeInfo model = GetEditEmployeeInfo();
+            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
 
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
             Assert.True(result.Success);
@@ -96,7 +97,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
-            EditEmployeeInfo model = GetEditEmployeeInfo();
+            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.Id = Guid.NewGuid();
 
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
@@ -117,7 +118,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
 
-            EditEmployeeInfo model = GetEditEmployeeInfo();
+            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.Telephone = "2144-897-99";
 
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
@@ -171,52 +172,6 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
         }
-
-        private CreateEmployeeInfo GetCreateEmployeeInfo() =>
-            new CreateEmployeeInfo()
-            {
-                Id = Guid.NewGuid(),
-                SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
-                LastName = "Trump",
-                FirstName = "Ivanka",
-                MiddleInitial = "I",
-                SSN = "434679876",
-                Telephone = "555-555-5555",
-                AddressLine1 = "139th Street NW",
-                AddressLine2 = "B1",
-                City = "Edison",
-                StateCode = "NJ",
-                Zipcode = "08837",
-                MaritalStatus = "M",
-                Exemptions = 3,
-                PayRate = 25M,
-                StartDate = new DateTime(2022, 2, 13),
-                IsActive = true,
-                IsSupervisor = false
-            };
-
-        private EditEmployeeInfo GetEditEmployeeInfo() =>
-            new EditEmployeeInfo()
-            {
-                Id = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5"),
-                SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
-                LastName = "Trump",
-                FirstName = "Ivanka",
-                MiddleInitial = "I",
-                SSN = "434679876",
-                Telephone = "555-555-5555",
-                AddressLine1 = "139th Street NW",
-                AddressLine2 = "B1",
-                City = "Edison",
-                StateCode = "NJ",
-                Zipcode = "08837",
-                MaritalStatus = "M",
-                Exemptions = 3,
-                PayRate = 25M,
-                StartDate = new DateTime(2022, 2, 13),
-                IsActive = true,
-                IsSupervisor = false
-            };
 
         private EmployeeCommandHandlerServiceSqliteInMemory GetCommandHandler()
         {
