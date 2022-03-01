@@ -35,22 +35,28 @@ namespace PipefittersAccounting.IntegrationTests.Base
             {
                 Id = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5"),
                 SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
-                LastName = "Trump",
-                FirstName = "Ivanka",
-                MiddleInitial = "I",
-                SSN = "434679876",
-                Telephone = "555-555-5555",
-                AddressLine1 = "139th Street NW",
+                LastName = "Beck",
+                FirstName = "Jeffery",
+                MiddleInitial = "W",
+                SSN = "825559874",
+                Telephone = "214-555-5555",
+                AddressLine1 = "321 Fort Worth Ave",
                 AddressLine2 = "B1",
-                City = "Edison",
-                StateCode = "NJ",
-                Zipcode = "08837",
+                City = "Dallas",
+                StateCode = "TX",
+                Zipcode = "75211",
                 MaritalStatus = "M",
-                Exemptions = 3,
-                PayRate = 25M,
-                StartDate = new DateTime(2022, 2, 13),
+                Exemptions = 5,
+                PayRate = 30M,
+                StartDate = new DateTime(2016, 10, 19),
                 IsActive = true,
                 IsSupervisor = false
+            };
+
+        public static DeleteEmployeeInfo GetDeleteEmployeeInfo() =>
+            new DeleteEmployeeInfo()
+            {
+                Id = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5")
             };
     }
 }

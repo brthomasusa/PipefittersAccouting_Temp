@@ -110,7 +110,6 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
                 {
                     return StatusCode(201, "Create employee succeeded; unable to return newly created employee.");
                 }
-
             }
 
             if (writeResult.Exception is null)
@@ -123,5 +122,45 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, writeResult.Exception.Message);
         }
 
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditEmployeeInfo([FromBody] EditEmployeeInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _cmdSvc.EditEmployeeInfo(writeModel);
+
+            if (writeResult.Success)
+            {
+                return StatusCode(200, "Employee info successfully updated.");
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteEmployeeInfo([FromBody] DeleteEmployeeInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _cmdSvc.DeleteEmployeeInfo(writeModel);
+
+            if (writeResult.Success)
+            {
+                return StatusCode(200, "Employee info successfully deleted.");
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
     }
 }
