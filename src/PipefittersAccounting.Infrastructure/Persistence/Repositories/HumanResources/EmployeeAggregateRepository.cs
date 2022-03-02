@@ -1,5 +1,7 @@
 #pragma warning disable CS8603
 
+using Microsoft.EntityFrameworkCore;
+using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
@@ -27,6 +29,54 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
         {
             _dbContext.Employees.Remove(entity);
             _dbContext.ExternalAgents.Remove(entity.ExternalAgent);
+        }
+
+        public async Task<OperationResult<Guid>> CheckForDuplicateEmployeeName(string lname, string fname, string mi)
+        {
+            try
+            {
+                Guid returnValue = Guid.Empty;
+
+                var details = await (from emp in _dbContext.Employees.Where(e =>
+                                        e.EmployeeName.LastName.Equals(lname) &&
+                                        e.EmployeeName.FirstName.Equals(fname) &&
+                                        e.EmployeeName.MiddleInitial.Equals(mi))
+                                    .AsNoTracking()
+                                     select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
+
+                if (details is not null)
+                {
+                    returnValue = details.EmployeeId;
+                }
+
+                return OperationResult<Guid>.CreateSuccessResult(returnValue);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Guid>.CreateFailure(ex);
+            }
+        }
+
+        public async Task<OperationResult<Guid>> CheckForDuplicateSSN(string ssn)
+        {
+            try
+            {
+                Guid returnValue = Guid.NewGuid();
+
+                var details = await (from emp in _dbContext.Employees.Where(e => e.SSN.Equals(ssn)).AsNoTracking()
+                                     select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
+
+                if (details is not null)
+                {
+                    returnValue = details.EmployeeId;
+                }
+
+                return OperationResult<Guid>.CreateSuccessResult(returnValue);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Guid>.CreateFailure(ex);
+            }
         }
 
         public void Dispose()

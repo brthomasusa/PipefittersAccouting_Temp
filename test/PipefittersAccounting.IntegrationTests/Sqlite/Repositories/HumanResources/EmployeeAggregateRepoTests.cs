@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.Shared;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-
+using PipefittersAccounting.SharedKernel.Utilities;
 namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResources
 {
     public class EmployeeAggregateRepoTests
@@ -24,7 +25,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = Guid.NewGuid();
             Employee employee = new Employee
@@ -58,7 +59,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
@@ -75,7 +76,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
@@ -93,7 +94,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = new Guid("1234de54-c2ca-417e-827c-a5b87be2d788");
 
@@ -110,7 +111,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             SqliteDbContextFactory factory = new();
             AppDbContext context = factory.CreateInMemoryContext();
 
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
@@ -135,7 +136,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             AppDbContext context = factory.CreateInMemoryContext();
 
             AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
 
             Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
 
@@ -151,6 +152,35 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             Assert.Null(employee);
             agent = await context.ExternalAgents.FindAsync(agentId);
             Assert.Null(agent);
+        }
+
+        [Fact]
+        public async Task Test_CheckForDuplicateEmployeeName_True()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+            OperationResult<Guid> result = await repo.CheckForDuplicateEmployeeName("Brown", "Jamie", "J");
+
+            Assert.Equal(agentId, result.Result);
+        }
+
+        [Fact]
+        public async Task Test_CheckForDuplicateEmployeeName_False()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            OperationResult<Guid> result = await repo.CheckForDuplicateEmployeeName("Browne", "Jamie", "J");
+
+            Assert.True(result.Result.Equals(default));
         }
     }
 }
