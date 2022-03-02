@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
-using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
-using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;

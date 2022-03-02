@@ -38,9 +38,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
                 Guid returnValue = Guid.Empty;
 
                 var details = await (from emp in _dbContext.Employees.Where(e =>
-                                        e.EmployeeName.LastName.Equals(lname) &&
-                                        e.EmployeeName.FirstName.Equals(fname) &&
-                                        e.EmployeeName.MiddleInitial.Equals(mi))
+                                        e.EmployeeName.LastName.ToUpper().Equals(lname.ToUpper()) &&
+                                        e.EmployeeName.FirstName.ToUpper().Equals(fname.ToUpper()) &&
+                                        e.EmployeeName.MiddleInitial.ToUpper().Equals(mi.ToUpper()))
                                     .AsNoTracking()
                                      select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
 
@@ -61,9 +61,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
         {
             try
             {
-                Guid returnValue = Guid.NewGuid();
+                Guid returnValue = Guid.Empty;
 
-                var details = await (from emp in _dbContext.Employees.Where(e => e.SSN.Equals(ssn)).AsNoTracking()
+                var details = await (from emp in _dbContext.Employees.Where(e => e.SSN == ssn).AsNoTracking()
                                      select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
 
                 if (details is not null)

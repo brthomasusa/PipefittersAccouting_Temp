@@ -155,7 +155,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
         }
 
         [Fact]
-        public async Task Test_CheckForDuplicateEmployeeName_True()
+        public async Task CheckForDuplicateEmployeeName_ExistingName_ReturnsNonEmptyGuid()
         {
             SqliteDbContextFactory factory = new();
             AppDbContext context = factory.CreateInMemoryContext();
@@ -170,7 +170,22 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
         }
 
         [Fact]
-        public async Task Test_CheckForDuplicateEmployeeName_False()
+        public async Task CheckForDuplicateEmployeeName_CaseInsensitive_ReturnsNonEmptyGuid()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+            OperationResult<Guid> result = await repo.CheckForDuplicateEmployeeName("BROWN", "JamiE", "J");
+
+            Assert.Equal(agentId, result.Result);
+        }
+
+        [Fact]
+        public async Task CheckForDuplicateEmployeeName_NonExistingName_ReturnsEmptyGuid()
         {
             SqliteDbContextFactory factory = new();
             AppDbContext context = factory.CreateInMemoryContext();
@@ -181,6 +196,35 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.Repositories.HumanResour
             OperationResult<Guid> result = await repo.CheckForDuplicateEmployeeName("Browne", "Jamie", "J");
 
             Assert.True(result.Result.Equals(default));
+        }
+
+        [Fact]
+        public async Task CheckForDuplicateSSN_NonExistingSSN_ReturnsEmptyGuid()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            OperationResult<Guid> result = await repo.CheckForDuplicateSSN("723452567");
+
+            Assert.True(result.Result.Equals(default));
+        }
+
+        [Fact]
+        public async Task CheckForDuplicateSSN_ExistingSSN_ReturnsNonEmptyGuid()
+        {
+            SqliteDbContextFactory factory = new();
+            AppDbContext context = factory.CreateInMemoryContext();
+
+            AppUnitOfWork uow = new AppUnitOfWork(context);
+            IEmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
+
+            Guid agentId = new Guid("0cf9de54-c2ca-417e-827c-a5b87be2d788");
+            OperationResult<Guid> result = await repo.CheckForDuplicateSSN("123700009");
+
+            Assert.Equal(agentId, result.Result);
         }
     }
 }
