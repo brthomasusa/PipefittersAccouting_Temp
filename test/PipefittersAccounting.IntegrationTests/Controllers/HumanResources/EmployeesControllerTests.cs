@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -25,9 +23,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
     public class EmployeesControllerTests : IntegrationTest
     {
         public EmployeesControllerTests(ApiWebApplicationFactory fixture) : base(fixture)
-        {
-
-        }
+        { }
 
         [Fact]
         public async Task ShouldReturn_AllEmployees_EmployeesController()

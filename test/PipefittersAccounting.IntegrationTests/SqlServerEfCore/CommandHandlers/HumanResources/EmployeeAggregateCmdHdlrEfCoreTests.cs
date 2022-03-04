@@ -9,44 +9,39 @@ using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
+using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.IntegrationTests.Base;
 
-namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanResources
+namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers.HumanResources
 {
-    public class EmployeeAggregateCmdHdlrTests
+    public class EmployeeAggregateCmdHdlrEfCoreTests : TestBaseEfCore
     {
         [Fact]
-        public async Task CmdHdlr_Add_Employee()
+        public async Task CreateEmployeeInfo_WithValidInfo_ShouldSucceed()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
             Assert.True(result.Success);
 
-            var newEmployee = await context.Employees.FindAsync(model.Id);
+            var newEmployee = await _dbContext.Employees.FindAsync(model.Id);
 
             Assert.NotNull(newEmployee);
         }
 
         [Fact]
-        public async Task SqliteCreateEmployeeInfo_EmployeeAlreadyExists_ShouldFail()
+        public async Task CreateEmployeeInfo_EmployeeAlreadyExists_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
@@ -59,14 +54,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteCreateEmployeeInfo_EmployeeWithDuplicateName_ShouldFail()
+        public async Task CreateEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
             model.FirstName = "Jozef";
@@ -81,14 +73,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteCreateEmployeeInfo_EmployeeWithDuplicateSSN_ShouldFail()
+        public async Task CreateEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
             model.SSN = "775559874";
@@ -101,21 +90,19 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteEditEmployeeInfo_WithValidInfo_ShouldPass()
+        public async Task EditEmployeeInfo_WithValidInfo_ShouldPass()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
 
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
             Assert.True(result.Success);
 
-            var updatedEmployee = await context.Employees.FindAsync(model.Id);
+            var updatedEmployee = await _dbContext.Employees.FindAsync(model.Id);
+
             Assert.Equal(model.SupervisorId, updatedEmployee.SupervisorId);
             Assert.Equal(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial), updatedEmployee.EmployeeName);
             Assert.Equal(PhoneNumber.Create(PhoneNumber.Create(model.Telephone)), updatedEmployee.EmployeeTelephone);
@@ -130,14 +117,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteEditEmployeeInfo_WithDuplicateName_ShouldFail()
+        public async Task EditEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.FirstName = "Terri";
@@ -153,14 +137,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteEditEmployeeInfo_EmployeeWithDuplicateSSN_ShouldFail()
+        public async Task EditEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.SSN = "775559874";
@@ -174,14 +155,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteEditEmployeeInfo_WithDuplicateEmployeeID_ShouldFail()
+        public async Task EditEmployeeInfo_WithDuplicateEmployeeID_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.Id = Guid.NewGuid();
@@ -194,14 +172,11 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteEditEmployeeInfo_WithBadInputData_ShouldFail()
+        public async Task EditEmployeeInfo_WithBadInputData_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
             model.Telephone = "2144-897-99";
@@ -213,17 +188,14 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
         }
 
         [Fact]
-        public async Task SqliteDeleteEmployeeInfo_ShouldSucceed()
+        public async Task DeleteEmployeeInfo_WithValidEmployeeId_ShouldSucceed()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
-            Employee employee = await context.Employees.FindAsync(agentId);
+            Employee employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.NotNull(employee);
 
             DeleteEmployeeInfo model = new DeleteEmployeeInfo()
@@ -234,19 +206,16 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.True(result.Success);
 
-            employee = await context.Employees.FindAsync(agentId);
+            employee = await _dbContext.Employees.FindAsync(agentId);
             Assert.Null(employee);
         }
 
         [Fact]
-        public async Task SqliteDeleteEmployeeInfo_UsingInvalidEmployeeID_ShouldFail()
+        public async Task DeleteEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
         {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             DeleteEmployeeInfo model = new DeleteEmployeeInfo()
             {
@@ -256,16 +225,6 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.False(result.Success);
             Assert.NotNull(result.Exception);
-        }
-
-        private EmployeeCommandHandlerServiceSqliteInMemory GetCommandHandler()
-        {
-            using SqliteDbContextFactory factory = new();
-            using AppDbContext context = factory.CreateInMemoryContext();
-
-            AppUnitOfWork uow = new AppUnitOfWork(context);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(context);
-            return new EmployeeCommandHandlerServiceSqliteInMemory(repo, uow);
         }
     }
 }

@@ -22,6 +22,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                 return OperationResult<bool>.CreateFailure(ex);
             }
 
+            OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
+            if (dupeAddressResult.Result != Guid.Empty && dupeAddressResult.Result != model.Id)
+            {
+
+                string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
+                return OperationResult<bool>.CreateFailure(errMsg);
+            }
+
+            OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
+            if (dupeSSN.Result != Guid.Empty && dupeSSN.Result != model.Id)
+            {
+                string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
+                return OperationResult<bool>.CreateFailure(errMsg);
+            }
+
             try
             {
                 Employee employee = await repo.GetByIdAsync(model.Id);

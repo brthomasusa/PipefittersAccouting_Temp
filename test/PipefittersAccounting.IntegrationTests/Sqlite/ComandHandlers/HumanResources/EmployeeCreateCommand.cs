@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
@@ -25,6 +23,20 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
             {
                 InvalidOperationException ex = new InvalidOperationException($"Can not create this employee, they already exists!");
                 return OperationResult<bool>.CreateFailure(ex);
+            }
+
+            OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
+            if (dupeAddressResult.Result != Guid.Empty)
+            {
+                string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
+                return OperationResult<bool>.CreateFailure(errMsg);
+            }
+
+            OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
+            if (dupeSSN.Result != Guid.Empty)
+            {
+                string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
+                return OperationResult<bool>.CreateFailure(errMsg);
             }
 
             try

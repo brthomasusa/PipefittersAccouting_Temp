@@ -34,11 +34,5 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite.ComandHandlers.HumanReso
 
         public async Task<OperationResult<bool>> DeleteEmployeeInfo(DeleteEmployeeInfo writeModel) =>
             await EmployeeDeleteCommand.Execute(writeModel, _employeeRepo, _unitOfWork);
-
-        public Task<OperationResult<bool>> CheckForDuplicateEmployeeName(CheckForDuplicateEmployeeName name)
-            => throw new NotImplementedException();
-
-        public Task<OperationResult<bool>> CheckForDuplicateSSN(CheckForDuplicateSSN ssn)
-             => throw new NotImplementedException();
     }
 }
