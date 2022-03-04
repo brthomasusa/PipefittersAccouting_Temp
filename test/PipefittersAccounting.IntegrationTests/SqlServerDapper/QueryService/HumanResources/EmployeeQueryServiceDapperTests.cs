@@ -14,7 +14,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
     public class EmployeeQueryServiceDapperTests : TestBaseDapper
     {
         [Fact]
-        public async Task Dapper_ShouldReturn_EmployeeDetail_ReadModel()
+        public async Task Dapper_GetEmployeeDetails_ShouldSucceed()
         {
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
@@ -30,7 +30,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
-        public async Task Dapper_ShouldFail_With_Bad_EmployeeId()
+        public async Task Dapper_GetEmployeeDetails_WithBadEmployeeId_ShouldFail()
         {
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
@@ -46,7 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
-        public async Task Dapper_ShouldReturn_EmployeeManagers_ReadModel()
+        public async Task Dapper_GetEmployeeManagers_ShouldSucceed()
         {
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
@@ -70,16 +70,18 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
-        public async Task Dapper_ShouldReturn_PagedList_EmployeeListItems_ReadModel_Pagination()
+        public async Task Dapper_GetEmployees_WithPagination_ShouldSucceed()
         {
             IEmployeeAggregateQueryService queryService = new EmployeeAggregateQueryServiceDapper(_dapperCtx);
 
+            // Get page 1 of 2
             GetEmployees queryParameters = new GetEmployees() { Page = 1, PageSize = 5 };
             OperationResult<PagedList<EmployeeListItem>> result = await queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
             Assert.Equal(5, result.Result.Count);
 
+            // Get page 2 of 2
             queryParameters = new GetEmployees() { Page = 2, PageSize = 5 };
             result = await queryService.GetEmployeeListItems(queryParameters);
 
