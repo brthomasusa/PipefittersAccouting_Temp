@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
-using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
@@ -17,6 +16,7 @@ using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers.HumanResources
 {
+    [Trait("Integration", "EfCoreCmdHdlr")]
     public class EmployeeAggregateCmdHdlrEfCoreTests : TestBaseEfCore
     {
         [Fact]

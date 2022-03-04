@@ -2,10 +2,13 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using Dapper;
 using TestSupport.Helpers;
+using Xunit;
+
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper
 {
+    [Trait("Integration", "DapperQuerySvc")]
     public class TestBaseDapper
     {
         protected readonly DapperContext _dapperCtx;

@@ -20,6 +20,7 @@ using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
 {
+    [Trait("Integration", "TestServer")]
     public class EmployeesControllerTests : IntegrationTest
     {
         public EmployeesControllerTests(ApiWebApplicationFactory fixture) : base(fixture)
@@ -87,7 +88,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             var jsonResponse = await response.Content.ReadAsStreamAsync();
             var employeeManagers = await JsonSerializer.DeserializeAsync<List<EmployeeManager>>(jsonResponse, _options);
 
-            Assert.Equal(39, employeeManagers.Count);
+            Assert.Equal(3, employeeManagers.Count);
         }
 
         [Fact]

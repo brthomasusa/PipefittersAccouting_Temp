@@ -14,6 +14,7 @@ using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.HumanResources
 {
+    [Trait("Integration", "EfCoreRepo")]
     public class EmployeeAggregateEfCoreRepoTests : TestBaseEfCore
     {
         [Fact]
