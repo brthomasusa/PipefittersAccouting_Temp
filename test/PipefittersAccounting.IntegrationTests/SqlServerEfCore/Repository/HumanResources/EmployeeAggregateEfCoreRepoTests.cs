@@ -11,6 +11,7 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.HumanResources
 {
@@ -23,22 +24,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Huma
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
 
-            Guid agentId = Guid.NewGuid();
-            Employee employee = new Employee
-            (
-                EmployeeAgent.Create(EntityGuidID.Create(agentId)),
-                EntityGuidID.Create(new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E")),
-                PersonName.Create("Dough", "Jonnie", "J"),
-                SocialSecurityNumber.Create("123789901"),
-                PhoneNumber.Create("817-987-1234"),
-                Address.Create("123 Main Plaza", null, "Fort Worth", "TX", "78965"),
-                MaritalStatus.Create("M"),
-                TaxExemption.Create(5),
-                PayRate.Create(40M),
-                StartDate.Create(new DateTime(1998, 12, 2)),
-                true,
-                true
-            );
+            Employee employee = TestUtilities.GetNewEmployee();
+            Guid agentId = employee.Id;
 
             await repo.AddAsync(employee);
             await uow.Commit();

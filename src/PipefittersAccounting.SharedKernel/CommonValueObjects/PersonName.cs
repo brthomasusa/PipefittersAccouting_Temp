@@ -1,3 +1,4 @@
+#pragma warning disable CS8601
 #pragma warning disable CS8618
 
 namespace PipefittersAccounting.SharedKernel.CommonValueObjects
@@ -6,7 +7,7 @@ namespace PipefittersAccounting.SharedKernel.CommonValueObjects
     {
         protected PersonName() { }
 
-        private PersonName(string last, string first, string mi)
+        private PersonName(string last, string first, string? mi)
             : this()
         {
             FirstName = first;

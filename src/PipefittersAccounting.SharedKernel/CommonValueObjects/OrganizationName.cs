@@ -4,6 +4,8 @@ namespace PipefittersAccounting.SharedKernel.CommonValueObjects
 {
     public class OrganizationName : ValueObject
     {
+        public string Value { get; }
+
         protected OrganizationName() { }
 
         private OrganizationName(string orgName)
@@ -11,8 +13,6 @@ namespace PipefittersAccounting.SharedKernel.CommonValueObjects
         {
             Value = orgName;
         }
-
-        public string Value { get; }
 
         public static implicit operator string(OrganizationName self) => self.Value;
 

@@ -21,7 +21,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
-                PointOfContact.Create(PersonName.Create("Doe", "Jon", "O"), PhoneNumber.Create("555-555-5555")),
+                PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),
                 true
             );
@@ -41,7 +41,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
-                PointOfContact.Create(PersonName.Create("Doe", "Jon", "O"), PhoneNumber.Create("555-555-5555")),
+                PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),
                 true
             );
@@ -89,8 +89,8 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
         [Fact]
         public void ShouldUpdate_Financier_ContactPerson()
         {
-            PointOfContact contact = PointOfContact.Create(PersonName.Create("Lee", "Dave", "K"),
-                                                           PhoneNumber.Create("817-874-9999"));
+            PointOfContact contact = PointOfContact.Create("Dave", "Lee", "K", "817-874-9999");
+
 
             Financier financier = GetFinancier();
 
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
-                PointOfContact.Create(PersonName.Create("Doe", "Jon", "O"), PhoneNumber.Create("555-555-5555")),
+                PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),
                 true
             );

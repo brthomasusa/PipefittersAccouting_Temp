@@ -238,7 +238,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("Arturo Sandoval"),
                 PhoneNumber.Create("888-719-8128"),
                 Address.Create("5232 Outriggers Way", "Ste 401", "Oxnard", "CA", "93035"),
-                PointOfContact.Create(PersonName.Create("Sandoval", "Arturo", "T"), PhoneNumber.Create("888-719-8128")),
+                PointOfContact.Create("Arturo", "Sandoval", "T", "888-719-8128"),
                 EntityGuidID.Create(user.Id),
                 true
             );
@@ -250,7 +250,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("Paul Van Horn Enterprises"),
                 PhoneNumber.Create("415-328-9870"),
                 Address.Create("825 Mandalay Beach Rd", "Level 2", "Oxnard", "CA", "94402"),
-                PointOfContact.Create(PersonName.Create("Crocker", "Patrick", "T"), PhoneNumber.Create("415-328-9870")),
+                PointOfContact.Create("Patrick", "Crocker", "T", "415-328-9870"),
                 EntityGuidID.Create(user.Id),
                 true
             );
@@ -262,7 +262,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("New World Tatoo Parlor"),
                 PhoneNumber.Create("630-321-9875"),
                 Address.Create("1690 S. El Camino Real", "Room 2C", "San Mateo", "CA", "94402"),
-                PointOfContact.Create(PersonName.Create("Jozef Jr.", "JoJo", "D"), PhoneNumber.Create("630-321-9875")),
+                PointOfContact.Create("JoJo", "Jozef Jr.", "D", "630-321-9875"),
                 EntityGuidID.Create(user.Id),
                 true
             );
@@ -274,7 +274,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("Bertha Mae Jones Innovative Financing"),
                 PhoneNumber.Create("886-587-0001"),
                 Address.Create("12333 Menard Heights Blvd", "Ste 1001", "Palo Alto", "CA", "94901"),
-                PointOfContact.Create(PersonName.Create("Sinosky", "Betty", "L"), PhoneNumber.Create("886-587-0001")),
+                PointOfContact.Create("Betty", "Sinosky", "L", "886-587-0001"),
                 EntityGuidID.Create(user.Id),
                 true
             );
@@ -286,7 +286,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("Pimps-R-US Financial Management, Inc."),
                 PhoneNumber.Create("415-931-5570"),
                 Address.Create("96541 Sunset Rise Plaza", "Ste 2", "Oxnard", "CA", "93035"),
-                PointOfContact.Create(PersonName.Create("Daniels", "Javier", "A"), PhoneNumber.Create("415-931-5570")),
+                PointOfContact.Create("Javier", "Daniels", "A", "415-931-5570"),
                 EntityGuidID.Create(user.Id),
                 true
             );
@@ -298,7 +298,7 @@ namespace PipefittersAccounting.IntegrationTests.Sqlite
                 OrganizationName.Create("I Exist-Only-To-Be-Deleted"),
                 PhoneNumber.Create("415-912-5570"),
                 Address.Create("985211 Highway 78 East", null, "Oxnard", "CA", "93035"),
-                PointOfContact.Create(PersonName.Create("Gutierrez", "Monica", "T"), PhoneNumber.Create("415-912-5570")),
+                PointOfContact.Create("Monica", "Gutierrez", "T", "415-912-5570"),
                 EntityGuidID.Create(user.Id),
                 true
             );

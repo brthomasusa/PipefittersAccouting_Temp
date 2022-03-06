@@ -35,17 +35,10 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
             });
             entity.OwnsOne(p => p.PointOfContact, poc =>
             {
-                poc.OwnsOne(c => c.ContactName, name =>
-                {
-                    name.Property(pp => pp.FirstName).HasColumnType("NVARCHAR(25)").HasColumnName("ContactFirstName").IsRequired();
-                    name.Property(pp => pp.LastName).HasColumnType("NVARCHAR(25)").HasColumnName("ContactLastName").IsRequired();
-                    name.Property(pp => pp.MiddleInitial).HasColumnType("NCHAR(1)").HasColumnName("ContactMiddleInitial");
-                });
-                poc.Property(pp => pp.ContactTelephone)
-                    .HasConversion(p => p.Value, p => PhoneNumber.Create(p))
-                    .HasColumnType("NVARCHAR(14)")
-                    .HasColumnName("Telephone")
-                    .IsRequired();
+                poc.Property(pp => pp.FirstName).HasColumnType("NVARCHAR(25)").HasColumnName("ContactFirstName").IsRequired();
+                poc.Property(pp => pp.LastName).HasColumnType("NVARCHAR(25)").HasColumnName("ContactLastName").IsRequired(false);
+                poc.Property(pp => pp.MiddleInitial).HasColumnType("NCHAR(1)").HasColumnName("ContactMiddleInitial");
+                poc.Property(pp => pp.Telephone).HasColumnType("NVARCHAR(14)").HasColumnName("ContactTelephone").IsRequired();
             });
             entity.Property(p => p.UserId)
                 .HasColumnType("UNIQUEIDENTIFIER")
