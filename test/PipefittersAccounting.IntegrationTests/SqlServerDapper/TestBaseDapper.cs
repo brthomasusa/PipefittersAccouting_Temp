@@ -9,7 +9,7 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper
 {
     [Trait("Integration", "DapperQuerySvc")]
-    public class TestBaseDapper
+    public abstract class TestBaseDapper
     {
         protected readonly DapperContext _dapperCtx;
         protected readonly string serviceAddress = "https://localhost:7035/";

@@ -3,7 +3,6 @@
 using System.ComponentModel.DataAnnotations;
 using PipefittersAccounting.SharedModel.Interfaces;
 using PipefittersAccounting.SharedModel.Validation.Common;
-// using PipefittersAccounting.SharedModel.Validation.Financing;
 
 namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 {

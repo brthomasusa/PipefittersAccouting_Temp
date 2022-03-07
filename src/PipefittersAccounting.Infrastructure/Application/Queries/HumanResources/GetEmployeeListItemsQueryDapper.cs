@@ -1,7 +1,6 @@
 #pragma warning disable CS8619
 
 using System.Data;
-using System.Text.Json;
 using Dapper;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
