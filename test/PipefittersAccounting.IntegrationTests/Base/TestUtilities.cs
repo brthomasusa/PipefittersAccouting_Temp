@@ -9,6 +9,7 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
@@ -115,7 +116,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 Id = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5")
             };
 
-        public static Financier GetFinancierCreate() =>
+        public static Financier GetFinancierForCreating() =>
             new Financier
             (
                 FinancierAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
@@ -127,7 +128,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 true
             );
 
-        public static Financier GetFinancierEdit() =>
+        public static Financier GetFinancierForEditing() =>
             new Financier
             (
                     FinancierAgent.Create(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695"))),
@@ -203,5 +204,50 @@ namespace PipefittersAccounting.IntegrationTests.Base
                     true
                 )
             };
+        public static CreateFinancierInfo GetCreateFinancierInfo() =>
+            new CreateFinancierInfo()
+            {
+                Id = Guid.NewGuid(),
+                FinancierName = "The Deep Pockets Group",
+                Telephone = "555-555-5555",
+                AddressLine1 = "139th Street NW",
+                AddressLine2 = "B1",
+                City = "Edison",
+                StateCode = "NJ",
+                Zipcode = "08837",
+                ContactFirstName = "Ivanka",
+                ContactLastName = "Trump",
+                ContactMiddleInitial = "I",
+                ContactTelephone = "555-555-5555",
+                IsActive = true,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static EditFinancierInfo GetEditFinancierInfo() =>
+            new EditFinancierInfo()
+            {
+                Id = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
+                FinancierName = "Bertha Mae Jones Innovative Financing",
+                Telephone = "886-587-0001",
+                AddressLine1 = "12333 Menard Heights Blvd",
+                AddressLine2 = "Suite 1001",
+                City = "Palo Alto",
+                StateCode = "CA",
+                Zipcode = "94901",
+                ContactFirstName = "Betty",
+                ContactLastName = "Sinosky",
+                ContactMiddleInitial = "L",
+                ContactTelephone = "886-587-0001",
+                IsActive = true,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static DeleteFinancierInfo GetDeleteFinancierInfo() =>
+            new DeleteFinancierInfo()
+            {
+                Id = new Guid("84164388-28ff-4b47-bd63-dd9326d32236"),
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
     }
 }

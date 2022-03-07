@@ -26,7 +26,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
-            Financier financier = TestUtilities.GetFinancierCreate();
+            Financier financier = TestUtilities.GetFinancierForCreating();
             Guid agentId = financier.Id;
 
             await repo.AddAsync(financier);
