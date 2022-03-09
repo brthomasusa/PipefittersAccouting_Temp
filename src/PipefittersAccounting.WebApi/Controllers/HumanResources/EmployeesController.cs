@@ -93,7 +93,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             OperationResult<bool> writeResult = await _cmdSvc.CreateEmployeeInfo(writeModel);
             if (writeResult.Success)
             {
-                GetEmployee queryParams = new GetEmployee { EmployeeID = writeModel.Id };
+                GetEmployee queryParams = new() { EmployeeID = writeModel.Id };
                 OperationResult<EmployeeDetail> queryResult = await _qrySvc.GetEmployeeDetails(queryParams);
 
                 if (queryResult.Success)

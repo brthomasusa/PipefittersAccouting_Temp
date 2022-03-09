@@ -227,7 +227,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             new EditFinancierInfo()
             {
                 Id = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
-                FinancierName = "Bertha Mae Jones Innovative Financing",
+                FinancierName = "Bertha Mae Jones Down Home Cooking",
                 Telephone = "886-587-0001",
                 AddressLine1 = "12333 Menard Heights Blvd",
                 AddressLine2 = "Suite 1001",

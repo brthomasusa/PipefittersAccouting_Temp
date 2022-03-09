@@ -27,7 +27,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         { }
 
         [Fact]
-        public async Task ShouldReturn_AllEmployees_EmployeesController()
+        public async Task List_ShouldReturnAllEmployees_ShouldSucceed()
         {
             var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
 
@@ -37,26 +37,10 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
                 ["pageSize"] = pagingParams.PageSize.ToString()
             };
 
-            try
-            {
-                List<EmployeeListItem> response = await _client
-                    .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams));
+            List<EmployeeListItem> response = await _client
+                .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams));
 
-                Assert.True(true);
-            }
-            catch (System.Text.Json.JsonException ex)
-            {
-                System.Console.Write(ex);
-            }
-            catch (System.Net.Http.HttpRequestException ex)
-            {
-                System.Console.Write(ex);
-            }
-            catch (System.Exception ex)
-            {
-                System.Console.Write(ex);
-            }
-
+            Assert.Equal(9, response.Count);
         }
 
         [Fact]
@@ -79,7 +63,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
-        public async Task ShouldReturn_AllEmployeeManagers()
+        public async Task Managers_ShouldReturnAllEmployeeManagers_ShouldSucceed()
         {
             using var response = await _client.GetAsync($"{_urlRoot}/employees/managers",
                                                         HttpCompletionOption.ResponseHeadersRead);
@@ -92,7 +76,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
-        public async Task ShouldReturn_EmployeeDetails_ForOneEmployee()
+        public async Task Detail_ShouldReturnEmployeeDetail_ShouldSucceed()
         {
             Guid employeeId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
             using var response = await _client.GetAsync($"{_urlRoot}/employees/detail/{employeeId}",
