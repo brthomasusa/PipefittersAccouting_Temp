@@ -5,17 +5,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
-using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
-using PipefittersAccounting.Infrastructure.Application.Queries.HumanResources;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
+using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
 using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 using PipefittersAccounting.WebApi.Controllers.QueryHandlers;
-using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
+
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceExtensions
@@ -26,10 +28,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<AuthenticationCommandHandler>()
                 .AddScoped<IUnitOfWork, AppUnitOfWork>()
                 .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
-                .AddScoped<IEmployeeAggregateCommandHandler, EmployeeAggregateCommandHandler>()
+                .AddScoped<IFinancierAggregateRepository, FinancierAggregateRepository>()
                 .AddScoped<IEmployeeAggregateCommandService, EmployeeCommandServiceEfCore>()
-                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>()
-                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>();
+                .AddScoped<IFinancierCommandService, FinancierCommandService>()
+                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
+                .AddScoped<IFinancierQueryService, FinancierQueryServiceDapper>()
+                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
         }
 
         public static IServiceCollection ConfigureCors(this IServiceCollection services) =>

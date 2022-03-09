@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -11,6 +10,7 @@ using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
 {
+    [Trait("Integration", "DapperQueryService")]
     public class FinancierQueryServiceDapperTests : TestBaseDapper
     {
         [Fact]
@@ -26,6 +26,20 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.True(result.Success);
             Assert.Equal(agentID, result.Result.FinancierId);
             Assert.Equal("Bertha Mae Jones Innovative Financing", result.Result.FinancierName);
+        }
+
+        [Fact]
+        public async Task GetFinancierDetails_GetFinancierDetailWithInvalidId_ShouldFail()
+        {
+            IFinancierQueryService queryService = new FinancierQueryServiceDapper(_dapperCtx);
+
+            Guid agentID = new Guid("aaa471a0-5c1e-4a4d-97e7-288fb0f6338a");
+
+            GetFinancier qryParam = new GetFinancier() { FinancierId = agentID };
+            OperationResult<FinancierDetail> result = await queryService.GetFinancierDetails(qryParam);
+
+            Assert.False(result.Success);
+            Assert.Equal($"No financier record found where FinancierId equals {qryParam.FinancierId}.", result.NonSuccessMessage);
         }
 
         [Fact]

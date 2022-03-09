@@ -50,7 +50,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
             }
             catch (Exception ex)
             {
-                return OperationResult<PagedList<EmployeeListItem>>.CreateFailure(ex);
+                return OperationResult<PagedList<EmployeeListItem>>.CreateFailure(ex.Message);
             }
         }
     }

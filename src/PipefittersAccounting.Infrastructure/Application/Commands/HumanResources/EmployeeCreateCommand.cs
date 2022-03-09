@@ -18,8 +18,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
         {
             if (await repo.Exists(model.Id))
             {
-                InvalidOperationException ex = new InvalidOperationException($"Can not create this employee, they already exists!");
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure($"Can not create this employee, they already exists!");
             }
 
             OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
@@ -61,7 +60,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             }
             catch (Exception ex)
             {
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
     }

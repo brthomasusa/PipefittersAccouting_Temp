@@ -10,31 +10,40 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
     {
         public async static Task<OperationResult<FinancierDetail>> Query(GetFinancier queryParameters, DapperContext ctx)
         {
-            if (await IsValidFinancierID(queryParameters.FinancierId, ctx) == false)
+            try
             {
-                throw new ArgumentException($"No financier record found where FinancierId equals {queryParameters.FinancierId}.");
+                if (await IsValidFinancierID(queryParameters.FinancierId, ctx) == false)
+                {
+                    string errMsg = $"No financier record found where FinancierId equals {queryParameters.FinancierId}.";
+                    return OperationResult<FinancierDetail>.CreateFailure(errMsg);
+                }
+
+                var sql =
+                @"SELECT 
+                    FinancierID, FinancierName, Telephone, 
+                    AddressLine1, AddressLine2, City, StateCode, Zipcode,
+                    AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
+                    ContactFirstName, ContactLastName, ContactMiddleInitial, 
+                    ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
+                    ContactTelephone,
+                    IsActive, UserId, CreatedDate, LastModifiedDate
+                FROM Finance.Financiers       
+                WHERE FinancierId = @ID";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("ID", queryParameters.FinancierId, DbType.Guid);
+
+                using (var connection = ctx.CreateConnection())
+                {
+                    FinancierDetail detail = await connection.QueryFirstOrDefaultAsync<FinancierDetail>(sql, parameters);
+                    return OperationResult<FinancierDetail>.CreateSuccessResult(detail);
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<FinancierDetail>.CreateFailure(ex.Message);
             }
 
-            var sql =
-            @"SELECT 
-                FinancierID, FinancierName, Telephone, 
-                AddressLine1, AddressLine2, City, StateCode, Zipcode,
-                AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
-                ContactFirstName, ContactLastName, ContactMiddleInitial, 
-                ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
-                ContactTelephone,
-                IsActive, UserId, CreatedDate, LastModifiedDate
-            FROM Finance.Financiers       
-            WHERE FinancierId = @ID";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("ID", queryParameters.FinancierId, DbType.Guid);
-
-            using (var connection = ctx.CreateConnection())
-            {
-                FinancierDetail detail = await connection.QueryFirstOrDefaultAsync<FinancierDetail>(sql, parameters);
-                return OperationResult<FinancierDetail>.CreateSuccessResult(detail);
-            }
         }
 
         private async static Task<bool> IsValidFinancierID(Guid financierId, DapperContext ctx)

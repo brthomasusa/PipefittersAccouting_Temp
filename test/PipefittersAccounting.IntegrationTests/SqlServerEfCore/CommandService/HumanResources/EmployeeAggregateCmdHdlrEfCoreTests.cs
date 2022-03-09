@@ -14,9 +14,9 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.IntegrationTests.Base;
 
-namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers.HumanResources
+namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.HumanResources
 {
-    [Trait("Integration", "EfCoreCmdHdlr")]
+    [Trait("Integration", "EfCoreCmdSvc")]
     public class EmployeeAggregateCmdHdlrEfCoreTests : TestBaseEfCore
     {
         [Fact]
@@ -47,10 +47,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+
             Assert.False(result.Success);
-            Assert.NotNull(result.Exception);
-            Assert.IsType<InvalidOperationException>(result.Exception);
-            Assert.Equal("Can not create this employee, they already exists!", result.Exception.Message);
+            Assert.Equal("Can not create this employee, they already exists!", result.NonSuccessMessage);
         }
 
         [Fact]
@@ -66,8 +65,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             model.MiddleInitial = "P";
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+
             Assert.False(result.Success);
-            Assert.NotNull(result.NonSuccessMessage);
             string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
             Assert.Equal(errMsg, result.NonSuccessMessage);
         }
@@ -83,6 +82,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             model.SSN = "775559874";
 
             OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+
             Assert.False(result.Success);
             Assert.NotNull(result.NonSuccessMessage);
             string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
@@ -131,7 +131,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
-            Assert.NotNull(result.NonSuccessMessage);
             string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
             Assert.Equal(errMsg, result.NonSuccessMessage);
         }
@@ -149,13 +148,12 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
-            Assert.NotNull(result.NonSuccessMessage);
             string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
             Assert.Equal(errMsg, result.NonSuccessMessage);
         }
 
         [Fact]
-        public async Task EditEmployeeInfo_WithDuplicateEmployeeID_ShouldFail()
+        public async Task EditEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
@@ -167,8 +165,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
-            Assert.NotNull(result.Exception);
-            Assert.IsType<ArgumentException>(result.Exception);
         }
 
         [Fact]
@@ -184,7 +180,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
             Assert.False(result.Success);
-            Assert.NotNull(result.Exception);
         }
 
         [Fact]
@@ -195,18 +190,15 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
             IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
             Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
-            Employee employee = await _dbContext.Employees.FindAsync(agentId);
+            Employee employee = await repo.GetByIdAsync(agentId);
             Assert.NotNull(employee);
 
-            DeleteEmployeeInfo model = new DeleteEmployeeInfo()
-            {
-                Id = agentId
-            };
+            DeleteEmployeeInfo model = new() { Id = agentId };
 
             OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.True(result.Success);
 
-            employee = await _dbContext.Employees.FindAsync(agentId);
+            employee = await repo.GetByIdAsync(agentId);
             Assert.Null(employee);
         }
 
@@ -224,7 +216,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandHandlers
 
             OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
             Assert.False(result.Success);
-            Assert.NotNull(result.Exception);
+            Assert.Equal($"Delete failed, an employee with id: {model.Id} could not be found!", result.NonSuccessMessage);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                 if (await IsValidEmployeeID(queryParameters.EmployeeID, ctx) == false)
                 {
                     string errMsg = $"No employee record found where EmployeeId equals '{queryParameters.EmployeeID}'.";
-                    return OperationResult<EmployeeDetail>.CreateFailure(new ArgumentException(errMsg));
+                    return OperationResult<EmployeeDetail>.CreateFailure(errMsg);
                 }
 
                 var sql =
@@ -48,7 +48,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
             }
             catch (Exception ex)
             {
-                return OperationResult<EmployeeDetail>.CreateFailure(ex);
+                return OperationResult<EmployeeDetail>.CreateFailure(ex.Message);
             }
         }
 

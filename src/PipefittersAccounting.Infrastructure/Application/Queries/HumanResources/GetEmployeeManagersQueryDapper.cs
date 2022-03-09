@@ -33,7 +33,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
             }
             catch (Exception ex)
             {
-                return OperationResult<List<EmployeeManager>>.CreateFailure(ex);
+                return OperationResult<List<EmployeeManager>>.CreateFailure(ex.Message);
             }
         }
     }

@@ -18,8 +18,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
         {
             if (await repo.Exists(model.Id) == false)
             {
-                ArgumentException ex = new ArgumentException($"Update failed, an employee with id: {model.Id} could not be found!");
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure($"Update failed, an employee with id: {model.Id} could not be found!");
             }
 
             OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
@@ -60,7 +59,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             }
             catch (Exception ex)
             {
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
     }

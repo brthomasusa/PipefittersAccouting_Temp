@@ -17,8 +17,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
         {
             if (await repo.Exists(model.Id) == false)
             {
-                ArgumentException ex = new ArgumentException($"Delete failed, an employee with id: {model.Id} could not be found!");
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure($"Delete failed, an employee with id: {model.Id} could not be found!");
             }
 
             try
@@ -32,7 +31,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             }
             catch (Exception ex)
             {
-                return OperationResult<bool>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
     }

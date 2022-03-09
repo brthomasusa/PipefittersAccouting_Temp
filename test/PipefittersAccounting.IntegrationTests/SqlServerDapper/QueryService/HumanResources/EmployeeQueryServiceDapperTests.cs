@@ -11,6 +11,7 @@ using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.HumanResources
 {
+    [Trait("Integration", "DapperQueryService")]
     public class EmployeeQueryServiceDapperTests : TestBaseDapper
     {
         [Fact]
@@ -40,9 +41,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<EmployeeDetail> result = await queryService.GetEmployeeDetails(qryParam);
 
             Assert.False(result.Success);
-            Assert.IsType<ArgumentException>(result.Exception);
             string errMsg = $"No employee record found where EmployeeId equals '{qryParam.EmployeeID}'.";
-            Assert.Equal(errMsg, result.Exception.Message);
+            Assert.Equal(errMsg, result.NonSuccessMessage);
         }
 
         [Fact]

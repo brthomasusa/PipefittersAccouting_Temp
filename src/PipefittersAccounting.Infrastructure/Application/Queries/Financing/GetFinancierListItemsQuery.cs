@@ -13,8 +13,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
 
         public async static Task<OperationResult<PagedList<FinancierListItems>>> Query(GetFinanciers queryParameters, DapperContext ctx)
         {
-            var sql =
-            @"SELECT 
+            try
+            {
+                var sql =
+                @"SELECT 
                 FinancierID, FinancierName, Telephone, 
                 AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
                 ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
@@ -23,20 +25,27 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
             ORDER BY FinancierName
             OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
-            var parameters = new DynamicParameters();
-            parameters.Add("Offset", Offset(queryParameters.Page, queryParameters.PageSize), DbType.Int32);
-            parameters.Add("PageSize", queryParameters.PageSize, DbType.Int32);
+                var parameters = new DynamicParameters();
+                parameters.Add("Offset", Offset(queryParameters.Page, queryParameters.PageSize), DbType.Int32);
+                parameters.Add("PageSize", queryParameters.PageSize, DbType.Int32);
 
-            var totalRecordsSql = $"SELECT COUNT(FinancierId) FROM Finance.Financiers";
+                var totalRecordsSql = $"SELECT COUNT(FinancierId) FROM Finance.Financiers";
 
-            using (var connection = ctx.CreateConnection())
-            {
-                int count = await connection.ExecuteScalarAsync<int>(totalRecordsSql);
-                var items = await connection.QueryAsync<FinancierListItems>(sql, parameters);
-                var pagedList = PagedList<FinancierListItems>.CreatePagedList(items.ToList(), count, queryParameters.Page, queryParameters.PageSize);
+                using (var connection = ctx.CreateConnection())
+                {
+                    int count = await connection.ExecuteScalarAsync<int>(totalRecordsSql);
+                    var items = await connection.QueryAsync<FinancierListItems>(sql, parameters);
+                    var pagedList = PagedList<FinancierListItems>.CreatePagedList(items.ToList(), count, queryParameters.Page, queryParameters.PageSize);
 
-                return OperationResult<PagedList<FinancierListItems>>.CreateSuccessResult(pagedList);
+                    return OperationResult<PagedList<FinancierListItems>>.CreateSuccessResult(pagedList);
+                }
             }
+            catch (Exception ex)
+            {
+                return OperationResult<PagedList<FinancierListItems>>.CreateFailure(ex.Message);
+            }
+
+
         }
     }
 }
