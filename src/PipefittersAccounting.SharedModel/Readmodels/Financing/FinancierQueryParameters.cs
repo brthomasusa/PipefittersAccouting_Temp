@@ -12,6 +12,8 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int PageSize { get; set; }
     }
 
+    public class GetFinanciersLookup { }
+
     public class DoFinancierDependencyCheck
     {
         public Guid FinancierId { get; set; }

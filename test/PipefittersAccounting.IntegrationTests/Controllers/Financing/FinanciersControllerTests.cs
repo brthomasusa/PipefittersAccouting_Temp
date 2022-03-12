@@ -8,7 +8,6 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
@@ -20,6 +19,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
 {
+    [Trait("Integration", "TestServer")]
     public class FinanciersControllerTests : IntegrationTest
     {
         public FinanciersControllerTests(ApiWebApplicationFactory fixture) : base(fixture)
@@ -40,6 +40,19 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                 .GetFromJsonAsync<List<FinancierListItems>>(QueryHelpers.AddQueryString($"{_urlRoot}/financiers/list", queryParams));
 
             Assert.Equal(6, response.Count);
+        }
+
+        [Fact]
+        public async Task GetFinanciersLookup_ReturnAllFinanciersLookupsForDropDown_ShouldSucceed()
+        {
+            using var response = await _client.GetAsync($"{_urlRoot}/financiers/financierslookup",
+                                                        HttpCompletionOption.ResponseHeadersRead); // GetFinanciersLookup
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var financierLookups = await JsonSerializer.DeserializeAsync<List<FinancierLookup>>(jsonResponse, _options);
+
+            Assert.Equal(6, financierLookups.Count);
         }
 
         [Fact]

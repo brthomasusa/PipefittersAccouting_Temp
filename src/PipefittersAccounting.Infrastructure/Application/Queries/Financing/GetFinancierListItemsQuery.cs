@@ -44,8 +44,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
             {
                 return OperationResult<PagedList<FinancierListItems>>.CreateFailure(ex.Message);
             }
-
-
         }
     }
 }

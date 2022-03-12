@@ -8,5 +8,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     {
         Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters);
         Task<OperationResult<PagedList<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters);
+        Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters);
     }
 }

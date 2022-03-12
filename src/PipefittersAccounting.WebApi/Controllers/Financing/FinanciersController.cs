@@ -45,6 +45,22 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("financierslookup")]
+        public async Task<ActionResult<List<FinancierLookup>>> GetFinanciersLookup()
+        {
+            GetFinanciersLookup lookupParams = new() { };
+
+            OperationResult<List<FinancierLookup>> result = await _qrySvc.GetFinanciersLookup(lookupParams);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
         [HttpGet("detail/{financierId:Guid}")]
         public async Task<ActionResult<FinancierDetail>> GetFinancierDetail(Guid financierId)
         {
