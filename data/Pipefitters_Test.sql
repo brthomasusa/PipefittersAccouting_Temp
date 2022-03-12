@@ -30,6 +30,27 @@ GO
 CREATE SCHEMA Shared
 GO
 
+CREATE TABLE Finance.CashTransactionTypes
+(
+  CashTransactionTypeId INT IDENTITY PRIMARY KEY CLUSTERED,
+  CashTransactionTypeName NVARCHAR(50) NOT NULL UNIQUE
+)
+GO
+
+INSERT INTO Finance.CashTransactionTypes
+    (CashTransactionTypeName)
+VALUES
+    ('Cash Receipt Sales'),
+    ('Cash Receipt Debt Issue Proceeds'),
+    ('Cash Receipt Stock Issue Proceeds'),
+    ('Cash Disbursement Loan Payment'),    
+    ('Cash Disbursement Divident Payment'),
+    ('Cash Disbursement TimeCard Payment'),
+    ('Cash Disbursement Purchase Receipt'),
+    ('Cash Receipt Adjustment'),
+    ('Cash Disbursement Adjustment')    
+GO
+
 CREATE TABLE Shared.EconomicEventTypes
 (
     EventTypeId int IDENTITY PRIMARY KEY CLUSTERED,
@@ -260,10 +281,6 @@ VALUES
     ('84164388-28ff-4b47-bd63-dd9326d32236', 'I Exist-Only-To-Be-Deleted', '415-912-5570', '985211 Highway 78 East', null, 'Oxnard', 'CA', '93035', 'Gutierrez', 'Monica', 'T', '415-912-5570', 1, '660bb318-649e-470d-9d2b-693bfb0b2744')
 GO
    
--- STOPPED HERE
--- STOPPED HERE
--- STOPPED HERE
-
 CREATE TABLE Finance.LoanAgreements
 (
     LoanId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
@@ -288,8 +305,8 @@ CREATE INDEX idx_LoanAgreement$UserID
   ON Finance.LoanAgreements (UserId);
 GO
 
-CREATE UNIQUE INDEX idx_LoanAgreement$LoanId_FinancierId 
-  ON Finance.LoanAgreements (LoanId, FinancierId);
+CREATE UNIQUE INDEX idx_LoanAgreement$FinancierId_LoadDetails 
+  ON Finance.LoanAgreements (FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate);
 GO
 
 ALTER TABLE Finance.LoanAgreements WITH CHECK ADD CONSTRAINT [FK_LoanAgreements$LoanId_EconomicEvents$EventId] 
@@ -319,8 +336,8 @@ CREATE INDEX idx_StockSubscription$UserId
   ON Finance.StockSubscriptions (UserId)
 GO
 
-CREATE UNIQUE INDEX idx_StockSubscription$StockId_FinancierId 
-  ON Finance.StockSubscriptions (StockId, FinancierId)
+CREATE UNIQUE INDEX idx_StockSubscription$FinancierId_StockDetails 
+  ON Finance.StockSubscriptions (FinancierId, SharesIssured, PricePerShare, StockIssueDate)
 GO
 
 ALTER TABLE Finance.StockSubscriptions WITH CHECK ADD CONSTRAINT [FK_StockSubscriptions$StockId_EconomicEvents$EventId] 
@@ -328,34 +345,6 @@ ALTER TABLE Finance.StockSubscriptions WITH CHECK ADD CONSTRAINT [FK_StockSubscr
     REFERENCES Shared.EconomicEvents (EventId)
     ON DELETE NO ACTION
 GO
-
-CREATE TABLE Finance.DividendPymtRates
-(
-    DividendId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
-    StockId uniqueidentifier NOT NULL REFERENCES Finance.StockSubscriptions (StockId),
-    DividendDeclarationDate DATETIME2(0) NOT NULL,
-    DividendPerShare DECIMAL(18,2) CHECK (DividendPerShare >= 0) NOT NULL,
-    UserId  [uniqueidentifier] NOT NULL REFERENCES HumanResources.Users (UserId),
-    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
-    LastModifiedDate datetime2(7) NULL
-)
-GO
-
-CREATE INDEX idx_DividendPymtRate$StockId 
-  ON Finance.DividendPymtRates (StockId)
-GO
-
-CREATE UNIQUE INDEX idx_DividendPymtRate$StockId_DividendDeclarationDate_DividendPerShare 
-  ON Finance.DividendPymtRates (StockId,DividendDeclarationDate,DividendPerShare)
-GO
-
-ALTER TABLE Finance.DividendPymtRates WITH CHECK ADD CONSTRAINT [FK_DividendPymtRates$DividendId_EconomicEvents$EventId] 
-    FOREIGN KEY(DividendId)
-    REFERENCES Shared.EconomicEvents (EventId)
-    ON DELETE NO ACTION
-GO
-
-
 
 INSERT INTO Shared.EconomicEvents
     (EventId, EventTypeId)
@@ -369,7 +358,129 @@ VALUES
     ('fb39b013-1633-4479-8186-9f9b240b5727', 3),
     ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', 3),
     ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', 3),    
-    ('5997f125-bfca-4540-a144-01e444f6dc25', 3),    
+    ('5997f125-bfca-4540-a144-01e444f6dc25', 3)
+GO
+
+INSERT INTO Finance.LoanAgreements
+    (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, PymtsPerYear, UserId)
+VALUES
+    ('41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '12998229-7ede-4834-825a-0c55bde75695', 50000.00, 0.08625, '2020-12-02', '2021-11-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('09b53ffb-9983-4cde-b1d6-8a49e785177f', '94b1d516-a1c3-4df8-ae85-be1f34966601', 50000.00, 0.08625, '2021-04-02', '2022-03-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('1511c20b-6df0-4313-98a5-7c3561757dc2', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 100000.00, 0.07250, '2021-09-15', '2022-08-15', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('0a7181c0-3ce9-4981-9559-157fd8e09cfb', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 33000.00, 0.07250, '2021-11-15', '2022-10-15', 12, '660bb318-649e-470d-9d2b-693bfb0b2744')
+GO
+
+INSERT INTO Finance.StockSubscriptions
+    (StockId, FinancierId, SharesIssured, PricePerShare, StockIssueDate, UserId)
+VALUES
+    ('6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '01da50f9-021b-4d03-853a-3fd2c95e207d', 50000, 1.00, '2020-09-03','660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('62d6e2e6-215d-4157-b7ec-1ba9b137c770', 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 50000, 1.00, '2020-09-03','660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('fb39b013-1633-4479-8186-9f9b240b5727', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 25000, 1.00, '2020-11-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '01da50f9-021b-4d03-853a-3fd2c95e207d', 10000, 1.00, '2020-11-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '12998229-7ede-4834-825a-0c55bde75695', 35000, 3.00, '2021-03-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12567, 0.13, '2021-11-06','660bb318-649e-470d-9d2b-693bfb0b2744')
+GO
+
+CREATE TABLE Finance.DividendDeclarations
+(
+    DividendId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
+    StockId uniqueidentifier NOT NULL REFERENCES Finance.StockSubscriptions (StockId),
+    DividendDeclarationDate DATETIME2(0) NOT NULL,
+    DividendPerShare DECIMAL(18,2) CHECK (DividendPerShare >= 0) NOT NULL,
+    UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
+    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
+    LastModifiedDate datetime2(7) NULL
+)
+GO
+
+CREATE INDEX idx_DividendPymtRate$StockId 
+  ON Finance.DividendDeclarations (StockId)
+GO
+
+CREATE UNIQUE INDEX idx_DividendPymtRate$StockId_DividendDeclarationDate_DividendPerShare 
+  ON Finance.DividendDeclarations (StockId,DividendDeclarationDate,DividendPerShare)
+GO
+
+ALTER TABLE Finance.DividendDeclarations WITH CHECK ADD CONSTRAINT [FK_DividendPymtRates$DividendId_EconomicEvents$EventId] 
+    FOREIGN KEY(DividendId)
+    REFERENCES Shared.EconomicEvents (EventId)
+    ON DELETE NO ACTION
+GO
+
+CREATE TABLE Finance.LoanPaymentSchedules
+(
+    LoanPaymentId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
+    LoanId uniqueidentifier NOT NULL REFERENCES Finance.LoanAgreements(LoanId),
+    PaymentNumber INT CHECK (PaymentNumber >= 1) NOT NULL,
+    PaymentDueDate DATETIME2(0) NOT NULL,
+    PrincipalAmount DECIMAL(18,2) NOT NULL,
+    InterestAmount DECIMAL(18,2) NOT NULL,
+    PrincipalRemaining DECIMAL(18,2) NOT NULL,   
+    UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
+    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
+    LastModifiedDate datetime2(7) NULL
+)
+GO
+
+CREATE INDEX idx_LoanPaymentSchedules$LoanId 
+  ON Finance.LoanPaymentSchedules (LoanId)
+GO
+CREATE INDEX idx_LoanPaymentSchedules$UserId
+  ON Finance.LoanPaymentSchedules (UserId)
+GO
+CREATE UNIQUE INDEX iidx_LoanPaymentSchedules$LoanId_PaymentNumber 
+  ON Finance.LoanPaymentSchedules (LoanId, PaymentNumber)
+GO
+
+ALTER TABLE Finance.LoanPaymentSchedules WITH CHECK ADD CONSTRAINT [FK_LoanPymtSched$LoanPaymentId_EconomicEvents$EventId] 
+    FOREIGN KEY(LoanPaymentId)
+    REFERENCES Shared.EconomicEvents (EventId)
+    ON DELETE NO ACTION
+GO
+
+CREATE TABLE Finance.CashAccounts
+(
+    CashAccountId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
+    BankName  NVARCHAR(50) NOT NULL,    
+    AccountName NVARCHAR(50) NOT NULL,
+    AccountNumber NVARCHAR(50) NOT NULL,
+    RoutingTransitNumber NCHAR(9) NOT NULL,
+    DateOpened DATETIME2(0) NOT NULL,    
+    UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
+    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
+    LastModifiedDate datetime2(7) NULL
+)
+GO
+
+CREATE UNIQUE INDEX idx_CashAccounts$AccountName 
+  ON Finance.CashAccounts (AccountName)
+GO
+
+CREATE UNIQUE INDEX idx_CashAccounts$AccountNumber 
+  ON Finance.CashAccounts (AccountNumber)
+GO
+
+CREATE INDEX idx_CashAccounts$UserId 
+  ON Finance.CashAccounts (UserId)
+GO
+
+INSERT INTO Finance.CashAccounts
+    (CashAccountId, BankName, AccountName, AccountNumber, RoutingTransitNumber, DateOpened, UserId)
+VALUES
+    ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 'First Bank and Trust', 'Primary Checking', '36547-9871222', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('c98ac84f-00bb-463d-9116-5828b2e9f718', 'First Bank and Trust', 'Payroll', '36547-9098812', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 'First Bank and Trust', 'Financing Proceeds', '36547-9888249', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('765ec2b0-406a-4e42-b831-c9aa63800e76', 'BackAlley Money Washing, LLC', 'Slush Fund', 'XXXXX-XXXXXXX', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744')
+GO
+
+-- STOPPED HERE
+-- STOPPED HERE
+-- STOPPED HERE
+
+
+INSERT INTO Shared.EconomicEvents
+    (EventId, EventTypeId)
+VALUES    
     ('93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e', 4),
     ('f479f59a-5001-47af-9d6c-2eae07077490', 4),
     ('76e6164a-249d-47a2-b47c-f09a332181b6', 4),
@@ -423,28 +534,7 @@ VALUES
 	('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5)
 GO
 
-INSERT INTO Finance.LoanAgreements
-    (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, PymtsPerYear, UserId)
-VALUES
-    ('41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '12998229-7ede-4834-825a-0c55bde75695', 50000.00, 0.08625, '2020-12-02', '2021-11-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('09b53ffb-9983-4cde-b1d6-8a49e785177f', '94b1d516-a1c3-4df8-ae85-be1f34966601', 50000.00, 0.08625, '2021-04-02', '2022-03-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('1511c20b-6df0-4313-98a5-7c3561757dc2', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 100000.00, 0.07250, '2021-09-15', '2022-08-15', 12, '4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('0a7181c0-3ce9-4981-9559-157fd8e09cfb', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 33000.00, 0.07250, '2021-11-15', '2022-10-15', 12, '4b900a74-e2d9-4837-b9a4-9e828752716e')
-GO
-
-INSERT INTO Finance.StockSubscriptions
-    (StockId, FinancierId, SharesIssured, PricePerShare, StockIssueDate, UserId)
-VALUES
-    ('6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '01da50f9-021b-4d03-853a-3fd2c95e207d', 50000, 1.00, '2020-09-03','4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('62d6e2e6-215d-4157-b7ec-1ba9b137c770', 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 50000, 1.00, '2020-09-03','4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('fb39b013-1633-4479-8186-9f9b240b5727', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 25000, 1.00, '2020-11-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '01da50f9-021b-4d03-853a-3fd2c95e207d', 10000, 1.00, '2020-11-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '12998229-7ede-4834-825a-0c55bde75695', 35000, 3.00, '2021-03-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
-    
-    ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12567, 0.13, '2021-11-06','660bb318-649e-470d-9d2b-693bfb0b2744')
-GO
-
-INSERT INTO Finance.DividendPymtRates
+INSERT INTO Finance.DividendDeclarations
     (DividendId, StockId, DividendDeclarationDate, DividendPerShare, UserId)
 VALUES
     ('e2a14f74-5261-46a8-bc41-952933925e1d', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '2021-01-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
@@ -463,68 +553,6 @@ VALUES
     ('6f09cd69-4a95-42c7-bcc2-acacbb92270c', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '2021-02-15', 0.07, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('24d6936a-beb5-451b-a950-0f30e3ad463d', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '2021-03-15', 0.07, '660bb318-649e-470d-9d2b-693bfb0b2744')
 GO 
-
-CREATE TABLE Finance.CashAccounts
-(
-    CashAccountId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
-    BankName  NVARCHAR(50) NOT NULL,    
-    AccountName NVARCHAR(50) NOT NULL,
-    AccountNumber NVARCHAR(50) NOT NULL,
-    RoutingTransitNumber NCHAR(9) NOT NULL,
-    DateOpened DATETIME2(0) NOT NULL,    
-    UserId  [uniqueidentifier] NOT NULL REFERENCES HumanResources.Users (UserId),
-    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
-    LastModifiedDate datetime2(7) NULL
-)
-GO
-
-CREATE UNIQUE INDEX idx_CashAccounts$AccountNumber 
-  ON Finance.CashAccounts (AccountNumber)
-GO
-
-CREATE INDEX idx_CashAccounts$UserId 
-  ON Finance.CashAccounts (UserId)
-GO
-
-INSERT INTO Finance.CashAccounts
-    (CashAccountId, BankName, AccountName, AccountNumber, RoutingTransitNumber, DateOpened, UserId)
-VALUES
-    ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 'First Bank and Trust', 'Primary Checking', '36547-9871222', '703452098', '2020-09-03', '4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('c98ac84f-00bb-463d-9116-5828b2e9f718', 'First Bank and Trust', 'Payroll', '36547-9098812', '703452098', '2020-09-03', '4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 'First Bank and Trust', 'Financing Proceeds', '36547-9888249', '703452098', '2020-09-03', '4b900a74-e2d9-4837-b9a4-9e828752716e'),
-    ('765ec2b0-406a-4e42-b831-c9aa63800e76', 'BackAlley Money Washing, LLC', 'Slush Fund', 'XXXXX-XXXXXXX', '703452098', '2020-09-03', '4b900a74-e2d9-4837-b9a4-9e828752716e')
-GO
-
-CREATE TABLE Finance.LoanPaymentSchedules
-(
-    LoanPaymentId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
-    LoanId uniqueidentifier NOT NULL REFERENCES Finance.LoanAgreements(LoanId),
-    PaymentNumber INT CHECK (PaymentNumber >= 1) NOT NULL,
-    PaymentDueDate DATETIME2(0) NOT NULL,
-    PrincipalAmount DECIMAL(18,2) NOT NULL,
-    InterestAmount DECIMAL(18,2) NOT NULL,
-    PrincipalRemaining DECIMAL(18,2) NOT NULL,   
-    UserId uniqueidentifier NOT NULL REFERENCES HumanResources.Users (UserId),
-    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
-    LastModifiedDate datetime2(7) NULL
-)
-GO
-
-CREATE INDEX idx_LoanPaymentSchedules$LoanId 
-  ON Finance.LoanPaymentSchedules (LoanId)
-GO
-CREATE INDEX idx_LoanPaymentSchedules$UserId
-  ON Finance.LoanPaymentSchedules (UserId)
-GO
-CREATE UNIQUE INDEX iidx_LoanPaymentSchedules$LoanId_PaymentNumber 
-  ON Finance.LoanPaymentSchedules (LoanId, PaymentNumber)
-GO
-
-ALTER TABLE Finance.LoanPaymentSchedules WITH CHECK ADD CONSTRAINT [FK_LoanPymtSched$LoanPaymentId_EconomicEvents$EventId] 
-    FOREIGN KEY(LoanPaymentId)
-    REFERENCES Shared.EconomicEvents (EventId)
-    ON DELETE NO ACTION
-GO
 
 INSERT INTO Finance.LoanPaymentSchedules
 	(LoanPaymentId, LoanId, PaymentNumber, PaymentDueDate, InterestAmount, PrincipalAmount, PrincipalRemaining, UserId)
@@ -567,26 +595,6 @@ VALUES
     ('409e60dc-bbe6-4ca9-95c2-ebf6886e8c4c', '1511c20b-6df0-4313-98a5-7c3561757dc2', 12, '2022-09-15', 52.03, 8612.10, 0, '660bb318-649e-470d-9d2b-693bfb0b2744')
 GO 
 
-CREATE TABLE Finance.CashTransactionTypes
-(
-  CashTransactionTypeId INT IDENTITY PRIMARY KEY CLUSTERED,
-  CashTransactionTypeName NVARCHAR(50) NOT NULL UNIQUE
-)
-GO
-
-INSERT INTO Finance.CashTransactionTypes
-    (CashTransactionTypeName)
-VALUES
-    ('Cash Receipt Sales'),
-    ('Cash Receipt Debt Issue Proceeds'),
-    ('Cash Receipt Stock Issue Proceeds'),
-    ('Cash Disbursement Loan Payment'),    
-    ('Cash Disbursement Divident Payment'),
-    ('Cash Disbursement TimeCard Payment'),
-    ('Cash Disbursement Purchase Receipt'),
-    ('Cash Receipt Adjustment'),
-    ('Cash Disbursement Adjustment')    
-GO
 
 CREATE TABLE Finance.CashAccountTransactions
 (
@@ -599,7 +607,7 @@ CREATE TABLE Finance.CashAccountTransactions
 	EventId uniqueidentifier NOT NULL REFERENCES Shared.EconomicEvents (EventId),
 	CheckNumber NVARCHAR(25) NOT NULL,
 	RemittanceAdvice NVARCHAR(50) NULL,
-	UserId uniqueidentifier NOT NULL REFERENCES HumanResources.Users (UserId),
+	UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
 	CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
 	LastModifiedDate datetime2(7) NULL
 )
