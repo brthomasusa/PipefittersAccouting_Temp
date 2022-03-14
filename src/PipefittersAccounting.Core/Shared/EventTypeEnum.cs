@@ -2,12 +2,12 @@ namespace PipefittersAccounting.Core.Shared
 {
     public enum EventTypeEnum : int
     {
-        CashReceiptFromSales = 1,
-        CashReceiptFromLoanAgreement = 2,
-        CashReceiptFromStockSubscription = 3,
-        CashDisbursementForLoanPayment = 4,
-        CashDisbursementForDividentPayment = 5,
-        CashDisbursementForTimeCardPayment = 6,
-        CashDisbursementForInventoryReceipt = 7
+        SalesCashReceipt = 1,
+        LoanAgreementCashReceipt = 2,
+        StockSubscriptionCashReceipt = 3,
+        LoanPaymentCashDisbursement = 4,
+        DividentPaymentCashDisbursement = 5,
+        TimeCardPaymentCashDisbursement = 6,
+        InventoryReceiptCashDisbursement = 7
     }
 }

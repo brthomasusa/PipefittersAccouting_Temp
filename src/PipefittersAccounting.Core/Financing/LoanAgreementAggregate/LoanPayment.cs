@@ -95,7 +95,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         protected override void CheckValidity()
         {
-            if (EconomicEvent.EventType is not EventTypeEnum.CashDisbursementForLoanPayment)
+            if (EconomicEvent.EventType is not EventTypeEnum.LoanPaymentCashDisbursement)
             {
                 throw new ArgumentException("Invalid EconomicEvent type; it must be 'EventType.CashDisbursementForLoanPayment'.");
             }

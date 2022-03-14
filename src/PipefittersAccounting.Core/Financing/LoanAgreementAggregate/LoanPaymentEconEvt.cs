@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public static LoanPaymentEconEvt Create(EntityGuidID id)
         {
-            var evt = new EconomicEvent(id, EventTypeEnum.CashDisbursementForLoanPayment);
+            var evt = new EconomicEvent(id, EventTypeEnum.LoanPaymentCashDisbursement);
             return new LoanPaymentEconEvt(evt);
         }
     }
