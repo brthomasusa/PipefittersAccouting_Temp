@@ -1,5 +1,8 @@
+#pragma warning disable CS8618
+
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 
 namespace PipefittersAccounting.Core.Shared
 {
@@ -7,7 +10,7 @@ namespace PipefittersAccounting.Core.Shared
     {
         protected EconomicEvent() { }
 
-        private EconomicEvent(EntityGuidID id, EventTypeEnum eventType)
+        public EconomicEvent(EntityGuidID id, EventTypeEnum eventType)
             : this()
         {
             Id = id;
@@ -15,5 +18,10 @@ namespace PipefittersAccounting.Core.Shared
         }
 
         public EventTypeEnum EventType { get; private set; }
+
+        public virtual LoanAgreement LoanAgreement { get; private set; }
+        public virtual LoanPayment LoanPayment { get; private set; }
+
+        // public virtual StockSubscription StockSubscription { get; private set; }        
     }
 }
