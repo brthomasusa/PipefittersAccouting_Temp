@@ -20,6 +20,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             LoanPrincipalAmount principalAmount,
             LoanInterestAmount interestAmount,
             LoanPrincipalRemaining remainPrincipal,
+            bool isPaid,
             EntityGuidID userId
         )
             : this()
@@ -37,6 +38,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             LoanPrincipalAmount = principalAmount ?? throw new ArgumentNullException("The principal amount is required.");
             LoanInterestAmount = interestAmount ?? throw new ArgumentNullException("The interest amount is required.");
             LoanPrincipalRemaining = remainPrincipal ?? throw new ArgumentNullException("The balance remaining is required.");
+            IsPaid = isPaid;
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
 
             CheckValidity();
@@ -82,6 +84,14 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         public void UpdateLoanPrincipalRemaining(LoanPrincipalRemaining value)
         {
             LoanPrincipalRemaining = value ?? throw new ArgumentNullException("The loan principal balance remaining is required.");
+            UpdateLastModifiedDate();
+            CheckValidity();
+        }
+
+        public bool IsPaid { get; private set; }
+        public void UpdatePaymentStatus(bool isPaid)
+        {
+            IsPaid = isPaid;
             UpdateLastModifiedDate();
             CheckValidity();
         }

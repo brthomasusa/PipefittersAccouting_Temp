@@ -387,6 +387,7 @@ CREATE TABLE Finance.DividendDeclarations
     StockId uniqueidentifier NOT NULL REFERENCES Finance.StockSubscriptions (StockId),
     DividendDeclarationDate DATETIME2(0) NOT NULL,
     DividendPerShare DECIMAL(18,2) CHECK (DividendPerShare >= 0) NOT NULL,
+    IsPaid BIT DEFAULT 0 NOT NULL,
     UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
     CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
     LastModifiedDate datetime2(7) NULL
@@ -395,6 +396,10 @@ GO
 
 CREATE INDEX idx_DividendPymtRate$StockId 
   ON Finance.DividendDeclarations (StockId)
+GO
+
+CREATE INDEX idx_DividendPymtRate$IsPaid
+  ON Finance.DividendDeclarations (IsPaid)
 GO
 
 CREATE UNIQUE INDEX idx_DividendPymtRate$StockId_DividendDeclarationDate_DividendPerShare 
@@ -415,7 +420,8 @@ CREATE TABLE Finance.LoanPaymentSchedules
     PaymentDueDate DATETIME2(0) NOT NULL,
     PrincipalAmount DECIMAL(18,2) NOT NULL,
     InterestAmount DECIMAL(18,2) NOT NULL,
-    PrincipalRemaining DECIMAL(18,2) NOT NULL,   
+    PrincipalRemaining DECIMAL(18,2) NOT NULL,
+    IsPaid BIT DEFAULT 0 NOT NULL,   
     UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
     CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
     LastModifiedDate datetime2(7) NULL
@@ -428,6 +434,11 @@ GO
 CREATE INDEX idx_LoanPaymentSchedules$UserId
   ON Finance.LoanPaymentSchedules (UserId)
 GO
+
+CREATE INDEX idx_LoanPaymentSchedules$IsPaid
+  ON Finance.LoanPaymentSchedules (IsPaid)
+GO
+
 CREATE UNIQUE INDEX iidx_LoanPaymentSchedules$LoanId_PaymentNumber 
   ON Finance.LoanPaymentSchedules (LoanId, PaymentNumber)
 GO
