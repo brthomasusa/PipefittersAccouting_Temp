@@ -12,6 +12,7 @@ using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Financing
@@ -75,13 +76,18 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
             LoanAgreement agreement = await _dbContext.LoanAgreements.FindAsync(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"));
+            EconomicEvent evt = await _dbContext.EconomicEvents.FindAsync(agreement.Id);
             Assert.NotNull(agreement);
+            Assert.NotNull(evt);
 
             repo.Delete(agreement);
             await uow.Commit();
 
-            bool result = await repo.Exists(agreement.Id);
-            Assert.False(result);
+            LoanAgreement ageementResult = await _dbContext.LoanAgreements.FindAsync(agreement.Id);
+            EconomicEvent eventResult = await _dbContext.EconomicEvents.FindAsync(agreement.Id);
+
+            Assert.Null(ageementResult);
+            Assert.Null(eventResult);
         }
     }
 }

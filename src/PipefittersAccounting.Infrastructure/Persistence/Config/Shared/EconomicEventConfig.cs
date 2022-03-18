@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("EventId").ValueGeneratedNever();
             entity.Property(p => p.EventType).HasColumnType("int").HasColumnName("EventTypeId").IsRequired();
             entity.HasOne(e => e.LoanAgreement).WithOne().HasForeignKey<LoanAgreement>("Id");
-            entity.HasOne(e => e.LoanPayment).WithOne().HasForeignKey<LoanPayment>("Id");
+            entity.HasOne(e => e.LoanInstallment).WithOne().HasForeignKey<LoanInstallment>("Id");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime2(7)");
             entity.Property(e => e.LastModifiedDate).HasColumnType("datetime2(7)");
         }

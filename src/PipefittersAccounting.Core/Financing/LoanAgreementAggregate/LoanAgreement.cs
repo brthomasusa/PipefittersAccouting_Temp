@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
     public class LoanAgreement : AggregateRoot<Guid>, IAggregateRoot
     {
-        private SortedDictionary<int, LoanPayment> _loanPaymentSchedule;
+        private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule;
 
         protected LoanAgreement() { }
 
@@ -43,7 +43,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
 
             CheckValidity();
-            _loanPaymentSchedule = new SortedDictionary<int, LoanPayment>();
+            _loanPaymentSchedule = new SortedDictionary<int, LoanInstallment>();
         }
 
         public Guid FinancierId { get; private set; }
@@ -101,7 +101,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             UpdateLastModifiedDate();
         }
 
-        public virtual ReadOnlyDictionary<int, LoanPayment> LoanPaymentSchedule => new(_loanPaymentSchedule);
+        public virtual ReadOnlyDictionary<int, LoanInstallment> LoanPaymentSchedule => new(_loanPaymentSchedule);
 
         protected override void CheckValidity()
         {

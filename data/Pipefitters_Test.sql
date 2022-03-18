@@ -416,7 +416,7 @@ CREATE TABLE Finance.LoanPaymentSchedules
 (
     LoanPaymentId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
     LoanId uniqueidentifier NOT NULL REFERENCES Finance.LoanAgreements(LoanId),
-    PaymentNumber INT CHECK (PaymentNumber >= 1) NOT NULL,
+    InstallmentNumber INT CHECK (InstallmentNumber >= 1) NOT NULL,
     PaymentDueDate DATETIME2(0) NOT NULL,
     PrincipalAmount DECIMAL(18,2) NOT NULL,
     InterestAmount DECIMAL(18,2) NOT NULL,
@@ -434,13 +434,17 @@ GO
 CREATE INDEX idx_LoanPaymentSchedules$UserId
   ON Finance.LoanPaymentSchedules (UserId)
 GO
-
 CREATE INDEX idx_LoanPaymentSchedules$IsPaid
   ON Finance.LoanPaymentSchedules (IsPaid)
 GO
+CREATE UNIQUE INDEX iidx_LoanPaymentSchedules$LoanId_InstallmentNumber 
+  ON Finance.LoanPaymentSchedules (LoanId, InstallmentNumber)
+GO
 
-CREATE UNIQUE INDEX iidx_LoanPaymentSchedules$LoanId_PaymentNumber 
-  ON Finance.LoanPaymentSchedules (LoanId, PaymentNumber)
+ALTER TABLE Finance.LoanPaymentSchedules WITH CHECK ADD CONSTRAINT [FK_LoanPymtSched$LoanPaymentId_EconomicEvents$EventId] 
+    FOREIGN KEY(LoanPaymentId)
+    REFERENCES Shared.EconomicEvents (EventId)
+    ON DELETE NO ACTION
 GO
 
 ALTER TABLE Finance.LoanPaymentSchedules WITH CHECK ADD CONSTRAINT [FK_LoanPymtSched$LoanPaymentId_EconomicEvents$EventId] 

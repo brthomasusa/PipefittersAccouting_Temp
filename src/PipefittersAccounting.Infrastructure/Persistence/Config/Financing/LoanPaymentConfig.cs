@@ -6,19 +6,19 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
 {
-    public class LoanPaymentConfig : IEntityTypeConfiguration<LoanPayment>
+    public class LoanPaymentConfig : IEntityTypeConfiguration<LoanInstallment>
     {
-        public void Configure(EntityTypeBuilder<LoanPayment> entity)
+        public void Configure(EntityTypeBuilder<LoanInstallment> entity)
         {
-            entity.ToTable("LoanPayments", schema: "Finance");
+            entity.ToTable("LoanPaymentSchedules", schema: "Finance");
             entity.HasKey(e => e.Id);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanPaymentId");
             entity.Property(p => p.LoanId).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanId").IsRequired();
-            entity.Property(p => p.PaymentNumber)
-                .HasConversion(p => p.Value, p => PaymentNumber.Create(p))
+            entity.Property(p => p.InstallmentNumber)
+                .HasConversion(p => p.Value, p => InstallmentNumber.Create(p))
                 .HasColumnType("int")
-                .HasColumnName("PaymentNumber")
+                .HasColumnName("InstallmentNumber")
                 .IsRequired();
             entity.Property(p => p.PaymentDueDate)
                 .HasConversion(p => p.Value, p => PaymentDueDate.Create(p))

@@ -7,15 +7,15 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
-    public class LoanPayment : Entity<Guid>
+    public class LoanInstallment : Entity<Guid>
     {
-        protected LoanPayment() { }
+        protected LoanInstallment() { }
 
-        public LoanPayment
+        public LoanInstallment
         (
             LoanPaymentEconEvent evt,
             EntityGuidID loanID,
-            PaymentNumber paymentNumber,
+            InstallmentNumber installmentNumber,
             PaymentDueDate paymentDueDate,
             LoanPrincipalAmount principalAmount,
             LoanInterestAmount interestAmount,
@@ -32,7 +32,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             Id = evt.EconomicEvent.Id;
 
             LoanId = loanID ?? throw new ArgumentNullException("The loan agreement id can not be null.");
-            PaymentNumber = paymentNumber ?? throw new ArgumentNullException("The payment number is required.");
+            InstallmentNumber = installmentNumber ?? throw new ArgumentNullException("The payment number is required.");
             PaymentDueDate = paymentDueDate ?? throw new ArgumentNullException("The payment due date is required.");
             LoanPrincipalAmount = principalAmount ?? throw new ArgumentNullException("The principal amount is required.");
             LoanInterestAmount = interestAmount ?? throw new ArgumentNullException("The interest amount is required.");
@@ -50,10 +50,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             UpdateLastModifiedDate();
         }
 
-        public virtual PaymentNumber PaymentNumber { get; private set; }
-        public void UpdatePaymentNumber(PaymentNumber value)
+        public virtual InstallmentNumber InstallmentNumber { get; private set; }
+        public void UpdateInstallmentNumber(InstallmentNumber value)
         {
-            PaymentNumber = value ?? throw new ArgumentNullException("The payment number is required.");
+            InstallmentNumber = value ?? throw new ArgumentNullException("The installment number is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }
