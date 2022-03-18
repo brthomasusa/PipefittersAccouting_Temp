@@ -27,7 +27,6 @@ namespace PipefittersAccounting.Core.Financing.FinancierAggregate
                 throw new ArgumentNullException("A financier agent is required.");
             }
             Id = agent.ExternalAgent.Id;
-            ExternalAgent = agent.ExternalAgent;
 
             FinancierName = name ?? throw new ArgumentNullException("A financier name is required."); ;
             FinancierTelephone = telephone ?? throw new ArgumentNullException("A financier telephone number is required."); ;
@@ -36,8 +35,6 @@ namespace PipefittersAccounting.Core.Financing.FinancierAggregate
             UserId = userId ?? throw new ArgumentNullException("The user Id is required."); ;
             IsActive = isActive;
         }
-
-        public virtual ExternalAgent ExternalAgent { get; private set; }
 
         public OrganizationName FinancierName { get; private set; }
         public void UpdateFinancierName(OrganizationName value)

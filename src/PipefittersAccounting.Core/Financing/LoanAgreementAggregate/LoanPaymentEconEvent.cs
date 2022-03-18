@@ -6,11 +6,11 @@ using PipefittersAccounting.Core.Shared;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
-    public class LoanAgreementEconEvt : ValueObject
+    public class LoanPaymentEconEvent : ValueObject
     {
-        protected LoanAgreementEconEvt() { }
+        protected LoanPaymentEconEvent() { }
 
-        private LoanAgreementEconEvt(EconomicEvent evt)
+        private LoanPaymentEconEvent(EconomicEvent evt)
             : this()
         {
             EconomicEvent = evt;
@@ -18,10 +18,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public EconomicEvent EconomicEvent { get; }
 
-        public static LoanAgreementEconEvt Create(EntityGuidID id)
+        public static LoanPaymentEconEvent Create(EntityGuidID id)
         {
-            var evt = new EconomicEvent(id, EventTypeEnum.LoanAgreementCashReceipt);
-            return new LoanAgreementEconEvt(evt);
+            var evt = new EconomicEvent(id, EventTypeEnum.LoanPaymentCashDisbursement);
+            return new LoanPaymentEconEvent(evt);
         }
     }
 }

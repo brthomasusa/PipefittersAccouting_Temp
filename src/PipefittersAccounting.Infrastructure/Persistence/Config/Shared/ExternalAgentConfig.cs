@@ -14,7 +14,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.AgentType, "idx_ExternalAgentTypes$AgentTypeId");
             entity.HasOne(e => e.Employee).WithOne(e => e.ExternalAgent).HasForeignKey<Employee>(e => e.Id);
-            entity.HasOne(e => e.Financier).WithOne(e => e.ExternalAgent).HasForeignKey<Financier>(e => e.Id);
+            entity.HasOne(e => e.Financier).WithOne().HasForeignKey<Financier>(e => e.Id);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("AgentId").ValueGeneratedNever();
             entity.Property(p => p.AgentType).HasColumnType("int").HasColumnName("AgentTypeId").IsRequired();

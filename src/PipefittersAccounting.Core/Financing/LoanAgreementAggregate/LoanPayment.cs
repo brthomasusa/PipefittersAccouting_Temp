@@ -13,8 +13,8 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public LoanPayment
         (
-            LoanPaymentEconEvt evt,
-            LoanAgreement loanAgreement,
+            LoanPaymentEconEvent evt,
+            EntityGuidID loanID,
             PaymentNumber paymentNumber,
             PaymentDueDate paymentDueDate,
             LoanPrincipalAmount principalAmount,
@@ -30,9 +30,8 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
                 throw new ArgumentNullException("A loan payment economic event is required.");
             }
             Id = evt.EconomicEvent.Id;
-            EconomicEvent = evt.EconomicEvent;
 
-            LoanAgreement = loanAgreement ?? throw new ArgumentNullException("The loan agreement is required.");
+            LoanId = loanID ?? throw new ArgumentNullException("The loan agreement id can not be null.");
             PaymentNumber = paymentNumber ?? throw new ArgumentNullException("The payment number is required.");
             PaymentDueDate = paymentDueDate ?? throw new ArgumentNullException("The payment due date is required.");
             LoanPrincipalAmount = principalAmount ?? throw new ArgumentNullException("The principal amount is required.");
@@ -44,9 +43,12 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             CheckValidity();
         }
 
-        public virtual EconomicEvent EconomicEvent { get; private set; }
-
-        public virtual LoanAgreement LoanAgreement { get; private set; }
+        public Guid LoanId { get; private set; }
+        public void UpdateLoanId(EntityGuidID value)
+        {
+            LoanId = value ?? throw new ArgumentNullException("The loan agreement id can not be null.");
+            UpdateLastModifiedDate();
+        }
 
         public virtual PaymentNumber PaymentNumber { get; private set; }
         public void UpdatePaymentNumber(PaymentNumber value)
@@ -105,34 +107,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         protected override void CheckValidity()
         {
-            if (EconomicEvent.EventType is not EventTypeEnum.LoanPaymentCashDisbursement)
-            {
-                throw new ArgumentException("Invalid EconomicEvent type; it must be 'EventType.CashDisbursementForLoanPayment'.");
-            }
-
-            if (PaymentNumber > (MonthDiff(LoanAgreement.LoanDate, LoanAgreement.MaturityDate)))
-            {
-                throw new ArgumentOutOfRangeException("Payment number can not be greater than the length (in months) of the loan agreement.", nameof(PaymentNumber));
-            }
-
-        }
-
-        private int MonthDiff(DateTime startDate, DateTime endDate)
-        {
-            int m1;
-            int m2;
-            if (startDate < endDate)
-            {
-                m1 = (endDate.Month - startDate.Month);         //for years
-                m2 = (endDate.Year - startDate.Year) * 12;      //for months
-            }
-            else
-            {
-                m1 = (startDate.Month - endDate.Month);//for years
-                m2 = (startDate.Year - endDate.Year) * 12; //for months
-            }
-
-            return m1 + m2;
+            // if (EconomicEvent.EventType is not EventTypeEnum.LoanPaymentCashDisbursement)
+            // {
+            //     throw new ArgumentException("Invalid EconomicEvent type; it must be 'EventType.CashDisbursementForLoanPayment'.");
+            // }
         }
     }
 }

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
 {
-    internal class FinancierAggregateConfig : IEntityTypeConfiguration<Financier>
+    internal class FinancierConfig : IEntityTypeConfiguration<Financier>
     {
         public void Configure(EntityTypeBuilder<Financier> entity)
         {

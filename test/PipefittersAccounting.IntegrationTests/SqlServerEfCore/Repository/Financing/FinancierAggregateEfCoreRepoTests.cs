@@ -7,7 +7,6 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
@@ -101,7 +100,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
-            Guid agentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601");
+            Guid agentId = new Guid("84164388-28ff-4b47-bd63-dd9326d32236");
             Financier financier = await repo.GetByIdAsync(agentId);
 
             Assert.NotNull(financier);

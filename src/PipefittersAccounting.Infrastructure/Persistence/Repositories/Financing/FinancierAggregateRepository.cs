@@ -2,8 +2,10 @@
 #pragma warning disable CS8603
 
 using Microsoft.EntityFrameworkCore;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 
@@ -22,14 +24,23 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
         public async Task<bool> Exists(Guid id) => await _dbContext.Financiers.FindAsync(id) != null;
 
-        public async Task AddAsync(Financier entity) => await _dbContext.Financiers.AddAsync(entity);
+        public async Task AddAsync(Financier entity)
+        {
+            ExternalAgent agent = new(EntityGuidID.Create(entity.Id), AgentTypeEnum.Financier);
+            await _dbContext.ExternalAgents.AddAsync(agent);
+            await _dbContext.Financiers.AddAsync(entity);
+        }
 
         public void Update(Financier entity) => _dbContext.Financiers.Update(entity);
 
         public void Delete(Financier entity)
         {
             _dbContext.Financiers.Remove(entity);
-            _dbContext.ExternalAgents.Remove(entity.ExternalAgent);
+
+            string errMsg = $"Delete financier failed, unable to locate external agent with id: {entity.Id}";
+            ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id) ?? throw new ArgumentNullException(errMsg);
+
+            _dbContext.ExternalAgents.Remove(agent);
         }
 
         public async Task<OperationResult<Guid>> CheckForDuplicateFinancierName(string name)
