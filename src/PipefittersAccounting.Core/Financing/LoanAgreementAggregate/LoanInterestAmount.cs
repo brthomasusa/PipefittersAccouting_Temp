@@ -26,9 +26,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         private static void CheckValidity(decimal value)
         {
-            if (value <= 0)
+            if (value < 0)
             {
-                throw new ArgumentException("The loan interest amount can not be negative.", nameof(value));
+                throw new ArgumentException("The loan interest amount can not be negative.");
             }
         }
     }

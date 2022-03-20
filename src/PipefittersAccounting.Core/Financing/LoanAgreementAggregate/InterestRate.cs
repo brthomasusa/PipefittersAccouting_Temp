@@ -28,7 +28,12 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         {
             if (value < 0)
             {
-                throw new ArgumentException("The interest rate can not be negative.", nameof(value));
+                throw new ArgumentException("The interest rate can not be negative.");
+            }
+
+            if (value >= 1)
+            {
+                throw new ArgumentException("An interest rate of 100% is not allowed.");
             }
         }
     }

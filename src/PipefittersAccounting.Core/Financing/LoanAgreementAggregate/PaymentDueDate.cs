@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         {
             if (value == default)
             {
-                throw new ArgumentNullException("The payment due date is required.", nameof(value));
+                throw new ArgumentNullException("The payment due date is required.");
             }
         }
     }
