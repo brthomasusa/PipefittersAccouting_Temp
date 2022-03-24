@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         {
             if (value < 1)
             {
-                throw new ArgumentOutOfRangeException("The installment number must be greater than or equal to one.", nameof(value));
+                throw new ArgumentOutOfRangeException("The installment number must be greater than or equal to one.");
             }
         }
     }

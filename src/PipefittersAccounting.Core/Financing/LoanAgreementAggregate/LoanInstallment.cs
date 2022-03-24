@@ -44,11 +44,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         }
 
         public Guid LoanId { get; private set; }
-        public void UpdateLoanId(EntityGuidID value)
-        {
-            LoanId = value ?? throw new ArgumentNullException("The loan agreement id can not be null.");
-            UpdateLastModifiedDate();
-        }
 
         public virtual InstallmentNumber InstallmentNumber { get; private set; }
         public void UpdateInstallmentNumber(InstallmentNumber value)
