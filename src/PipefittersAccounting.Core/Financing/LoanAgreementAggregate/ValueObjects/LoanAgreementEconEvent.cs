@@ -4,7 +4,7 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Shared;
 
-namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
+namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects
 {
     public class LoanAgreementEconEvent : ValueObject
     {

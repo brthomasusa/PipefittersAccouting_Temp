@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {

@@ -2,7 +2,7 @@
 
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
+namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects
 {
     public class LoanDate : ValueObject
     {

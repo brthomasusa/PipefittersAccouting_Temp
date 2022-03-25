@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
+namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
     public class LoanAmortizationCalculator
     {
@@ -36,7 +37,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             CalcRepaymentSchedule();
         }
 
-        public List<Installment>? RepaymentSchedule => _pymtSchedule;
+        public ReadOnlyCollection<Installment> RepaymentSchedule => new(_pymtSchedule);
 
         public static LoanAmortizationCalculator Create
         (

@@ -11,6 +11,8 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 
 namespace PipefittersAccounting.UnitTests.ValueObjects
 {
@@ -114,7 +116,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects
         {
             var emi = EqualMonthlyInstallmentCalculator.CalcEqualMonthlyInstallment(36, .08, 3500M);
 
-            Assert.True(emi > 0);
+            Assert.Equal(109.68M, Decimal.Round(emi, 2));
         }
 
         [Fact]
@@ -126,7 +128,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects
             DateTime maturityDate = new DateTime(2023, 4, 16);
 
             LoanAmortizationCalculator calculator = LoanAmortizationCalculator.Create(annualInterestRate, loanPrincipalAmount, firstPymtDate, maturityDate);
-            List<Installment> installments = calculator.RepaymentSchedule;
+            var installments = calculator.RepaymentSchedule;
 
             int numberOfInstallments = installments.Count;
 
@@ -140,7 +142,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects
                 LoanAgreementEconEvent.Create(EntityGuidID.Create(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"))),
                 EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),
                 LoanAmount.Create(33000),
-                InterestRate.Create(.0725),
+                InterestRate.Create(.0725M),
                 LoanDate.Create(new DateTime(2021, 11, 15)),
                 MaturityDate.Create(new DateTime(2022, 10, 15)),
                 PaymentsPerYear.Create(12),

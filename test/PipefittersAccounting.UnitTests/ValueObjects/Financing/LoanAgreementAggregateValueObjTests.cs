@@ -5,6 +5,7 @@
 using System;
 using Xunit;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
 {
@@ -43,7 +44,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
         [Theory]
         [InlineData(.0001, .0001)]
         [InlineData(.9999, .9999)]
-        public void Create_InterestRate_ValidInfo_ShouldSucceed(double input, double expectedResult)
+        public void Create_InterestRate_ValidInfo_ShouldSucceed(decimal input, decimal expectedResult)
         {
             InterestRate rate = InterestRate.Create(input);
 
@@ -54,7 +55,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
         [Fact]
         public void Create_InterestRate_NegativePercent_ShouldFail()
         {
-            Action action = () => InterestRate.Create(-.00001);
+            Action action = () => InterestRate.Create(-.00001M);
 
             var caughtException = Assert.Throws<ArgumentException>(action);
 
@@ -64,7 +65,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
         [Fact]
         public void Create_InterestRate_GreaterThan100Percent_ShouldFail()
         {
-            Action action = () => InterestRate.Create(1.0000);
+            Action action = () => InterestRate.Create(1.0000M);
 
             var caughtException = Assert.Throws<ArgumentException>(action);
 
