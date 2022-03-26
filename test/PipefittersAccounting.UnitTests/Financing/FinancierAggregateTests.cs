@@ -8,7 +8,7 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
-namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
+namespace PipefittersAccounting.UnitTests.Financing
 {
     public class FinancierAggregateTests
     {

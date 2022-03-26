@@ -13,7 +13,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         private readonly DateTime _loanDate;
         private readonly DateTime _maturityDate;
         private readonly decimal _loanAmount;
-
         private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule;
 
         protected LoanRepaymentSchedule(

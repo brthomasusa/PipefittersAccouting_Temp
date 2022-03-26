@@ -3,13 +3,17 @@
 #pragma warning disable CS8625
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Xunit;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
-namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
+namespace PipefittersAccounting.UnitTests.Financing
 {
     public class LoanAgreementAggregateTests
     {
@@ -183,6 +187,28 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
             Assert.Equal(uID, agreement.UserId);
         }
 
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_ValidInfo_ShouldSucceed()
+        {
+            int numberOfPayments = 4;
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
+            decimal loanAmount = 1800M;
+            decimal interestRate = .06M;
+
+            LoanInstallmentPaymentSchedule schedule = new(InstallmentTestData.GetInstallmentsValidInfo());
+
+            InstallmentNumberValidationHandler handler = new(numberOfPayments);
+            handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, maturityDate))
+                   .SetNext(new InstallmentPaymentAmountValidationHandler(loanAmount, interestRate));
+
+            handler.Handle(schedule);
+
+            Assert.True(true);
+        }
+
+
+
         private LoanAgreement GetLoanAgreementForEditing() =>
             new LoanAgreement
             (
@@ -209,5 +235,6 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
                 false,
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
+
     }
 }

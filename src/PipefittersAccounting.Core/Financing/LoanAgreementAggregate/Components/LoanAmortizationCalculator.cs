@@ -65,7 +65,8 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
                 _pymtSchedule.Add
                 (
-                    new Installment(PaymentDueDate: pymtDueDate,
+                    new Installment(InstallmentNumber: counter + 1,
+                                    PaymentDueDate: pymtDueDate,
                                     Payment: _equalMonthlyPymt,
                                     Principal: Decimal.Round(principalPymt, 2),
                                     Interest: Decimal.Round(interestPymt, 2),
