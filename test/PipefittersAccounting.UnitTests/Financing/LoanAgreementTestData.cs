@@ -36,10 +36,9 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        public static SortedDictionary<int, Installment> GetInstallmentsValidInfo()
+        public static List<Installment> GetInstallmentsValidInfo()
         {
             List<Installment> pymtSchedule = new();
-            SortedDictionary<int, Installment> sortedDictionary = new();
 
             pymtSchedule.Add
             (
@@ -82,15 +81,12 @@ namespace PipefittersAccounting.UnitTests.Financing
                                 RemainingBalance: 0M)
             );
 
-            pymtSchedule.ForEach(item => sortedDictionary.Add(item.InstallmentNumber, item));
-
-            return sortedDictionary;
+            return pymtSchedule;
         }
 
-        public static SortedDictionary<int, Installment> GetInstallmentsTooFewInstallments()
+        public static List<Installment> GetInstallmentsTooFewInstallments()
         {
             List<Installment> pymtSchedule = new();
-            SortedDictionary<int, Installment> sortedDictionary = new();
 
             pymtSchedule.Add
             (
@@ -123,15 +119,12 @@ namespace PipefittersAccounting.UnitTests.Financing
                                 RemainingBalance: 453.00M)
             );
 
-            pymtSchedule.ForEach(item => sortedDictionary.Add(item.InstallmentNumber, item));
-
-            return sortedDictionary;
+            return pymtSchedule;
         }
 
-        public static SortedDictionary<int, Installment> GetInstallmentsTooManyInstallments()
+        public static List<Installment> GetInstallmentsTooManyInstallments()
         {
             List<Installment> pymtSchedule = new();
-            SortedDictionary<int, Installment> sortedDictionary = new();
 
             pymtSchedule.Add
             (
@@ -184,15 +177,12 @@ namespace PipefittersAccounting.UnitTests.Financing
                                 RemainingBalance: 0M)
             );
 
-            pymtSchedule.ForEach(item => sortedDictionary.Add(item.InstallmentNumber, item));
-
-            return sortedDictionary;
+            return pymtSchedule;
         }
 
-        public static SortedDictionary<int, Installment> GetInstallmentsDictIndexDoesNotStartAtOne()
+        public static List<Installment> GetInstallmentsDictIndexDoesNotStartAtOne()
         {
             List<Installment> pymtSchedule = new();
-            SortedDictionary<int, Installment> sortedDictionary = new();
 
             pymtSchedule.Add
             (
@@ -235,9 +225,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                                 RemainingBalance: 0M)
             );
 
-            pymtSchedule.ForEach(item => sortedDictionary.Add(item.InstallmentNumber + 2, item));
-
-            return sortedDictionary;
+            return pymtSchedule;
         }
     }
 }
