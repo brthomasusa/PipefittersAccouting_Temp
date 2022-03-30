@@ -24,7 +24,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             InterestRate interestRate,
             LoanDate loanDate,
             MaturityDate maturityDate,
-            PaymentsPerYear paymentsPerYear,
+            NumberOfInstallments installments,
             EntityGuidID userId
         )
             : this()
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             InterestRate = interestRate ?? throw new ArgumentNullException("The interest rate is required; if zero then pass in 0.");
             LoanDate = loanDate ?? throw new ArgumentNullException("The loan agreement date is required.");
             MaturityDate = maturityDate ?? throw new ArgumentNullException("The loan maturity date is required.");
-            PaymentsPerYear = paymentsPerYear ?? throw new ArgumentNullException("The number of loan payments per year is required.");
+            NumberOfInstallments = installments ?? throw new ArgumentNullException("The number of installments is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
 
             CheckValidity();
@@ -57,7 +57,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public virtual MaturityDate MaturityDate { get; private set; }
 
-        public virtual PaymentsPerYear PaymentsPerYear { get; private set; }
+        public virtual NumberOfInstallments NumberOfInstallments { get; private set; }
 
         public Guid UserId { get; private set; }
 
@@ -89,9 +89,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             CheckValidity();
         }
 
-        public void UpdatePaymentsPerYear(PaymentsPerYear value)
+        public void UpdateNumberOfInstallments(NumberOfInstallments value)
         {
-            PaymentsPerYear = value ?? throw new ArgumentNullException("The number of loan payments per year is required.");
+            NumberOfInstallments = value ?? throw new ArgumentNullException("The number of installments is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }

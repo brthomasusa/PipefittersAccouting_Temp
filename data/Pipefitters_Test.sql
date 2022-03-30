@@ -289,7 +289,7 @@ CREATE TABLE Finance.LoanAgreements
     InterestRate NUMERIC(5,4) CHECK(InterestRate >= 0) NOT NULL,        
     LoanDate DATETIME2(0) NOT NULL,
     MaturityDate DATETIME2(0) NOT NULL,
-    PymtsPerYear INT CHECK(PymtsPerYear > 0) NOT NULL,
+    NumberOfInstallments INT CHECK(NumberOfInstallments > 0) NOT NULL,
     UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
     CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
     LastModifiedDate datetime2(7) NULL,
@@ -362,7 +362,7 @@ VALUES
 GO
 
 INSERT INTO Finance.LoanAgreements
-    (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, PymtsPerYear, UserId)
+    (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, NumberOfInstallments, UserId)
 VALUES
     ('41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '12998229-7ede-4834-825a-0c55bde75695', 50000.00, 0.08625, '2020-12-02', '2021-11-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('09b53ffb-9983-4cde-b1d6-8a49e785177f', '94b1d516-a1c3-4df8-ae85-be1f34966601', 50000.00, 0.08625, '2021-04-02', '2022-03-02', 12, '660bb318-649e-470d-9d2b-693bfb0b2744'),

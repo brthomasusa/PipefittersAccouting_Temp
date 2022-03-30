@@ -35,8 +35,8 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
                 .HasColumnType("DATETIME2(0)")
                 .HasColumnName("MaturityDate")
                 .IsRequired();
-            entity.Property(p => p.PaymentsPerYear)
-                .HasConversion(p => p.Value, p => PaymentsPerYear.Create(p))
+            entity.Property(p => p.NumberOfInstallments)
+                .HasConversion(p => p.Value, p => NumberOfInstallments.Create(p))
                 .HasColumnType("INT")
                 .HasColumnName("PymtsPerYear")
                 .IsRequired();

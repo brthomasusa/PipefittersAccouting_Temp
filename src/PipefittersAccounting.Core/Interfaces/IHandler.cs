@@ -1,4 +1,4 @@
-namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
+namespace PipefittersAccounting.Core.Interfaces
 {
     public interface IHandler<T>
     {

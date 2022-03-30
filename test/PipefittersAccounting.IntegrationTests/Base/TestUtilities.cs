@@ -261,7 +261,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 InterestRate.Create(.0675M),
                 LoanDate.Create(new DateTime(2021, 11, 5)),
                 MaturityDate.Create(new DateTime(2022, 11, 5)),
-                PaymentsPerYear.Create(12),
+                NumberOfInstallments.Create(12),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
@@ -274,7 +274,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 InterestRate.Create(.0725M),
                 LoanDate.Create(new DateTime(2021, 11, 15)),
                 MaturityDate.Create(new DateTime(2022, 10, 15)),
-                PaymentsPerYear.Create(12),
+                NumberOfInstallments.Create(12),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 

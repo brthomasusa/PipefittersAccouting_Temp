@@ -1,12 +1,8 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedKernel.Interfaces;
-using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {

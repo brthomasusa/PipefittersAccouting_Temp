@@ -175,29 +175,19 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.Financing
         [InlineData(12, 12)]
         public void Create_PaymentsPerYear_ValidInfo_ShouldSucceed(int input, int expectedResult)
         {
-            PaymentsPerYear actualResult = PaymentsPerYear.Create(input);
-            Assert.IsType<PaymentsPerYear>(actualResult);
+            NumberOfInstallments actualResult = NumberOfInstallments.Create(input);
+            Assert.IsType<NumberOfInstallments>(actualResult);
             Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
         public void Create_PaymentsPerYear_NegativePymtsPerYear_ShouldFail()
         {
-            Action action = () => PaymentsPerYear.Create(-1);
+            Action action = () => NumberOfInstallments.Create(-1);
 
             var caughtException = Assert.Throws<ArgumentOutOfRangeException>(action);
 
-            Assert.Equal("The number of payments per year must be between 1 and 365.", caughtException.ParamName);
-        }
-
-        [Fact]
-        public void Create_PaymentsPerYear_PymtsPerYearGreaterThan365_ShouldFail()
-        {
-            Action action = () => PaymentsPerYear.Create(366);
-
-            var caughtException = Assert.Throws<ArgumentOutOfRangeException>(action);
-
-            Assert.Equal("The number of payments per year must be between 1 and 365.", caughtException.ParamName);
+            Assert.Equal("The number of installments must be greater than 1.", caughtException.ParamName);
         }
     }
 }

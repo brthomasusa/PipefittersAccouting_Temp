@@ -35,7 +35,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             if (principalTotal + totalInterestPaid != totalPayments)
             {
-                string errMsg = $"Total Equal Monthly Installment (EMI) must equal total principal repaid (${principalTotal}) + total interest paid ({totalInterestPaid})!";
+                string errMsg = $"Total of Equal Monthly Installment (EMI) payments (${totalPayments}) must equal total of principal repaid (${principalTotal}) + total of interest paid ({totalInterestPaid})!";
                 throw new InvalidOperationException(errMsg);
             }
 
