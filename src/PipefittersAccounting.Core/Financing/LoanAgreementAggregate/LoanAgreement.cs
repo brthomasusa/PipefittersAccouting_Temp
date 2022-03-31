@@ -5,14 +5,16 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedKernel.Interfaces;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
     public class LoanAgreement : AggregateRoot<Guid>, IAggregateRoot
     {
-        private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule;
+        private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule = new();
 
         protected LoanAgreement() { }
 
@@ -24,8 +26,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             InterestRate interestRate,
             LoanDate loanDate,
             MaturityDate maturityDate,
-            NumberOfInstallments installments,
-            EntityGuidID userId
+            NumberOfInstallments numberOfInstallments,
+            EntityGuidID userId,
+            List<Installment> installments
         )
             : this()
         {
@@ -40,11 +43,11 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             InterestRate = interestRate ?? throw new ArgumentNullException("The interest rate is required; if zero then pass in 0.");
             LoanDate = loanDate ?? throw new ArgumentNullException("The loan agreement date is required.");
             MaturityDate = maturityDate ?? throw new ArgumentNullException("The loan maturity date is required.");
-            NumberOfInstallments = installments ?? throw new ArgumentNullException("The number of installments is required.");
+            NumberOfInstallments = numberOfInstallments ?? throw new ArgumentNullException("The number of installments is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
+            AddLoanInstallmentPaymentSchedule(installments);
 
             CheckValidity();
-            _loanPaymentSchedule = new SortedDictionary<int, LoanInstallment>();
         }
 
         public Guid FinancierId { get; private set; }
@@ -104,17 +107,38 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public virtual ReadOnlyDictionary<int, LoanInstallment> LoanPaymentSchedule => new(_loanPaymentSchedule);
 
+        protected void AddLoanInstallmentPaymentSchedule(List<Installment> installments)
+        {
+            // var success = DateTime.TryParse(LoanDate.Value.ToShortDateString(), out loanDate);
+            // DateTime loanDate = LoanDate.Value;
+
+            DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
+
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
+
+            if (result.Success)
+            {
+                InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
+                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
+                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount, InterestRate));
+
+                handler.Handle(result.Result);
+
+                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, ConvertInstallmentToLoanInstallment(item)));
+            }
+            else
+            {
+                throw new ArgumentException(result.NonSuccessMessage);
+            }
+        }
+
         protected override void CheckValidity()
         {
             if (DateTime.Compare(MaturityDate, LoanDate) < 0)
             {
                 throw new ArgumentException("Loan maturity date must be greater than or equal to the loan date.");
             }
-
-            // if (PaymentNumber > (MonthDiff(LoanAgreement.LoanDate, LoanAgreement.MaturityDate)))
-            // {
-            //     throw new ArgumentOutOfRangeException("Payment number can not be greater than the length (in months) of the loan agreement.", nameof(PaymentNumber));
-            // }            
         }
 
         private int MonthDiff(DateTime startDate, DateTime endDate)
@@ -133,6 +157,22 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             }
 
             return m1 + m2;
+        }
+
+        private LoanInstallment ConvertInstallmentToLoanInstallment(Installment installment)
+        {
+            return new LoanInstallment
+            (
+                LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(FinancierId),
+                InstallmentNumber.Create(installment.InstallmentNumber),
+                PaymentDueDate.Create(installment.PaymentDueDate),
+                LoanPrincipalAmount.Create(installment.Principal),
+                LoanInterestAmount.Create(installment.Interest),
+                LoanPrincipalRemaining.Create(installment.RemainingBalance),
+                false,
+                EntityGuidID.Create(UserId)
+            );
         }
     }
 }

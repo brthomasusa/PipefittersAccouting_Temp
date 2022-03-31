@@ -6,6 +6,7 @@ using System.Linq;
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.SharedModel.ReadModels;
@@ -262,7 +263,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 LoanDate.Create(new DateTime(2021, 11, 5)),
                 MaturityDate.Create(new DateTime(2022, 11, 5)),
                 NumberOfInstallments.Create(12),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+                GetInstallmentsValidInfo()
             );
 
         public static LoanAgreement GetLoanAgreementForEditing() =>
@@ -275,8 +277,57 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 LoanDate.Create(new DateTime(2021, 11, 15)),
                 MaturityDate.Create(new DateTime(2022, 10, 15)),
                 NumberOfInstallments.Create(12),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+                GetInstallmentsValidInfo()
             );
+
+        public static List<Installment> GetInstallmentsValidInfo()
+        {
+            List<Installment> pymtSchedule = new();
+
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 1,
+                                PaymentDueDate: new DateTime(2022, 4, 15),
+                                Payment: 455.65M,
+                                Principal: 447.00M,
+                                Interest: 8.65M,
+                                TotalInterestPaid: 8.65M,
+                                RemainingBalance: 1353.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 2,
+                                PaymentDueDate: new DateTime(2022, 5, 15),
+                                Payment: 455.65M,
+                                Principal: 449.00M,
+                                Interest: 6.65M,
+                                TotalInterestPaid: 15.30M,
+                                RemainingBalance: 904.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 3,
+                                PaymentDueDate: new DateTime(2022, 6, 15),
+                                Payment: 455.65M,
+                                Principal: 451.00M,
+                                Interest: 4.65M,
+                                TotalInterestPaid: 19.95M,
+                                RemainingBalance: 453.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 4,
+                                PaymentDueDate: new DateTime(2022, 7, 15),
+                                Payment: 455.65M,
+                                Principal: 453.00M,
+                                Interest: 2.65M,
+                                TotalInterestPaid: 22.60M,
+                                RemainingBalance: 0M)
+            );
+
+            return pymtSchedule;
+        }
 
 
 

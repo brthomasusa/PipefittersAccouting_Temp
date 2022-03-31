@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
@@ -27,7 +28,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             return OperationResult<LoanInstallmentPaymentSchedule>.CreateSuccessResult(new LoanInstallmentPaymentSchedule(installments));
         }
-
-        public SortedDictionary<int, Installment> RepaymentSchedule => _loanPaymentSchedule;
+        public ReadOnlyDictionary<int, Installment> RepaymentSchedule => new(_loanPaymentSchedule);
+        // public SortedDictionary<int, Installment> RepaymentSchedule => _loanPaymentSchedule;
     }
 }

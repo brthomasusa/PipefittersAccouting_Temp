@@ -85,200 +85,184 @@ namespace PipefittersAccounting.UnitTests.Financing
             var caughtException = Assert.Throws<InvalidOperationException>(action);
         }
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_TooFewInstallments_ShouldFail()
-        // {
-        //     int numberOfPayments = 4;
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_TooFewInstallments_ShouldFail()
+        {
+            int numberOfPayments = 4;
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     List<Installment> installments = LoanAgreementTestData.GetInstallmentsTooFewInstallments();
-        //     LoanInstallmentPaymentSchedule schedule = new(installments);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsTooFewInstallments();
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     InstallmentNumberValidationHandler handler = new(numberOfPayments);
+            InstallmentNumberValidationHandler handler = new(numberOfPayments);
 
-        //     Action action = () => handler.Handle(schedule);
+            Action action = () => handler.Handle(result.Result);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        //     Assert.Equal($"The repayment schedule only contains {installments.Count} installments. It should contain {numberOfPayments}", caughtException.Message);
-        // }
+            Assert.Equal($"The repayment schedule only contains {installments.Count} installments. It should contain {numberOfPayments}", caughtException.Message);
+        }
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_TooManyInstallments_ShouldFail()
-        // {
-        //     int numberOfPayments = 4;
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_TooManyInstallments_ShouldFail()
+        {
+            int numberOfPayments = 4;
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     List<Installment> installments = LoanAgreementTestData.GetInstallmentsTooManyInstallments();
-        //     LoanInstallmentPaymentSchedule schedule = new(installments);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsTooManyInstallments();
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     InstallmentNumberValidationHandler handler = new(numberOfPayments);
+            InstallmentNumberValidationHandler handler = new(numberOfPayments);
 
-        //     Action action = () => handler.Handle(schedule);
+            Action action = () => handler.Handle(result.Result);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        //     Assert.Equal($"The repayment schedule contains too many ({installments.Count}) installments. It should contain {numberOfPayments}", caughtException.Message);
-        // }
+            Assert.Equal($"The repayment schedule contains too many ({installments.Count}) installments. It should contain {numberOfPayments}", caughtException.Message);
+        }
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_DuplicateOrOutOfOrderInstallmentNumbers_ShouldFail()
-        // {
-        //     int numberOfPayments = 4;
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_2ndPymtDueDateNotGreaterThanPrevDueDate_ShouldFail()
+        {
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     int index = installments.FindIndex(i => i.InstallmentNumber == 1);
-        //     installments[index] = new Installment(InstallmentNumber: 2,               // Duplicate or out of order installment numbers
-        //                                         PaymentDueDate: new DateTime(2022, 5, 15),
-        //                                         Payment: 455.65M,
-        //                                         Principal: 449.00M,
-        //                                         Interest: 6.65M,
-        //                                         TotalInterestPaid: 15.30M,
-        //                                         RemainingBalance: 904.00M);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
+            int index = installments.FindIndex(i => i.InstallmentNumber == 2);
+            installments[index] = new Installment(InstallmentNumber: 2,
+                                                  PaymentDueDate: new DateTime(2022, 4, 15),  // Equal to first payment date, it must be greater than 2022-04-15
+                                                  Payment: 455.65M,
+                                                  Principal: 451.00M,
+                                                  Interest: 4.65M,
+                                                  TotalInterestPaid: 19.95M,
+                                                  RemainingBalance: 453.00M);
 
-        //     var anyDuplicate = installments.GroupBy(x => x.InstallmentNumber)
-        //                                    .Any(installment => installment.Count() > 1);
-        //     LoanInstallmentPaymentSchedule schedule = new(installments);
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     InstallmentNumberValidationHandler handler = new(numberOfPayments);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
 
-        //     Action action = () => handler.Handle(schedule);
+            Action action = () => handler.Handle(result.Result);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
-        // }
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_2ndPymtDueDateNotGreaterThanPrevDueDate_ShouldFail()
-        // {
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+            Assert.Equal("The payment due date for installment 2 can not be less than or equal the payment date for installment 1.", caughtException.Message);
+        }
 
-        //     SortedDictionary<int, Installment> badData = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     badData[2] = new Installment(InstallmentNumber: 2,
-        //                         PaymentDueDate: new DateTime(2022, 4, 15),  // Equal to first payment date, it must be greater than 2022-04-15
-        //                         Payment: 455.65M,
-        //                         Principal: 449.00M,
-        //                         Interest: 6.65M,
-        //                         TotalInterestPaid: 15.30M,
-        //                         RemainingBalance: 904.00M);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_LastPymtDueDateNotGreaterThanPrevDueDate_ShouldFail()
+        {
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     LoanInstallmentPaymentSchedule schedule = new(badData);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
+            int index = installments.FindIndex(i => i.InstallmentNumber == 4);
+            installments[index] = new Installment(InstallmentNumber: 4,
+                                                PaymentDueDate: new DateTime(2022, 6, 15),
+                                                Payment: 455.65M,
+                                                Principal: 453.00M,
+                                                Interest: 2.65M,
+                                                TotalInterestPaid: 22.60M,
+                                                RemainingBalance: 0M);
 
-        //     InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     Action action = () => handler.Handle(schedule);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            Action action = () => handler.Handle(result.Result);
 
-        //     Assert.Equal("The payment due date for installment 2 can not be less than or equal the payment date for installment 1.", caughtException.Message);
-        // }
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_LastPymtDueDateNotGreaterThanPrevDueDate_ShouldFail()
-        // {
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+            Assert.Equal("The payment due date for installment 4 can not be less than or equal the payment date for installment 3.", caughtException.Message);
+        }
 
-        //     SortedDictionary<int, Installment> badData = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     badData[4] = new Installment(InstallmentNumber: 4,
-        //                         PaymentDueDate: new DateTime(2022, 6, 15),
-        //                         Payment: 455.65M,
-        //                         Principal: 453.00M,
-        //                         Interest: 2.65M,
-        //                         TotalInterestPaid: 22.60M,
-        //                         RemainingBalance: 0M);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateBeforeLoanAgreementLoanDate_ShouldFail()
+        {
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     LoanInstallmentPaymentSchedule schedule = new(badData);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
+            int index = installments.FindIndex(i => i.InstallmentNumber == 1);
+            installments[index] = new Installment(InstallmentNumber: 1,
+                                                PaymentDueDate: new DateTime(2022, 4, 14),
+                                                Payment: 455.65M,
+                                                Principal: 447.00M,
+                                                Interest: 8.65M,
+                                                TotalInterestPaid: 8.65M,
+                                                RemainingBalance: 1353.00M);
 
-        //     InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     Action action = () => handler.Handle(schedule);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            Action action = () => handler.Handle(result.Result);
 
-        //     Assert.Equal("The payment due date for installment 4 can not be less than or equal the payment date for installment 3.", caughtException.Message);
-        // }
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateBeforeLoanAgreementLoanDate_ShouldFail()
-        // {
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+            Assert.Equal("Invalid installment payment dates(s) found! Valid installment payment dates are between loan agreement loan date and maturity date.", caughtException.Message);
+        }
 
-        //     SortedDictionary<int, Installment> badData = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     badData[1] = new Installment(InstallmentNumber: 1,
-        //                         PaymentDueDate: new DateTime(2022, 4, 14),
-        //                         Payment: 455.65M,
-        //                         Principal: 447.00M,
-        //                         Interest: 8.65M,
-        //                         TotalInterestPaid: 8.65M,
-        //                         RemainingBalance: 1353.00M);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateAfterLoanAgreementMaturityDate_ShouldFail()
+        {
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     LoanInstallmentPaymentSchedule schedule = new(badData);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
+            int index = installments.FindIndex(i => i.InstallmentNumber == 1);
+            installments[index] = new Installment(InstallmentNumber: 1,
+                                                PaymentDueDate: new DateTime(2022, 7, 16),
+                                                Payment: 455.65M,
+                                                Principal: 447.00M,
+                                                Interest: 8.65M,
+                                                TotalInterestPaid: 8.65M,
+                                                RemainingBalance: 1353.00M);
 
-        //     InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     Action action = () => handler.Handle(schedule);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            Action action = () => handler.Handle(result.Result);
 
-        //     Assert.Equal("Invalid installment payment dates(s) found! Valid installment payment dates are between loan agreement loan date and maturity date.", caughtException.Message);
-        // }
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateAfterLoanAgreementMaturityDate_ShouldFail()
-        // {
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
+            Assert.Equal("Invalid installment payment dates(s) found! Valid installment payment dates are between loan agreement loan date and maturity date.", caughtException.Message);
+        }
 
-        //     SortedDictionary<int, Installment> badData = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     badData[1] = new Installment(InstallmentNumber: 1,
-        //                         PaymentDueDate: new DateTime(2022, 7, 16),
-        //                         Payment: 455.65M,
-        //                         Principal: 447.00M,
-        //                         Interest: 8.65M,
-        //                         TotalInterestPaid: 8.65M,
-        //                         RemainingBalance: 1353.00M);
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateSetToDefaultDate_ShouldFail()
+        {
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = firstPaymentDate.AddMonths(3);
 
-        //     LoanInstallmentPaymentSchedule schedule = new(badData);
+            List<Installment> installments = LoanAgreementTestData.GetInstallmentsValidInfo();
+            int index = installments.FindIndex(i => i.InstallmentNumber == 4);
+            installments[index] = new Installment(InstallmentNumber: 4,
+                                                PaymentDueDate: new DateTime(),
+                                                Payment: 455.65M,
+                                                Principal: 453.00M,
+                                                Interest: 2.65M,
+                                                TotalInterestPaid: 22.60M,
+                                                RemainingBalance: 0M);
 
-        //     InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
 
-        //     Action action = () => handler.Handle(schedule);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
 
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
+            Action action = () => handler.Handle(result.Result);
 
-        //     Assert.Equal("Invalid installment payment dates(s) found! Valid installment payment dates are between loan agreement loan date and maturity date.", caughtException.Message);
-        // }
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
 
-        // [Fact]
-        // public void LoanInstallmentPaymentSchedule_Validation_PymtDueDateSetToDefaultDate_ShouldFail()
-        // {
-        //     DateTime firstPaymentDate = new DateTime(2022, 4, 15);
-        //     DateTime maturityDate = firstPaymentDate.AddMonths(3);
-
-        //     SortedDictionary<int, Installment> badData = LoanAgreementTestData.GetInstallmentsValidInfo();
-        //     badData[4] = new Installment(InstallmentNumber: 4,
-        //                         PaymentDueDate: new DateTime(),
-        //                         Payment: 455.65M,
-        //                         Principal: 453.00M,
-        //                         Interest: 2.65M,
-        //                         TotalInterestPaid: 22.60M,
-        //                         RemainingBalance: 0M);
-
-        //     LoanInstallmentPaymentSchedule schedule = new(badData);
-
-        //     InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
-
-        //     Action action = () => handler.Handle(schedule);
-
-        //     var caughtException = Assert.Throws<InvalidOperationException>(action);
-
-        //     Assert.Equal("One or more payment dates were found to have a default date value, please correct with an actual date value.", caughtException.Message);
-        // }
+            Assert.Equal("One or more payment dates were found to have a default date value, please correct with an actual date value.", caughtException.Message);
+        }
     }
 }

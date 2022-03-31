@@ -3,14 +3,9 @@
 #pragma warning disable CS8625
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Xunit;
-using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.UnitTests.Financing
@@ -24,12 +19,13 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
                 EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
-                LoanAmount.Create(175000),
+                LoanAmount.Create(17500),
                 InterestRate.Create(.0675M),
-                LoanDate.Create(new DateTime(2021, 11, 5)),
-                MaturityDate.Create(new DateTime(2022, 11, 5)),
+                LoanDate.Create(new DateTime(2022, 3, 30)),
+                MaturityDate.Create(new DateTime(2023, 3, 30)),
                 NumberOfInstallments.Create(12),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+                LoanAgreementTestData.GetInstallments12Months()
             );
 
             Assert.IsType<LoanAgreement>(agreement);
