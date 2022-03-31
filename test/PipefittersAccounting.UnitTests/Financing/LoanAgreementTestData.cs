@@ -17,10 +17,10 @@ namespace PipefittersAccounting.UnitTests.Financing
                 LoanAmount.Create(33000),
                 InterestRate.Create(.0725M),
                 LoanDate.Create(new DateTime(2021, 11, 15)),
-                MaturityDate.Create(new DateTime(2022, 10, 15)),
+                MaturityDate.Create(new DateTime(2022, 11, 15)),
                 NumberOfInstallments.Create(12),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                GetInstallmentsValidInfo()
+                GetInstallmentsLoanRepymtScheduleUpdate()
             );
 
         public static LoanInstallment GetLoanInstallmentForEditing() =>
@@ -351,6 +351,134 @@ namespace PipefittersAccounting.UnitTests.Financing
                                 Principal: 1506.00M,
                                 Interest: 8.21M,
                                 TotalInterestPaid: 670.52M,
+                                RemainingBalance: 0M)
+            );
+
+            return pymtSchedule;
+        }
+
+        public static List<Installment> GetInstallmentsLoanRepymtScheduleUpdate()
+        {
+            List<Installment> pymtSchedule = new();
+
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 1,
+                                PaymentDueDate: new DateTime(2021, 12, 15),
+                                Payment: 2855.37M,
+                                Principal: 2663.00M,
+                                Interest: 192.37M,
+                                TotalInterestPaid: 192.37M,
+                                RemainingBalance: 30337.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 2,
+                                PaymentDueDate: new DateTime(2022, 5, 30),
+                                Payment: 2855.37M,
+                                Principal: 2678.00M,
+                                Interest: 177.37M,
+                                TotalInterestPaid: 369.74M,
+                                RemainingBalance: 27659.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 3,
+                                PaymentDueDate: new DateTime(2022, 6, 30),
+                                Payment: 2855.37M,
+                                Principal: 2694.00M,
+                                Interest: 161.37M,
+                                TotalInterestPaid: 531.11M,
+                                RemainingBalance: 24965.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 4,
+                                PaymentDueDate: new DateTime(2022, 7, 30),
+                                Payment: 2855.37M,
+                                Principal: 2710.00M,
+                                Interest: 145.37M,
+                                TotalInterestPaid: 676.48M,
+                                RemainingBalance: 22255.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 5,
+                                PaymentDueDate: new DateTime(2022, 8, 30),
+                                Payment: 2855.37M,
+                                Principal: 2726.00M,
+                                Interest: 129.37M,
+                                TotalInterestPaid: 805.85M,
+                                RemainingBalance: 19529.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 6,
+                                PaymentDueDate: new DateTime(2022, 9, 30),
+                                Payment: 2855.37M,
+                                Principal: 2741.00M,
+                                Interest: 114.37M,
+                                TotalInterestPaid: 920.22M,
+                                RemainingBalance: 16788.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 7,
+                                PaymentDueDate: new DateTime(2022, 10, 30),
+                                Payment: 2855.37M,
+                                Principal: 2757.00M,
+                                Interest: 98.37M,
+                                TotalInterestPaid: 1018.59M,
+                                RemainingBalance: 14031.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 8,
+                                PaymentDueDate: new DateTime(2022, 11, 30),
+                                Payment: 2855.37M,
+                                Principal: 2774.00M,
+                                Interest: 81.37M,
+                                TotalInterestPaid: 1099.96M,
+                                RemainingBalance: 11257.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 9,
+                                PaymentDueDate: new DateTime(2022, 12, 30),
+                                Payment: 2855.37M,
+                                Principal: 2790.00M,
+                                Interest: 65.37M,
+                                TotalInterestPaid: 1165.33M,
+                                RemainingBalance: 8467.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 10,
+                                PaymentDueDate: new DateTime(2023, 1, 30),
+                                Payment: 2855.37M,
+                                Principal: 2806.00M,
+                                Interest: 49.37M,
+                                TotalInterestPaid: 1214.70M,
+                                RemainingBalance: 5661.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 11,
+                                PaymentDueDate: new DateTime(2023, 2, 28),
+                                Payment: 2855.37M,
+                                Principal: 2822.00M,
+                                Interest: 33.37M,
+                                TotalInterestPaid: 1248.07M,
+                                RemainingBalance: 2839.00M)
+            );
+            pymtSchedule.Add
+            (
+                new Installment(InstallmentNumber: 12,
+                                PaymentDueDate: new DateTime(2023, 3, 30),
+                                Payment: 2855.37M,
+                                Principal: 2839.00M,
+                                Interest: 16.37M,
+                                TotalInterestPaid: 1264.44M,
                                 RemainingBalance: 0M)
             );
 

@@ -109,9 +109,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         protected void AddLoanInstallmentPaymentSchedule(List<Installment> installments)
         {
-            // var success = DateTime.TryParse(LoanDate.Value.ToShortDateString(), out loanDate);
-            // DateTime loanDate = LoanDate.Value;
-
             DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
 
             OperationResult<LoanInstallmentPaymentSchedule> result =
@@ -125,6 +122,30 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
                 handler.Handle(result.Result);
 
+                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, ConvertInstallmentToLoanInstallment(item)));
+            }
+            else
+            {
+                throw new ArgumentException(result.NonSuccessMessage);
+            }
+        }
+
+        public void UpdateLoanInstallmentPaymentSchedule(List<Installment> installments)
+        {
+            DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
+
+            OperationResult<LoanInstallmentPaymentSchedule> result =
+                LoanInstallmentPaymentSchedule.Create(installments);
+
+            if (result.Success)
+            {
+                InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
+                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
+                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount, InterestRate));
+
+                handler.Handle(result.Result);
+
+                _loanPaymentSchedule = new();
                 installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, ConvertInstallmentToLoanInstallment(item)));
             }
             else

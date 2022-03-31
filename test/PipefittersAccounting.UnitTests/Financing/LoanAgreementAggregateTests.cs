@@ -32,6 +32,19 @@ namespace PipefittersAccounting.UnitTests.Financing
         }
 
         [Fact]
+        public void UpdateLoanInstallmentPaymentSchedule_LoanAgreement_ValidInfo_ShouldSucceed()
+        {
+            LoanAgreement agreement = LoanAgreementTestData.GetLoanAgreementForEditing();
+            agreement.UpdateLoanInstallmentPaymentSchedule(LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate());
+
+            var exception = Record.Exception(
+                () => agreement.UpdateLoanInstallmentPaymentSchedule(LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate())
+            );
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
         public void UpdateLoanAmount_LoanAgreement_ValidInfo_ShouldSucceed()
         {
             LoanAgreement agreement = LoanAgreementTestData.GetLoanAgreementForEditing();

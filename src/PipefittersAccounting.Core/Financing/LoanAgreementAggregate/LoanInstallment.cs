@@ -98,13 +98,5 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             UserId = value ?? throw new ArgumentNullException("The User id can not be null.");
             UpdateLastModifiedDate();
         }
-
-        protected override void CheckValidity()
-        {
-            // if (EconomicEvent.EventType is not EventTypeEnum.LoanPaymentCashDisbursement)
-            // {
-            //     throw new ArgumentException("Invalid EconomicEvent type; it must be 'EventType.CashDisbursementForLoanPayment'.");
-            // }
-        }
     }
 }
