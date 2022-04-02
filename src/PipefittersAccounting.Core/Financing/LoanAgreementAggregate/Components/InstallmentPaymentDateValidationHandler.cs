@@ -1,3 +1,5 @@
+#pragma warning disable CS8625
+
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
     public class InstallmentPaymentDateValidationHandler : Handler<LoanInstallmentPaymentSchedule>
@@ -41,7 +43,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             // Starting with the 2nd payment date, each payment date must be greater the previous payment date
             var dateOrderResult = request.RepaymentSchedule.Values.ToList();
-            DateTime comparisonDate = dateOrderResult[0].PaymentDueDate.AddDays(-1);
+            DateTime comparisonDate = dateOrderResult[0].PaymentDueDate.Value.AddDays(-1);
 
             for (int ctr = 0; ctr < dateOrderResult.Count; ctr++)
             {

@@ -16,10 +16,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             EntityGuidID loanID,
             InstallmentNumber installmentNumber,
             PaymentDueDate paymentDueDate,
+            EqualMonthlyInstallment emi,
             LoanPrincipalAmount principalAmount,
             LoanInterestAmount interestAmount,
             LoanPrincipalRemaining remainPrincipal,
-            bool isPaid,
             EntityGuidID userId
         )
             : this()
@@ -33,10 +33,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             LoanId = loanID ?? throw new ArgumentNullException("The loan agreement id can not be null.");
             InstallmentNumber = installmentNumber ?? throw new ArgumentNullException("The payment number is required.");
             PaymentDueDate = paymentDueDate ?? throw new ArgumentNullException("The payment due date is required.");
+            EqualMonthlyInstallment = emi ?? throw new ArgumentNullException("The equal monthly installment of the loan installment is required.");
             LoanPrincipalAmount = principalAmount ?? throw new ArgumentNullException("The principal amount is required.");
             LoanInterestAmount = interestAmount ?? throw new ArgumentNullException("The interest amount is required.");
             LoanPrincipalRemaining = remainPrincipal ?? throw new ArgumentNullException("The balance remaining is required.");
-            IsPaid = isPaid;
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
 
             CheckValidity();
@@ -56,6 +56,14 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         public void UpdatePaymentDueDate(PaymentDueDate value)
         {
             PaymentDueDate = value ?? throw new ArgumentNullException("The payment due date is required.");
+            UpdateLastModifiedDate();
+            CheckValidity();
+        }
+
+        public virtual EqualMonthlyInstallment EqualMonthlyInstallment { get; private set; }
+        public void UpdateEqualMonthlyInstallment(EqualMonthlyInstallment value)
+        {
+            EqualMonthlyInstallment = value ?? throw new ArgumentNullException("The equal monthly installment of the loan installment is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }
@@ -80,14 +88,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
         public void UpdateLoanPrincipalRemaining(LoanPrincipalRemaining value)
         {
             LoanPrincipalRemaining = value ?? throw new ArgumentNullException("The loan principal balance remaining is required.");
-            UpdateLastModifiedDate();
-            CheckValidity();
-        }
-
-        public bool IsPaid { get; private set; }
-        public void UpdatePaymentStatus(bool isPaid)
-        {
-            IsPaid = isPaid;
             UpdateLastModifiedDate();
             CheckValidity();
         }

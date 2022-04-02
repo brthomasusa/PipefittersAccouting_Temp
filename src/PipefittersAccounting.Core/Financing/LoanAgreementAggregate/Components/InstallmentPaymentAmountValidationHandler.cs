@@ -23,9 +23,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             var result = request.RepaymentSchedule.Values.ToList();
 
-            result.ForEach(x => principalTotal += x.Principal);
-            result.ForEach(x => totalInterestPaid += x.Interest);
-            result.ForEach(x => totalPayments += x.Payment);
+            result.ForEach(x => principalTotal += x.LoanPrincipalAmount);
+            result.ForEach(x => totalInterestPaid += x.LoanInterestAmount);
+            result.ForEach(x => totalPayments += x.EqualMonthlyInstallment);
 
             if (principalTotal != _loanAgreementAmount)
             {

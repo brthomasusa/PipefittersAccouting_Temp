@@ -31,7 +31,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             }
 
             // Ensure installment numbers are numbered sequencially from one to number of payments
-            foreach (KeyValuePair<int, Installment> entry in request.RepaymentSchedule)
+            foreach (KeyValuePair<int, LoanInstallment> entry in request.RepaymentSchedule)
             {
                 if (entry.Key != entry.Value.InstallmentNumber)
                 {

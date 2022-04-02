@@ -2,20 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
-using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.IntegrationTests.Base
 {
@@ -253,33 +248,33 @@ namespace PipefittersAccounting.IntegrationTests.Base
             };
 
 
-        public static LoanAgreement GetLoanAgreementForCreating() =>
-            new LoanAgreement
-            (
-                LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
-                LoanAmount.Create(175000),
-                InterestRate.Create(.0675M),
-                LoanDate.Create(new DateTime(2021, 11, 5)),
-                MaturityDate.Create(new DateTime(2022, 11, 5)),
-                NumberOfInstallments.Create(12),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                GetInstallmentsValidInfo()
-            );
+        // public static LoanAgreement GetLoanAgreementForCreating() =>
+        //     new LoanAgreement
+        //     (
+        //         LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
+        //         EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
+        //         LoanAmount.Create(33000),
+        //         InterestRate.Create(.0725M),
+        //         LoanDate.Create(new DateTime(2021, 11, 15)),
+        //         MaturityDate.Create(new DateTime(2022, 11, 15)),
+        //         NumberOfInstallments.Create(12),
+        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+        //         LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate()
+        //     );
 
-        public static LoanAgreement GetLoanAgreementForEditing() =>
-            new LoanAgreement
-            (
-                LoanAgreementEconEvent.Create(EntityGuidID.Create(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"))),
-                EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),
-                LoanAmount.Create(33000),
-                InterestRate.Create(.0725M),
-                LoanDate.Create(new DateTime(2021, 11, 15)),
-                MaturityDate.Create(new DateTime(2022, 10, 15)),
-                NumberOfInstallments.Create(12),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                GetInstallmentsValidInfo()
-            );
+        // public static LoanAgreement GetLoanAgreementForEditing() =>
+        //     new LoanAgreement
+        //     (
+        //         LoanAgreementEconEvent.Create(EntityGuidID.Create(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"))),
+        //         EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),
+        //         LoanAmount.Create(33000),
+        //         InterestRate.Create(.0725M),
+        //         LoanDate.Create(new DateTime(2021, 11, 15)),
+        //         MaturityDate.Create(new DateTime(2022, 10, 15)),
+        //         NumberOfInstallments.Create(12),
+        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+        //         GetInstallmentsValidInfo()
+        //     );
 
         public static List<Installment> GetInstallmentsValidInfo()
         {

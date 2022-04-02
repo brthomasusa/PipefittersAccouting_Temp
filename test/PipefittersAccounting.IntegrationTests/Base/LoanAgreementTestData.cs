@@ -5,7 +5,7 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
-namespace PipefittersAccounting.UnitTests.Financing
+namespace PipefittersAccounting.IntegrationTests.Base
 {
     public class LoanAgreementTestData
     {
@@ -21,20 +21,6 @@ namespace PipefittersAccounting.UnitTests.Financing
         //         NumberOfInstallments.Create(12),
         //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
         //         GetInstallmentsLoanRepymtScheduleUpdate()
-        //     );
-
-        // public static LoanInstallment GetLoanInstallmentForEditing() =>
-        //     new
-        //     (
-        //         LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-        //         EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-        //         InstallmentNumber.Create(1),
-        //         PaymentDueDate.Create(new DateTime(2022, 4, 1)),
-        //         LoanPrincipalAmount.Create(800M),
-        //         LoanInterestAmount.Create(71.25M),
-        //         LoanPrincipalRemaining.Create(32000M),
-        //         false,
-        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
         //     );
 
         public static List<Installment> GetInstallmentsValidInfo()

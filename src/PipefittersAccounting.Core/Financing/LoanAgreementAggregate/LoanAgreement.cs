@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             MaturityDate maturityDate,
             NumberOfInstallments numberOfInstallments,
             EntityGuidID userId,
-            List<Installment> installments
+            List<LoanInstallment> installments
         )
             : this()
         {
@@ -45,6 +45,11 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             MaturityDate = maturityDate ?? throw new ArgumentNullException("The loan maturity date is required.");
             NumberOfInstallments = numberOfInstallments ?? throw new ArgumentNullException("The number of installments is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
+
+            if (installments is null)
+            {
+                throw new ArgumentNullException("A loan agreement must have a repayment schedule.");
+            }
             AddLoanInstallmentPaymentSchedule(installments);
 
             CheckValidity();
@@ -107,7 +112,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public virtual ReadOnlyDictionary<int, LoanInstallment> LoanPaymentSchedule => new(_loanPaymentSchedule);
 
-        protected void AddLoanInstallmentPaymentSchedule(List<Installment> installments)
+        protected void AddLoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
         {
             DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
 
@@ -122,7 +127,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
                 handler.Handle(result.Result);
 
-                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, ConvertInstallmentToLoanInstallment(item)));
+                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, item));
             }
             else
             {
@@ -130,8 +135,13 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             }
         }
 
-        public void UpdateLoanInstallmentPaymentSchedule(List<Installment> installments)
+        public void UpdateLoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
         {
+            if (installments is null)
+            {
+                throw new ArgumentNullException("A loan agreement must have a repayment schedule.");
+            }
+
             DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
 
             OperationResult<LoanInstallmentPaymentSchedule> result =
@@ -146,7 +156,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
                 handler.Handle(result.Result);
 
                 _loanPaymentSchedule = new();
-                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, ConvertInstallmentToLoanInstallment(item)));
+                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, item));
             }
             else
             {
@@ -178,22 +188,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             }
 
             return m1 + m2;
-        }
-
-        private LoanInstallment ConvertInstallmentToLoanInstallment(Installment installment)
-        {
-            return new LoanInstallment
-            (
-                LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                EntityGuidID.Create(FinancierId),
-                InstallmentNumber.Create(installment.InstallmentNumber),
-                PaymentDueDate.Create(installment.PaymentDueDate),
-                LoanPrincipalAmount.Create(installment.Principal),
-                LoanInterestAmount.Create(installment.Interest),
-                LoanPrincipalRemaining.Create(installment.RemainingBalance),
-                false,
-                EntityGuidID.Create(UserId)
-            );
         }
     }
 }

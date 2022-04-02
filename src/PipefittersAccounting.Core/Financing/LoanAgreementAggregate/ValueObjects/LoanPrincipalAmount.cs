@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjec
         {
             if (value < 0)
             {
-                throw new ArgumentException("The principal amount of the loan installment can not negative.");
+                throw new ArgumentException("The principal amount of the loan installment can not be negative.");
             }
         }
     }

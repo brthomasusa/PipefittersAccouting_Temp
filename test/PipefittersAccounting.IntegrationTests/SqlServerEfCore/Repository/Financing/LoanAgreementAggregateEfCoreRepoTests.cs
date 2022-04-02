@@ -35,40 +35,40 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             Assert.NotNull(agreement);
         }
 
-        [Fact]
-        public async Task AddAsync_NewLoanAgreementWithValidInfo_ShouldSucceed()
-        {
-            AppUnitOfWork uow = new(_dbContext);
-            ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
+        // [Fact]
+        // public async Task AddAsync_NewLoanAgreementWithValidInfo_ShouldSucceed()
+        // {
+        //     AppUnitOfWork uow = new(_dbContext);
+        //     ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
-            LoanAgreement agreement = TestUtilities.GetLoanAgreementForCreating();
+        //     LoanAgreement agreement = TestUtilities.GetLoanAgreementForCreating();
 
-            await repo.AddAsync(agreement);
-            await uow.Commit();
+        //     await repo.AddAsync(agreement);
+        //     await uow.Commit();
 
-            var result = await repo.GetByIdAsync(agreement.Id);
-            Assert.NotNull(result);
-            Assert.Equal(agreement.FinancierId, result.FinancierId);
-        }
+        //     var result = await repo.GetByIdAsync(agreement.Id);
+        //     Assert.NotNull(result);
+        //     Assert.Equal(agreement.FinancierId, result.FinancierId);
+        // }
 
-        [Fact]
-        public async Task Update_EditLoanAgreementInfo_ShouldSucceed()
-        {
-            AppUnitOfWork uow = new(_dbContext);
-            ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
+        // [Fact]
+        // public async Task Update_EditLoanAgreementInfo_ShouldSucceed()
+        // {
+        //     AppUnitOfWork uow = new(_dbContext);
+        //     ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
-            LoanAgreement agreement = TestUtilities.GetLoanAgreementForEditing();
-            agreement.UpdateLoanAmount(LoanAmount.Create(44000M));
-            agreement.UpdateInterestRate(InterestRate.Create(.0515M));
-            agreement.UpdateMaturityDate(MaturityDate.Create(new DateTime(2023, 6, 15)));
+        //     LoanAgreement agreement = TestUtilities.GetLoanAgreementForEditing();
+        //     agreement.UpdateLoanAmount(LoanAmount.Create(44000M));
+        //     agreement.UpdateInterestRate(InterestRate.Create(.0515M));
+        //     agreement.UpdateMaturityDate(MaturityDate.Create(new DateTime(2023, 6, 15)));
 
-            repo.Update(agreement);
+        //     repo.Update(agreement);
 
-            var result = await _dbContext.LoanAgreements.FindAsync(agreement.Id);
-            Assert.Equal(44000M, result.LoanAmount);
-            Assert.Equal(.0515M, result.InterestRate);
-            Assert.Equal(new DateTime(2023, 6, 15), result.MaturityDate);
-        }
+        //     var result = await _dbContext.LoanAgreements.FindAsync(agreement.Id);
+        //     Assert.Equal(44000M, result.LoanAmount);
+        //     Assert.Equal(.0515M, result.InterestRate);
+        //     Assert.Equal(new DateTime(2023, 6, 15), result.MaturityDate);
+        // }
 
         [Fact]
         public async Task Delete_DeleteLoanAgreementInfo_ShouldSucceed()

@@ -1,21 +1,22 @@
 using System.Collections.ObjectModel;
+using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
     public class LoanInstallmentPaymentSchedule
     {
-        private SortedDictionary<int, Installment> _loanPaymentSchedule;
+        private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule;
 
-        private LoanInstallmentPaymentSchedule(List<Installment> installments)
+        private LoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
         {
-            _loanPaymentSchedule = new SortedDictionary<int, Installment>();
+            _loanPaymentSchedule = new SortedDictionary<int, LoanInstallment>();
             installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, item));
         }
 
-        public static OperationResult<LoanInstallmentPaymentSchedule> Create(List<Installment> installments)
+        public static OperationResult<LoanInstallmentPaymentSchedule> Create(List<LoanInstallment> installments)
         {
-            // Using Installment.InstallmentNumber as disctionary key so
+            // Using LoanInstallment.InstallmentNumber as disctionary key so
             // must check for duplicates before attempting to add to dictionary.
             var duplicates = installments.GroupBy(x => x.InstallmentNumber)
                                            .Any(installment => installment.Count() > 1);
@@ -28,7 +29,6 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             return OperationResult<LoanInstallmentPaymentSchedule>.CreateSuccessResult(new LoanInstallmentPaymentSchedule(installments));
         }
-        public ReadOnlyDictionary<int, Installment> RepaymentSchedule => new(_loanPaymentSchedule);
-        // public SortedDictionary<int, Installment> RepaymentSchedule => _loanPaymentSchedule;
+        public ReadOnlyDictionary<int, LoanInstallment> RepaymentSchedule => new(_loanPaymentSchedule);
     }
 }

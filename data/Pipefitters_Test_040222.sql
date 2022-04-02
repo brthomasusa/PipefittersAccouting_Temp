@@ -460,7 +460,8 @@ VALUES
     ('43e96119-c4c8-4fe9-a568-4dd3dc569501', 4),
     ('0e04afc1-b006-4ef5-8265-ce24e456c0f8', 4),
     ('b71d5303-6035-4e96-9915-41c3724de721', 4),
-    ('cf4279a1-da26-4d10-bff0-cf6e0933661c', 4),    
+    ('cf4279a1-da26-4d10-bff0-cf6e0933661c', 4),
+    
     ('8e804651-5021-4577-bbda-e7ee45a74e44', 4),
     ('97fa51e0-e02a-46c1-9f09-73f72a5519c9', 4),
     ('e4ca6c30-6fd7-44ea-89b5-e11ecfc5989b', 4),
@@ -484,7 +485,8 @@ VALUES
     ('b9c1db2e-274a-4312-bdfd-b59afc8e8d9a', 4),
     ('6b48dcd5-e83d-451f-8da8-170ebe597137', 4),
     ('08e124ea-e7f8-454d-a9db-c0bc81f3b41e', 4),
-    ('e63b4dd1-32a7-49df-8300-64c88d2121e0', 4),     
+    ('e63b4dd1-32a7-49df-8300-64c88d2121e0', 4), 
+    
     ('de4de926-924f-42f2-97ed-4ed031ab1cb8', 4),
     ('e82648a3-8744-424f-badd-5a19a979574a', 4),
     ('0801632b-55d5-48fb-99d8-05e6fba1fcaf', 4),
@@ -643,117 +645,5 @@ VALUES
   (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', 'f479f59a-5001-47af-9d6c-2eae07077490', '2307', '660bb318-649e-470d-9d2b-693bfb0b2744'), 		
   (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-03-19', 10000.00, '94b1d516-a1c3-4df8-ae85-be1f34966601', '09b53ffb-9983-4cde-b1d6-8a49e785177f', '980', '660bb318-649e-470d-9d2b-693bfb0b2744'),          
   (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-04-02', 1370.54, '94b1d516-a1c3-4df8-ae85-be1f34966601', '97fa51e0-e02a-46c1-9f09-73f72a5519c9', '2309', '660bb318-649e-470d-9d2b-693bfb0b2744')                
-GO
-
-
-
--- STOPPED HERE
--- STOPPED HERE
--- STOPPED HERE
-
-
-INSERT INTO Finance.DividendDeclarations
-    (DividendId, StockId, DividendDeclarationDate, DividendPerShare, UserId)
-VALUES
-    ('e2a14f74-5261-46a8-bc41-952933925e1d', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '2021-01-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('ace8a4cd-5f4b-413c-a3b8-4643e9dd0f97', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '2021-02-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('08117078-5763-46d9-b771-799355d02fa1', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '2021-03-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    ('0421396b-4499-4a93-95c2-8f0dba43a25a', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '2021-01-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('a93ee592-3025-4302-97b3-7a237b0fe6a6', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '2021-02-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('95949c0f-f68e-4a14-9eaf-c62b4d689048', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '2021-03-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    ('e436c1f8-a1eb-4233-a8de-e8dab1812649', 'fb39b013-1633-4479-8186-9f9b240b5727', '2021-01-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('1c2b45e2-f55f-4b93-8cdc-7cb1272210de', 'fb39b013-1633-4479-8186-9f9b240b5727', '2021-02-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('1a14139d-b16f-4aa9-9274-b98a32ac0ebd', 'fb39b013-1633-4479-8186-9f9b240b5727', '2021-03-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    ('c84dad2c-4aba-4630-8201-6da56743e19e', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '2021-01-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('b6f60d19-7d05-4625-be94-24e3079ef44f', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '2021-02-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('6f0c811c-b948-4c03-a6df-49c768dadc49', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '2021-03-15', 0.05, '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    ('aeac44d8-feb3-4823-8b0a-ca79da5bb089', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '2021-01-15', 0.07, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('6f09cd69-4a95-42c7-bcc2-acacbb92270c', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '2021-02-15', 0.07, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('24d6936a-beb5-451b-a950-0f30e3ad463d', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '2021-03-15', 0.07, '660bb318-649e-470d-9d2b-693bfb0b2744')
-GO 
-
-INSERT INTO Finance.CashAccountTransactions
-    (CashTransactionTypeId, CashAccountId, CashAcctTransactionDate, CashAcctTransactionAmount, AgentId, EventId, CheckNumber, UserId)
-VALUES   
-    -- Dividends
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-01-15', 2500.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', '0421396b-4499-4a93-95c2-8f0dba43a25a', '2303', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-02-15', 2500.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 'a93ee592-3025-4302-97b3-7a237b0fe6a6', '2305', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-03-15', 2500.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', '95949c0f-f68e-4a14-9eaf-c62b4d689048', '2306', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-01-15', 1250.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'e436c1f8-a1eb-4233-a8de-e8dab1812649', '2308', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-02-15', 1250.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', '1c2b45e2-f55f-4b93-8cdc-7cb1272210de', '2310', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-03-15', 1250.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', '1a14139d-b16f-4aa9-9274-b98a32ac0ebd', '2311', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-01-15', 2500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'e2a14f74-5261-46a8-bc41-952933925e1d', '2330', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-02-15', 2500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'ace8a4cd-5f4b-413c-a3b8-4643e9dd0f97', '2331', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-03-15', 2500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '08117078-5763-46d9-b771-799355d02fa1', '2307', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-01-15', 500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'c84dad2c-4aba-4630-8201-6da56743e19e', '2309', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-02-15', 500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'b6f60d19-7d05-4625-be94-24e3079ef44f', '2312', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-03-15', 500.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '6f0c811c-b948-4c03-a6df-49c768dadc49', '2313', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-01-15', 2450.00, '12998229-7ede-4834-825a-0c55bde75695', 'aeac44d8-feb3-4823-8b0a-ca79da5bb089', '2332', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-02-15', 2450.00, '12998229-7ede-4834-825a-0c55bde75695', '6f09cd69-4a95-42c7-bcc2-acacbb92270c', '2333', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2021-03-15', 2450.00, '12998229-7ede-4834-825a-0c55bde75695', '24d6936a-beb5-451b-a950-0f30e3ad463d', '2340', '660bb318-649e-470d-9d2b-693bfb0b2744')          
-GO
-
-
-
-
--- Triggers
-CREATE TRIGGER HumanResources.SetEmployeeModifiedDate
-   ON  HumanResources.Employees
-   AFTER UPDATE
-AS 
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE HumanResources.Employees SET LastModifiedDate = sysdatetime()
-    FROM HumanResources.Employees AS t
-    WHERE EXISTS (SELECT 1 FROM inserted WHERE EmployeeId = t.EmployeeId);
-END
-GO
-
-CREATE TRIGGER Shared.SetAddressModifiedDate
-   ON  Shared.Addresses
-   AFTER UPDATE
-AS 
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE Shared.Addresses SET LastModifiedDate = sysdatetime()
-    FROM Shared.Addresses AS t
-    WHERE EXISTS (SELECT 1 FROM inserted WHERE AddressId = t.AddressId);    
-END
-GO
-
-CREATE TRIGGER Shared.SetContactPersonModifiedDate
-   ON  Shared.ContactPersons
-   AFTER UPDATE
-AS 
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE Shared.ContactPersons SET LastModifiedDate = sysdatetime()
-    FROM Shared.ContactPersons AS t
-    WHERE EXISTS (SELECT 1 FROM inserted WHERE PersonId = t.PersonId);    
-END
-GO
-
-CREATE TRIGGER Shared.SetExternalModifiedDate
-   ON  Shared.ExternalAgents
-   AFTER UPDATE
-AS 
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE Shared.ExternalAgents SET LastModifiedDate = sysdatetime()
-    FROM Shared.ExternalAgents AS t
-    WHERE EXISTS (SELECT 1 FROM inserted WHERE AgentId = t.AgentId);    
-END
-GO
-
-CREATE TRIGGER Finance.SetFinanciersModifiedDate
-   ON  Finance.Financiers
-   AFTER UPDATE
-AS 
-BEGIN
-    SET NOCOUNT ON;
-    UPDATE Finance.Financiers SET LastModifiedDate = sysdatetime()
-    FROM Finance.Financiers AS t
-    WHERE EXISTS (SELECT 1 FROM inserted WHERE FinancierID = t.FinancierID);
-END
 GO
 
