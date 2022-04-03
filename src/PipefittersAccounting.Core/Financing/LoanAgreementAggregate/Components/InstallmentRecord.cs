@@ -1,6 +1,6 @@
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
-    public record Installment
+    public record InstallmentRecord
     (
         int InstallmentNumber,
         DateTime PaymentDueDate,

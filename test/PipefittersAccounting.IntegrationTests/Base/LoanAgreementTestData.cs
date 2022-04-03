@@ -23,13 +23,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
         //         GetInstallmentsLoanRepymtScheduleUpdate()
         //     );
 
-        public static List<Installment> GetInstallmentsValidInfo()
+        public static List<InstallmentRecord> GetInstallmentsValidInfo()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2022, 4, 15),
                                 Payment: 455.65M,
                                 Principal: 447.00M,
@@ -39,7 +39,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 15),
                                 Payment: 455.65M,
                                 Principal: 449.00M,
@@ -49,7 +49,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 15),
                                 Payment: 455.65M,
                                 Principal: 451.00M,
@@ -59,7 +59,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 4,
+                new InstallmentRecord(InstallmentNumber: 4,
                                 PaymentDueDate: new DateTime(2022, 7, 15),
                                 Payment: 455.65M,
                                 Principal: 453.00M,
@@ -71,13 +71,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
             return pymtSchedule;
         }
 
-        public static List<Installment> GetInstallmentsTooFewInstallments()
+        public static List<InstallmentRecord> GetInstallmentsTooFewInstallments()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2022, 4, 15),
                                 Payment: 455.65M,
                                 Principal: 447.00M,
@@ -87,7 +87,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 15),
                                 Payment: 455.65M,
                                 Principal: 449.00M,
@@ -97,7 +97,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 15),
                                 Payment: 455.65M,
                                 Principal: 451.00M,
@@ -109,13 +109,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
             return pymtSchedule;
         }
 
-        public static List<Installment> GetInstallmentsTooManyInstallments()
+        public static List<InstallmentRecord> GetInstallmentsTooManyInstallments()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2022, 4, 15),
                                 Payment: 455.65M,
                                 Principal: 447.00M,
@@ -125,7 +125,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 15),
                                 Payment: 455.65M,
                                 Principal: 449.00M,
@@ -135,7 +135,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 15),
                                 Payment: 455.65M,
                                 Principal: 451.00M,
@@ -145,7 +145,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 4,
+                new InstallmentRecord(InstallmentNumber: 4,
                                 PaymentDueDate: new DateTime(2022, 7, 15),
                                 Payment: 455.65M,
                                 Principal: 453.00M,
@@ -155,7 +155,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 5,
+                new InstallmentRecord(InstallmentNumber: 5,
                                 PaymentDueDate: new DateTime(2022, 9, 15),  // Invalid payment date
                                 Payment: 455.65M,
                                 Principal: 453.00M,
@@ -167,13 +167,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
             return pymtSchedule;
         }
 
-        public static List<Installment> GetInstallmentsDictIndexDoesNotStartAtOne()
+        public static List<InstallmentRecord> GetInstallmentsDictIndexDoesNotStartAtOne()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2022, 4, 15),
                                 Payment: 455.65M,
                                 Principal: 447.00M,
@@ -183,7 +183,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 15),
                                 Payment: 455.65M,
                                 Principal: 449.00M,
@@ -193,7 +193,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 15),
                                 Payment: 455.65M,
                                 Principal: 451.00M,
@@ -203,7 +203,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 4,
+                new InstallmentRecord(InstallmentNumber: 4,
                                 PaymentDueDate: new DateTime(2022, 7, 15),
                                 Payment: 455.65M,
                                 Principal: 453.00M,
@@ -215,13 +215,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
             return pymtSchedule;
         }
 
-        public static List<Installment> GetInstallments12Months()
+        public static List<InstallmentRecord> GetInstallments12Months()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2022, 4, 30),
                                 Payment: 1514.21M,
                                 Principal: 1412.00M,
@@ -231,7 +231,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 30),
                                 Payment: 1514.21M,
                                 Principal: 1420.00M,
@@ -241,7 +241,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 30),
                                 Payment: 1514.21M,
                                 Principal: 1429.00M,
@@ -251,7 +251,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 4,
+                new InstallmentRecord(InstallmentNumber: 4,
                                 PaymentDueDate: new DateTime(2022, 7, 30),
                                 Payment: 1514.21M,
                                 Principal: 1437.00M,
@@ -261,7 +261,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 5,
+                new InstallmentRecord(InstallmentNumber: 5,
                                 PaymentDueDate: new DateTime(2022, 8, 30),
                                 Payment: 1514.21M,
                                 Principal: 1445.00M,
@@ -271,7 +271,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 6,
+                new InstallmentRecord(InstallmentNumber: 6,
                                 PaymentDueDate: new DateTime(2022, 9, 30),
                                 Payment: 1514.21M,
                                 Principal: 1454.00M,
@@ -281,7 +281,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 7,
+                new InstallmentRecord(InstallmentNumber: 7,
                                 PaymentDueDate: new DateTime(2022, 10, 30),
                                 Payment: 1514.21M,
                                 Principal: 1463.00M,
@@ -291,7 +291,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 8,
+                new InstallmentRecord(InstallmentNumber: 8,
                                 PaymentDueDate: new DateTime(2022, 11, 30),
                                 Payment: 1514.21M,
                                 Principal: 1470.00M,
@@ -301,7 +301,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 9,
+                new InstallmentRecord(InstallmentNumber: 9,
                                 PaymentDueDate: new DateTime(2022, 12, 30),
                                 Payment: 1514.21M,
                                 Principal: 1480.00M,
@@ -311,7 +311,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 10,
+                new InstallmentRecord(InstallmentNumber: 10,
                                 PaymentDueDate: new DateTime(2023, 1, 30),
                                 Payment: 1514.21M,
                                 Principal: 1488.00M,
@@ -321,7 +321,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 11,
+                new InstallmentRecord(InstallmentNumber: 11,
                                 PaymentDueDate: new DateTime(2023, 2, 28),
                                 Payment: 1514.21M,
                                 Principal: 1496.00M,
@@ -331,7 +331,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 12,
+                new InstallmentRecord(InstallmentNumber: 12,
                                 PaymentDueDate: new DateTime(2023, 3, 30),
                                 Payment: 1514.21M,
                                 Principal: 1506.00M,
@@ -343,13 +343,13 @@ namespace PipefittersAccounting.IntegrationTests.Base
             return pymtSchedule;
         }
 
-        public static List<Installment> GetInstallmentsLoanRepymtScheduleUpdate()
+        public static List<InstallmentRecord> GetInstallmentsLoanRepymtScheduleUpdate()
         {
-            List<Installment> pymtSchedule = new();
+            List<InstallmentRecord> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 1,
+                new InstallmentRecord(InstallmentNumber: 1,
                                 PaymentDueDate: new DateTime(2021, 12, 15),
                                 Payment: 2855.37M,
                                 Principal: 2663.00M,
@@ -359,7 +359,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 2,
+                new InstallmentRecord(InstallmentNumber: 2,
                                 PaymentDueDate: new DateTime(2022, 5, 30),
                                 Payment: 2855.37M,
                                 Principal: 2678.00M,
@@ -369,7 +369,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 3,
+                new InstallmentRecord(InstallmentNumber: 3,
                                 PaymentDueDate: new DateTime(2022, 6, 30),
                                 Payment: 2855.37M,
                                 Principal: 2694.00M,
@@ -379,7 +379,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 4,
+                new InstallmentRecord(InstallmentNumber: 4,
                                 PaymentDueDate: new DateTime(2022, 7, 30),
                                 Payment: 2855.37M,
                                 Principal: 2710.00M,
@@ -389,7 +389,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 5,
+                new InstallmentRecord(InstallmentNumber: 5,
                                 PaymentDueDate: new DateTime(2022, 8, 30),
                                 Payment: 2855.37M,
                                 Principal: 2726.00M,
@@ -399,7 +399,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 6,
+                new InstallmentRecord(InstallmentNumber: 6,
                                 PaymentDueDate: new DateTime(2022, 9, 30),
                                 Payment: 2855.37M,
                                 Principal: 2741.00M,
@@ -409,7 +409,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 7,
+                new InstallmentRecord(InstallmentNumber: 7,
                                 PaymentDueDate: new DateTime(2022, 10, 30),
                                 Payment: 2855.37M,
                                 Principal: 2757.00M,
@@ -419,7 +419,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 8,
+                new InstallmentRecord(InstallmentNumber: 8,
                                 PaymentDueDate: new DateTime(2022, 11, 30),
                                 Payment: 2855.37M,
                                 Principal: 2774.00M,
@@ -429,7 +429,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 9,
+                new InstallmentRecord(InstallmentNumber: 9,
                                 PaymentDueDate: new DateTime(2022, 12, 30),
                                 Payment: 2855.37M,
                                 Principal: 2790.00M,
@@ -439,7 +439,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 10,
+                new InstallmentRecord(InstallmentNumber: 10,
                                 PaymentDueDate: new DateTime(2023, 1, 30),
                                 Payment: 2855.37M,
                                 Principal: 2806.00M,
@@ -449,7 +449,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 11,
+                new InstallmentRecord(InstallmentNumber: 11,
                                 PaymentDueDate: new DateTime(2023, 2, 28),
                                 Payment: 2855.37M,
                                 Principal: 2822.00M,
@@ -459,7 +459,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             );
             pymtSchedule.Add
             (
-                new Installment(InstallmentNumber: 12,
+                new InstallmentRecord(InstallmentNumber: 12,
                                 PaymentDueDate: new DateTime(2023, 3, 30),
                                 Payment: 2855.37M,
                                 Principal: 2839.00M,

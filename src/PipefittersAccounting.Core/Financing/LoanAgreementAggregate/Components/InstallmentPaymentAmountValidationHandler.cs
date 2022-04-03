@@ -1,6 +1,6 @@
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
-    public class InstallmentPaymentAmountValidationHandler : Handler<LoanInstallmentPaymentSchedule>
+    public class InstallmentPaymentAmountValidationHandler : Handler<LoanAmortizationSchedule>
     {
         private readonly decimal _loanAgreementAmount;
         private readonly decimal _annualInterestRate;
@@ -15,13 +15,13 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             _annualInterestRate = interestRate;
         }
 
-        public override void Handle(LoanInstallmentPaymentSchedule request)
+        public override void Handle(LoanAmortizationSchedule request)
         {
             decimal principalTotal = 0M;
             decimal totalInterestPaid = 0M;
             decimal totalPayments = 0M;
 
-            var result = request.RepaymentSchedule.Values.ToList();
+            var result = request.AmortizationSchedule.Values.ToList();
 
             result.ForEach(x => principalTotal += x.LoanPrincipalAmount);
             result.ForEach(x => totalInterestPaid += x.LoanInterestAmount);

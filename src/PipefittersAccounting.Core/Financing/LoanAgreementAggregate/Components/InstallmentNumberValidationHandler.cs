@@ -1,28 +1,28 @@
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
-    public class InstallmentNumberValidationHandler : Handler<LoanInstallmentPaymentSchedule>
+    public class InstallmentNumberValidationHandler : Handler<LoanAmortizationSchedule>
     {
         private readonly int _numberOfPayments;
 
         public InstallmentNumberValidationHandler(int payments) => _numberOfPayments = payments;
 
-        public override void Handle(LoanInstallmentPaymentSchedule request)
+        public override void Handle(LoanAmortizationSchedule request)
         {
             // Ensure correct number of installments
-            if (request.RepaymentSchedule.Count < _numberOfPayments)
+            if (request.AmortizationSchedule.Count < _numberOfPayments)
             {
-                string errMsg = $"The repayment schedule only contains {request.RepaymentSchedule.Count} installments. It should contain {_numberOfPayments}";
+                string errMsg = $"The repayment schedule only contains {request.AmortizationSchedule.Count} installments. It should contain {_numberOfPayments}";
                 throw new InvalidOperationException(errMsg);
             }
 
-            if (request.RepaymentSchedule.Count > _numberOfPayments)
+            if (request.AmortizationSchedule.Count > _numberOfPayments)
             {
-                string errMsg = $"The repayment schedule contains too many ({request.RepaymentSchedule.Count}) installments. It should contain {_numberOfPayments}";
+                string errMsg = $"The repayment schedule contains too many ({request.AmortizationSchedule.Count}) installments. It should contain {_numberOfPayments}";
                 throw new InvalidOperationException(errMsg);
             }
 
 
-            var dictKeys = request.RepaymentSchedule.Keys.ToList();
+            var dictKeys = request.AmortizationSchedule.Keys.ToList();
 
             // Dictionary keys must be numbered 1 throught numberOfPayments
             if (dictKeys.First() != 1 || dictKeys.Last() != _numberOfPayments)
@@ -31,7 +31,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             }
 
             // Ensure installment numbers are numbered sequencially from one to number of payments
-            foreach (KeyValuePair<int, LoanInstallment> entry in request.RepaymentSchedule)
+            foreach (KeyValuePair<int, LoanInstallment> entry in request.AmortizationSchedule)
             {
                 if (entry.Key != entry.Value.InstallmentNumber)
                 {

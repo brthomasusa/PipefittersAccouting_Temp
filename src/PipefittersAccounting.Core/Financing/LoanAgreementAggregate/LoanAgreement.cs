@@ -112,12 +112,12 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
         public virtual ReadOnlyDictionary<int, LoanInstallment> LoanPaymentSchedule => new(_loanPaymentSchedule);
 
-        protected void AddLoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
+        private void AddLoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
         {
             DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
 
-            OperationResult<LoanInstallmentPaymentSchedule> result =
-                LoanInstallmentPaymentSchedule.Create(installments);
+            OperationResult<LoanAmortizationSchedule> result =
+                LoanAmortizationSchedule.Create(installments);
 
             if (result.Success)
             {
@@ -144,8 +144,8 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 
             DateTime firstPaymentDate = LoanDate.Value.AddMonths(1);
 
-            OperationResult<LoanInstallmentPaymentSchedule> result =
-                LoanInstallmentPaymentSchedule.Create(installments);
+            OperationResult<LoanAmortizationSchedule> result =
+                LoanAmortizationSchedule.Create(installments);
 
             if (result.Success)
             {

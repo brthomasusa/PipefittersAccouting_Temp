@@ -2,7 +2,7 @@
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 {
-    public class InstallmentPaymentDateValidationHandler : Handler<LoanInstallmentPaymentSchedule>
+    public class InstallmentPaymentDateValidationHandler : Handler<LoanAmortizationSchedule>
     {
         private readonly DateTime _firstPaymentDate;
         private readonly DateTime _maturityDate;
@@ -17,10 +17,10 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             _maturityDate = maturityDate;
         }
 
-        public override void Handle(LoanInstallmentPaymentSchedule request)
+        public override void Handle(LoanAmortizationSchedule request)
         {
             // Ensure all payment dates have been set to a valid date, not a default date
-            var defaultDateResult = request.RepaymentSchedule.Values
+            var defaultDateResult = request.AmortizationSchedule.Values
                 .Where(i => i.PaymentDueDate == default)
                 .ToList();
 
@@ -31,7 +31,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             }
 
             // Ensure all payment dates are withing the loan date and maturity date range
-            var result = request.RepaymentSchedule.Values
+            var result = request.AmortizationSchedule.Values
                 .Where(i => i.PaymentDueDate < _firstPaymentDate || i.PaymentDueDate > _maturityDate)
                 .ToList();
 
@@ -42,7 +42,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             }
 
             // Starting with the 2nd payment date, each payment date must be greater the previous payment date
-            var dateOrderResult = request.RepaymentSchedule.Values.ToList();
+            var dateOrderResult = request.AmortizationSchedule.Values.ToList();
             DateTime comparisonDate = dateOrderResult[0].PaymentDueDate.Value.AddDays(-1);
 
             for (int ctr = 0; ctr < dateOrderResult.Count; ctr++)

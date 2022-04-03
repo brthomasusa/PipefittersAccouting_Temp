@@ -14,7 +14,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
         private readonly DateTime _maturityDate;
         private readonly decimal _equalMonthlyPymt;
         private readonly int _numberOfPymts;
-        private List<Installment> _pymtSchedule;
+        private List<InstallmentRecord> _pymtSchedule;
 
         protected LoanAmortizationCalculator
         (
@@ -37,7 +37,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
             CalcRepaymentSchedule();
         }
 
-        public ReadOnlyCollection<Installment> RepaymentSchedule => new(_pymtSchedule);
+        public ReadOnlyCollection<InstallmentRecord> RepaymentSchedule => new(_pymtSchedule);
 
         public static LoanAmortizationCalculator Create
         (
@@ -65,7 +65,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
                 _pymtSchedule.Add
                 (
-                    new Installment(InstallmentNumber: counter + 1,
+                    new InstallmentRecord(InstallmentNumber: counter + 1,
                                     PaymentDueDate: pymtDueDate,
                                     Payment: _equalMonthlyPymt,
                                     Principal: Decimal.Round(principalPymt, 2),
