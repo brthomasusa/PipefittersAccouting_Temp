@@ -2,7 +2,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
-namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
+namespace PipefittersAccounting.Core.Interfaces.Financing
 {
     public interface IFinancierAggregateRepository : IRepository<Financier>
     {

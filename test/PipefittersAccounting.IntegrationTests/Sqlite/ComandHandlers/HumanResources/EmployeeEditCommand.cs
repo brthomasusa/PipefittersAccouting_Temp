@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;

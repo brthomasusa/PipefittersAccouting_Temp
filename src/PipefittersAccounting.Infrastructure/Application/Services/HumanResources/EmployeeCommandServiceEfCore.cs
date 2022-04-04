@@ -1,6 +1,7 @@
 
 using PipefittersAccounting.Infrastructure.Application.Commands.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;

@@ -41,19 +41,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-            int index = installments.FindIndex(i => i.InstallmentNumber == 12);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(13),
-                    PaymentDueDate.Create(new DateTime(2023, 3, 15)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(860M),
-                    LoanInterestAmount.Create(5.26M),
-                    LoanPrincipalRemaining.Create(0.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 12).FirstOrDefault();
+            loanPymt?.UpdateInstallmentNumber(InstallmentNumber.Create(13));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -73,20 +62,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-
-            int index = installments.FindIndex(i => i.InstallmentNumber.Value == 1);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(13),
-                    PaymentDueDate.Create(new DateTime(2023, 3, 15)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(860M),
-                    LoanInterestAmount.Create(5.26M),
-                    LoanPrincipalRemaining.Create(0.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
+            loanPymt?.UpdateInstallmentNumber(InstallmentNumber.Create(13));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -143,7 +120,6 @@ namespace PipefittersAccounting.UnitTests.Financing
                 )
             );
 
-
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
@@ -163,20 +139,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-
-            int index = installments.FindIndex(i => i.InstallmentNumber == 2);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(2),
-                    PaymentDueDate.Create(new DateTime(2022, 4, 15)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(860M),
-                    LoanInterestAmount.Create(5.26M),
-                    LoanPrincipalRemaining.Create(0.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 2).ToList();
+            loanPymt.ForEach(i => i.UpdatePaymentDueDate(PaymentDueDate.Create(new DateTime(2022, 4, 15))));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -197,20 +161,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-
-            int index = installments.FindIndex(i => i.InstallmentNumber == 12);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(12),
-                    PaymentDueDate.Create(new DateTime(2023, 2, 14)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(860M),
-                    LoanInterestAmount.Create(5.26M),
-                    LoanPrincipalRemaining.Create(0.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 12).FirstOrDefault();
+            loanPymt?.UpdatePaymentDueDate(PaymentDueDate.Create(new DateTime(2023, 2, 14)));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -231,20 +183,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-
-            int index = installments.FindIndex(i => i.InstallmentNumber == 1);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(1),
-                    PaymentDueDate.Create(new DateTime(2022, 3, 15)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(807M),
-                    LoanInterestAmount.Create(58.26M),
-                    LoanPrincipalRemaining.Create(9193.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
+            loanPymt?.UpdatePaymentDueDate(PaymentDueDate.Create(new DateTime(2022, 3, 1)));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -265,20 +205,8 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime maturityDate = new DateTime(2023, 4, 15);
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
-
-            int index = installments.FindIndex(i => i.InstallmentNumber == 12);
-            installments[index] = new LoanInstallment
-                (
-                    LoanPaymentEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-                    EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")),
-                    InstallmentNumber.Create(12),
-                    PaymentDueDate.Create(new DateTime(2023, 4, 16)),
-                    EqualMonthlyInstallment.Create(865.26M),
-                    LoanPrincipalAmount.Create(860M),
-                    LoanInterestAmount.Create(5.26M),
-                    LoanPrincipalRemaining.Create(0.00M),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-                );
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 12).FirstOrDefault();
+            loanPymt?.UpdatePaymentDueDate(PaymentDueDate.Create(new DateTime(2023, 4, 16)));
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
@@ -290,6 +218,63 @@ namespace PipefittersAccounting.UnitTests.Financing
             var caughtException = Assert.Throws<InvalidOperationException>(action);
 
             Assert.Equal("Invalid installment payment dates(s) found! Valid installment payment dates are between loan agreement loan date and maturity date.", caughtException.Message);
+        }
+
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_ErrorInEMI_ShouldFail()
+        {
+            decimal loanAmount = 10000.00M;
+            decimal interestRate = .0725M;
+
+            List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
+            loanPymt?.UpdateEqualMonthlyInstallment(EqualMonthlyInstallment.Create(860.00M));
+
+            OperationResult<LoanAmortizationSchedule> result =
+                LoanAmortizationSchedule.Create(installments);
+
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            Action action = () => handler.Handle(result.Result);
+
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
+        }
+
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_ErrorInPrincipal_ShouldFail()
+        {
+            decimal loanAmount = 10000.00M;
+            decimal interestRate = .0725M;
+
+            List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
+            loanPymt?.UpdateLoanPrincipalAmount(LoanPrincipalAmount.Create(806.00M));
+
+            OperationResult<LoanAmortizationSchedule> result =
+                LoanAmortizationSchedule.Create(installments);
+
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            Action action = () => handler.Handle(result.Result);
+
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
+        }
+
+        [Fact]
+        public void LoanInstallmentPaymentSchedule_Validation_ErrorInInterest_ShouldFail()
+        {
+            decimal loanAmount = 10000.00M;
+            decimal interestRate = .0725M;
+
+            List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
+            var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
+            loanPymt?.UpdateLoanInterestAmount(LoanInterestAmount.Create(57.00M));
+
+            OperationResult<LoanAmortizationSchedule> result =
+                LoanAmortizationSchedule.Create(installments);
+
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            Action action = () => handler.Handle(result.Result);
+
+            var caughtException = Assert.Throws<InvalidOperationException>(action);
         }
     }
 }

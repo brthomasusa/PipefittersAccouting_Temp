@@ -12,37 +12,36 @@ namespace PipefittersAccounting.UnitTests.Financing
 {
     public class LoanAgreementAggregateTests
     {
-        // [Fact]
-        // public void Create_LoanAgreement_ValidInfo_ShouldSucceed()
-        // {
-        //     LoanAgreement agreement = new
-        //     (
-        //         LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-        //         EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
-        //         LoanAmount.Create(17500),
-        //         InterestRate.Create(.0675M),
-        //         LoanDate.Create(new DateTime(2022, 3, 30)),
-        //         MaturityDate.Create(new DateTime(2023, 3, 30)),
-        //         NumberOfInstallments.Create(12),
-        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-        //         LoanAgreementTestData.GetInstallments12Months()
-        //     );
+        [Fact]
+        public void Create_LoanAgreement_ValidInfo_ShouldSucceed()
+        {
+            LoanAgreement agreement = new
+            (
+                LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
+                LoanAmount.Create(10000),
+                InterestRate.Create(.0725M),
+                LoanDate.Create(new DateTime(2022, 3, 15)),
+                MaturityDate.Create(new DateTime(2023, 3, 15)),
+                NumberOfInstallments.Create(12),
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+                LoanAgreementTestData.GetInstallments12MonthsOfValidInfo()
+            );
 
-        //     Assert.IsType<LoanAgreement>(agreement);
-        // }
+            Assert.IsType<LoanAgreement>(agreement);
+        }
 
-        // [Fact]
-        // public void UpdateLoanInstallmentPaymentSchedule_LoanAgreement_ValidInfo_ShouldSucceed()
-        // {
-        //     LoanAgreement agreement = LoanAgreementTestData.GetLoanAgreementForEditing();
-        //     agreement.UpdateLoanInstallmentPaymentSchedule(LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate());
+        [Fact]
+        public void UpdateLoanAmortizationSchedule_LoanAgreement_ValidInfo_ShouldSucceed()
+        {
+            LoanAgreement agreement = LoanAgreementTestData.GetLoanAgreementForEditing();
 
-        //     var exception = Record.Exception(
-        //         () => agreement.UpdateLoanInstallmentPaymentSchedule(LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate())
-        //     );
+            var exception = Record.Exception(
+                () => agreement.UpdateLoanInstallmentPaymentSchedule(LoanAgreementTestData.GetInstallments12MonthsOfValidInfo())
+            );
 
-        //     Assert.Null(exception);
-        // }
+            Assert.Null(exception);
+        }
 
         // [Fact]
         // public void UpdateLoanAmount_LoanAgreement_ValidInfo_ShouldSucceed()
@@ -175,25 +174,6 @@ namespace PipefittersAccounting.UnitTests.Financing
         //     installment.UpdateLoanPrincipalRemaining(LoanPrincipalRemaining.Create(50000M));
 
         //     Assert.Equal(50000M, installment.LoanPrincipalRemaining);
-        // }
-
-        // [Fact]
-        // public void UpdatePaymentStatus_LoanInstallment_ValidInfo_ShouldSucceed()
-        // {
-        //     LoanInstallment installment = LoanAgreementTestData.GetLoanInstallmentForEditing();
-        //     installment.UpdatePaymentStatus(true);
-
-        //     Assert.True(installment.IsPaid);
-        // }
-
-        // [Fact]
-        // public void UpdateUserId_LoanInstallment_ValidInfo_ShouldSucceed()
-        // {
-        //     LoanAgreement agreement = LoanAgreementTestData.GetLoanAgreementForEditing();
-        //     Guid uID = EntityGuidID.Create(new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"));
-
-        //     agreement.UpdateUserId(EntityGuidID.Create(uID));
-        //     Assert.Equal(uID, agreement.UserId);
         // }
     }
 }

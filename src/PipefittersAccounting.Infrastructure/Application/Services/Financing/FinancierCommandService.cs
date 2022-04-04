@@ -1,3 +1,4 @@
+using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Commands.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;

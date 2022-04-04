@@ -19,13 +19,13 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
         {
             decimal principalTotal = 0M;
             decimal totalInterestPaid = 0M;
-            decimal totalPayments = 0M;
+            decimal totalEMI = 0M;
 
             var result = request.AmortizationSchedule.Values.ToList();
 
             result.ForEach(x => principalTotal += x.LoanPrincipalAmount);
             result.ForEach(x => totalInterestPaid += x.LoanInterestAmount);
-            result.ForEach(x => totalPayments += x.EqualMonthlyInstallment);
+            result.ForEach(x => totalEMI += x.EqualMonthlyInstallment);
 
             if (principalTotal != _loanAgreementAmount)
             {
@@ -33,9 +33,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
                 throw new InvalidOperationException(errMsg);
             }
 
-            if (principalTotal + totalInterestPaid != totalPayments)
+            if (principalTotal + totalInterestPaid != totalEMI)
             {
-                string errMsg = $"Total of Equal Monthly Installment (EMI) payments (${totalPayments}) must equal total of principal repaid (${principalTotal}) + total of interest paid ({totalInterestPaid})!";
+                string errMsg = $"Total of Equal Monthly Installment (EMI) payments (${totalEMI}) must equal total of principal repaid (${principalTotal}) + total of interest paid ({totalInterestPaid})!";
                 throw new InvalidOperationException(errMsg);
             }
 

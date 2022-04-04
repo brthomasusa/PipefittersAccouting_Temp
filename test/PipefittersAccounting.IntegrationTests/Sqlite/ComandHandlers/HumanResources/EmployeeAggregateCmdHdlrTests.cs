@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;

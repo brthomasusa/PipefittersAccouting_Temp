@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;

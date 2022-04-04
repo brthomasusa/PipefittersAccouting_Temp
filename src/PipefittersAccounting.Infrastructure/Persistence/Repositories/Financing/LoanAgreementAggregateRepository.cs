@@ -6,7 +6,7 @@ using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Shared;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing

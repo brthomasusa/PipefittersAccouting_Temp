@@ -2,7 +2,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
-namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
+namespace PipefittersAccounting.Core.Interfaces.HumanResources
 {
     public interface IEmployeeAggregateRepository : IRepository<Employee>
     {

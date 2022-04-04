@@ -1,6 +1,6 @@
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 

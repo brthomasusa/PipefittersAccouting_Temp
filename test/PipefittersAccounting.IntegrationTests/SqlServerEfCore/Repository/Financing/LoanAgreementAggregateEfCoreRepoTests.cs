@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;

@@ -1,6 +1,6 @@
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
