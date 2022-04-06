@@ -19,14 +19,13 @@ namespace PipefittersAccounting.UnitTests.Financing
             DateTime firstPaymentDate = new DateTime(2022, 4, 15);
             DateTime maturityDate = new DateTime(2023, 4, 15);
             decimal loanAmount = 10000M;
-            decimal interestRate = .0725M;
 
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(LoanAgreementTestData.GetInstallments12MonthsOfValidInfo());
 
             InstallmentNumberValidationHandler handler = new(numberOfPayments);
             handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, maturityDate))
-                   .SetNext(new InstallmentPaymentAmountValidationHandler(loanAmount, interestRate));
+                   .SetNext(new InstallmentPaymentAmountValidationHandler(loanAmount));
 
             var exception = Record.Exception(() => handler.Handle(result.Result));
 
@@ -224,7 +223,6 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void LoanInstallmentPaymentSchedule_Validation_ErrorInEMI_ShouldFail()
         {
             decimal loanAmount = 10000.00M;
-            decimal interestRate = .0725M;
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
             var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
@@ -233,7 +231,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount);
             Action action = () => handler.Handle(result.Result);
 
             var caughtException = Assert.Throws<InvalidOperationException>(action);
@@ -243,7 +241,6 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void LoanInstallmentPaymentSchedule_Validation_ErrorInPrincipal_ShouldFail()
         {
             decimal loanAmount = 10000.00M;
-            decimal interestRate = .0725M;
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
             var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
@@ -252,7 +249,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount);
             Action action = () => handler.Handle(result.Result);
 
             var caughtException = Assert.Throws<InvalidOperationException>(action);
@@ -262,7 +259,6 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void LoanInstallmentPaymentSchedule_Validation_ErrorInInterest_ShouldFail()
         {
             decimal loanAmount = 10000.00M;
-            decimal interestRate = .0725M;
 
             List<LoanInstallment> installments = LoanAgreementTestData.GetInstallments12MonthsOfValidInfo();
             var loanPymt = installments.Where(i => i.InstallmentNumber == 1).FirstOrDefault();
@@ -271,7 +267,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentAmountValidationHandler handler = new(loanAmount, interestRate);
+            InstallmentPaymentAmountValidationHandler handler = new(loanAmount);
             Action action = () => handler.Handle(result.Result);
 
             var caughtException = Assert.Throws<InvalidOperationException>(action);

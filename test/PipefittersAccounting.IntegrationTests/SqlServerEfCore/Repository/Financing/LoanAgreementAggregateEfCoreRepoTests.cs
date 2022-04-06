@@ -21,35 +21,71 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
     public class LoanAgreementAggregateEfCoreRepoTests : TestBaseEfCore
     {
         [Fact]
-        public async Task Exists_DoesLoanAgreementExist_ReturnTrue()
+        public async Task Exists_LoanAgreementAggregateRepository_ReturnTrue()
         {
             AppUnitOfWork uow = new(_dbContext);
             ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
             Guid loanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1");
 
-            bool result = await repo.Exists(loanId);
-            Assert.True(result);
+            OperationResult<bool> result = await repo.Exists(loanId);
+            Assert.True(result.Success);
 
             LoanAgreement agreement = await _dbContext.LoanAgreements.FindAsync(loanId);
             Assert.NotNull(agreement);
         }
 
-        // [Fact]
-        // public async Task AddAsync_NewLoanAgreementWithValidInfo_ShouldSucceed()
-        // {
-        //     AppUnitOfWork uow = new(_dbContext);
-        //     ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
+        [Fact]
+        public async Task GetById_LoanAgreementAggregateRepository_ShouldSucceed()
+        {
+            AppUnitOfWork uow = new(_dbContext);
+            ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
-        //     LoanAgreement agreement = TestUtilities.GetLoanAgreementForCreating();
+            Guid loanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1");
 
-        //     await repo.AddAsync(agreement);
-        //     await uow.Commit();
+            OperationResult<LoanAgreement> result = await repo.GetByIdAsync(loanId);
+            Assert.True(result.Success);
 
-        //     var result = await repo.GetByIdAsync(agreement.Id);
-        //     Assert.NotNull(result);
-        //     Assert.Equal(agreement.FinancierId, result.FinancierId);
-        // }
+            int installmentCount = result.Result.LoanAmortizationTable.Count;
+            Assert.Equal(12, installmentCount);
+            Assert.Equal(new Guid("12998229-7ede-4834-825a-0c55bde75695"), result.Result.FinancierId);
+        }
+
+        [Fact]
+        public async Task AddAsync_NewStandardLoanAgreementWithValidInfo_ShouldSucceed()
+        {
+            AppUnitOfWork uow = new(_dbContext);
+            ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
+
+            LoanAgreement agreement = LoanAgreementTestData.GetStandardLoanAgreementForCreating();
+
+            OperationResult<bool> addResult = await repo.AddAsync(agreement);
+
+            Assert.True(addResult.Success);
+            await uow.Commit();
+
+            OperationResult<LoanAgreement> result = await repo.GetByIdAsync(agreement.Id);
+            Assert.True(result.Success);
+            Assert.Equal(agreement.FinancierId, result.Result.FinancierId);
+        }
+
+        [Fact]
+        public async Task AddAsync_NewCustomLoanAgreementWithValidInfo_ShouldSucceed()
+        {
+            AppUnitOfWork uow = new(_dbContext);
+            ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
+
+            LoanAgreement agreement = LoanAgreementTestData.GetCustomLoanAgreementForCreating();
+
+            OperationResult<bool> addResult = await repo.AddAsync(agreement);
+
+            Assert.True(addResult.Success);
+            await uow.Commit();
+
+            OperationResult<LoanAgreement> result = await repo.GetByIdAsync(agreement.Id);
+            Assert.True(result.Success);
+            Assert.Equal(agreement.FinancierId, result.Result.FinancierId);
+        }
 
         // [Fact]
         // public async Task Update_EditLoanAgreementInfo_ShouldSucceed()
@@ -76,7 +112,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             AppUnitOfWork uow = new(_dbContext);
             ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
 
-            LoanAgreement agreement = await _dbContext.LoanAgreements.FindAsync(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"));
+            Guid loanId = new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867");
+
+            LoanAgreement agreement = await _dbContext.LoanAgreements.FindAsync(loanId);
             EconomicEvent evt = await _dbContext.EconomicEvents.FindAsync(agreement.Id);
             Assert.NotNull(agreement);
             Assert.NotNull(evt);

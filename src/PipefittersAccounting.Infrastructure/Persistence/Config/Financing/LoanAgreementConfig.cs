@@ -12,6 +12,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
             entity.ToTable("LoanAgreements", schema: "Finance");
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.UserId, "idx_LoanAgreement$UserID");
+            entity.HasMany<LoanInstallment>(p => p.LoanAmortizationTable).WithOne().HasForeignKey(p => p.LoanId);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanId").ValueGeneratedNever();
             entity.Property(p => p.FinancierId).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("FinancierId").IsRequired();
@@ -38,8 +39,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
             entity.Property(p => p.NumberOfInstallments)
                 .HasConversion(p => p.Value, p => NumberOfInstallments.Create(p))
                 .HasColumnType("INT")
-                .HasColumnName("PymtsPerYear")
+                .HasColumnName("NumberOfInstallments")
                 .IsRequired();
+            // entity.Property(p => p.LoanAmortizationTable).HasField("_loanAmortizationSchedule");
             entity.Property(p => p.UserId).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("UserId").IsRequired();
             entity.Property(e => e.CreatedDate).HasColumnType("datetime2(7)");
             entity.Property(e => e.LastModifiedDate).HasColumnType("datetime2(7)");

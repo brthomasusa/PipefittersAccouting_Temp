@@ -1,8 +1,5 @@
 #pragma warning disable CS8618
 
-using System.Collections.ObjectModel;
-using PipefittersAccounting.Core.Shared;
-using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
@@ -14,9 +11,9 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
     public class LoanAgreement : AggregateRoot<Guid>, IAggregateRoot
     {
-        private SortedDictionary<int, LoanInstallment> _loanPaymentSchedule = new();
+        private List<LoanInstallment> _loanAmortizationTable;
 
-        protected LoanAgreement() { }
+        protected LoanAgreement() => _loanAmortizationTable = new();
 
         public LoanAgreement
         (
@@ -110,7 +107,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             UpdateLastModifiedDate();
         }
 
-        public virtual ReadOnlyDictionary<int, LoanInstallment> LoanPaymentSchedule => new(_loanPaymentSchedule);
+        public virtual IReadOnlyCollection<LoanInstallment> LoanAmortizationTable => _loanAmortizationTable.ToList();
 
         private void AddLoanInstallmentPaymentSchedule(List<LoanInstallment> installments)
         {
@@ -123,11 +120,11 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             {
                 InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
                 handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
-                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount, InterestRate));
+                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount));
 
                 handler.Handle(result.Result);
 
-                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, item));
+                _loanAmortizationTable.AddRange(installments);
             }
             else
             {
@@ -151,12 +148,12 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             {
                 InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
                 handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
-                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount, InterestRate));
+                       .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount));
 
                 handler.Handle(result.Result);
 
-                _loanPaymentSchedule = new();
-                installments.ForEach(item => _loanPaymentSchedule.Add(item.InstallmentNumber, item));
+                _loanAmortizationTable = new();
+                _loanAmortizationTable.AddRange(installments);
             }
             else
             {

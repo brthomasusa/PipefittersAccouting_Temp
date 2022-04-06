@@ -3,16 +3,13 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
     public class InstallmentPaymentAmountValidationHandler : Handler<LoanAmortizationSchedule>
     {
         private readonly decimal _loanAgreementAmount;
-        private readonly decimal _annualInterestRate;
 
         public InstallmentPaymentAmountValidationHandler
         (
-            decimal loanAmount,
-            decimal interestRate
+            decimal loanAmount
         )
         {
             _loanAgreementAmount = loanAmount;
-            _annualInterestRate = interestRate;
         }
 
         public override void Handle(LoanAmortizationSchedule request)

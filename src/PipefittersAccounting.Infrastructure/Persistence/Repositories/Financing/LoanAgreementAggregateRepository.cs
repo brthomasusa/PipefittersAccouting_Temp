@@ -1,5 +1,7 @@
+#pragma warning disable CS8600
 #pragma warning disable CS8602
 #pragma warning disable CS8603
+#pragma warning disable CS8604
 
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
@@ -13,34 +15,105 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 {
     public class LoanAgreementAggregateRepository : ILoanAgreementAggregateRepository
     {
-        private bool isDisposed;
+        private bool _isDisposed;
         private readonly AppDbContext _dbContext;
 
         public LoanAgreementAggregateRepository(AppDbContext ctx) => _dbContext = ctx;
 
         ~LoanAgreementAggregateRepository() => Dispose(false);
 
-        public async Task<LoanAgreement> GetByIdAsync(Guid id) => await _dbContext.LoanAgreements.FindAsync(id);
-
-        public async Task<bool> Exists(Guid id) => await _dbContext.LoanAgreements.FindAsync(id) != null;
-
-        public async Task AddAsync(LoanAgreement entity)
+        public async Task<OperationResult<LoanAgreement>> GetByIdAsync(Guid id)
         {
-            EconomicEvent evt = new(EntityGuidID.Create(entity.Id), EventTypeEnum.LoanAgreementCashReceipt);
-            await _dbContext.EconomicEvents.AddAsync(evt);
-            await _dbContext.LoanAgreements.AddAsync(entity);
+            try
+            {
+                LoanAgreement? agreement = await _dbContext.LoanAgreements.Where(la => la.Id == id)
+                                                                          .Include(i => i.LoanAmortizationTable.Where(a => a.LoanId == id))
+                                                                          .FirstOrDefaultAsync();
+
+                if (agreement is not null)
+                {
+                    return OperationResult<LoanAgreement>.CreateSuccessResult(agreement);
+                }
+                else
+                {
+                    string errMsg = $"Unable to find a loan agreement with LoanId: {id}.";
+                    return OperationResult<LoanAgreement>.CreateFailure(errMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<LoanAgreement>.CreateFailure(ex.Message);
+            }
         }
 
-        public void Update(LoanAgreement entity) => _dbContext.LoanAgreements.Update(entity);
-
-        public void Delete(LoanAgreement entity)
+        public async Task<OperationResult<bool>> Exists(Guid id)
         {
-            _dbContext.LoanAgreements.Remove(entity);
+            try
+            {
+                LoanAgreement? agreement = await _dbContext.LoanAgreements.FindAsync(id);
 
-            string errMsg = $"Delete loan agreement failed, unable to locate economic event with id: {entity.Id}";
-            EconomicEvent evt = _dbContext.EconomicEvents.Find(entity.Id) ?? throw new ArgumentNullException(errMsg);
+                if (agreement is not null)
+                {
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateSuccessResult(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
 
-            _dbContext.EconomicEvents.Remove(evt);
+        public async Task<OperationResult<bool>> AddAsync(LoanAgreement entity)
+        {
+            try
+            {
+                EconomicEvent evt = new(EntityGuidID.Create(entity.Id), EventTypeEnum.LoanAgreementCashReceipt);
+                await _dbContext.EconomicEvents.AddAsync(evt);
+                await _dbContext.LoanAgreements.AddAsync(entity);
+
+                foreach (LoanInstallment installment in entity.LoanAmortizationTable)
+                {
+                    await _dbContext.EconomicEvents.AddAsync(new(EntityGuidID.Create(installment.Id),
+                                                                                     EventTypeEnum.LoanPaymentCashDisbursement));
+                    await _dbContext.LoanInstallments.AddAsync(installment);
+                }
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+
+        }
+
+        public OperationResult<bool> Delete(LoanAgreement entity)
+        {
+            try
+            {
+                entity.LoanAmortizationTable.ToList().ForEach(i => _dbContext.LoanInstallments.Remove(i));
+                entity.LoanAmortizationTable.ToList()
+                                            .ForEach(i =>
+                                            {
+                                                EconomicEvent evt = _dbContext.EconomicEvents.Find(i.Id);
+                                                _dbContext.EconomicEvents.Remove(evt);
+                                            });
+
+                _dbContext.LoanAgreements.Remove(entity);
+                EconomicEvent? evt = _dbContext.EconomicEvents.Find(entity.Id);
+                _dbContext.EconomicEvents.Remove(evt);
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+
         }
 
         public void Dispose()
@@ -51,7 +124,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
         protected virtual void Dispose(bool disposing)
         {
-            if (isDisposed) return;
+            if (_isDisposed) return;
 
             if (disposing)
             {
@@ -59,7 +132,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                 _dbContext.Dispose();
             }
 
-            isDisposed = true;
+            _isDisposed = true;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Financier> Financiers { get; set; }
         public DbSet<LoanAgreement> LoanAgreements { get; set; }
-        public DbSet<LoanInstallment> LoanPaymentSchedule { get; set; }
+        public DbSet<LoanInstallment> LoanInstallments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
