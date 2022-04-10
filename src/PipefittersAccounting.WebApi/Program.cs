@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
+using System.Reflection;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -10,7 +12,15 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews()
+                    .AddFluentValidation(options =>
+                    {
+                        // Validate child properties and root collection elements
+                        options.ImplicitlyValidateChildProperties = true;
+                        options.ImplicitlyValidateRootCollectionElements = true;
+                        // Automatic registration of validators in assembly
+                        options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                    });
 
     builder.Services.AddRazorPages();
     builder.Services.AddEndpointsApiExplorer();

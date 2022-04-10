@@ -1,0 +1,51 @@
+#pragma warning disable CS8618
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using PipefittersAccounting.SharedModel.Interfaces;
+using PipefittersAccounting.SharedModel.Validation.Common;
+
+namespace PipefittersAccounting.SharedModel.WriteModels.Financing
+{
+    public class CreateLoanAgreementInfo : IWriteModel
+    {
+        public Guid LoanId { get; set; }
+
+        public Guid FinancierId { get; set; }
+
+        public decimal LoanAmount { get; set; }
+
+        public decimal InterestRate { get; set; }
+
+        public DateTime LoanDate { get; set; }
+
+        public DateTime MaturityDate { get; set; }
+
+        public int NumberOfInstallments { get; set; }
+
+        public List<CreateLoanInstallmentInfo> AmortizationSchedule { get; set; }
+
+        public Guid UserId { get; set; }
+    }
+
+    public class DeleteLoanAgreementInfo : IWriteModel
+    {
+        public Guid Id { get; set; }
+
+        public Guid UserId { get; set; }
+    }
+
+    public class CreateLoanInstallmentInfo : IWriteModel
+    {
+        public Guid LoanInstallmentId { get; set; }
+        public Guid LoanId { get; set; }
+        public int InstallmentNumber { get; set; }
+        public DateTime PaymentDueDate { get; set; }
+        public decimal EqualMonthlyInstallment { get; set; }
+        public decimal LoanPrincipalAmount { get; set; }
+        public decimal LoanInterestAmount { get; set; }
+        public decimal LoanPrincipalRemaining { get; set; }
+        public Guid UserId { get; set; }
+    }
+}

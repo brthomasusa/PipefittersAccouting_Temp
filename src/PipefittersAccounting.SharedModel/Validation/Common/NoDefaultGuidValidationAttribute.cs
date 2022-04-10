@@ -1,7 +1,6 @@
 #pragma warning disable CS8620 
 #pragma warning disable CS8603 
 
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PipefittersAccounting.SharedModel.Validation.Common
