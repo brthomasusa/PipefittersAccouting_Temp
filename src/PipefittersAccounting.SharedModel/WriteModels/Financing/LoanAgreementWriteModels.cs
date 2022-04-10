@@ -1,10 +1,6 @@
 #pragma warning disable CS8618
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 using PipefittersAccounting.SharedModel.Interfaces;
-using PipefittersAccounting.SharedModel.Validation.Common;
 
 namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 {
@@ -31,7 +27,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 
     public class DeleteLoanAgreementInfo : IWriteModel
     {
-        public Guid Id { get; set; }
+        public Guid LoanId { get; set; }
 
         public Guid UserId { get; set; }
     }

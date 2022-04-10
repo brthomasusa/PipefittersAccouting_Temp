@@ -31,9 +31,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             OperationResult<bool> result = await cmdSvc.CreateFinancierInfo(model);
             Assert.True(result.Success);
 
-            var newEmployee = await repo.GetByIdAsync(model.Id);
+            var financier = await repo.GetByIdAsync(model.Id);
 
-            Assert.NotNull(newEmployee);
+            Assert.NotNull(financier);
         }
 
         [Fact]
