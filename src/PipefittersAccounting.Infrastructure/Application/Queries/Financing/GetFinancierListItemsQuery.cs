@@ -17,13 +17,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
             {
                 var sql =
                 @"SELECT 
-                FinancierID, FinancierName, Telephone, 
-                AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
-                ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
-                ContactTelephone, IsActive    
-            FROM Finance.Financiers
-            ORDER BY FinancierName
-            OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+                    FinancierID, FinancierName, Telephone, 
+                    AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
+                    ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
+                    ContactTelephone, IsActive    
+                FROM Finance.Financiers
+                ORDER BY FinancierName
+                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("Offset", Offset(queryParameters.Page, queryParameters.PageSize), DbType.Int32);

@@ -12,6 +12,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
         {
             try
             {
+                //TODO Remove check for financier id, handle null financier with OperationResult.FailureMessage
                 if (await IsValidFinancierID(queryParameters.FinancierId, ctx) == false)
                 {
                     string errMsg = $"No financier record found where FinancierId equals {queryParameters.FinancierId}.";
