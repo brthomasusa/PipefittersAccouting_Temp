@@ -26,6 +26,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
                 {
                     detail.Result.LoanInstallmentListItems = installments.Result;
                 }
+                else
+                {
+                    return OperationResult<LoanAgreementDetail>.CreateFailure(installments.NonSuccessMessage);
+                }
             }
 
             return detail;
