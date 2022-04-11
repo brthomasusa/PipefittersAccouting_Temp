@@ -37,6 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<ILoanAgreementCommandService, LoanAgreementCommandService>()
                 .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
                 .AddScoped<IFinancierQueryService, FinancierQueryServiceDapper>()
+                .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
                 .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
         }
 
