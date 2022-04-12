@@ -52,7 +52,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpGet("detail/{loanId:Guid}")]
-        public async Task<ActionResult<LoanAgreementDetail>> GetFinancierDetail(Guid loanId)
+        public async Task<ActionResult<LoanAgreementDetail>> GetLoanAgreementDetail(Guid loanId)
         {
             GetLoanAgreement queryParams = new() { LoanId = loanId };
 
@@ -72,5 +72,55 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             _logger.LogError(result.Exception.Message);
             return StatusCode(500, result.Exception.Message);
         }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateLoanAgreement([FromBody] CreateLoanAgreementInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _cmdSvc.CreateLoanAgreement(writeModel);
+            if (writeResult.Success)
+            {
+                GetLoanAgreement queryParams = new() { LoanId = writeModel.LoanId };
+                OperationResult<LoanAgreementDetail> result = await _qrySvc.GetLoanAgreementDetails(queryParams);
+
+                if (result.Success)
+                {
+                    return CreatedAtAction(nameof(GetLoanAgreementDetail), new { loanId = writeModel.LoanId }, result.Result);
+                }
+                else
+                {
+                    return StatusCode(201, "Create loan agreement succeeded; unable to return newly created loan agreement.");
+                }
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteLoanAgreement([FromBody] DeleteLoanAgreementInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _cmdSvc.DeleteLoanAgreement(writeModel);
+
+            if (writeResult.Success)
+            {
+                return StatusCode(200, "Loan agreement successfully deleted.");
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
     }
 }

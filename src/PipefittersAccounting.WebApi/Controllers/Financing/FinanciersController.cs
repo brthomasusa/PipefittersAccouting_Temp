@@ -98,7 +98,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
                 }
                 else
                 {
-                    return StatusCode(201, "Create financier succeeded; unable to return newly created employee.");
+                    return StatusCode(201, "Create financier succeeded; unable to return newly created financier.");
                 }
             }
 
