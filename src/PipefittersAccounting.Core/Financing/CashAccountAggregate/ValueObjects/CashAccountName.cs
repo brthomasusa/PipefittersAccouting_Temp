@@ -2,7 +2,7 @@
 
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
 {
     public class CashAccountName : ValueObject
     {

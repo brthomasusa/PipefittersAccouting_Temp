@@ -1,6 +1,6 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;

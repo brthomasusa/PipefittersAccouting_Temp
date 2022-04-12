@@ -3,7 +3,7 @@
 using System.Text.RegularExpressions;
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
 {
     public class RoutingTransitNumber : ValueObject
     {
