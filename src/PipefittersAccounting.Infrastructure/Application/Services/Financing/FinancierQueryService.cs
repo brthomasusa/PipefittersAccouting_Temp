@@ -7,11 +7,11 @@ using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
-    public class FinancierQueryServiceDapper : IFinancierQueryService
+    public class FinancierQueryService : IFinancierQueryService
     {
         private readonly DapperContext _dapperCtx;
 
-        public FinancierQueryServiceDapper(DapperContext ctx) => _dapperCtx = ctx;
+        public FinancierQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
         public async Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
             => await GetFinancierDetailsQuery.Query(queryParameters, _dapperCtx);

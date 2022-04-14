@@ -16,7 +16,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetFinancierDetails_GetOneFinancierDetailById_ShouldSucceed()
         {
-            IFinancierQueryService queryService = new FinancierQueryServiceDapper(_dapperCtx);
+            IFinancierQueryService queryService = new FinancierQueryService(_dapperCtx);
 
             Guid agentID = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a");
 
@@ -31,7 +31,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetFinancierDetails_GetFinancierDetailWithInvalidId_ShouldFail()
         {
-            IFinancierQueryService queryService = new FinancierQueryServiceDapper(_dapperCtx);
+            IFinancierQueryService queryService = new FinancierQueryService(_dapperCtx);
 
             Guid agentID = new Guid("aaa471a0-5c1e-4a4d-97e7-288fb0f6338a");
 
@@ -45,7 +45,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetFinancierListItems_RetrievePageListOfFinancierListItems_ShouldSucceed()
         {
-            IFinancierQueryService queryService = new FinancierQueryServiceDapper(_dapperCtx);
+            IFinancierQueryService queryService = new FinancierQueryService(_dapperCtx);
 
             // Get page 1 of 2
             GetFinanciers queryParameters = new GetFinanciers() { Page = 1, PageSize = 3 };

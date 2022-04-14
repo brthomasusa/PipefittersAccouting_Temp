@@ -391,7 +391,9 @@ VALUES
     ('Cash Disbursement TimeCard Payment'),
     ('Cash Disbursement Purchase Receipt'),
     ('Cash Receipt Adjustment'),
-    ('Cash Disbursement Adjustment')    
+    ('Cash Disbursement Adjustment'),
+    ('Cash Transfer To Primary Checking'),
+    ('Cash Transfer to Payroll') 
 GO
 
 INSERT INTO Shared.EconomicEventTypes

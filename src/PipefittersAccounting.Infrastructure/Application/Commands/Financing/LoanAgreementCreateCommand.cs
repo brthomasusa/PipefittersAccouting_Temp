@@ -1,7 +1,7 @@
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
-using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

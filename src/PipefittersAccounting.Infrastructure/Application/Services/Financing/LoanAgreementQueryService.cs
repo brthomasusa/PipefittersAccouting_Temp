@@ -37,8 +37,5 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters)
             => await GetLoanAgreementListItemQuery.Query(queryParameters, _dapperCtx);
-
-        private async Task<OperationResult<List<LoanInstallmentListItem>>> GetLoanAgreementInstallments(GetLoanAgreementInstallments queryParameters)
-            => await GetLoanInstallmentListItemQuery.Query(queryParameters, _dapperCtx);
     }
 }
