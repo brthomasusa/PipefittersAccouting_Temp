@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
@@ -38,6 +39,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
+                .AddScoped<ICashAccountQueryService, CashAccountQueryService>()
+                .AddScoped<ICashTransactionValidationService, CashTransactionValidationService>()
                 .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
         }
 

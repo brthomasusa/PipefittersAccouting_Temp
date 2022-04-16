@@ -14,10 +14,11 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         public CashTransaction
         (
             CashTransactionTypeEnum cashTransactionType,
-            CashAccount cashAccount,
+            EntityGuidID cashAccountID,
             CashTransactionDate transactionDate,
-            ExternalAgent agentId,
-            EconomicEvent eventId,
+            CashTransactionAmount cashTransactionAmount,
+            EntityGuidID agentId,
+            EntityGuidID eventId,
             CheckNumber checkNumber,
             RemittanceAdvice remittanceAdvice,
             EntityGuidID userId
@@ -25,10 +26,11 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             : this()
         {
             CashTransactionType = cashTransactionType;
-            CashAccount = cashAccount ?? throw new ArgumentNullException("This transaction requires a cash account.");
+            CashAccountId = cashAccountID;
             CashTransactionDate = transactionDate ?? throw new ArgumentNullException("The cash transaction date is required.");
-            ExternalAgent = agentId ?? throw new ArgumentNullException("The external agent (customer, financier, vendor, etc.)is required.");
-            EconomicEvent = eventId ?? throw new ArgumentNullException("The economic event (loan agreement, stock subscription, etc.)is required.");
+            CashTransactionAmount = cashTransactionAmount ?? throw new ArgumentNullException("The cash transaction amount is required.");
+            AgentId = agentId ?? throw new ArgumentNullException("The external agent (customer, financier, vendor, etc.)is required.");
+            EventId = eventId ?? throw new ArgumentNullException("The economic event (loan agreement, stock subscription, etc.)is required.");
             CheckNumber = checkNumber ?? throw new ArgumentNullException("The check number is required.");
             RemittanceAdvice = remittanceAdvice;
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
@@ -45,13 +47,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CheckValidity();
         }
 
-        public virtual CashAccount CashAccount { get; private set; }
-        public void UpdateCashAccount(CashAccount value)
-        {
-            CashAccount = value ?? throw new ArgumentNullException("This transaction requires a cash account.");
-            UpdateLastModifiedDate();
-            CheckValidity();
-        }
+        public Guid CashAccountId { get; private set; }
 
         public virtual CashTransactionDate CashTransactionDate { get; private set; }
         public void UpdateCashTransactionDate(CashTransactionDate transactionDate)
@@ -64,23 +60,23 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         public virtual CashTransactionAmount CashTransactionAmount { get; private set; }
         public void UpdateCashTransactionAmount(CashTransactionAmount transactionAmount)
         {
-            CashTransactionAmount = transactionAmount ?? throw new ArgumentNullException("The transaction amount is required.");
+            CashTransactionAmount = transactionAmount ?? throw new ArgumentNullException("The cash transaction amount is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }
 
-        public virtual ExternalAgent ExternalAgent { get; private set; }
-        public void UpdateExternalAgent(ExternalAgent value)
+        public Guid AgentId { get; private set; }
+        public void UpdateAgentId(EntityGuidID value)
         {
-            ExternalAgent = value ?? throw new ArgumentNullException("The external agent (customer, financier, vendor, etc.)is required.");
+            AgentId = value ?? throw new ArgumentNullException("The external agent (customer, financier, vendor, etc.)is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }
 
-        public virtual EconomicEvent EconomicEvent { get; set; }
-        public void UpdateEconomicEvent(EconomicEvent value)
+        public Guid EventId { get; set; }
+        public void UpdateEventId(EntityGuidID value)
         {
-            EconomicEvent = value ?? throw new ArgumentNullException("The economic event (loan agreement, stock subscription, etc.)is required.");
+            EventId = value ?? throw new ArgumentNullException("The economic event (loan agreement, stock subscription, etc.)is required.");
             UpdateLastModifiedDate();
             CheckValidity();
         }

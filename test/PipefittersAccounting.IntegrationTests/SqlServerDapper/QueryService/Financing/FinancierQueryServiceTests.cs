@@ -11,7 +11,7 @@ using PipefittersAccounting.SharedModel.Readmodels.Financing;
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
 {
     [Trait("Integration", "DapperQueryService")]
-    public class FinancierQueryServiceDapperTests : TestBaseDapper
+    public class FinancierQueryServiceTests : TestBaseDapper
     {
         [Fact]
         public async Task GetFinancierDetails_GetOneFinancierDetailById_ShouldSucceed()

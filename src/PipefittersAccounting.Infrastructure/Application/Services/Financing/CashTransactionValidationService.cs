@@ -1,23 +1,34 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.Interfaces;
+using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
     public class CashTransactionValidationService : ICashTransactionValidationService
     {
-        private ICashReceiptForDebtIssueValidator _cashReceiptForDebtIssueValidator;
-        private ILoanInstallmentPaymentValidator _loanInstallmentPaymentValidator;
+        private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public CashTransactionValidationService
-        (
-            ICashReceiptForDebtIssueValidator cashReceiptForDebtIssueValidator,
-            ILoanInstallmentPaymentValidator loanInstallmentPaymentValidator
-        )
+        public CashTransactionValidationService(ICashAccountQueryService cashAcctQrySvc)
+            => _cashAcctQrySvc = cashAcctQrySvc;
+
+        public async Task<ValidationResult> IsValid(CashTransaction cashTransaction)
         {
-            _cashReceiptForDebtIssueValidator = cashReceiptForDebtIssueValidator;
-            _loanInstallmentPaymentValidator = loanInstallmentPaymentValidator;
+            ValidationResult result = new();
+
+            switch (cashTransaction.CashTransactionType)
+            {
+                case CashTransactionTypeEnum.CashReceiptDebtIssueProceeds:
+                    result = await CashReceiptForDebtIssueValidator.Validate(cashTransaction, _cashAcctQrySvc);
+                    break;
+
+                case CashTransactionTypeEnum.CashDisbursementLoanPayment:
+                    // result = LoanInstallmentPaymentValidator.Validate(cashTransaction, _cashAcctQrySvc);
+                    break;
+            }
+
+            return result;
         }
-
-
     }
 }

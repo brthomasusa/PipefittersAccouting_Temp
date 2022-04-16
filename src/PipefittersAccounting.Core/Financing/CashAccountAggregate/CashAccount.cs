@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
@@ -9,7 +10,10 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
     public class CashAccount : AggregateRoot<Guid>, IAggregateRoot
     {
-        protected CashAccount() { }
+        private List<CashTransaction> _cashTransactions;
+        private readonly ICashTransactionValidationService _validationService;
+
+        protected CashAccount() => _cashTransactions = new();
 
         public CashAccount
         (
@@ -19,7 +23,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CashAccountNumber acctNumber,
             RoutingTransitNumber routingTransitNumber,
             DateOpened openedDate,
-            EntityGuidID userId
+            EntityGuidID userId,
+            ICashTransactionValidationService validationService
         )
             : this()
         {
@@ -30,6 +35,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             RoutingTransitNumber = routingTransitNumber ?? throw new ArgumentNullException("The routing account number is required.");
             DateOpened = openedDate ?? throw new ArgumentNullException("The date that the cash account was opened is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
+            _validationService = validationService;
 
             CheckValidity();
         }
@@ -79,6 +85,16 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         {
             UserId = value ?? throw new ArgumentNullException("The User id can not be null.");
             UpdateLastModifiedDate();
+        }
+
+        public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
+
+        public void AddCashTransaction(CashTransaction cashTransaction)
+        {
+            // if (_validationService.IsValid(cashTransaction).IsValid)
+            // {
+            //     _cashTransactions.Add(cashTransaction);
+            // }
         }
 
         protected override void CheckValidity()

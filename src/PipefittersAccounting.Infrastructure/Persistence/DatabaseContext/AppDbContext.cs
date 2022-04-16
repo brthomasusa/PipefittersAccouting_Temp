@@ -3,6 +3,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Shared;
@@ -24,6 +25,8 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<Financier> Financiers { get; set; }
         public DbSet<LoanAgreement> LoanAgreements { get; set; }
         public DbSet<LoanInstallment> LoanInstallments { get; set; }
+        public DbSet<CashAccount> CashAccounts { get; set; }
+        public DbSet<CashTransaction> CashTransactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
