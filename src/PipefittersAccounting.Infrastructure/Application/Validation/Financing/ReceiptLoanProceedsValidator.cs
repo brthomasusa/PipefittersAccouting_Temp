@@ -44,7 +44,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
                     {
                         var amtRcvd = loanAmountResult.Result.AmountReceived;
                         var dateRcvd = loanAmountResult.Result.DateReceived;
-                        string msg = $"The loan proceeds have already been deposited. Received on: {dateRcvd}, Amount deposited: {amtRcvd}.";
+                        string msg = $"The loan proceeds have already been deposited. ${amtRcvd} was deposited on: {dateRcvd}.";
 
                         validationResult.IsValid = false;
                         validationResult.Messages.Add(msg);

@@ -24,7 +24,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
                     break;
 
                 case CashTransactionTypeEnum.CashDisbursementLoanPayment:
-                    // result = LoanInstallmentPaymentValidator.Validate(cashTransaction, _cashAcctQrySvc);
+                    result = await LoanInstallmentPaymentValidator.Validate(cashTransaction, _cashAcctQrySvc);
                     break;
             }
 

@@ -1,18 +1,19 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
-using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 {
     public class LoanInstallmentPaymentValidator
     {
-        public static Task<ValidationResult> Validate(CashTransaction transaction, ICashAccountQueryService queryService)
+        public static async Task<ValidationResult> Validate(CashTransaction transaction, ICashAccountQueryService queryService)
         {
+            FinancierValidator financierValidator = new(queryService);
+            DisburesementForLoanPymtValidator disburesementForLoanPymtValidator = new(queryService);
 
+            financierValidator.Next = disburesementForLoanPymtValidator;
 
-            throw new NotImplementedException();
+            return await financierValidator.Validate(transaction);
         }
     }
 }

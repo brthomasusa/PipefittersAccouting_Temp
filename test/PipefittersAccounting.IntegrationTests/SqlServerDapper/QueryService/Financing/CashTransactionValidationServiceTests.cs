@@ -140,6 +140,71 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.False(validationResult.IsValid);
         }
 
+        [Fact]
+        public async Task Validate_DisburesementForLoanPymtValidator_ShouldSucceed()
+        {
+            // Loan amount and deposit amount don't match
+            CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymt();
+
+            FinancierValidator financierValidator = new(_queryService);
+            DisburesementForLoanPymtValidator paymentValidator = new(_queryService);
+
+            financierValidator.Next = paymentValidator;
+
+            ValidationResult validationResult = await financierValidator.Validate(cashTransaction);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_DisburesementForLoanPymtValidator_ExistingButInvalidFinancierID_ShouldFail()
+        {
+            CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymt();
+            cashTransaction.UpdateAgentId(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")));
+
+            FinancierValidator financierValidator = new(_queryService);
+            DisburesementForLoanPymtValidator paymentValidator = new(_queryService);
+
+            financierValidator.Next = paymentValidator;
+
+            ValidationResult validationResult = await financierValidator.Validate(cashTransaction);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_DisburesementForLoanPymtValidator_InvalidPymtAmt_ShouldFail()
+        {
+            // Installment amount and payment amount don't match
+            CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymt();
+            cashTransaction.UpdateCashTransactionAmount(CashTransactionAmount.Create(1000M));
+
+            FinancierValidator financierValidator = new(_queryService);
+            DisburesementForLoanPymtValidator paymentValidator = new(_queryService);
+
+            financierValidator.Next = paymentValidator;
+
+            ValidationResult validationResult = await financierValidator.Validate(cashTransaction);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_DisburesementForLoanPymtValidator_PaidAlready_ShouldFail()
+        {
+            // Installment amount and payment amount don't match
+            CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymtAlreadyPaid();
+
+            FinancierValidator financierValidator = new(_queryService);
+            DisburesementForLoanPymtValidator paymentValidator = new(_queryService);
+
+            financierValidator.Next = paymentValidator;
+
+            ValidationResult validationResult = await financierValidator.Validate(cashTransaction);
+
+            Assert.False(validationResult.IsValid);
+        }
+
         // Test CashReceiptForDebtIssueValidator
 
         [Fact]
@@ -178,9 +243,20 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         // Test CashTransactionValidationService
 
         [Fact]
-        public async Task Validate_CashTransactionValidationService_ShouldSucceed()
+        public async Task Validate_CashTransactionValidationService_LoanProceeds_ShouldSucceed()
         {
             CashTransaction cashTransaction = GetCashTransactionLoanProceeds();
+
+            ICashTransactionValidationService cashTransactionValidationService = new CashTransactionValidationService(_queryService);
+            ValidationResult validationResult = await cashTransactionValidationService.IsValid(cashTransaction);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CashTransactionValidationService_LoanPymt_ShouldSucceed()
+        {
+            CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymt();
 
             ICashTransactionValidationService cashTransactionValidationService = new CashTransactionValidationService(_queryService);
             ValidationResult validationResult = await cashTransactionValidationService.IsValid(cashTransaction);
@@ -227,6 +303,20 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
                 CashTransactionAmount.Create(1100M),                                    // Equal Monthly Installment
                 EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),  // AgentId financier
                 EntityGuidID.Create(new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2")),  // EventId loan installment id
+                CheckNumber.Create("2011"),
+                RemittanceAdvice.Create("ABCDE"),
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+            );
+
+        private CashTransaction GetCashTransactionLoanInstallmentPymtAlreadyPaid()
+            => new
+            (
+                CashTransactionTypeEnum.CashDisbursementLoanPayment,
+                EntityGuidID.Create(new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589")),  // CashAccount Id primary checking
+                CashTransactionDate.Create(new DateTime(2022, 3, 5)),                  // Payment due date
+                CashTransactionAmount.Create(2186.28M),                                    // Equal Monthly Installment
+                EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")),  // AgentId financier
+                EntityGuidID.Create(new Guid("f479f59a-5001-47af-9d6c-2eae07077490")),  // EventId loan installment id
                 CheckNumber.Create("2011"),
                 RemittanceAdvice.Create("ABCDE"),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
