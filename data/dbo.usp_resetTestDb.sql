@@ -5,6 +5,7 @@ BEGIN
     BEGIN TRAN
         BEGIN TRY            
             Delete from Finance.CashAccountTransactions;
+            Delete from Finance.CashAccountTransfers;
             Delete from Finance.CashAccounts;
             Delete from Finance.LoanInstallments;
             Delete from Finance.LoanAgreements;
@@ -143,7 +144,15 @@ BEGIN
                 ('6f0c811c-b948-4c03-a6df-49c768dadc49' ,5),
                 ('aeac44d8-feb3-4823-8b0a-ca79da5bb089' ,5),
                 ('6f09cd69-4a95-42c7-bcc2-acacbb92270c' ,5),
-                ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5)    
+                ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5),
+                ('41158939-bdbd-47b4-a096-397232a2bc7e' ,10),
+                ('9bdac186-d1f1-4279-a807-a03c12a637ab' ,10),
+                ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2' ,10),
+                ('d0648a1a-55dd-4062-a175-3a92b34f327c' ,10),
+                ('984039cb-34ab-4796-b305-b6aceda47211' ,10),
+                ('34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e' ,10),
+                ('49667ed8-558f-4fe1-8adb-14af6d06db38' ,10),
+                ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d' ,10)                     
 
             INSERT INTO Finance.LoanAgreements
                 (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, NumberOfInstallments, UserId)
@@ -230,21 +239,50 @@ BEGIN
                 ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 'First Bank and Trust', 'Financing Proceeds', '36547-9888249', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('765ec2b0-406a-4e42-b831-c9aa63800e76', 'BackAlley Money Washing, LLC', 'Slush Fund', 'XXXXX-XXXXXXX', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744')
 
+            INSERT INTO Finance.CashAccountTransfers
+                (CashTransferId,SourceCashAccountId,DestinationCashAccountId,CashTransferDate,CashTransferAmount,UserId)
+            VALUES
+                ('41158939-bdbd-47b4-a096-397232a2bc7e', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-10', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('9bdac186-d1f1-4279-a807-a03c12a637ab', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 10000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                ('d0648a1a-55dd-4062-a175-3a92b34f327c', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-15', 20000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('984039cb-34ab-4796-b305-b6aceda47211', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-18', 10000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-10', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('49667ed8-558f-4fe1-8adb-14af6d06db38', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-28', 12000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-19', 28000, '660bb318-649e-470d-9d2b-693bfb0b2744')  
+
+
             INSERT INTO Finance.CashAccountTransactions       -- Receipt of debt issue proceeds
                 (CashTransactionTypeId, CashAccountId, CashAcctTransactionDate, CashAcctTransactionAmount, AgentId, EventId, CheckNumber, UserId)
             VALUES
-            (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-10', 10000.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '114980', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 15000.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '1001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 10000.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '180001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-15', 25000.00, '12998229-7ede-4834-825a-0c55bde75695', '41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '65874', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 12000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'fb39b013-1633-4479-8186-9f9b240b5727', '68001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', '93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e', '2301', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-10', 10000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', '1511c20b-6df0-4313-98a5-7c3561757dc2', '100120', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-28', 15000.00, '12998229-7ede-4834-825a-0c55bde75695', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '9800322', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-02', 1370.54, '94b1d516-a1c3-4df8-ae85-be1f34966601', '8e804651-5021-4577-bbda-e7ee45a74e44', '2302', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-            (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', 'f479f59a-5001-47af-9d6c-2eae07077490', '2307', '660bb318-649e-470d-9d2b-693bfb0b2744'), 
-            (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-03-19', 30000.00, '94b1d516-a1c3-4df8-ae85-be1f34966601', '09b53ffb-9983-4cde-b1d6-8a49e785177f', '980', '660bb318-649e-470d-9d2b-693bfb0b2744'),          
-            (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-04-02', 1370.54, '94b1d516-a1c3-4df8-ae85-be1f34966601', '97fa51e0-e02a-46c1-9f09-73f72a5519c9', '2309', '660bb318-649e-470d-9d2b-693bfb0b2744')         
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-10', 10000.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '114980', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 15000.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '1001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '9bdac186-d1f1-4279-a807-a03c12a637ab', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '9bdac186-d1f1-4279-a807-a03c12a637ab', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 10000.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '180001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-13', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '5e3a91f6-74a4-45cc-ab04-5b071459ccb2', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '5e3a91f6-74a4-45cc-ab04-5b071459ccb2', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
+                (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-15', 25000.00, '12998229-7ede-4834-825a-0c55bde75695', '41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '65874', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-15', 20000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'd0648a1a-55dd-4062-a175-3a92b34f327c', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-15', 20000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'd0648a1a-55dd-4062-a175-3a92b34f327c', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 12000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'fb39b013-1633-4479-8186-9f9b240b5727', '68001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '984039cb-34ab-4796-b305-b6aceda47211', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-18', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '984039cb-34ab-4796-b305-b6aceda47211', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', '93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e', '2301', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-10', 10000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', '1511c20b-6df0-4313-98a5-7c3561757dc2', '100120', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-28', 15000.00, '12998229-7ede-4834-825a-0c55bde75695', '264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '9800322', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-02-28', 12000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '49667ed8-558f-4fe1-8adb-14af6d06db38', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-28', 12000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '49667ed8-558f-4fe1-8adb-14af6d06db38', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-02', 1370.54, '94b1d516-a1c3-4df8-ae85-be1f34966601', '8e804651-5021-4577-bbda-e7ee45a74e44', '2302', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', 'f479f59a-5001-47af-9d6c-2eae07077490', '2307', '660bb318-649e-470d-9d2b-693bfb0b2744'), 
+                (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-03-19', 30000.00, '94b1d516-a1c3-4df8-ae85-be1f34966601', '09b53ffb-9983-4cde-b1d6-8a49e785177f', '980', '660bb318-649e-470d-9d2b-693bfb0b2744'),          
+                (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-03-19', 28000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-19', 28000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-04-02', 1370.54, '94b1d516-a1c3-4df8-ae85-be1f34966601', '97fa51e0-e02a-46c1-9f09-73f72a5519c9', '2309', '660bb318-649e-470d-9d2b-693bfb0b2744')         
 
             COMMIT TRANSACTION
         END TRY

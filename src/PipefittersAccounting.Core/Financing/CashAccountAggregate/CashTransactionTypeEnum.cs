@@ -10,6 +10,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         CashDisbursementTimeCardPayment = 6,
         CashDisbursementPurchaseReceipt = 7,
         CashReceiptAdjustment = 8,
-        CashDisbursementAdjustment = 9
+        CashDisbursementAdjustment = 9,
+        CashDisbursementCashTransferOut = 10,
+        CashDisbursementCashTransferIn = 11
     }
 }

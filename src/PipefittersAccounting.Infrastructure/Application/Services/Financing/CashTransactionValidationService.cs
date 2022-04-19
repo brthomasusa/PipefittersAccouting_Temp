@@ -1,8 +1,10 @@
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
@@ -29,6 +31,24 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             }
 
             return result;
+        }
+
+        public async Task<ValidationResult> IsValidCashDisbursement
+        (
+            CashTransactionTypeEnum transactionType,
+            EntityGuidID goodsOrServiceReceived,
+            EntityGuidID soldBy,
+            CashTransactionAmount transactionAmount
+        )
+        {
+            Task<ValidationResult> validationTask = Task.Run(() =>
+            {
+                ValidationResult result = new();
+                result.IsValid = true;
+                return result;
+            });
+
+            return await validationTask;
         }
     }
 }

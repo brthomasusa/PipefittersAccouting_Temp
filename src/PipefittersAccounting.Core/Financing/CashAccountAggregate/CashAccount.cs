@@ -97,6 +97,12 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             // }
         }
 
+        public void Deposit(CashReceipt receipt) { }
+
+        public void Disburse(CashTransaction cashTransaction) { }
+
+        public void Transfer(decimal amount) { }
+
         protected override void CheckValidity()
         {
             //

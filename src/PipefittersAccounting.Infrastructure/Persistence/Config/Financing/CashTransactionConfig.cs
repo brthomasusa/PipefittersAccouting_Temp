@@ -1,3 +1,5 @@
+#pragma warning disable CS8602
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
@@ -36,6 +38,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
                 .HasColumnName("CheckNumber")
                 .IsRequired();
             entity.Property(p => p.RemittanceAdvice)
+                .HasConversion(p => p.Value, p => RemittanceAdvice.Create(p))
                 .HasColumnType("NVARCHAR(50)")
                 .HasColumnName("RemittanceAdvice");
 
