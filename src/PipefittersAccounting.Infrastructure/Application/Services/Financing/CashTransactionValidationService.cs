@@ -34,24 +34,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             return result;
         }
 
-        public virtual Task<ValidationResult> IsValidCashDisbursement
-        (
-            CashTransactionTypeEnum transactionType,
-            EconomicEvent goodsOrServiceReceived,
-            ExternalAgent soldBy,
-            CashTransactionAmount transactionAmount
-        )
+        public virtual Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Task<ValidationResult> IsValidCashDeposit
-        (
-            CashTransactionTypeEnum transactionType,
-            EconomicEvent goodsOrServiceProvided,
-            ExternalAgent purchasedBy,
-            CashTransactionAmount transactionAmount
-        )
+        public virtual Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit)
         {
             // transactionType switch
             // {

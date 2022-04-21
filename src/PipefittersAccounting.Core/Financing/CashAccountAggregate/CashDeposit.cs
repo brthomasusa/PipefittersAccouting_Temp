@@ -48,7 +48,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             ValidationResult result = new();
 
-            result = ValidationService.IsValidCashDeposit(DepositType, GoodsOrServiceSold, Payor, TransactionAmount).Result;
+            result = ValidationService.IsValidCashDeposit(this).Result;
             if (!result.IsValid)
             {
                 throw new ArgumentException(result.Messages[0]);

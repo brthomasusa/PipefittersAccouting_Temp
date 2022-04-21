@@ -8,14 +8,8 @@ namespace PipefittersAccounting.Core.Interfaces.Financing
     {
         Task<ValidationResult> IsValid(CashTransaction cashTransaction);
 
-        Task<ValidationResult> IsValidCashDisbursement(CashTransactionTypeEnum disbursementType,
-                                                       EconomicEvent goodsOrServiceReceived,
-                                                       ExternalAgent soldBy,
-                                                       CashTransactionAmount transactionAmount);
+        Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement);
 
-        Task<ValidationResult> IsValidCashDeposit(CashTransactionTypeEnum depositType,
-                                                  EconomicEvent goodsOrServiceProvided,
-                                                  ExternalAgent purchasedBy,
-                                                  CashTransactionAmount transactionAmount);
+        Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit);
     }
 }

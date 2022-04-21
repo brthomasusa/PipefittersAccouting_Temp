@@ -48,7 +48,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             ValidationResult result = new();
 
-            result = ValidationService.IsValidCashDisbursement(DisbursementType, GoodsOrServicePurchased, Payee, TransactionAmount).Result;
+            result = ValidationService.IsValidCashDisbursement(this).Result;
             if (!result.IsValid)
             {
                 throw new ArgumentException(result.Messages[0]);
