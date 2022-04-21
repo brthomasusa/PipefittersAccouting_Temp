@@ -12,6 +12,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         CashReceiptAdjustment = 8,
         CashDisbursementAdjustment = 9,
         CashDisbursementCashTransferOut = 10,
-        CashDisbursementCashTransferIn = 11
+        CashReceiptCashTransferIn = 11
     }
 }

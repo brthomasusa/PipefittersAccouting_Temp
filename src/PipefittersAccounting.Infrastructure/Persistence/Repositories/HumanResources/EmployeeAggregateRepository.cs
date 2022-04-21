@@ -1,10 +1,12 @@
+#pragma warning disable CS8600
 #pragma warning disable CS8603
+#pragma warning disable CS8604
 
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
-using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources
@@ -28,8 +30,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
 
         public void Delete(Employee entity)
         {
+            ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id);
             _dbContext.Employees.Remove(entity);
-            _dbContext.ExternalAgents.Remove(entity.ExternalAgent);
+            _dbContext.ExternalAgents.Remove(agent);
         }
 
         public async Task<OperationResult<Guid>> CheckForDuplicateEmployeeName(string lname, string fname, string mi)

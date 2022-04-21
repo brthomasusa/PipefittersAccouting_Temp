@@ -18,10 +18,5 @@ namespace PipefittersAccounting.Core.Shared
         }
 
         public EventTypeEnum EventType { get; private set; }
-
-        public virtual LoanAgreement LoanAgreement { get; private set; }
-        public virtual LoanInstallment LoanInstallment { get; private set; }
-
-        // public virtual StockSubscription StockSubscription { get; private set; }        
     }
 }

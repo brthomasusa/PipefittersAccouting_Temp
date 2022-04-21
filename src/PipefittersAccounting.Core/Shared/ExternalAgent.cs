@@ -19,8 +19,5 @@ namespace PipefittersAccounting.Core.Shared
         }
 
         public AgentTypeEnum AgentType { get; private set; }
-
-        public virtual Employee Employee { get; private set; }
-        public virtual Financier Financier { get; private set; }
     }
 }

@@ -1,6 +1,7 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
@@ -15,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public CashTransactionValidationService(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public async Task<ValidationResult> IsValid(CashTransaction cashTransaction)
+        public virtual async Task<ValidationResult> IsValid(CashTransaction cashTransaction)
         {
             ValidationResult result = new();
 
@@ -33,22 +34,33 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             return result;
         }
 
-        public async Task<ValidationResult> IsValidCashDisbursement
+        public virtual Task<ValidationResult> IsValidCashDisbursement
         (
             CashTransactionTypeEnum transactionType,
-            EntityGuidID goodsOrServiceReceived,
-            EntityGuidID soldBy,
+            EconomicEvent goodsOrServiceReceived,
+            ExternalAgent soldBy,
             CashTransactionAmount transactionAmount
         )
         {
-            Task<ValidationResult> validationTask = Task.Run(() =>
-            {
-                ValidationResult result = new();
-                result.IsValid = true;
-                return result;
-            });
+            throw new NotImplementedException();
+        }
 
-            return await validationTask;
+        public virtual Task<ValidationResult> IsValidCashDeposit
+        (
+            CashTransactionTypeEnum transactionType,
+            EconomicEvent goodsOrServiceProvided,
+            ExternalAgent purchasedBy,
+            CashTransactionAmount transactionAmount
+        )
+        {
+            // transactionType switch
+            // {
+            //     CashTransactionTypeEnum.CashReceiptDebtIssueProceeds 
+            //         => await CashReceiptForDebtIssueValidator.Validate(goodsOrServiceProvided,),
+            //     _ => throw new ArgumentOutOfRangeException($"Not expected direction value: {transactionType}"),
+            // };
+
+            throw new NotImplementedException();
         }
     }
 }

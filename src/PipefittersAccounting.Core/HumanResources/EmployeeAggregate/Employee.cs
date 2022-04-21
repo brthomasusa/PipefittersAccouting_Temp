@@ -33,7 +33,6 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
                 throw new ArgumentNullException("An employee agent is required.");
             }
             Id = agent.ExternalAgent.Id;
-            ExternalAgent = agent.ExternalAgent;
 
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             EmployeeName = employeeName ?? throw new ArgumentNullException("An employee name is required.");
@@ -47,8 +46,6 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             IsActive = isActive;
             IsSupervisor = isSupervisor;
         }
-
-        public virtual ExternalAgent ExternalAgent { get; private set; }
 
         public Guid SupervisorId { get; private set; }
 

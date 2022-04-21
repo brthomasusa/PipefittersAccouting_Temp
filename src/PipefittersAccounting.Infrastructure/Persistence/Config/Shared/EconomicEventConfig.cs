@@ -14,15 +14,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
             entity.ToTable("EconomicEvents", schema: "Shared");
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.EventType, "idx_EconomicEvents$EventTypeId");
+            entity.HasOne<LoanAgreement>().WithOne().HasForeignKey<LoanAgreement>("Id");
+            entity.HasOne<LoanInstallment>().WithOne().HasForeignKey<LoanInstallment>("Id");
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("EventId").ValueGeneratedNever();
             entity.Property(p => p.EventType).HasColumnType("int").HasColumnName("EventTypeId").IsRequired();
-            entity.HasOne(e => e.LoanAgreement).WithOne().HasForeignKey<LoanAgreement>("Id");
-            entity.HasOne(e => e.LoanInstallment).WithOne().HasForeignKey<LoanInstallment>("Id");
-            entity.HasOne<Financier>().WithOne().HasForeignKey<Financier>("Id");
-            entity.HasOne<CashAccount>().WithOne().HasForeignKey<CashAccount>("Id");
-
-
             entity.Property(e => e.CreatedDate).HasColumnType("datetime2(7)");
             entity.Property(e => e.LastModifiedDate).HasColumnType("datetime2(7)");
         }

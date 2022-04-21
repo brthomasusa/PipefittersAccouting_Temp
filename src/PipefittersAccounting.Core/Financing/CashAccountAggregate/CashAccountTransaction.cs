@@ -1,22 +1,22 @@
 #pragma warning disable CS8618
 
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
+namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
-    public abstract class CashAccountTransaction : ValueObject
+    public class CashAccountTransaction : Entity<int>
     {
-        protected readonly ICashTransactionValidationService _validationService;
-
         protected CashAccountTransaction
         (
             CashTransactionAmount receiptAmount,
             CashTransactionDate receiptDate,
             CheckNumber checkNumber,
             RemittanceAdvice remittanceAdvice,
-            EntityGuidID userId
+            EntityGuidID userId,
+            ICashTransactionValidationService validationService
         )
         {
             TransactionAmount = receiptAmount;
@@ -24,6 +24,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
             CheckNumber = checkNumber;
             RemittanceAdvice = remittanceAdvice;
             UserId = userId;
+            ValidationService = validationService;
         }
 
         public CashTransactionAmount TransactionAmount { get; init; }
@@ -31,5 +32,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
         public CheckNumber CheckNumber { get; init; }
         public RemittanceAdvice? RemittanceAdvice { get; init; }
         public EntityGuidID UserId { get; init; }
+        protected ICashTransactionValidationService ValidationService { get; init; }
     }
 }
