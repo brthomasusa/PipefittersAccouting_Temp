@@ -19,12 +19,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
         public ICashTransactionValidator? Next { get; set; }
 
-        public async Task<ValidationResult> Validate(CashTransaction transaction)
+        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
         {
             ValidationResult validationResult = new();
 
             FinancierIdValidationParams financierParam =
-                new() { FinancierId = transaction.AgentId };
+                new() { FinancierId = (deposit as CashDeposit).Payor.Id };
 
             OperationResult<FinancierIdValidationModel> financierResult =
                 await _cashAcctQrySvc.GetFinancierIdValidationModel(financierParam);
@@ -35,7 +35,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
                 if (Next is not null)
                 {
-                    validationResult = await Next?.Validate(transaction);
+                    validationResult = await Next?.Validate(deposit);
                 }
             }
             else

@@ -19,15 +19,13 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             DateTime receiptDate,
             string checkNumber,
             string remittanceAdvice,
-            Guid userId,
-            ICashTransactionValidationService validationService
+            Guid userId
         )
             : base(CashTransactionAmount.Create(receiptAmount),
                    CashTransactionDate.Create(receiptDate),
                    CheckNumber.Create(checkNumber),
                    RemittanceAdvice.Create(remittanceAdvice),
-                   EntityGuidID.Create(userId),
-                   validationService)
+                   EntityGuidID.Create(userId))
         {
             DisbursementType = disbursementType;
             Payee = payee;
@@ -44,18 +42,11 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         protected override void CheckValidity()
         {
-            RejectDeposits();
+            RejectInvalidDeposits();
 
-            ValidationResult result = new();
-
-            result = ValidationService.IsValidCashDisbursement(this).Result;
-            if (!result.IsValid)
-            {
-                throw new ArgumentException(result.Messages[0]);
-            }
         }
 
-        private void RejectDeposits()
+        private void RejectInvalidDeposits()
         {
             switch (DisbursementType)
             {

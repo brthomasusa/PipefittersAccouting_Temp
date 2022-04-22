@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
     {
         public static async Task<ValidationResult> Validate
         (
-            CashTransaction transaction,
+            CashAccountTransaction deposit,
             ICashAccountQueryService queryService
         )
         {
@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
             financierValidator.Next = creditorHasLoanAgreeValidator;
             creditorHasLoanAgreeValidator.Next = receiptLoanProceedsValidator;
 
-            return await financierValidator.Validate(transaction);
+            return await financierValidator.Validate(deposit);
         }
 
         public static Task<ValidationResult> Validate

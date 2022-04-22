@@ -15,8 +15,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CashTransactionDate receiptDate,
             CheckNumber checkNumber,
             RemittanceAdvice remittanceAdvice,
-            EntityGuidID userId,
-            ICashTransactionValidationService validationService
+            EntityGuidID userId
         )
         {
             TransactionAmount = receiptAmount;
@@ -24,7 +23,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CheckNumber = checkNumber;
             RemittanceAdvice = remittanceAdvice;
             UserId = userId;
-            ValidationService = validationService;
         }
 
         public CashTransactionAmount TransactionAmount { get; init; }
@@ -32,6 +30,5 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         public CheckNumber CheckNumber { get; init; }
         public RemittanceAdvice? RemittanceAdvice { get; init; }
         public EntityGuidID UserId { get; init; }
-        protected ICashTransactionValidationService ValidationService { get; init; }
     }
 }

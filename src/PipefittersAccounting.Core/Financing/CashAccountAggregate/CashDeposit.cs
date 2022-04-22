@@ -10,25 +10,22 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
     {
         public CashDeposit
         (
-            CashTransactionTypeEnum receiptType,
+            CashTransactionTypeEnum depositType,
             ExternalAgent payor,
             EconomicEvent goodsOrServiceSold,
-
             decimal receiptAmount,
             DateTime receiptDate,
             string checkNumber,
             string remittanceAdvice,
-            Guid userId,
-            ICashTransactionValidationService validationService
+            Guid userId
         )
             : base(CashTransactionAmount.Create(receiptAmount),
                    CashTransactionDate.Create(receiptDate),
                    CheckNumber.Create(checkNumber),
                    RemittanceAdvice.Create(remittanceAdvice),
-                   EntityGuidID.Create(userId),
-                   validationService)
+                   EntityGuidID.Create(userId))
         {
-            DepositType = receiptType;
+            DepositType = depositType;
             Payor = payor;
             GoodsOrServiceSold = goodsOrServiceSold;
 
@@ -43,28 +40,20 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         protected override void CheckValidity()
         {
-            RejectDisbursements();
+            RejectInvalidDeposits();
             RejectInvalidGoodsOrServiceProvided();
-
-            ValidationResult result = new();
-
-            result = ValidationService.IsValidCashDeposit(this).Result;
-            if (!result.IsValid)
-            {
-                throw new ArgumentException(result.Messages[0]);
-            }
         }
 
-        private void RejectDisbursements()
+        private void RejectInvalidDeposits()
         {
             switch (DepositType)
             {
-                case CashTransactionTypeEnum.CashDisbursementAdjustment:        // Adjustment to previous payment                
+                case CashTransactionTypeEnum.CashDisbursementAdjustment:        // Adjustment to previous disbursement                
                 case CashTransactionTypeEnum.CashDisbursementCashTransferOut:   // Cash transfer out of account
                 case CashTransactionTypeEnum.CashDisbursementDividentPayment:   // Dividend Payment
                 case CashTransactionTypeEnum.CashDisbursementLoanPayment:       // Loan Payment
                 case CashTransactionTypeEnum.CashDisbursementPurchaseReceipt:   // Purchase Order Payment
-                case CashTransactionTypeEnum.CashDisbursementTimeCardPayment:   // Paycheck to Employee
+                case CashTransactionTypeEnum.CashDisbursementTimeCardPayment:   // Employee Paycheck payment
                     throw new ArgumentException($"Only cash deposits (no disbursements) allowed: {DepositType}");
             }
         }
@@ -80,6 +69,17 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
                 default:
                     throw new ArgumentException($"Invalid goods or services listed as reason for cash receipt: {GoodsOrServiceSold.EventType}");
             }
+
+            if (Payor.AgentType == AgentTypeEnum.Financier)
+            {
+                // Cash deposits from a financier can only be because of the provision 
+                // of a loan agreement or stock subscription to the financier
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreementCashReceipt && GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscriptionCashReceipt)
+                {
+                    throw new ArgumentException($"Invalid goods or services listed as reason for cash receipt from financier: {GoodsOrServiceSold.EventType}");
+                }
+            }
+
         }
     }
 }

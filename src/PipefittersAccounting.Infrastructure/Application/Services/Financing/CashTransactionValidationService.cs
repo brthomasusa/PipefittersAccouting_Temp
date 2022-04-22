@@ -1,11 +1,8 @@
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
@@ -16,39 +13,37 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public CashTransactionValidationService(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public virtual async Task<ValidationResult> IsValid(CashTransaction cashTransaction)
+        public virtual async Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement)
         {
+            CashTransactionTypeEnum disbursementType = disbursement.DisbursementType;
             ValidationResult result = new();
 
-            switch (cashTransaction.CashTransactionType)
+            return result = disbursementType switch
             {
-                case CashTransactionTypeEnum.CashReceiptDebtIssueProceeds:
-                    result = await CashReceiptForDebtIssueValidator.Validate(cashTransaction, _cashAcctQrySvc);
-                    break;
+                CashTransactionTypeEnum.CashDisbursementLoanPayment
+                    => await LoanInstallmentPaymentValidator.Validate(disbursement, _cashAcctQrySvc),
 
-                case CashTransactionTypeEnum.CashDisbursementLoanPayment:
-                    result = await LoanInstallmentPaymentValidator.Validate(cashTransaction, _cashAcctQrySvc);
-                    break;
-            }
-
-            return result;
+                _ => throw new ArgumentException($"Unrecognized cash disbursement type: {disbursementType}."),
+            };
         }
 
-        public virtual Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement)
+        public virtual async Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit)
         {
-            throw new NotImplementedException();
-        }
+            CashTransactionTypeEnum depositType = deposit.DepositType;
+            ValidationResult result = new();
 
-        public virtual Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit)
-        {
-            // transactionType switch
-            // {
-            //     CashTransactionTypeEnum.CashReceiptDebtIssueProceeds 
-            //         => await CashReceiptForDebtIssueValidator.Validate(goodsOrServiceProvided,),
-            //     _ => throw new ArgumentOutOfRangeException($"Not expected direction value: {transactionType}"),
-            // };
+            return result = depositType switch
+            {
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds
+                    => await CashReceiptForDebtIssueValidator.Validate(deposit, _cashAcctQrySvc),
 
-            throw new NotImplementedException();
+                CashTransactionTypeEnum.CashReceiptStockIssueProceeds
+                    => await CashReceiptForDebtIssueValidator.Validate(deposit, _cashAcctQrySvc),
+
+                // CashTransactionTypeEnum.CashReceiptSales => ,
+
+                _ => throw new ArgumentException($"Unrecognized cash deposit type: {depositType}."),
+            };
         }
     }
 }

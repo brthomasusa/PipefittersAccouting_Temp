@@ -4,6 +4,6 @@ namespace PipefittersAccounting.Core.Interfaces
 {
     public interface ICashTransactionValidator
     {
-        Task<ValidationResult> Validate(CashTransaction transaction);
+        Task<ValidationResult> Validate(CashAccountTransaction transaction);
     }
 }

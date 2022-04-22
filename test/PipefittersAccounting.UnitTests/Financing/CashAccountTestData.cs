@@ -4,20 +4,21 @@ using System;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.UnitTests.Financing
 {
     public class CashAccountTestData
     {
-        private static CashAccount GetCashAccount(ICashTransactionValidationService validationService)
+        public static CashAccount GetCashAccount(ICashTransactionValidationService validationService)
             => new
             (
                 EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),
                 BankName.Create("BankOne"),
                 CashAccountName.Create("Purchasing"),
                 CashAccountNumber.Create("12345-56-5547"),
-                RoutingTransitNumber.Create("787-896-1144"),
+                RoutingTransitNumber.Create("787896114"),
                 DateOpened.Create(new DateTime(2022, 4, 17)),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
                 validationService
@@ -37,7 +38,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        private static CashTransaction GetCashTransactionLoanProceedsDuplicateDeposit()
+        public static CashTransaction GetCashTransactionLoanProceedsDuplicateDeposit()
             => new
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
@@ -51,7 +52,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        private static CashTransaction GetCashTransactionLoanInstallmentPymt()
+        public static CashTransaction GetCashTransactionLoanInstallmentPymt()
             => new
             (
                 CashTransactionTypeEnum.CashDisbursementLoanPayment,
@@ -65,7 +66,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        private static CashTransaction GetCashTransactionLoanInstallmentPymtAlreadyPaid()
+        public static CashTransaction GetCashTransactionLoanInstallmentPymtAlreadyPaid()
             => new
             (
                 CashTransactionTypeEnum.CashDisbursementLoanPayment,
@@ -77,6 +78,84 @@ namespace PipefittersAccounting.UnitTests.Financing
                 CheckNumber.Create("2011"),
                 RemittanceAdvice.Create("ABCDE"),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+            );
+
+        public static CashDeposit GetCashDepositForLoanProceeds()
+            => new
+            (
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
+                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreementCashReceipt),
+                4000M,
+                new DateTime(2022, 4, 15),
+                "2001",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            );
+
+        public static CashDeposit GetCashDepositForLoanProceedsInvalidFinancierId()
+            => new
+            (
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                new ExternalAgent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), AgentTypeEnum.Financier), // ** Invalid **
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt),
+                25000M,
+                new DateTime(2022, 1, 5),
+                "2001",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            );
+
+        public static CashDeposit GetCashDepositForLoanProceedsInvalidLoanId()
+            => new
+            (
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt), // ** Invalid **
+                25000M,
+                new DateTime(2022, 1, 5),
+                "2001",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            );
+
+        public static CashDeposit GetCashDepositForLoanProceedsInvalidDepositAmount()
+            => new
+            (
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
+                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreementCashReceipt),
+                25001M,     // ** Invalid **
+                new DateTime(2022, 1, 5),
+                "2001",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            );
+
+        public static CashDeposit GetCashDepositForLoanProceedsDuplicateDeposit()
+            => new
+            (
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                new ExternalAgent(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")), AgentTypeEnum.Financier),
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt),
+                25000M,
+                new DateTime(2022, 1, 5),
+                "2001",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            );
+
+        public static CashDisbursement GetCashDisbursementForLoanPayment()
+            => new
+            (
+                CashTransactionTypeEnum.CashDisbursementLoanPayment,
+                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
+                new EconomicEvent(EntityGuidID.Create(new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2")), EventTypeEnum.LoanPaymentCashDisbursement),
+                1100M,
+                new DateTime(2022, 7, 15),
+                "2011",
+                "ABCDE",
+                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             );
     }
 }

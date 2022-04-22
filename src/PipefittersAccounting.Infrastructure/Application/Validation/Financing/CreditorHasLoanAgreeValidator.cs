@@ -17,12 +17,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
         public ICashTransactionValidator? Next { get; set; }
 
-        public async Task<ValidationResult> Validate(CashTransaction transaction)
+        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
         {
             ValidationResult validationResult = new();
 
             CreditorHasLoanAgreeValidationParams loanAgreementParam =
-                new() { FinancierId = transaction.AgentId, LoanId = transaction.EventId };
+                new() { FinancierId = (deposit as CashDeposit).Payor.Id, LoanId = (deposit as CashDeposit).GoodsOrServiceSold.Id };
 
             OperationResult<CreditorHasLoanAgreeValidationModel> loanAgreementResult =
                 await _cashAcctQrySvc.GetCreditorHasLoanAgreeValidationModel(loanAgreementParam);
@@ -33,7 +33,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
                 if (Next is not null)
                 {
-                    validationResult = await Next?.Validate(transaction);
+                    validationResult = await Next?.Validate(deposit);
                 }
             }
             else

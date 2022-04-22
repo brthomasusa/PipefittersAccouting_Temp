@@ -17,12 +17,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
         public ICashTransactionValidator? Next { get; set; }
 
-        public async Task<ValidationResult> Validate(CashTransaction transaction)
+        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
         {
             ValidationResult validationResult = new();
 
             DisburesementLoanPymtValidationParams queryParam =
-                new() { LoanInstallmentId = transaction.EventId };  // 
+                new() { LoanInstallmentId = (deposit as CashDeposit).GoodsOrServiceSold.Id };  // 
 
             OperationResult<DisburesementLoanPymtValidationModel> loanPymtResult =
                 await _cashAcctQrySvc.GetDisburesementLoanPymtValidationModel(queryParam);
@@ -30,10 +30,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
             if (loanPymtResult.Success)
             {
                 // Check FinancierId
-                if (loanPymtResult.Result.FinancierId == transaction.AgentId)
+                if (loanPymtResult.Result.FinancierId == (deposit as CashDeposit).Payor.Id)
                 {
                     // Check payment amount against transaction amount
-                    if (loanPymtResult.Result.EqualMonthlyInstallment == transaction.CashTransactionAmount)
+                    if (loanPymtResult.Result.EqualMonthlyInstallment == deposit.TransactionAmount)
                     {
                         // Check that pymt has not already been paid
                         if (loanPymtResult.Result.AmountPaid == 0)
@@ -42,7 +42,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 
                             if (Next is not null)
                             {
-                                validationResult = await Next?.Validate(transaction);
+                                validationResult = await Next?.Validate(deposit);
                             }
                         }
                         else
@@ -57,7 +57,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
                     }
                     else
                     {
-                        decimal transAmt = transaction.CashTransactionAmount;
+                        decimal transAmt = deposit.TransactionAmount;
                         decimal pymtAmt = loanPymtResult.Result.EqualMonthlyInstallment;
                         string msg = $"The transaction amount {transAmt} does not match the installment amount {pymtAmt}.";
 
@@ -67,7 +67,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
                 }
                 else
                 {
-                    Guid eventId = transaction.EventId;
+                    Guid eventId = (deposit as CashDeposit).GoodsOrServiceSold.Id;
                     Guid financierId = loanPymtResult.Result.FinancierId;
                     string msg = $"The financier in the transaction {eventId} does not match the financier in the loan agreement {financierId}.";
 

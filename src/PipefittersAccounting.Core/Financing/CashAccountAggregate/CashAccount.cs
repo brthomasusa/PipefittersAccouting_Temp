@@ -1,7 +1,10 @@
+#pragma warning disable CS8604
 #pragma warning disable CS8618
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
@@ -57,12 +60,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         }
 
         public virtual CashAccountNumber CashAccountNumber { get; private set; }
-        public void UpdateCashAccountNumber(CashAccountNumber value)
-        {
-            CashAccountNumber = value ?? throw new ArgumentNullException("The cash account number is required.");
-            UpdateLastModifiedDate();
-            CheckValidity();
-        }
 
         public virtual RoutingTransitNumber RoutingTransitNumber { get; private set; }
         public void UpdateRoutingTransitNumber(RoutingTransitNumber value)
@@ -89,15 +86,31 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
 
-        public void AddCashTransaction(CashTransaction cashTransaction)
+        public async Task AddDeposit(CashDeposit receipt)
         {
-            // if (_validationService.IsValid(cashTransaction).IsValid)
-            // {
-            //     _cashTransactions.Add(cashTransaction);
-            // }
-        }
+            ValidationResult result = await _validationService.IsValidCashDeposit(receipt);
 
-        public void Deposit(CashDeposit receipt) { }
+            if (!result.IsValid)
+            {
+                throw new ArgumentException(result.Messages[0]);
+            }
+
+            _cashTransactions.Add
+            (
+                new CashTransaction
+                (
+                    CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
+                    EntityGuidID.Create(this.Id),  // CashAccount Id financing proceeds
+                    CashTransactionDate.Create(receipt.TransactionDate),
+                    CashTransactionAmount.Create(receipt.TransactionAmount),
+                    EntityGuidID.Create(receipt.Payor.Id),
+                    EntityGuidID.Create(receipt.GoodsOrServiceSold.Id),
+                    CheckNumber.Create(receipt.CheckNumber),
+                    RemittanceAdvice.Create(receipt.RemittanceAdvice),
+                    EntityGuidID.Create(receipt.UserId)
+                )
+            );
+        }
 
         public void Disburse(CashTransaction cashTransaction) { }
 

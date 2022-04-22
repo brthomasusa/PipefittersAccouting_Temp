@@ -41,7 +41,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         public virtual CashTransactionTypeEnum CashTransactionType { get; private set; }
         public void UpdateCashTransactionType(CashTransactionTypeEnum cashTransactionType)
         {
-            //TODO add validation to CashTransactionType
             CashTransactionType = cashTransactionType;
             UpdateLastModifiedDate();
             CheckValidity();

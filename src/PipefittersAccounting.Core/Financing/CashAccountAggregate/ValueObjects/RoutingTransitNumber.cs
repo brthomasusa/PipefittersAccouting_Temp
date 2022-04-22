@@ -27,17 +27,17 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
 
         private static void CheckValidity(string value)
         {
-            string rgRoutingNumber = @"^((0[0-9])|(1[0-2])|(2[1-9])|(3[0-2])|(6[1-9])|(7[0-2])|80)([0-9]{7})$";
-
             if (string.IsNullOrEmpty(value))
             {
                 throw new ArgumentNullException("The bank routing number is required.", nameof(value));
             }
 
-            if (!Regex.IsMatch(value, rgRoutingNumber))
-            {
-                throw new ArgumentException("Invalid bank routing (Transit ABA) number!", nameof(value));
-            }
+            //TODO Define regex for U.S. bank routing number
+            // string buffer = value.Replace("-", "");
+            // if (!Regex.IsMatch(buffer, rgRoutingNumber))
+            // {
+            //     throw new ArgumentException("Invalid bank routing (Transit ABA) number!", nameof(value));
+            // }
         }
     }
 }
