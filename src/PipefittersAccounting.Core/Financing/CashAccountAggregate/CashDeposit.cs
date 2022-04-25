@@ -1,6 +1,4 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
-using PipefittersAccounting.Core.Interfaces;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
@@ -48,6 +46,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         {
             switch (DepositType)
             {
+                // As this is a cash deposit, all cash disbursements are invalid
                 case CashTransactionTypeEnum.CashDisbursementAdjustment:        // Adjustment to previous disbursement                
                 case CashTransactionTypeEnum.CashDisbursementCashTransferOut:   // Cash transfer out of account
                 case CashTransactionTypeEnum.CashDisbursementDividentPayment:   // Dividend Payment
@@ -62,24 +61,32 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         {
             switch (GoodsOrServiceSold.EventType)
             {
+                // Only these would cause an inflow (receipt) of cash
                 case EventTypeEnum.LoanAgreementCashReceipt:
-                case EventTypeEnum.SalesCashReceipt:
+                case EventTypeEnum.SalesReceipt:
                 case EventTypeEnum.StockSubscriptionCashReceipt:
                     break;
+
                 default:
-                    throw new ArgumentException($"Invalid goods or services listed as reason for cash receipt: {GoodsOrServiceSold.EventType}");
+                    // All other events would cause an outflow (disbursement) of cash
+                    string msg = $"Invalid goods or services listed as reason for cash receipt: {GoodsOrServiceSold.EventType}";
+                    throw new ArgumentException(msg);
             }
 
             if (Payor.AgentType == AgentTypeEnum.Financier)
             {
-                // Cash deposits from a financier can only be because of the provision 
-                // of a loan agreement or stock subscription to the financier
-                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreementCashReceipt && GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscriptionCashReceipt)
+                /*
+                    Cash receipt from a financier can only occur because of the previous 
+                    signing of a loan agreement or stock subscription by the financier.
+                    A financier and a sales receipt are invalid. A customer and a sales receipt would be valid.
+                */
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreementCashReceipt &&
+                    GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscriptionCashReceipt)
                 {
-                    throw new ArgumentException($"Invalid goods or services listed as reason for cash receipt from financier: {GoodsOrServiceSold.EventType}");
+                    string msg = $"Invalid goods/services: '{GoodsOrServiceSold.EventType}' listed as reason for cash receipt from financier!";
+                    throw new ArgumentException(msg);
                 }
             }
-
         }
     }
 }

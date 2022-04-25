@@ -2,7 +2,7 @@ namespace PipefittersAccounting.Core.Shared
 {
     public enum EventTypeEnum : int
     {
-        SalesCashReceipt = 1,
+        SalesReceipt = 1,
         LoanAgreementCashReceipt = 2,
         StockSubscriptionCashReceipt = 3,
         LoanPaymentCashDisbursement = 4,

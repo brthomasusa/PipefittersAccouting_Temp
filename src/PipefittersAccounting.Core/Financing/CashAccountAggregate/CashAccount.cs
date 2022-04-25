@@ -86,9 +86,9 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
 
-        public async Task AddDeposit(CashDeposit receipt)
+        public async Task AddDeposit(CashDeposit deposit)
         {
-            ValidationResult result = await _validationService.IsValidCashDeposit(receipt);
+            ValidationResult result = await _validationService.IsValidCashDeposit(deposit);
 
             if (!result.IsValid)
             {
@@ -99,20 +99,44 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             (
                 new CashTransaction
                 (
-                    CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                    EntityGuidID.Create(this.Id),  // CashAccount Id financing proceeds
-                    CashTransactionDate.Create(receipt.TransactionDate),
-                    CashTransactionAmount.Create(receipt.TransactionAmount),
-                    EntityGuidID.Create(receipt.Payor.Id),
-                    EntityGuidID.Create(receipt.GoodsOrServiceSold.Id),
-                    CheckNumber.Create(receipt.CheckNumber),
-                    RemittanceAdvice.Create(receipt.RemittanceAdvice),
-                    EntityGuidID.Create(receipt.UserId)
+                    deposit.DepositType,
+                    EntityGuidID.Create(this.Id),  // CashAccount Id 
+                    deposit.TransactionDate,
+                    deposit.TransactionAmount,
+                    EntityGuidID.Create(deposit.Payor.Id),
+                    EntityGuidID.Create(deposit.GoodsOrServiceSold.Id),
+                    deposit.CheckNumber,
+                    deposit.RemittanceAdvice,
+                    EntityGuidID.Create(deposit.UserId)
                 )
             );
         }
 
-        public void Disburse(CashTransaction cashTransaction) { }
+        public async Task AddDisbursement(CashDisbursement disbursement)
+        {
+            ValidationResult result = await _validationService.IsValidCashDisbursement(disbursement);
+
+            if (!result.IsValid)
+            {
+                throw new ArgumentException(result.Messages[0]);
+            }
+
+            _cashTransactions.Add
+            (
+                new CashTransaction
+                (
+                    disbursement.DisbursementType,
+                    EntityGuidID.Create(this.Id),  // CashAccount Id financing proceeds
+                    disbursement.TransactionDate,
+                    disbursement.TransactionAmount,
+                    EntityGuidID.Create(disbursement.Payee.Id),
+                    EntityGuidID.Create(disbursement.GoodsOrServicePurchased.Id),
+                    disbursement.CheckNumber,
+                    disbursement.RemittanceAdvice,
+                    EntityGuidID.Create(disbursement.UserId)
+                )
+            );
+        }
 
         public void Transfer(decimal amount) { }
 

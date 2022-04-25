@@ -20,8 +20,10 @@ namespace PipefittersAccounting.UnitTests.Financing
     {
         public CashAccountAggregateTests() { }
 
+        /*        CashDeposit Tests        */
+
         [Fact]
-        public void Create_CashReceipt_ShouldSucceed()
+        public void Create_CashDeposit_ShouldSucceed()
         {
             CashTransactionTypeEnum transType = CashTransactionTypeEnum.CashReceiptDebtIssueProceeds;
             decimal receiptAmount = 1000M;
@@ -40,7 +42,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         }
 
         [Fact]
-        public void Create_CashReceipt_InvalidTransactionType_ShouldFail()
+        public void Create_CashDeposit_InvalidTransactionType_ShouldFail()
         {
             CashTransactionTypeEnum transType = CashTransactionTypeEnum.CashDisbursementAdjustment;
             decimal receiptAmount = 1000M;
@@ -57,13 +59,13 @@ namespace PipefittersAccounting.UnitTests.Financing
         }
 
         [Fact]
-        public void Create_CashReceipt_InvalidGoodOrService_Sales_ShouldFail()
+        public void Create_CashDeposit_InvalidGoodOrService_Sales_ShouldFail()
         {
             CashTransactionTypeEnum transType = CashTransactionTypeEnum.CashReceiptDebtIssueProceeds;
             decimal receiptAmount = 1000M;
             DateTime receiptDate = new DateTime(2022, 4, 19);
             ExternalAgent payor = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.SalesCashReceipt);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.SalesReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -74,7 +76,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         }
 
         [Fact]
-        public void Create_CashReceipt_InvalidGoodOrService_Disbursement_ShouldFail()
+        public void Create_CashDeposit_InvalidGoodOrService_Disbursement_ShouldFail()
         {
             CashTransactionTypeEnum transType = CashTransactionTypeEnum.CashReceiptDebtIssueProceeds;
             decimal receiptAmount = 1000M;
@@ -89,6 +91,15 @@ namespace PipefittersAccounting.UnitTests.Financing
 
             var caughtException = Assert.Throws<ArgumentException>(action);
         }
+
+
+        /*        CashDisbursement Tests        */
+
+
+
+
+
+        /*        CashAccount Tests        */
 
         [Fact]
         public void Create_CashAccount_ShouldSucceed()
@@ -110,8 +121,8 @@ namespace PipefittersAccounting.UnitTests.Financing
 
             var mock = new Mock<ICashTransactionValidationService>();
             mock.Setup(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>())).ReturnsAsync(new ValidationResult() { IsValid = true });
-
             ICashTransactionValidationService validationService = mock.Object;
+
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 
             await cashAccount.AddDeposit(cashDeposit);
@@ -119,25 +130,19 @@ namespace PipefittersAccounting.UnitTests.Financing
             mock.Verify(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>()), Times.Once);
             int transactions = cashAccount.CashTransactions.Count;
             Assert.Equal(1, transactions);
-
-            // Action action = () => new CashDeposit(transType, payor, goodsOrSvc, receiptAmount, receiptDate, checkNumber, remitAdvice, userId);
-
-            // var caughtException = Assert.Throws<ArgumentException>(action);            
-
         }
 
         [Fact]
         public async Task AddDeposit_CashAccount_ShouldThrowException()
         {
             CashDeposit cashDeposit = CashAccountTestData.GetCashDepositForLoanProceeds();
-            ValidationResult result = new();
-            result.IsValid = false;
+            ValidationResult result = new() { IsValid = false };
             result.Messages.Add("Thrown by Moq");
 
             var mock = new Mock<ICashTransactionValidationService>();
             mock.Setup(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>())).ReturnsAsync(result);
-
             ICashTransactionValidationService validationService = mock.Object;
+
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await cashAccount.AddDeposit(cashDeposit));
