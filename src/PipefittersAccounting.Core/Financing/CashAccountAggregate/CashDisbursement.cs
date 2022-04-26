@@ -43,7 +43,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             RejectInvalidTransactionTypes();                            // Invalid transaction types
             RejectInvalidTransactionTypeAndGoodsOrServiceProvided();    // Invalid transaction type / GoodsOrServicePurchased combinations
             RejectInvalidPayees();                                      // Invalid payees 
-            RejectInvalidGoodsOrServiceProvided();                      // Invalid payee/GoodsOrServicePurchased combinations                     
+            RejectInvalidGoodsOrServiceReceived();                      // Invalid payee/GoodsOrServicePurchased combinations                     
         }
 
         private void RejectInvalidTransactionTypes()
@@ -63,15 +63,15 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             }
         }
 
-        private void RejectInvalidGoodsOrServiceProvided()
+        private void RejectInvalidGoodsOrServiceReceived()
         {
             switch (GoodsOrServicePurchased.EventType)
             {
                 // Only these would cause an outflow (disbursement) of cash
-                case EventTypeEnum.DividentPaymentCashDisbursement:
-                case EventTypeEnum.InventoryReceiptCashDisbursement:
-                case EventTypeEnum.LoanPaymentCashDisbursement:
-                case EventTypeEnum.TimeCardPaymentCashDisbursement:
+                case EventTypeEnum.DividentPayment:
+                case EventTypeEnum.InventoryReceipt:
+                case EventTypeEnum.LoanPayment:
+                case EventTypeEnum.TimeCardPayment:
                     break;
 
                 default:
@@ -91,8 +91,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             if (Payee.AgentType == AgentTypeEnum.Financier)
             {
                 // Only allow disbursements for dividend and loan payments
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.DividentPaymentCashDisbursement &&
-                    GoodsOrServicePurchased.EventType != EventTypeEnum.LoanPaymentCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.DividentPayment &&
+                    GoodsOrServicePurchased.EventType != EventTypeEnum.LoanPayment)
                 {
                     string msg = $"A financier can not receive a cash disbursement for {GoodsOrServicePurchased.EventType}";
                     throw new ArgumentException(msg);
@@ -109,7 +109,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             if (Payee.AgentType == AgentTypeEnum.Vendor)
             {
                 // Only allow payments for inventory purchases
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.InventoryReceiptCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.InventoryReceipt)
                 {
                     string msg = $"A vendor can not receive a cash disbursement for {GoodsOrServicePurchased.EventType}";
                     throw new ArgumentException(msg);
@@ -119,7 +119,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             if (Payee.AgentType == AgentTypeEnum.Employee)
             {
                 // Only allow payments for payroll
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.TimeCardPaymentCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.TimeCardPayment)
                 {
                     string msg = $"An employee can not receive a cash disbursement for {GoodsOrServicePurchased.EventType}";
                     throw new ArgumentException(msg);
@@ -133,7 +133,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             if (DisbursementType == CashTransactionTypeEnum.CashDisbursementDividentPayment)
             {
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.DividentPaymentCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.DividentPayment)
                 {
                     string msg = $"Invalid goods or services '{GoodsOrServicePurchased.EventType}' listed as reason for cash disbursement to an investor!";
                     throw new ArgumentException(msg);
@@ -142,7 +142,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             if (DisbursementType == CashTransactionTypeEnum.CashDisbursementLoanPayment)
             {
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.LoanPaymentCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.LoanPayment)
                 {
                     string msg = $"Invalid goods or services '{GoodsOrServicePurchased.EventType}' listed as reason for cash disbursement to a creditor!";
                     throw new ArgumentException(msg);
@@ -151,7 +151,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             if (DisbursementType == CashTransactionTypeEnum.CashDisbursementPurchaseReceipt)
             {
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.InventoryReceiptCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.InventoryReceipt)
                 {
                     string msg = $"Invalid goods or services '{GoodsOrServicePurchased.EventType}' listed as reason for cash disbursement to a vendor!";
                     throw new ArgumentException(msg);
@@ -160,7 +160,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
             if (DisbursementType == CashTransactionTypeEnum.CashDisbursementTimeCardPayment)
             {
-                if (GoodsOrServicePurchased.EventType != EventTypeEnum.TimeCardPaymentCashDisbursement)
+                if (GoodsOrServicePurchased.EventType != EventTypeEnum.TimeCardPayment)
                 {
                     string msg = $"Invalid goods or services '{GoodsOrServicePurchased.EventType}' listed as reason for cash disbursement to an employee!";
                     throw new ArgumentException(msg);

@@ -20,7 +20,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -39,7 +39,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -58,7 +58,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -75,7 +75,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -92,7 +92,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -109,7 +109,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -126,7 +126,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -143,7 +143,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -160,7 +160,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -177,7 +177,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.SalesReceipt);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.Sales);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -194,7 +194,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreementCashReceipt);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreement);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -211,7 +211,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.StockSubscriptionCashReceipt);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.StockSubscription);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -228,7 +228,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -245,7 +245,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceiptCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -262,7 +262,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Vendor);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceiptCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -279,7 +279,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Customer);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceiptCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -296,7 +296,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceiptCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -313,7 +313,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -330,7 +330,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -348,7 +348,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceiptCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.InventoryReceipt);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -365,7 +365,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.DividentPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
@@ -382,7 +382,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             decimal disbursementAmount = 1000M;
             DateTime disbursementDate = new DateTime(2022, 4, 19);
             ExternalAgent payee = new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier);
-            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPaymentCashDisbursement);
+            EconomicEvent goodsOrSvc = new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.TimeCardPayment);
             string checkNumber = "1234";
             string remitAdvice = "Remit adice";
             Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");

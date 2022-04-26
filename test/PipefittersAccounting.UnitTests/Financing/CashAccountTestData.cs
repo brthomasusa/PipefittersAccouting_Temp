@@ -85,7 +85,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
                 new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreementCashReceipt),
+                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreement),
                 4000M,
                 new DateTime(2022, 4, 15),
                 "2001",
@@ -98,7 +98,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
                 new ExternalAgent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), AgentTypeEnum.Financier), // ** Invalid **
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt),
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement),
                 25000M,
                 new DateTime(2022, 1, 5),
                 "2001",
@@ -111,7 +111,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
                 new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt), // ** Invalid **
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement), // ** Invalid **
                 25000M,
                 new DateTime(2022, 1, 5),
                 "2001",
@@ -124,7 +124,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
                 new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreementCashReceipt),
+                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreement),
                 25001M,     // ** Invalid **
                 new DateTime(2022, 1, 5),
                 "2001",
@@ -137,7 +137,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
                 new ExternalAgent(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreementCashReceipt),
+                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement),
                 25000M,
                 new DateTime(2022, 1, 5),
                 "2001",
@@ -150,7 +150,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             (
                 CashTransactionTypeEnum.CashDisbursementLoanPayment,
                 new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2")), EventTypeEnum.LoanPaymentCashDisbursement),
+                new EconomicEvent(EntityGuidID.Create(new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2")), EventTypeEnum.LoanPayment),
                 1100M,
                 new DateTime(2022, 7, 15),
                 "2011",

@@ -38,11 +38,13 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         protected override void CheckValidity()
         {
-            RejectInvalidDeposits();
+            RejectInvalidTransactionTypes();
             RejectInvalidGoodsOrServiceProvided();
+            RejectInvalidTransactionTypeAndGoodsOrServiceReceived();
+            RejectInvalidPayors();
         }
 
-        private void RejectInvalidDeposits()
+        private void RejectInvalidTransactionTypes()
         {
             switch (DepositType)
             {
@@ -62,9 +64,9 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             switch (GoodsOrServiceSold.EventType)
             {
                 // Only these would cause an inflow (receipt) of cash
-                case EventTypeEnum.LoanAgreementCashReceipt:
-                case EventTypeEnum.SalesReceipt:
-                case EventTypeEnum.StockSubscriptionCashReceipt:
+                case EventTypeEnum.Sales:
+                case EventTypeEnum.LoanAgreement:
+                case EventTypeEnum.StockSubscription:
                     break;
 
                 default:
@@ -80,12 +82,86 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
                     signing of a loan agreement or stock subscription by the financier.
                     A financier and a sales receipt are invalid. A customer and a sales receipt would be valid.
                 */
-                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreementCashReceipt &&
-                    GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscriptionCashReceipt)
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreement &&
+                    GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscription)
                 {
                     string msg = $"Invalid goods/services: '{GoodsOrServiceSold.EventType}' listed as reason for cash receipt from financier!";
                     throw new ArgumentException(msg);
                 }
+            }
+        }
+
+        private void RejectInvalidTransactionTypeAndGoodsOrServiceReceived()
+        {
+            if (DepositType == CashTransactionTypeEnum.CashReceiptSales)
+            {
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.Sales)
+                {
+                    string msg = $"Invalid goods or services '{GoodsOrServiceSold.EventType}' listed as reason for cash receipt from a customer!";
+                    throw new ArgumentException(msg);
+                }
+            }
+
+            if (DepositType == CashTransactionTypeEnum.CashReceiptDebtIssueProceeds)
+            {
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreement)
+                {
+                    string msg = $"Invalid services '{GoodsOrServiceSold.EventType}' listed as reason for cash receipt from a creditor!";
+                    throw new ArgumentException(msg);
+                }
+            }
+
+            if (DepositType == CashTransactionTypeEnum.CashReceiptStockIssueProceeds)
+            {
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscription)
+                {
+                    string msg = $"Invalid services '{GoodsOrServiceSold.EventType}' listed as reason for cash receipt from a creditor!";
+                    throw new ArgumentException(msg);
+                }
+            }
+        }
+
+        private void RejectInvalidPayors()
+        {
+            /* 
+                For each payor, there are a limited number of goods/services provided to them by
+                Pipefitters. For instance, Pipefitters does not sell product to a Financier,
+                therefore, should not receive a payment for sales, only loan and stock proceeds.                
+            */
+
+            if (Payor.AgentType == AgentTypeEnum.Financier)
+            {
+                // Only allow receipts for debt issue and stock issue.
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.LoanAgreement &&
+                    GoodsOrServiceSold.EventType != EventTypeEnum.StockSubscription)
+                {
+                    string msg = "Only receipts for loan agreement and stock subscription proceeds are valid reasons to receive cash from a financier";
+                    throw new ArgumentException(msg);
+                }
+            }
+
+            if (Payor.AgentType == AgentTypeEnum.Customer)
+            {
+                // Only allow receipts from product sales.
+                if (GoodsOrServiceSold.EventType != EventTypeEnum.Sales)
+                {
+                    string msg = "Receipt of cash from a customer should only be for product sales.";
+                    throw new ArgumentException(msg);
+                }
+            }
+
+            if (Payor.AgentType == AgentTypeEnum.Vendor)
+            {
+                // Don't allow any receipts; refunds are handled as CashAdjustment
+                string msg = "Should not receive payment from a vendor; refunds for previous purchases are handled as cash disbursement adjustments";
+                throw new ArgumentException(msg);
+            }
+
+            if (Payor.AgentType == AgentTypeEnum.Employee)
+            {
+                // Don't allow any receipts; refunds are handled as CashAdjustment
+                string msg = "Should not receive payment from an employee, cash from an employee handled as cash disbursement adjustments";
+                throw new ArgumentException(msg);
             }
         }
     }

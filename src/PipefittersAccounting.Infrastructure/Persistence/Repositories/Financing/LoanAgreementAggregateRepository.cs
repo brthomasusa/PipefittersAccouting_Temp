@@ -71,14 +71,14 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
         {
             try
             {
-                EconomicEvent evt = new(EntityGuidID.Create(entity.Id), EventTypeEnum.LoanAgreementCashReceipt);
+                EconomicEvent evt = new(EntityGuidID.Create(entity.Id), EventTypeEnum.LoanAgreement);
                 await _dbContext.EconomicEvents.AddAsync(evt);
                 await _dbContext.LoanAgreements.AddAsync(entity);
 
                 foreach (LoanInstallment installment in entity.LoanAmortizationTable)
                 {
                     await _dbContext.EconomicEvents.AddAsync(new(EntityGuidID.Create(installment.Id),
-                                                                                     EventTypeEnum.LoanPaymentCashDisbursement));
+                                                                                     EventTypeEnum.LoanPayment));
                     await _dbContext.LoanInstallments.AddAsync(installment);
                 }
 
