@@ -44,7 +44,7 @@ namespace PipefittersAccounting.UnitTests.Financing
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 
-            await cashAccount.AddDeposit(cashDeposit);
+            await cashAccount.DepositCash(cashDeposit);
 
             mock.Verify(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>()), Times.Once);
             int transactions = cashAccount.CashTransactions.Count;
@@ -64,7 +64,7 @@ namespace PipefittersAccounting.UnitTests.Financing
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await cashAccount.AddDeposit(cashDeposit));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await cashAccount.DepositCash(cashDeposit));
             Assert.Equal("Thrown by Moq", ex.Message);
         }
     }

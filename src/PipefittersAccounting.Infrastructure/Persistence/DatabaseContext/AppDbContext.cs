@@ -27,6 +27,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<LoanInstallment> LoanInstallments { get; set; }
         public DbSet<CashAccount> CashAccounts { get; set; }
         public DbSet<CashTransaction> CashTransactions { get; set; }
+        public DbSet<CashTransfer> CashAccountTransfers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

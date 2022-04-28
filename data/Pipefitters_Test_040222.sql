@@ -37,6 +37,12 @@ CREATE TABLE Finance.CashTransactionTypes
 )
 GO
 
+CREATE TABLE Finance.CashAccountTypes
+(
+  CashAccountTypeId INT IDENTITY PRIMARY KEY CLUSTERED,
+  CashAccountTypeName NVARCHAR(50) NOT NULL UNIQUE
+)
+
 CREATE TABLE Shared.EconomicEventTypes
 (
     EventTypeId int IDENTITY PRIMARY KEY CLUSTERED,
@@ -318,6 +324,7 @@ GO
 CREATE TABLE Finance.CashAccounts
 (
     CashAccountId uniqueidentifier NOT NULL PRIMARY KEY default NEWID(),
+    CashAccountTypeId INT NOT NULL REFERENCES Finance.CashAccountTypes(CashAccountTypeId),
     BankName  NVARCHAR(50) NOT NULL,    
     AccountName NVARCHAR(50) NOT NULL,
     AccountNumber NVARCHAR(50) NOT NULL,
@@ -327,6 +334,10 @@ CREATE TABLE Finance.CashAccounts
     CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
     LastModifiedDate datetime2(7) NULL
 )
+GO
+
+CREATE INDEX idx_CashAccounts$CashAccountTypeId 
+  ON Finance.CashAccounts (CashAccountTypeId)
 GO
 
 CREATE UNIQUE INDEX idx_CashAccounts$AccountName 
@@ -417,6 +428,14 @@ VALUES
     ('Cash Disbursement Adjustment'),
     ('Cash Disbursement Cash Transfer Out'),
     ('Cash Receipt Cash Transfer In')
+GO
+
+INSERT INTO Finance.CashAccountTypes
+  (CashAccountTypeName)
+VALUES
+  ('Financing Operations'),
+  ('Non-Payroll Operations'),
+  ('Payroll Operations')
 GO
 
 INSERT INTO Shared.EconomicEventTypes
@@ -668,12 +687,12 @@ VALUES
 GO
 
 INSERT INTO Finance.CashAccounts
-    (CashAccountId, BankName, AccountName, AccountNumber, RoutingTransitNumber, DateOpened, UserId)
+    (CashAccountId, CashAccountTypeId, BankName, AccountName, AccountNumber, RoutingTransitNumber, DateOpened, UserId)
 VALUES
-    ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 'First Bank and Trust', 'Primary Checking', '36547-9871222', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('c98ac84f-00bb-463d-9116-5828b2e9f718', 'First Bank and Trust', 'Payroll', '36547-9098812', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 'First Bank and Trust', 'Financing Proceeds', '36547-9888249', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-    ('765ec2b0-406a-4e42-b831-c9aa63800e76', 'BackAlley Money Washing, LLC', 'Slush Fund', 'XXXXX-XXXXXXX', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744')
+    ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 2, 'First Bank and Trust', 'Primary Checking', '36547-9871222', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('c98ac84f-00bb-463d-9116-5828b2e9f718', 3, 'First Bank and Trust', 'Payroll', '36547-9098812', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 1, 'First Bank and Trust', 'Financing Proceeds', '36547-9888249', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('765ec2b0-406a-4e42-b831-c9aa63800e76', 2, 'BackAlley Money Washing, LLC', 'Slush Fund', 'XXXXX-XXXXXXX', '703452098', '2020-09-03', '660bb318-649e-470d-9d2b-693bfb0b2744')
 GO
 
 INSERT INTO Finance.CashAccountTransfers

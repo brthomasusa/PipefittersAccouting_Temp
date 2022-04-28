@@ -14,6 +14,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             => new
             (
                 EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),
+                CashAccountTypeEnum.NonPayrollOperations,
                 BankName.Create("BankOne"),
                 CashAccountName.Create("Purchasing"),
                 CashAccountNumber.Create("12345-56-5547"),

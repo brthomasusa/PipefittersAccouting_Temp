@@ -4,7 +4,6 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
@@ -14,6 +13,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
     public class CashAccount : AggregateRoot<Guid>, IAggregateRoot
     {
         private List<CashTransaction> _cashTransactions;
+        private AccountBalanceInformation? _balanceInfo;
         private readonly ICashTransactionValidationService _validationService;
 
         protected CashAccount() => _cashTransactions = new();
@@ -21,6 +21,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         public CashAccount
         (
             EntityGuidID cashAcctId,
+            CashAccountTypeEnum accountType,
             BankName bankName,
             CashAccountName acctName,
             CashAccountNumber acctNumber,
@@ -32,6 +33,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             : this()
         {
             Id = cashAcctId ?? throw new ArgumentNullException("The cash account Id is required.");
+            CashAccountType = accountType;
             BankName = bankName ?? throw new ArgumentNullException("The bank name is required.");
             CashAccountName = acctName ?? throw new ArgumentNullException("The cash account name is required.");
             CashAccountNumber = acctNumber ?? throw new ArgumentNullException("The cash account number is required.");
@@ -40,6 +42,15 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
             _validationService = validationService;
 
+            CheckValidity();
+        }
+
+        public CashAccountTypeEnum CashAccountType { get; private set; }
+        public void UpdateCashAccountType(CashAccountTypeEnum cashAccountType)
+        {
+            //TODO Don't allow editing if the account has transactions
+            CashAccountType = cashAccountType;
+            UpdateLastModifiedDate();
             CheckValidity();
         }
 
@@ -86,7 +97,44 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
 
-        public async Task AddDeposit(CashDeposit deposit)
+        public CashTransactionAmount CashInflow
+        {
+            get
+            {
+                if (_balanceInfo is null)
+                {
+
+                }
+
+                throw new NotImplementedException();
+            }
+        }
+
+        public CashTransactionAmount CashOutflow
+        {
+            get
+            {
+                if (_balanceInfo is null)
+                {
+
+                }
+                throw new NotImplementedException();
+            }
+        }
+
+        public CashTransactionAmount CurrentBalance
+        {
+            get
+            {
+                if (_balanceInfo is null)
+                {
+
+                }
+                throw new NotImplementedException();
+            }
+        }
+
+        public async Task DepositCash(CashDeposit deposit)
         {
             ValidationResult result = await _validationService.IsValidCashDeposit(deposit);
 
@@ -112,7 +160,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             );
         }
 
-        public async Task AddDisbursement(CashDisbursement disbursement)
+        public async Task DisburseCash(CashDisbursement disbursement)
         {
             ValidationResult result = await _validationService.IsValidCashDisbursement(disbursement);
 
@@ -138,7 +186,10 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             );
         }
 
-        public void Transfer(decimal amount) { }
+        public void TransferCash(CashTransfer cashTransfer)
+        {
+
+        }
 
         protected override void CheckValidity()
         {
