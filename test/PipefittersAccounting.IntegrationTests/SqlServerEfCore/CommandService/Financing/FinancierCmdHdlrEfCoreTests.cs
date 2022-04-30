@@ -24,7 +24,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             CreateFinancierInfo model = TestUtilities.GetCreateFinancierInfo();
 
@@ -41,7 +41,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             CreateFinancierInfo model = TestUtilities.GetCreateFinancierInfo();
             model.Id = new Guid("12998229-7ede-4834-825a-0c55bde75695");
@@ -57,7 +57,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             CreateFinancierInfo model = TestUtilities.GetCreateFinancierInfo();
             model.FinancierName = "New World Tatoo Parlor";
@@ -73,7 +73,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             EditFinancierInfo model = TestUtilities.GetEditFinancierInfo();
 
@@ -86,7 +86,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             EditFinancierInfo model = TestUtilities.GetEditFinancierInfo();
             model.FinancierName = "New World Tatoo Parlor";
@@ -102,7 +102,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             EditFinancierInfo model = TestUtilities.GetEditFinancierInfo();
             model.Id = Guid.NewGuid();
@@ -118,7 +118,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             EditFinancierInfo model = TestUtilities.GetEditFinancierInfo();
             model.Telephone = "214-55-666";
@@ -133,7 +133,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             Guid agentId = new Guid("84164388-28ff-4b47-bd63-dd9326d32236");
             Financier financier = await repo.GetByIdAsync(agentId);
@@ -154,7 +154,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
-            IFinancierCommandService cmdSvc = new FinancierCommandService(repo, uow);
+            IFinancierApplicationService cmdSvc = new FinancierApplicationService(repo, uow);
 
             DeleteFinancierInfo model = new() { Id = Guid.NewGuid() };
 

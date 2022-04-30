@@ -23,7 +23,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
-            ILoanAgreementCommandService cmdSvc = new LoanAgreementCommandService(repo, uow);
+            ILoanAgreementApplicationService cmdSvc = new LoanAgreementApplicationService(repo, uow);
 
             CreateLoanAgreementInfo model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
 
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
             ILoanAgreementAggregateRepository repo = new LoanAgreementAggregateRepository(_dbContext);
-            ILoanAgreementCommandService cmdSvc = new LoanAgreementCommandService(repo, uow);
+            ILoanAgreementApplicationService cmdSvc = new LoanAgreementApplicationService(repo, uow);
 
             DeleteLoanAgreementInfo model = new DeleteLoanAgreementInfo
             {

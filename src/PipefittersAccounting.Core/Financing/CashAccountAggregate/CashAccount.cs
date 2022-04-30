@@ -1,6 +1,7 @@
 #pragma warning disable CS8604
 #pragma warning disable CS8618
 
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
@@ -10,10 +11,11 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
-    public class CashAccount : AggregateRoot<Guid>, IAggregateRoot
+    public class CashAccount : AggregateRoot<Guid>
     {
         private List<CashTransaction> _cashTransactions;
         private AccountBalanceInformation? _balanceInfo;
+        private CashTransfer? _cashTransfer;
         private readonly ICashTransactionValidationService _validationService;
 
         protected CashAccount() => _cashTransactions = new();
@@ -158,6 +160,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
                     EntityGuidID.Create(deposit.UserId)
                 )
             );
+
+            AddDomainEvent(CashDepositCreated.Create(deposit));
         }
 
         public async Task DisburseCash(CashDisbursement disbursement)
@@ -184,11 +188,14 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
                     EntityGuidID.Create(disbursement.UserId)
                 )
             );
+
+            AddDomainEvent(CashDisbursementCreated.Create(disbursement));
         }
 
         public void TransferCash(CashTransfer cashTransfer)
         {
-
+            _cashTransfer = cashTransfer;
+            AddDomainEvent(CashTransferCreated.Create(cashTransfer));
         }
 
         protected override void CheckValidity()

@@ -7,12 +7,12 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
-    public class FinancierCommandService : IFinancierCommandService
+    public class FinancierApplicationService : IFinancierApplicationService
     {
         private readonly IFinancierAggregateRepository _financierRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public FinancierCommandService(IFinancierAggregateRepository repo, IUnitOfWork unitOfWork)
+        public FinancierApplicationService(IFinancierAggregateRepository repo, IUnitOfWork unitOfWork)
         {
             _financierRepo = repo;
             _unitOfWork = unitOfWork;

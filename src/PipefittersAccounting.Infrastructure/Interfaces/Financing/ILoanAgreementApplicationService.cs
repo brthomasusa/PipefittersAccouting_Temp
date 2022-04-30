@@ -3,7 +3,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public interface ILoanAgreementCommandService
+    public interface ILoanAgreementApplicationService
     {
         Task<OperationResult<bool>> CreateLoanAgreement(CreateLoanAgreementInfo writeModel);
         Task<OperationResult<bool>> DeleteLoanAgreement(DeleteLoanAgreementInfo writeModel);

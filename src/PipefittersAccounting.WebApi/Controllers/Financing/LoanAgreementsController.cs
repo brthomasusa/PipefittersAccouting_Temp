@@ -16,13 +16,13 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
     {
         private readonly ILogger<FinanciersController> _logger;
         private readonly ILoanAgreementQueryService _qrySvc;
-        private readonly ILoanAgreementCommandService _cmdSvc;
+        private readonly ILoanAgreementApplicationService _cmdSvc;
 
         public LoanAgreementsController
         (
             ILogger<FinanciersController> logger,
             ILoanAgreementQueryService queryService,
-            ILoanAgreementCommandService commandService
+            ILoanAgreementApplicationService commandService
         )
         {
             _logger = logger;

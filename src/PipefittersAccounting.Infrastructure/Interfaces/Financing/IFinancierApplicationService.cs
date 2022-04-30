@@ -3,7 +3,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public interface IFinancierCommandService
+    public interface IFinancierApplicationService
     {
         Task<OperationResult<bool>> CreateFinancierInfo(CreateFinancierInfo writeModel);
         Task<OperationResult<bool>> EditFinancierInfo(EditFinancierInfo writeModel);

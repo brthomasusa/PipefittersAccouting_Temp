@@ -7,12 +7,12 @@ using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
-    public class LoanAgreementCommandService : ILoanAgreementCommandService
+    public class LoanAgreementApplicationService : ILoanAgreementApplicationService
     {
         private readonly ILoanAgreementAggregateRepository _repo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoanAgreementCommandService(ILoanAgreementAggregateRepository repo, IUnitOfWork unitOfWork)
+        public LoanAgreementApplicationService(ILoanAgreementAggregateRepository repo, IUnitOfWork unitOfWork)
         {
             _repo = repo;
             _unitOfWork = unitOfWork;

@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.FinancierAggregate
 {
-    public class Financier : AggregateRoot<Guid>, IAggregateRoot
+    public class Financier : AggregateRoot<Guid>
     {
         protected Financier() { }
 
