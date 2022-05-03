@@ -11,12 +11,14 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore
         private const string _defaultConnectionString = "DefaultConnection";
         private readonly string _connectionString;
         protected readonly AppDbContext _dbContext;
+        protected readonly DapperContext _dapperCtx;
         protected readonly string serviceAddress = "https://localhost:7035/";
 
         public TestBaseEfCore()
         {
             var config = AppSettings.GetConfiguration();
             _connectionString = config.GetConnectionString(_defaultConnectionString);
+            _dapperCtx = new DapperContext(_connectionString);
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 

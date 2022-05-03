@@ -23,8 +23,8 @@ namespace PipefittersAccounting.UnitTests.Financing
         [Fact]
         public void Create_CashAccount_ShouldSucceed()
         {
-            var mock = new Mock<ICashTransactionValidationService>();
-            ICashTransactionValidationService validationService = mock.Object;
+            var mock = new Mock<ICashAccountAggregateValidationService>();
+            ICashAccountAggregateValidationService validationService = mock.Object;
 
             var exception = Record.Exception(() =>
                                 CashAccountTestData.GetCashAccount(validationService)
@@ -38,9 +38,9 @@ namespace PipefittersAccounting.UnitTests.Financing
         {
             CashDeposit cashDeposit = CashAccountTestData.GetCashDepositForLoanProceeds();
 
-            var mock = new Mock<ICashTransactionValidationService>();
+            var mock = new Mock<ICashAccountAggregateValidationService>();
             mock.Setup(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>())).ReturnsAsync(new ValidationResult() { IsValid = true });
-            ICashTransactionValidationService validationService = mock.Object;
+            ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 
@@ -58,9 +58,9 @@ namespace PipefittersAccounting.UnitTests.Financing
             ValidationResult result = new() { IsValid = false };
             result.Messages.Add("Thrown by Moq");
 
-            var mock = new Mock<ICashTransactionValidationService>();
+            var mock = new Mock<ICashAccountAggregateValidationService>();
             mock.Setup(x => x.IsValidCashDeposit(It.IsAny<CashDeposit>())).ReturnsAsync(result);
-            ICashTransactionValidationService validationService = mock.Object;
+            ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
 

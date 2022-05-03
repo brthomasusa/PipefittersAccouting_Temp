@@ -11,7 +11,7 @@ namespace PipefittersAccounting.UnitTests.Financing
 {
     public class CashAccountTestData
     {
-        public static CashAccount GetCashAccount(ICashTransactionValidationService validationService)
+        public static CashAccount GetCashAccount(ICashAccountAggregateValidationService validationService)
             => new
             (
                 EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),

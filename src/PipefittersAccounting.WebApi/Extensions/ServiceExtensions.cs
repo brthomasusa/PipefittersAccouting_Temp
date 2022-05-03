@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
                 .AddScoped<ICashAccountQueryService, CashAccountQueryService>()
-                .AddScoped<ICashTransactionValidationService, CashTransactionValidationService>()
+                .AddScoped<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>()
                 .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
         }
 

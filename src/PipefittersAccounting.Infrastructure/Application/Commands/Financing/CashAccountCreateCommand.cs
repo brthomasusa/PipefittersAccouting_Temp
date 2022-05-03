@@ -12,9 +12,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
     public class CashAccountCreateCommand : IWriteModelProcessor<CreateCashAccountInfo, ICashAccountAggregateRepository>
     {
-        private readonly ICashTransactionValidationService _validationService;
+        private readonly ICashAccountAggregateValidationService _validationService;
 
-        public CashAccountCreateCommand(ICashTransactionValidationService validationService)
+        public CashAccountCreateCommand(ICashAccountAggregateValidationService validationService)
             => _validationService = validationService;
 
         public async Task<OperationResult<bool>> Process
@@ -28,24 +28,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             {
                 OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
 
-                if (!result.Success)
+                if (result.Success)
                 {
                     string errMsg = $"Create operation failed! A cash account with this Id: {model.CashAccountId} already exists!";
                     return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                OperationResult<Guid> dupeNameResult = await repository.CheckForDuplicateAccountName(model.CashAccountName);
-                if (dupeNameResult.Result != Guid.Empty)
-                {
-                    string errMsg = $"A cash account with account name: {model.CashAccountName} is already in the database.";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                OperationResult<Guid> dupeAcctNumberResult = await repository.CheckForDuplicateAccountNumber(model.CashAccountNumber);
-                if (dupeAcctNumberResult.Result != Guid.Empty)
-                {
-                    string msg = $"A cash account with account number: {model.CashAccountNumber} is already in the database.";
-                    return OperationResult<bool>.CreateFailure(msg);
                 }
 
                 CashAccount cashAccount = new

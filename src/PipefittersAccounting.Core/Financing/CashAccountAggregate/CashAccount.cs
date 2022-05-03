@@ -13,10 +13,10 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
     public class CashAccount : AggregateRoot<Guid>
     {
-        private List<CashTransaction> _cashTransactions;
+        private List<CashTransaction> _cashTransactions = new();
         private AccountBalanceInformation? _balanceInfo;
         private CashTransfer? _cashTransfer;
-        private readonly ICashTransactionValidationService _validationService;
+        private readonly ICashAccountAggregateValidationService _validationService;
 
         protected CashAccount() => _cashTransactions = new();
 
@@ -30,7 +30,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             RoutingTransitNumber routingTransitNumber,
             DateOpened openedDate,
             EntityGuidID userId,
-            ICashTransactionValidationService validationService
+            ICashAccountAggregateValidationService validationService
         )
             : this()
         {
@@ -90,7 +90,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CheckValidity();
         }
 
-        public Guid UserId { get; private set; }
+        public EntityGuidID UserId { get; private set; }
         public void UpdateUserId(EntityGuidID value)
         {
             UserId = value ?? throw new ArgumentNullException("The User id can not be null.");

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
 {
@@ -40,7 +41,10 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
                 .HasColumnType("datetime2(0)")
                 .HasColumnName("DateOpened")
                 .IsRequired();
-            entity.Property(p => p.UserId).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("UserId").IsRequired();
+            entity.Property(p => p.UserId)
+                .HasConversion(p => p.Value, p => EntityGuidID.Create(p))
+                .HasColumnType("UNIQUEIDENTIFIER")
+                .HasColumnName("UserId").IsRequired();
             entity.Property(e => e.CreatedDate).HasColumnType("datetime2(7)");
             entity.Property(e => e.LastModifiedDate).HasColumnType("datetime2(7)");
         }

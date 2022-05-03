@@ -18,12 +18,12 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
     public class CashTransactionValidationServiceTests : TestBaseDapper
     {
         private readonly ICashAccountQueryService _queryService;
-        private readonly ICashTransactionValidationService _cashTransactionValidationService;
+        private readonly ICashAccountAggregateValidationService _cashTransactionValidationService;
 
         public CashTransactionValidationServiceTests()
         {
             _queryService = new CashAccountQueryService(_dapperCtx);
-            _cashTransactionValidationService = new CashTransactionValidationService(_queryService);
+            _cashTransactionValidationService = new CashAccountAggregateValidationService(_queryService);
         }
 
         [Fact]

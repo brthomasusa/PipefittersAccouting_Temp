@@ -8,10 +8,11 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.IntegrationTests.Base;
 
@@ -20,10 +21,13 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
     [Trait("Integration", "EfCoreRepo")]
     public class CashAccountAggregateRepositoryTests : TestBaseEfCore
     {
+
         private readonly ICashAccountAggregateRepository _repository;
 
         public CashAccountAggregateRepositoryTests()
         {
+            ICashAccountQueryService qryService = new CashAccountQueryService(_dapperCtx);
+            ICashAccountAggregateValidationService validationService = new CashAccountAggregateValidationService(qryService);
             _repository = new CashAccountAggregateRepository(_dbContext);
         }
 
@@ -58,8 +62,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         [Fact]
         public async Task AddCashAccountAsync_CashAccountAggregateRepository_ShouldSucceed()
         {
-            var mock = new Mock<ICashTransactionValidationService>();
-            ICashTransactionValidationService validationService = mock.Object;
+            var mock = new Mock<ICashAccountAggregateValidationService>();
+            ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
             OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
@@ -71,20 +75,50 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         }
 
         [Fact]
+        public async Task AddCashAccountAsync_CashAccountAggregateRepository_DupeCashAccountId_ShouldFail()
+        {
+            var mock = new Mock<ICashAccountAggregateValidationService>();
+            ICashAccountAggregateValidationService validationService = mock.Object;
+
+            CashAccount cashAccount = CashAccountTestData.GetCashAccountWithDuplicateCashAccountId(validationService);
+            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+
+            Assert.False(result.Success);
+
+            string msg = $"A cash account with id '{cashAccount.Id}' is already in the database.";
+            Assert.Equal(msg, result.NonSuccessMessage);
+        }
+
+        [Fact]
         public async Task AddCashAccountAsync_CashAccountAggregateRepository_HasDupeAcctNumber_ShouldFail()
         {
-            var mock = new Mock<ICashTransactionValidationService>();
-            ICashTransactionValidationService validationService = mock.Object;
+            var mock = new Mock<ICashAccountAggregateValidationService>();
+            ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccountWithDupeAcctNumber(validationService);
             OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
 
             Assert.False(result.Success);
 
-            string msg = $"A cash account with account number: {cashAccount.CashAccountNumber} is already in the database.";
+            string msg = $"A cash account with account number '{cashAccount.CashAccountNumber}' is already in the database.";
             Assert.Equal(msg, result.NonSuccessMessage);
         }
 
+        [Fact]
+        public async Task AddCashAccountAsync_CashAccountAggregateRepository_HasDupeAcctName_ShouldFail()
+        {
+            var mock = new Mock<ICashAccountAggregateValidationService>();
+            ICashAccountAggregateValidationService validationService = mock.Object;
+
+            CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
+            cashAccount.UpdateCashAccountName(CashAccountName.Create("Slush Fund"));
+            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+
+            Assert.False(result.Success);
+
+            string msg = $"A cash account with account name '{cashAccount.CashAccountName}' is already in the database.";
+            Assert.Equal(msg, result.NonSuccessMessage);
+        }
 
 
     }
