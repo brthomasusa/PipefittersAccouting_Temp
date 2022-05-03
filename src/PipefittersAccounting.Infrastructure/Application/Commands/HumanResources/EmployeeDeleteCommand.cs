@@ -15,19 +15,38 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             IUnitOfWork unitOfWork
         )
         {
-            if (await repo.Exists(model.Id) == false)
-            {
-                return OperationResult<bool>.CreateFailure($"Delete failed, an employee with id: {model.Id} could not be found!");
-            }
-
             try
             {
-                Employee employee = await repo.GetByIdAsync(model.Id);
+                OperationResult<bool> result = await repo.Exists(model.Id);
 
-                repo.Delete(employee);
-                await unitOfWork.Commit();
+                if (!result.Success)
+                {
+                    string errMsg = $"Delete failed, an employee with id: {model.Id} could not be found!";
+                    return OperationResult<bool>.CreateFailure(errMsg);
+                }
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                OperationResult<Employee> getResult = await repo.GetByIdAsync(model.Id);
+
+                if (getResult.Success)
+                {
+                    Employee employee = getResult.Result;
+
+                    OperationResult<bool> deleteResult = repo.Delete(employee);
+
+                    if (deleteResult.Success)
+                    {
+                        await unitOfWork.Commit();
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(deleteResult.NonSuccessMessage);
+                    }
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             catch (Exception ex)
             {

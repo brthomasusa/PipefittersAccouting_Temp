@@ -4,12 +4,15 @@ using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {
-    public interface ICashAccountAggregateRepository
+    public interface ICashAccountAggregateRepository : IAggregateRootRepository
     {
-        Task<OperationResult<CashAccount>> GetByIdAsync(Guid id);
-        Task<OperationResult<bool>> Exists(Guid id);
-        Task<OperationResult<bool>> AddAsync(CashAccount entity);
-        Task<OperationResult<bool>> Update(CashAccount entity);
-        OperationResult<bool> Delete(CashAccount entity);
+        Task<OperationResult<CashAccount>> GetCashAccountByIdAsync(Guid id);
+        Task<OperationResult<bool>> DoesCashAccountExist(Guid id);
+        Task<OperationResult<bool>> AddCashAccountAsync(CashAccount entity);
+        OperationResult<bool> UpdateCashAccount(CashAccount entity);
+        OperationResult<bool> DeleteCashAccount(CashAccount entity);
+        Task<OperationResult<Guid>> CheckForDuplicateAccountName(string name);
+        Task<OperationResult<Guid>> CheckForDuplicateAccountNumber(string name);
     }
 }
+

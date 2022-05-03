@@ -18,9 +18,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         {
             try
             {
-                if (await repo.Exists(model.Id) == false)
+                OperationResult<bool> result = await repo.Exists(model.Id);
+
+                if (!result.Success)
                 {
-                    string errMsg = $"Update failed, a financier with id: {model.Id} could not be found!";
+                    string errMsg = $"Delete failed, a financier with id: {model.Id} could not be found!";
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
 
@@ -31,18 +33,35 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
 
-                Financier financier = await repo.GetByIdAsync(model.Id);
-                financier.UpdateFinancierName(OrganizationName.Create(model.FinancierName));
-                financier.UpdateFinancierTelephone(PhoneNumber.Create(model.Telephone));
-                financier.UpdateFinancierAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
-                financier.UpdatePointOfContact(PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial, model.ContactTelephone));
-                financier.UpdateUserId(EntityGuidID.Create(model.UserId));
-                financier.UpdateFinancierStatus(model.IsActive);
+                OperationResult<Financier> getResult = await repo.GetByIdAsync(model.Id);
 
-                repo.Update(financier);
-                await unitOfWork.Commit();
+                if (getResult.Success)
+                {
+                    Financier financier = getResult.Result;
+                    financier.UpdateFinancierName(OrganizationName.Create(model.FinancierName));
+                    financier.UpdateFinancierTelephone(PhoneNumber.Create(model.Telephone));
+                    financier.UpdateFinancierAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
+                    financier.UpdatePointOfContact(PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial, model.ContactTelephone));
+                    financier.UpdateUserId(EntityGuidID.Create(model.UserId));
+                    financier.UpdateFinancierStatus(model.IsActive);
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                    OperationResult<bool> updateResult = repo.Update(financier);
+
+                    if (updateResult.Success)
+                    {
+                        await unitOfWork.Commit();
+
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
+                    }
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             catch (Exception ex)
             {

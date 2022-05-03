@@ -10,7 +10,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
 {
     public class CashAccountTestData
     {
-        private static CashAccount GetCashAccount(ICashTransactionValidationService validationService)
+        public static CashAccount GetCashAccount(ICashTransactionValidationService validationService)
             => new
             (
                 EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),
@@ -19,7 +19,21 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 CashAccountName.Create("Purchasing"),
                 CashAccountNumber.Create("12345-56-5547"),
                 RoutingTransitNumber.Create("787-896-1144"),
-                DateOpened.Create(new DateTime(2022, 4, 17)),
+                DateOpened.Create(new DateTime(2022, 5, 3)),
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
+                validationService
+            );
+
+        public static CashAccount GetCashAccountWithDupeAcctNumber(ICashTransactionValidationService validationService)
+            => new
+            (
+                EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),
+                CashAccountTypeEnum.NonPayrollOperations,
+                BankName.Create("BankOne"),
+                CashAccountName.Create("Purchasing"),
+                CashAccountNumber.Create("XXXXX-XXXXXXX"),
+                RoutingTransitNumber.Create("787-896-1144"),
+                DateOpened.Create(new DateTime(2022, 5, 3)),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
                 validationService
             );

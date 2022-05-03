@@ -4,11 +4,8 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {
-    public interface ILoanAgreementAggregateRepository
+    public interface ILoanAgreementAggregateRepository : IAggregateRootRepository, IRepository<LoanAgreement>
     {
-        Task<OperationResult<LoanAgreement>> GetByIdAsync(Guid id);
-        Task<OperationResult<bool>> Exists(Guid id);
-        Task<OperationResult<bool>> AddAsync(LoanAgreement entity);
-        OperationResult<bool> Delete(LoanAgreement entity);
+
     }
 }

@@ -18,7 +18,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         {
             try
             {
-                if (await repo.Exists(model.Id))
+                OperationResult<bool> result = await repo.Exists(model.Id);
+
+                if (!result.Success)
                 {
                     string errMsg = $"Create operation failed! A financier with this Id: {model.Id} already exists!";
                     return OperationResult<bool>.CreateFailure(errMsg);

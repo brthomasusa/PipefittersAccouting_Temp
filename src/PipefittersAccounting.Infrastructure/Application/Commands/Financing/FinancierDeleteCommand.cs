@@ -17,18 +17,36 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         {
             try
             {
-                if (await repo.Exists(model.Id) == false)
+                OperationResult<bool> result = await repo.Exists(model.Id);
+
+                if (!result.Success)
                 {
                     string errMsg = $"Delete failed, a financier with id: {model.Id} could not be found!";
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
 
-                Financier financier = await repo.GetByIdAsync(model.Id);
+                OperationResult<Financier> getResult = await repo.GetByIdAsync(model.Id);
 
-                repo.Delete(financier);
-                await unitOfWork.Commit();
+                if (getResult.Success)
+                {
+                    Financier financier = getResult.Result;
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                    OperationResult<bool> deleteResult = repo.Delete(financier);
+
+                    if (deleteResult.Success)
+                    {
+                        await unitOfWork.Commit();
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(deleteResult.NonSuccessMessage);
+                    }
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             catch (Exception ex)
             {

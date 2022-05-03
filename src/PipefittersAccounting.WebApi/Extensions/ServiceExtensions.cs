@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
                 .AddScoped<IFinancierAggregateRepository, FinancierAggregateRepository>()
                 .AddScoped<ILoanAgreementAggregateRepository, LoanAgreementAggregateRepository>()
+                .AddScoped<ICashAccountAggregateRepository, CashAccountAggregateRepository>()
                 .AddScoped<IEmployeeAggregateCommandService, EmployeeCommandServiceEfCore>()
                 .AddScoped<IFinancierApplicationService, FinancierApplicationService>()
                 .AddScoped<ILoanAgreementApplicationService, LoanAgreementApplicationService>()

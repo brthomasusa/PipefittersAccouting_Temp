@@ -91,6 +91,8 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
         }
 
+        public OperationResult<bool> Update(LoanAgreement entity) => throw new NotImplementedException();
+
         public OperationResult<bool> Delete(LoanAgreement entity)
         {
             try

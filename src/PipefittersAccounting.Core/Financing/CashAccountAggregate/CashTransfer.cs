@@ -26,15 +26,15 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             UserId = userId;
         }
 
-        public EntityGuidID SourceCashAccountId { get; init; }
+        public Guid SourceCashAccountId { get; init; }
 
-        public EntityGuidID DestintaionCashAccountId { get; init; }
+        public Guid DestintaionCashAccountId { get; init; }
 
         public CashTransactionAmount TransferAmount { get; init; }
 
         public CashTransactionDate TransactionDate { get; init; }
 
-        public EntityGuidID UserId { get; init; }
+        public Guid UserId { get; init; }
 
         protected override void CheckValidity()
         {

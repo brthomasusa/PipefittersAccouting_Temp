@@ -1,6 +1,6 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 
-namespace PipefittersAccounting.Core.Interfaces
+namespace PipefittersAccounting.Core.Interfaces.Financing
 {
     public interface ICashTransactionValidator
     {

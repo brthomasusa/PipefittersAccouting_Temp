@@ -1,3 +1,4 @@
+#pragma warning disable CS8600
 #pragma warning disable CS8602
 #pragma warning disable CS8603
 
@@ -20,27 +21,92 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
         ~FinancierAggregateRepository() => Dispose(false);
 
-        public async Task<Financier> GetByIdAsync(Guid id) => await _dbContext.Financiers.FindAsync(id);
-
-        public async Task<bool> Exists(Guid id) => await _dbContext.Financiers.FindAsync(id) != null;
-
-        public async Task AddAsync(Financier entity)
+        public async Task<OperationResult<Financier>> GetByIdAsync(Guid id)
         {
-            ExternalAgent agent = new(EntityGuidID.Create(entity.Id), AgentTypeEnum.Financier);
-            await _dbContext.ExternalAgents.AddAsync(agent);
-            await _dbContext.Financiers.AddAsync(entity);
+            try
+            {
+                Financier financier = await _dbContext.Financiers.FindAsync(id);
+
+                if (financier is null)
+                {
+                    string msg = $"Unable to locate financier with id '{id}'.";
+                    return OperationResult<Financier>.CreateFailure(msg);
+                }
+
+                return OperationResult<Financier>.CreateSuccessResult(financier);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Financier>.CreateFailure(ex.Message);
+            }
         }
 
-        public void Update(Financier entity) => _dbContext.Financiers.Update(entity);
-
-        public void Delete(Financier entity)
+        public async Task<OperationResult<bool>> Exists(Guid id)
         {
-            _dbContext.Financiers.Remove(entity);
+            try
+            {
+                bool exist = await _dbContext.Financiers.FindAsync(id) != null;
+                if (exist)
+                {
+                    return OperationResult<bool>.CreateSuccessResult(exist);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure($"A financier with id '{id}' could not be found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
 
-            string errMsg = $"Delete financier failed, unable to locate external agent with id: {entity.Id}";
-            ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id) ?? throw new ArgumentNullException(errMsg);
+        public async Task<OperationResult<bool>> AddAsync(Financier entity)
+        {
+            try
+            {
+                ExternalAgent agent = new(EntityGuidID.Create(entity.Id), AgentTypeEnum.Financier);
+                await _dbContext.ExternalAgents.AddAsync(agent);
+                await _dbContext.Financiers.AddAsync(entity);
 
-            _dbContext.ExternalAgents.Remove(agent);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> Update(Financier entity)
+        {
+            try
+            {
+                _dbContext.Financiers.Update(entity);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> Delete(Financier entity)
+        {
+            try
+            {
+                _dbContext.Financiers.Remove(entity);
+
+                string errMsg = $"Delete financier failed, unable to locate external agent with id: {entity.Id}";
+                ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id) ?? throw new ArgumentNullException(errMsg);
+
+                _dbContext.ExternalAgents.Remove(agent);
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
         }
 
         public async Task<OperationResult<Guid>> CheckForDuplicateFinancierName(string name)

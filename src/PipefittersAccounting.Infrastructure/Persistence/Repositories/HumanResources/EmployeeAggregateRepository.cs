@@ -20,19 +20,88 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
 
         ~EmployeeAggregateRepository() => Dispose(false);
 
-        public async Task<Employee> GetByIdAsync(Guid id) => await _dbContext.Employees.FindAsync(id);
-
-        public async Task<bool> Exists(Guid id) => await _dbContext.Employees.FindAsync(id) != null;
-
-        public async Task AddAsync(Employee entity) => await _dbContext.Employees.AddAsync(entity);
-
-        public void Update(Employee entity) => _dbContext.Employees.Update(entity);
-
-        public void Delete(Employee entity)
+        public async Task<OperationResult<Employee>> GetByIdAsync(Guid id)
         {
-            ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id);
-            _dbContext.Employees.Remove(entity);
-            _dbContext.ExternalAgents.Remove(agent);
+            try
+            {
+                Employee employee = await _dbContext.Employees.FindAsync(id);
+
+                if (employee is null)
+                {
+                    string msg = $"Unable to locate employee with id '{id}'.";
+                    return OperationResult<Employee>.CreateFailure(msg);
+                }
+
+                return OperationResult<Employee>.CreateSuccessResult(employee);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Employee>.CreateFailure(ex.Message);
+            }
+        }
+
+        public async Task<OperationResult<bool>> Exists(Guid id)
+        {
+            try
+            {
+                bool exist = await _dbContext.Employees.FindAsync(id) != null;
+                if (exist)
+                {
+                    return OperationResult<bool>.CreateSuccessResult(exist);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure($"An employee with id '{id}' could not be found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public async Task<OperationResult<bool>> AddAsync(Employee entity)
+        {
+            try
+            {
+                await _dbContext.Employees.AddAsync(entity);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> Update(Employee entity)
+        {
+            try
+            {
+                _dbContext.Employees.Update(entity);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> Delete(Employee entity)
+        {
+            try
+            {
+                string errMsg = $"Delete employee failed, unable to locate external agent with id: {entity.Id}";
+                ExternalAgent agent = _dbContext.ExternalAgents.Find(entity.Id) ?? throw new ArgumentNullException(errMsg);
+
+                _dbContext.Employees.Remove(entity);
+                _dbContext.ExternalAgents.Remove(agent);
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
         }
 
         public async Task<OperationResult<Guid>> CheckForDuplicateEmployeeName(string lname, string fname, string mi)

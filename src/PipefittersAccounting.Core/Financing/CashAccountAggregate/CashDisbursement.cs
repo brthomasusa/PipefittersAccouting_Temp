@@ -13,14 +13,14 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             ExternalAgent payee,
             EconomicEvent goodsOrServicePurchased,
 
-            decimal receiptAmount,
-            DateTime receiptDate,
+            decimal disbursementAmount,
+            DateTime disbursementDate,
             string checkNumber,
             string remittanceAdvice,
             Guid userId
         )
-            : base(CashTransactionAmount.Create(receiptAmount),
-                   CashTransactionDate.Create(receiptDate),
+            : base(CashTransactionAmount.Create(disbursementAmount),
+                   CashTransactionDate.Create(disbursementDate),
                    CheckNumber.Create(checkNumber),
                    RemittanceAdvice.Create(remittanceAdvice),
                    EntityGuidID.Create(userId))

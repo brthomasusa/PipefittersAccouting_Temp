@@ -1,11 +1,13 @@
+using PipefittersAccounting.SharedKernel.Utilities;
+
 namespace PipefittersAccounting.SharedKernel.Interfaces
 {
     public interface IRepository<T> where T : IAggregateRoot
     {
-        Task<T> GetByIdAsync(Guid id);
-        Task<bool> Exists(Guid id);
-        Task AddAsync(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        Task<OperationResult<T>> GetByIdAsync(Guid id);
+        Task<OperationResult<bool>> Exists(Guid id);
+        Task<OperationResult<bool>> AddAsync(T entity);
+        OperationResult<bool> Update(T entity);
+        OperationResult<bool> Delete(T entity);
     }
 }

@@ -16,9 +16,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             IUnitOfWork unitOfWork
         )
         {
-            if (await repo.Exists(model.Id))
+            OperationResult<bool> result = await repo.Exists(model.Id);
+
+            if (result.Success)
             {
-                return OperationResult<bool>.CreateFailure($"Can not create this employee, they already exists!");
+                string errMsg = $"Can not create this employee, an employee with id '{model.Id}' already exists!";
+                return OperationResult<bool>.CreateFailure(errMsg);
             }
 
             OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
@@ -53,10 +56,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                     model.IsSupervisor
                 );
 
-                await repo.AddAsync(employee);
-                await unitOfWork.Commit();
+                OperationResult<bool> addResult = await repo.AddAsync(employee);
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                if (addResult.Success)
+                {
+                    await unitOfWork.Commit();
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(addResult.NonSuccessMessage);
+                }
             }
             catch (Exception ex)
             {

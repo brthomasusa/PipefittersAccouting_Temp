@@ -16,46 +16,60 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             IUnitOfWork unitOfWork
         )
         {
-            if (await repo.Exists(model.Id) == false)
-            {
-                return OperationResult<bool>.CreateFailure($"Update failed, an employee with id: {model.Id} could not be found!");
-            }
-
-            OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
-            if (dupeAddressResult.Result != Guid.Empty && dupeAddressResult.Result != model.Id)
-            {
-
-                string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
-
-            OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
-            if (dupeSSN.Result != Guid.Empty && dupeSSN.Result != model.Id)
-            {
-                string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
-
             try
             {
-                Employee employee = await repo.GetByIdAsync(model.Id);
+                OperationResult<bool> result = await repo.Exists(model.Id);
 
-                employee.UpdateSupervisorId(EntityGuidID.Create(model.SupervisorId));
-                employee.UpdateEmployeeName(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial));
-                employee.UpdateSSN(SocialSecurityNumber.Create(model.SSN));
-                employee.UpdateEmployeePhoneNumber(PhoneNumber.Create(model.Telephone));
-                employee.UpdateEmployeeAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
-                employee.UpdateMaritalStatus(MaritalStatus.Create(model.MaritalStatus));
-                employee.UpdateTaxExemptions(TaxExemption.Create(model.Exemptions));
-                employee.UpdateEmployeePayRate(PayRate.Create(model.PayRate));
-                employee.UpdateEmploymentDate(StartDate.Create(model.StartDate));
-                employee.UpdateEmployeeStatus(model.IsActive);
-                employee.UpdateIsSupervisor(model.IsSupervisor);
+                if (!result.Success)
+                {
+                    string errMsg = $"Update failed, an employee with id: {model.Id} could not be found!";
+                    return OperationResult<bool>.CreateFailure(errMsg);
+                }
 
-                repo.Update(employee);
-                await unitOfWork.Commit();
+                OperationResult<Guid> dupeNameResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                if (dupeNameResult.Result != Guid.Empty && dupeNameResult.Result != model.Id)
+                {
+
+                    string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
+                    return OperationResult<bool>.CreateFailure(errMsg);
+                }
+
+                OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
+
+                if (dupeSSN.Result != Guid.Empty && dupeSSN.Result != model.Id)
+                {
+                    string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
+                    return OperationResult<bool>.CreateFailure(errMsg);
+                }
+
+                OperationResult<Employee> getResult = await repo.GetByIdAsync(model.Id);
+
+                if (getResult.Success)
+                {
+                    Employee employee = getResult.Result;
+
+                    employee.UpdateSupervisorId(EntityGuidID.Create(model.SupervisorId));
+                    employee.UpdateEmployeeName(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial));
+                    employee.UpdateSSN(SocialSecurityNumber.Create(model.SSN));
+                    employee.UpdateEmployeePhoneNumber(PhoneNumber.Create(model.Telephone));
+                    employee.UpdateEmployeeAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
+                    employee.UpdateMaritalStatus(MaritalStatus.Create(model.MaritalStatus));
+                    employee.UpdateTaxExemptions(TaxExemption.Create(model.Exemptions));
+                    employee.UpdateEmployeePayRate(PayRate.Create(model.PayRate));
+                    employee.UpdateEmploymentDate(StartDate.Create(model.StartDate));
+                    employee.UpdateEmployeeStatus(model.IsActive);
+                    employee.UpdateIsSupervisor(model.IsSupervisor);
+
+                    repo.Update(employee);
+                    await unitOfWork.Commit();
+
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             catch (Exception ex)
             {

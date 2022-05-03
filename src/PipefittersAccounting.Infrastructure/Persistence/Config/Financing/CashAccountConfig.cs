@@ -14,6 +14,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
             entity.HasMany<CashTransaction>(p => p.CashTransactions).WithOne().HasForeignKey(p => p.CashAccountId);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("CashAccountId");
+            entity.Property(p => p.CashAccountType).HasColumnType("INT").HasColumnName("CashAccountTypeId").IsRequired();
             entity.Property(p => p.BankName)
                 .HasConversion(p => p.Value, p => BankName.Create(p))
                 .HasColumnType("NVARCHAR(50)")

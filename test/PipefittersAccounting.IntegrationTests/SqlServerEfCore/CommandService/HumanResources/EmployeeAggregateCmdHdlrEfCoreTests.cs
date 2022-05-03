@@ -19,204 +19,204 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
     [Trait("Integration", "EfCoreCmdSvc")]
     public class EmployeeAggregateCmdHdlrEfCoreTests : TestBaseEfCore
     {
-        [Fact]
-        public async Task CreateEmployeeInfo_WithValidInfo_ShouldSucceed()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task CreateEmployeeInfo_WithValidInfo_ShouldSucceed()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+        //     CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
 
-            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
-            Assert.True(result.Success);
+        //     OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+        //     Assert.True(result.Success);
 
-            var newEmployee = await _dbContext.Employees.FindAsync(model.Id);
+        //     var newEmployee = await _dbContext.Employees.FindAsync(model.Id);
 
-            Assert.NotNull(newEmployee);
-        }
+        //     Assert.NotNull(newEmployee);
+        // }
 
-        [Fact]
-        public async Task CreateEmployeeInfo_EmployeeAlreadyExists_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task CreateEmployeeInfo_EmployeeAlreadyExists_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
-            model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
+        //     CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+        //     model.Id = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
 
-            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
 
-            Assert.False(result.Success);
-            Assert.Equal("Can not create this employee, they already exists!", result.NonSuccessMessage);
-        }
+        //     Assert.False(result.Success);
+        //     Assert.Equal("Can not create this employee, they already exists!", result.NonSuccessMessage);
+        // }
 
-        [Fact]
-        public async Task CreateEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task CreateEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
-            model.FirstName = "Jozef";
-            model.LastName = "Goldberg";
-            model.MiddleInitial = "P";
+        //     CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+        //     model.FirstName = "Jozef";
+        //     model.LastName = "Goldberg";
+        //     model.MiddleInitial = "P";
 
-            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
 
-            Assert.False(result.Success);
-            string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
-            Assert.Equal(errMsg, result.NonSuccessMessage);
-        }
+        //     Assert.False(result.Success);
+        //     string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
+        //     Assert.Equal(errMsg, result.NonSuccessMessage);
+        // }
 
-        [Fact]
-        public async Task CreateEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task CreateEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
-            model.SSN = "775559874";
+        //     CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+        //     model.SSN = "775559874";
 
-            OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.CreateEmployeeInfo(model);
 
-            Assert.False(result.Success);
-            Assert.NotNull(result.NonSuccessMessage);
-            string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
-            Assert.Equal(errMsg, result.NonSuccessMessage);
-        }
+        //     Assert.False(result.Success);
+        //     Assert.NotNull(result.NonSuccessMessage);
+        //     string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
+        //     Assert.Equal(errMsg, result.NonSuccessMessage);
+        // }
 
-        [Fact]
-        public async Task EditEmployeeInfo_WithValidInfo_ShouldPass()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task EditEmployeeInfo_WithValidInfo_ShouldPass()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+        //     EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
 
-            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
-            Assert.True(result.Success);
+        //     OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
+        //     Assert.True(result.Success);
 
-            var updatedEmployee = await _dbContext.Employees.FindAsync(model.Id);
+        //     var updatedEmployee = await _dbContext.Employees.FindAsync(model.Id);
 
-            Assert.Equal(model.SupervisorId, updatedEmployee.SupervisorId);
-            Assert.Equal(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial), updatedEmployee.EmployeeName);
-            Assert.Equal(PhoneNumber.Create(PhoneNumber.Create(model.Telephone)), updatedEmployee.EmployeeTelephone);
-            Assert.Equal(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode), updatedEmployee.EmployeeAddress);
-            Assert.Equal(SocialSecurityNumber.Create(model.SSN), updatedEmployee.SSN);
-            Assert.Equal(MaritalStatus.Create(model.MaritalStatus), updatedEmployee.MaritalStatus);
-            Assert.Equal(TaxExemption.Create(model.Exemptions), updatedEmployee.TaxExemptions);
-            Assert.Equal(PayRate.Create(model.PayRate), updatedEmployee.EmployeePayRate);
-            Assert.Equal(StartDate.Create(model.StartDate), updatedEmployee.EmploymentDate);
-            Assert.Equal(Status.Create(model.IsActive), updatedEmployee.IsActive);
-            Assert.Equal(model.IsSupervisor, updatedEmployee.IsSupervisor);
-        }
+        //     Assert.Equal(model.SupervisorId, updatedEmployee.SupervisorId);
+        //     Assert.Equal(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial), updatedEmployee.EmployeeName);
+        //     Assert.Equal(PhoneNumber.Create(PhoneNumber.Create(model.Telephone)), updatedEmployee.EmployeeTelephone);
+        //     Assert.Equal(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode), updatedEmployee.EmployeeAddress);
+        //     Assert.Equal(SocialSecurityNumber.Create(model.SSN), updatedEmployee.SSN);
+        //     Assert.Equal(MaritalStatus.Create(model.MaritalStatus), updatedEmployee.MaritalStatus);
+        //     Assert.Equal(TaxExemption.Create(model.Exemptions), updatedEmployee.TaxExemptions);
+        //     Assert.Equal(PayRate.Create(model.PayRate), updatedEmployee.EmployeePayRate);
+        //     Assert.Equal(StartDate.Create(model.StartDate), updatedEmployee.EmploymentDate);
+        //     Assert.Equal(Status.Create(model.IsActive), updatedEmployee.IsActive);
+        //     Assert.Equal(model.IsSupervisor, updatedEmployee.IsSupervisor);
+        // }
 
-        [Fact]
-        public async Task EditEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task EditEmployeeInfo_WithDuplicateEmployeeName_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
-            model.FirstName = "Terri";
-            model.LastName = "Duffy";
-            model.MiddleInitial = "L";
+        //     EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+        //     model.FirstName = "Terri";
+        //     model.LastName = "Duffy";
+        //     model.MiddleInitial = "L";
 
-            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
-            Assert.False(result.Success);
-            string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
-            Assert.Equal(errMsg, result.NonSuccessMessage);
-        }
+        //     Assert.False(result.Success);
+        //     string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
+        //     Assert.Equal(errMsg, result.NonSuccessMessage);
+        // }
 
-        [Fact]
-        public async Task EditEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task EditEmployeeInfo_WithDuplicateEmployeeSSN_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
-            model.SSN = "775559874";
+        //     EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+        //     model.SSN = "775559874";
 
-            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
-            Assert.False(result.Success);
-            string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
-            Assert.Equal(errMsg, result.NonSuccessMessage);
-        }
+        //     Assert.False(result.Success);
+        //     string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
+        //     Assert.Equal(errMsg, result.NonSuccessMessage);
+        // }
 
-        [Fact]
-        public async Task EditEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task EditEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
-            model.Id = Guid.NewGuid();
+        //     EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+        //     model.Id = Guid.NewGuid();
 
-            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
-            Assert.False(result.Success);
-        }
+        //     Assert.False(result.Success);
+        // }
 
-        [Fact]
-        public async Task EditEmployeeInfo_WithBadInputData_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task EditEmployeeInfo_WithBadInputData_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
-            model.Telephone = "2144-897-99";
+        //     EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+        //     model.Telephone = "2144-897-99";
 
-            OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
+        //     OperationResult<bool> result = await cmdHdlr.EditEmployeeInfo(model);
 
-            Assert.False(result.Success);
-        }
+        //     Assert.False(result.Success);
+        // }
 
-        [Fact]
-        public async Task DeleteEmployeeInfo_WithValidEmployeeId_ShouldSucceed()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task DeleteEmployeeInfo_WithValidEmployeeId_ShouldSucceed()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
-            Employee employee = await repo.GetByIdAsync(agentId);
-            Assert.NotNull(employee);
+        //     Guid agentId = new Guid("e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5");
+        //     Employee employee = await repo.GetByIdAsync(agentId);
+        //     Assert.NotNull(employee);
 
-            DeleteEmployeeInfo model = new() { Id = agentId };
+        //     DeleteEmployeeInfo model = new() { Id = agentId };
 
-            OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
-            Assert.True(result.Success);
+        //     OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
+        //     Assert.True(result.Success);
 
-            employee = await repo.GetByIdAsync(agentId);
-            Assert.Null(employee);
-        }
+        //     employee = await repo.GetByIdAsync(agentId);
+        //     Assert.Null(employee);
+        // }
 
-        [Fact]
-        public async Task DeleteEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
-        {
-            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-            EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
-            IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
+        // [Fact]
+        // public async Task DeleteEmployeeInfo_WithInvalidEmployeeID_ShouldFail()
+        // {
+        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+        //     EmployeeAggregateRepository repo = new EmployeeAggregateRepository(_dbContext);
+        //     IEmployeeAggregateCommandService cmdHdlr = new EmployeeCommandServiceEfCore(repo, uow);
 
-            DeleteEmployeeInfo model = new DeleteEmployeeInfo()
-            {
-                Id = Guid.NewGuid()
-            };
+        //     DeleteEmployeeInfo model = new DeleteEmployeeInfo()
+        //     {
+        //         Id = Guid.NewGuid()
+        //     };
 
-            OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
-            Assert.False(result.Success);
-            Assert.Equal($"Delete failed, an employee with id: {model.Id} could not be found!", result.NonSuccessMessage);
-        }
+        //     OperationResult<bool> result = await cmdHdlr.DeleteEmployeeInfo(model);
+        //     Assert.False(result.Success);
+        //     Assert.Equal($"Delete failed, an employee with id: {model.Id} could not be found!", result.NonSuccessMessage);
+        // }
     }
 }
