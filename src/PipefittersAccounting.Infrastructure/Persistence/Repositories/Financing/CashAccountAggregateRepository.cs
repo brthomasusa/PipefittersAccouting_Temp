@@ -119,7 +119,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
                 OperationResult<Guid> dupeAcctNumberResult = await CheckForDuplicateAccountNumber(cashAccount.CashAccountNumber);
 
-                if (dupeAcctNumberResult.Result != Guid.Empty && dupeNameResult.Result != cashAccount.Id)
+                if (dupeAcctNumberResult.Result != Guid.Empty && dupeAcctNumberResult.Result != cashAccount.Id)
                 {
                     string msg = $"A cash account with account number: {cashAccount.CashAccountNumber} is already in the database.";
                     return OperationResult<bool>.CreateFailure(msg);

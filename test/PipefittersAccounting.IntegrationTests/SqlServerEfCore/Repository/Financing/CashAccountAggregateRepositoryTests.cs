@@ -66,7 +66,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         }
 
         [Fact]
-        public async Task GetCashAccountByIdAsync_CashAccountAggregateRepository_ShouldSucceed()
+        public async Task GetCashAccountByIdAsync_CashAccountAggregateRepository_DI_ShouldSucceed()
         {
             using (ServiceProvider serviceProvider = _services.BuildServiceProvider())
             {
@@ -141,6 +141,33 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             Assert.Equal(msg, result.NonSuccessMessage);
         }
 
+        [Fact]
+        public async Task UpdateCashAccountAsync_CashAccountAggregateRepository_ShouldSucceed()
+        {
+            Guid acctId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76");
+            OperationResult<CashAccount> result = await _repository.GetCashAccountByIdAsync(acctId);
+            CashAccount cashAccount = result.Result;
+
+            cashAccount.UpdateCashAccountType(CashAccountTypeEnum.NonPayrollOperations);
+            cashAccount.UpdateBankName(BankName.Create("Bank2"));
+            cashAccount.UpdateCashAccountName(CashAccountName.Create("Party Party Party!"));
+
+            OperationResult<bool> updateResult = await _repository.UpdateCashAccountAsync(cashAccount);
+
+            Assert.True(updateResult.Success);
+        }
+
+        [Fact]
+        public async Task DeleteCashAccountAsync_CashAccountAggregateRepository_ShouldSucceed()
+        {
+            Guid acctId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76");
+            OperationResult<CashAccount> result = await _repository.GetCashAccountByIdAsync(acctId);
+            CashAccount cashAccount = result.Result;
+
+            OperationResult<bool> deleteResult = await _repository.DeleteCashAccountAsync(cashAccount.Id);
+
+            Assert.True(deleteResult.Success);
+        }
 
     }
 }
