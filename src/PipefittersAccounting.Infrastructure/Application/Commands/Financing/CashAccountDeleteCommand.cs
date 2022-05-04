@@ -10,16 +10,16 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CashAccountUpdateCommand : IWriteModelProcessor<EditCashAccountInfo, ICashAccountAggregateRepository>
+    public class CashAccountDeleteCommand : IWriteModelProcessor<DeleteCashAccountInfo, ICashAccountAggregateRepository>
     {
         private readonly ICashAccountAggregateValidationService _validationService;
 
-        public CashAccountUpdateCommand(ICashAccountAggregateValidationService validationService)
+        public CashAccountDeleteCommand(ICashAccountAggregateValidationService validationService)
             => _validationService = validationService;
 
         public async Task<OperationResult<bool>> Process
         (
-            EditCashAccountInfo model,
+            DeleteCashAccountInfo model,
             ICashAccountAggregateRepository repository,
             IUnitOfWork uow
         )
@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 
             if (!result.Success)
             {
-                string errMsg = $"Update cash account failed! A cash account with Id '{model.CashAccountId}' could not be located!";
+                string errMsg = $"Delete cash account failed! A cash account with Id '{model.CashAccountId}' could not be located!";
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
@@ -37,15 +37,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             if (getResult.Success)
             {
                 CashAccount cashAccount = getResult.Result;
-
-                cashAccount.UpdateCashAccountType((CashAccountTypeEnum)model.CashAccountType);
-                cashAccount.UpdateBankName(BankName.Create(model.BankName));
-                cashAccount.UpdateCashAccountName(CashAccountName.Create(model.CashAccountName));
-                cashAccount.UpdateRoutingTransitNumber(RoutingTransitNumber.Create(model.RoutingTransitNumber));
-                cashAccount.UpdateDateOpened(DateOpened.Create(model.DateOpened));
-                cashAccount.UpdateUserId(EntityGuidID.Create(model.UserId));
-
-                await repository.UpdateCashAccountAsync(cashAccount);
+                await repository.DeleteCashAccountAsync(model.CashAccountId);
                 await uow.Commit();
 
                 return OperationResult<bool>.CreateSuccessResult(true);
