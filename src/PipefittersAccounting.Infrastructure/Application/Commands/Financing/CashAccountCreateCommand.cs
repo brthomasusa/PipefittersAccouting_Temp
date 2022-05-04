@@ -24,38 +24,31 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             IUnitOfWork uow
         )
         {
-            try
+            OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
+
+            if (result.Success)
             {
-                OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
-
-                if (result.Success)
-                {
-                    string errMsg = $"Create operation failed! A cash account with this Id: {model.CashAccountId} already exists!";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                CashAccount cashAccount = new
-                (
-                    EntityGuidID.Create(model.CashAccountId),
-                    (CashAccountTypeEnum)Enum.ToObject(typeof(CashAccountTypeEnum), model.CashAccountType),
-                    BankName.Create(model.BankName),
-                    CashAccountName.Create(model.CashAccountName),
-                    CashAccountNumber.Create(model.CashAccountNumber),
-                    RoutingTransitNumber.Create(model.RoutingTransitNumber),
-                    DateOpened.Create(model.DateOpened),
-                    EntityGuidID.Create(model.UserId),
-                    _validationService
-                );
-
-                await repository.AddCashAccountAsync(cashAccount);
-                await uow.Commit();
-
-                return OperationResult<bool>.CreateSuccessResult(true);
+                string errMsg = $"Create operation failed! A cash account with this Id: {model.CashAccountId} already exists!";
+                return OperationResult<bool>.CreateFailure(errMsg);
             }
-            catch (Exception ex)
-            {
-                return OperationResult<bool>.CreateFailure(ex.Message);
-            }
+
+            CashAccount cashAccount = new
+            (
+                EntityGuidID.Create(model.CashAccountId),
+                (CashAccountTypeEnum)Enum.ToObject(typeof(CashAccountTypeEnum), model.CashAccountType),
+                BankName.Create(model.BankName),
+                CashAccountName.Create(model.CashAccountName),
+                CashAccountNumber.Create(model.CashAccountNumber),
+                RoutingTransitNumber.Create(model.RoutingTransitNumber),
+                DateOpened.Create(model.DateOpened),
+                EntityGuidID.Create(model.UserId),
+                _validationService
+            );
+
+            await repository.AddCashAccountAsync(cashAccount);
+            await uow.Commit();
+
+            return OperationResult<bool>.CreateSuccessResult(true);
         }
     }
 }

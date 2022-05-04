@@ -3,10 +3,13 @@
 #pragma warning disable CS8604
 #pragma warning disable CS8625
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
@@ -21,13 +24,26 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
     [Trait("Integration", "EfCoreRepo")]
     public class CashAccountAggregateRepositoryTests : TestBaseEfCore
     {
-
+        private IServiceCollection _services;
         private readonly ICashAccountAggregateRepository _repository;
 
         public CashAccountAggregateRepositoryTests()
         {
-            ICashAccountQueryService qryService = new CashAccountQueryService(_dapperCtx);
-            ICashAccountAggregateValidationService validationService = new CashAccountAggregateValidationService(qryService);
+            _services = new ServiceCollection();
+            _services.AddTransient<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>();
+            _services.AddTransient<ICashAccountAggregateRepository, CashAccountAggregateRepository>();
+            _services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    _connectionString,
+                    msSqlOptions => msSqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+                )
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
+                .UseLazyLoadingProxies()
+            );
+
+            // ICashAccountQueryService qryService = new CashAccountQueryService(_dapperCtx);
+            // ICashAccountAggregateValidationService validationService = new CashAccountAggregateValidationService(qryService);
             _repository = new CashAccountAggregateRepository(_dbContext);
         }
 
@@ -52,11 +68,16 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         [Fact]
         public async Task GetCashAccountByIdAsync_CashAccountAggregateRepository_ShouldSucceed()
         {
-            Guid acctId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589");
-            OperationResult<CashAccount> result = await _repository.GetCashAccountByIdAsync(acctId);
+            using (ServiceProvider serviceProvider = _services.BuildServiceProvider())
+            {
+                var repository = serviceProvider.GetRequiredService<ICashAccountAggregateRepository>();
 
-            Assert.True(result.Success);
-            Assert.Equal(acctId, result.Result.Id);
+                Guid acctId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589");
+                OperationResult<CashAccount> result = await repository.GetCashAccountByIdAsync(acctId);
+
+                Assert.True(result.Success);
+                Assert.Equal(acctId, result.Result.Id);
+            }
         }
 
         [Fact]

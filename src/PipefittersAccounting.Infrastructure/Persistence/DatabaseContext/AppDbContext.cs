@@ -8,6 +8,7 @@ using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Shared;
 
+
 namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
 {
     public class AppDbContext : DbContext

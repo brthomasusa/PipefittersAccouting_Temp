@@ -9,8 +9,8 @@ namespace PipefittersAccounting.Core.Interfaces.Financing
         Task<OperationResult<CashAccount>> GetCashAccountByIdAsync(Guid cashAccountId);
         Task<OperationResult<bool>> DoesCashAccountExist(Guid cashAccountId);
         Task<OperationResult<bool>> AddCashAccountAsync(CashAccount cashAccount);
-        Task<OperationResult<bool>> UpdateCashAccount(CashAccount cashAccount);
-        Task<OperationResult<bool>> DeleteCashAccount(Guid cashAccountId);
+        Task<OperationResult<bool>> UpdateCashAccountAsync(CashAccount cashAccount);
+        Task<OperationResult<bool>> DeleteCashAccountAsync(Guid cashAccountId);
     }
 }
 

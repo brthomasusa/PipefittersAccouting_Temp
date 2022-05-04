@@ -9,7 +9,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore
     public abstract class TestBaseEfCore : IDisposable
     {
         private const string _defaultConnectionString = "DefaultConnection";
-        private readonly string _connectionString;
+        protected readonly string _connectionString;
         protected readonly AppDbContext _dbContext;
         protected readonly DapperContext _dapperCtx;
         protected readonly string serviceAddress = "https://localhost:7035/";

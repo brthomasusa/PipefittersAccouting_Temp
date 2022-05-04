@@ -97,7 +97,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<bool>> UpdateCashAccount(CashAccount cashAccount)
+        public async Task<OperationResult<bool>> UpdateCashAccountAsync(CashAccount cashAccount)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<bool>> DeleteCashAccount(Guid cashAccountId)
+        public async Task<OperationResult<bool>> DeleteCashAccountAsync(Guid cashAccountId)
         {
             try
             {
