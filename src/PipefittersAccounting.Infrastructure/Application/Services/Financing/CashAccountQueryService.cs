@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             GetCreditorHasLoanAgreeValidationModel(CreditorHasLoanAgreeValidationParams queryParameters)
                 => await GetCreditorHasLoanAgreeValidationModelQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<ReceiptLoanProceedsValidationModel>>
+        public async Task<OperationResult<DepositLoanProceedsValidationModel>>
             GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters)
                 => await GetReceiptLoanProceedsValidationModelQuery.Query(queryParameters, _dapperCtx);
 

@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
 {
     public class GetReceiptLoanProceedsValidationModelQuery
     {
-        public async static Task<OperationResult<ReceiptLoanProceedsValidationModel>> Query(ReceiptLoanProceedsValidationParams queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<DepositLoanProceedsValidationModel>> Query(ReceiptLoanProceedsValidationParams queryParameters, DapperContext ctx)
         {
             try
             {
@@ -27,21 +27,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    ReceiptLoanProceedsValidationModel model =
-                        await connection.QueryFirstOrDefaultAsync<ReceiptLoanProceedsValidationModel>(sql, parameters);
+                    DepositLoanProceedsValidationModel model =
+                        await connection.QueryFirstOrDefaultAsync<DepositLoanProceedsValidationModel>(sql, parameters);
 
                     if (model is null)
                     {
                         string msg = $"Unable to locate a loan agreement with loan Id: {queryParameters.LoanId} for financier: {queryParameters.FinancierId}.";
-                        return OperationResult<ReceiptLoanProceedsValidationModel>.CreateFailure(msg);
+                        return OperationResult<DepositLoanProceedsValidationModel>.CreateFailure(msg);
                     }
 
-                    return OperationResult<ReceiptLoanProceedsValidationModel>.CreateSuccessResult(model);
+                    return OperationResult<DepositLoanProceedsValidationModel>.CreateSuccessResult(model);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<ReceiptLoanProceedsValidationModel>.CreateFailure(ex.Message);
+                return OperationResult<DepositLoanProceedsValidationModel>.CreateFailure(ex.Message);
             }
         }
     }

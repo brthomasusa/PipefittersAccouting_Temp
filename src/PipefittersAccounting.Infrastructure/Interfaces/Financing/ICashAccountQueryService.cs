@@ -12,7 +12,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<CreditorHasLoanAgreeValidationModel>>
             GetCreditorHasLoanAgreeValidationModel(CreditorHasLoanAgreeValidationParams queryParameters);
 
-        Task<OperationResult<ReceiptLoanProceedsValidationModel>>
+        Task<OperationResult<DepositLoanProceedsValidationModel>>
             GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters);
 
         Task<OperationResult<DisburesementLoanPymtValidationModel>>

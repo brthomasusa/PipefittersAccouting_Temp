@@ -25,7 +25,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
             ReceiptLoanProceedsValidationParams loanAmountParam =
                 new() { FinancierId = (deposit as CashDeposit).Payor.Id, LoanId = (deposit as CashDeposit).GoodsOrServiceSold.Id };
 
-            OperationResult<ReceiptLoanProceedsValidationModel> loanAmountResult =
+            OperationResult<DepositLoanProceedsValidationModel> loanAmountResult =
                 await _cashAcctQrySvc.GetReceiptLoanProceedsValidationModel(loanAmountParam);
 
             if (loanAmountResult.Success)

@@ -22,4 +22,15 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     {
         public Guid LoanInstallmentId { get; set; }
     }
+
+    public class GetCashAccount
+    {
+        public Guid CashAccountId { get; set; }
+    }
+
+    public class GetCashAccounts
+    {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
 }

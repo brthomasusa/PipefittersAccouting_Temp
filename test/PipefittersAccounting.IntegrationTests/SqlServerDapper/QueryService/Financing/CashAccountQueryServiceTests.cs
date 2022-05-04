@@ -46,7 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid loanID = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
             ReceiptLoanProceedsValidationParams qryParam = new() { FinancierId = financierID, LoanId = loanID };
-            OperationResult<ReceiptLoanProceedsValidationModel> result =
+            OperationResult<DepositLoanProceedsValidationModel> result =
                 await queryService.GetReceiptLoanProceedsValidationModel(qryParam);
 
             Assert.True(result.Success);

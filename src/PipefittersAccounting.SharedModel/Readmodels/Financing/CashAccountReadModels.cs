@@ -13,7 +13,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal LoanAmount { get; set; }
     }
 
-    public class ReceiptLoanProceedsValidationModel
+    public class DepositLoanProceedsValidationModel
     {
         public Guid FinancierId { get; set; }
         public Guid LoanId { get; set; }
@@ -33,5 +33,31 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal EqualMonthlyInstallment { get; set; }
         public DateTime DatePaid { get; set; }
         public decimal AmountPaid { get; set; }
+    }
+
+    public class CashAccountListItem
+    {
+        public Guid CashAccountId { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? AccountType { get; set; }
+        public string? AccountName { get; set; }
+        public string? Routing { get; set; }
+        public decimal Inflows { get; set; }
+        public decimal Outflows { get; set; }
+        public decimal Balance { get; set; }
+    }
+
+    public class CashAccountDetail
+    {
+        public Guid CashAccountId { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? AccountType { get; set; }
+        public string? AccountName { get; set; }
+        public string? Routing { get; set; }
+        public decimal Inflows { get; set; }
+        public decimal Outflows { get; set; }
+        public decimal Balance { get; set; }
     }
 }
