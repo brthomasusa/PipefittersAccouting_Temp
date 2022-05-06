@@ -2,7 +2,6 @@
 #pragma warning disable CS8602
 
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 using PipefittersAccounting.Core.Interfaces.Financing;
@@ -14,18 +13,17 @@ using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
-using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.Financing
 {
-    public class CashAccountAggregateCommandServiceTests : TestBaseEfCore
+    public class CashAccountAggregateApplicationServiceTests : TestBaseEfCore
     {
         private readonly ICashAccountApplicationService _appService;
         private readonly ICashAccountAggregateValidationService _validationService;
         private readonly ICashAccountAggregateRepository _repository;
         private readonly AppUnitOfWork _unitOfWork;
 
-        public CashAccountAggregateCommandServiceTests()
+        public CashAccountAggregateApplicationServiceTests()
         {
             ICashAccountQueryService queryService = new CashAccountQueryService(_dapperCtx);
             _repository = new CashAccountAggregateRepository(_dbContext);

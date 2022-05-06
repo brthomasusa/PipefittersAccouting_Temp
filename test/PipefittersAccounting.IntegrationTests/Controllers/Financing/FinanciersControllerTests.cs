@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using Xunit;
+
 using PipefittersAccounting.IntegrationTests.Base;
 using PipefittersAccounting.SharedModel.Readmodels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;

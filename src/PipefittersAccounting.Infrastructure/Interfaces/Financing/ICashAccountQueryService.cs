@@ -17,5 +17,9 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<OperationResult<DisburesementLoanPymtValidationModel>>
             GetDisburesementLoanPymtValidationModel(DisburesementLoanPymtValidationParams queryParameters);
+
+        Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters);
+
+        Task<OperationResult<PagedList<CashAccountListItem>>> GetCashAccountListItems(GetCashAccounts queryParameters);
     }
 }

@@ -17,45 +17,44 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
             {
                 var sql =
                 @"SELECT 
-                    acct_summary.CashAccountId,
-                    cashAccts.AccountNumber,
-                    cashAccts.BankName,
-                    acctTypes.CashAccountTypeName AS AccountType,
-                    cashAccts.AccountName,    
-                    cashAccts.RoutingTransitNumber AS 'Routing',
-                    sum(CashInflows) AS Inflow,
-                    sum(CashOutflows) AS Outflow,
-                    sum(CashInflows) - sum(CashOutflows) AS Balance
+                    cashAcct.CashAccountId, acctTypes.CashAccountTypeName AS AccountType, cashAcct.BankName, 
+                    cashAcct.AccountName, cashAcct.AccountNumber, cashAcct.RoutingTransitNumber, cashAcct.DateOpened, 
+                    cashAcct.UserId, acctSummary.Inflow, acctSummary.Outflow, acctSummary.Balance
                 FROM
                 (
-                    SELECT
-                        trans_summary.CashAccountId,
-                        trans_summary.CashInflows, 
-                        trans_summary.CashOutflows
+                    SELECT  
+                        transactionSummary.CashAccountId,
+                        sum(transactionSummary.CashInflows) AS Inflow,
+                        sum(transactionSummary.CashOutflows) AS Outflow,
+                        sum(transactionSummary.CashInflows) - sum(transactionSummary.CashOutflows) AS Balance
                     FROM
                     (
-                        SELECT 
-                            tt.CashTransactionTypeId, 
-                            trans.CashAccountId,
+                        SELECT
+                            cashacct.CashAccountId,    
                             CASE
                                 -- Cash transaction types that cause an inflow of cash into an account
-                                WHEN tt.CashTransactionTypeId IN (1,2,3,9,11) THEN SUM(trans.CashAcctTransactionAmount)
+                                WHEN acctTrans.CashTransactionTypeId IN (1,2,3,9,11) AND 
+                                    SUM(acctTrans.CashAcctTransactionAmount) IS NOT NULL 
+                                THEN SUM(acctTrans.CashAcctTransactionAmount)
+                                ELSE 0
                             END AS CashInflows, 
                             CASE
                                 -- Cash transaction types that cause an outflow of cash from an account
-                                WHEN tt.CashTransactionTypeId IN (4,5,6,7,8,10) THEN SUM(trans.CashAcctTransactionAmount)
-                            END AS CashOutflows        
-                        FROM Finance.CashTransactionTypes tt
-                        LEFT JOIN Finance.CashAccountTransactions trans ON tt.CashTransactionTypeId = trans.CashTransactionTypeId
-                        WHERE trans.CashAccountId IS NOT NULL
-                        GROUP BY trans.CashAccountId, tt.CashTransactionTypeId
-                    ) AS trans_summary
-                ) AS acct_summary
-                LEFT JOIN Finance.CashAccounts cashAccts ON acct_summary.CashAccountId = cashAccts.CashAccountId
-                LEFT JOIN Finance.CashAccountTypes acctTypes ON cashAccts.CashAccountTypeId = acctTypes.CashAccountTypeId
-                GROUP BY acct_summary.CashAccountId, cashAccts.AccountNumber, cashAccts.BankName, 
-                        acctTypes.CashAccountTypeName, cashAccts.AccountName, cashAccts.RoutingTransitNumber
-                ORDER BY cashAccts.AccountName
+                                WHEN acctTrans.CashTransactionTypeId IN (4,5,6,7,8,10) AND 
+                                    SUM(acctTrans.CashAcctTransactionAmount) IS NOT NULL 
+                                THEN SUM(acctTrans.CashAcctTransactionAmount)
+                            ELSE 0
+                            END AS CashOutflows      
+                        FROM Finance.CashAccounts cashacct
+                        -- JOIN Finance.CashAccountTypes acctTypes ON cashacct.CashAccountTypeId = acctTypes.CashAccountTypeId
+                        LEFT JOIN Finance.CashAccountTransactions acctTrans ON cashacct.CashAccountId = acctTrans.CashAccountId
+                        GROUP BY cashacct.CashAccountId, acctTrans.CashTransactionTypeId    
+                    ) AS transactionSummary
+                    GROUP BY transactionSummary.CashAccountId
+                ) AS acctSummary
+                JOIN Finance.CashAccounts cashAcct ON acctSummary.CashAccountId = cashAcct.CashAccountId
+                JOIN Finance.CashAccountTypes acctTypes ON cashAcct.CashAccountTypeId = acctTypes.CashAccountTypeId
+                ORDER BY acctTypes.CashAccountTypeName, cashAcct.AccountName
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
                 var parameters = new DynamicParameters();

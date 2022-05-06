@@ -2,6 +2,7 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Application.Queries.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
@@ -27,5 +28,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<DisburesementLoanPymtValidationModel>>
             GetDisburesementLoanPymtValidationModel(DisburesementLoanPymtValidationParams queryParameters)
                 => await GetDisburesementLoanPymtValidationModelQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters)
+            => await GetCashAccountDetailsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<CashAccountListItem>>> GetCashAccountListItems(GetCashAccounts queryParameters)
+            => await GetCashAccountListItemQuery.Query(queryParameters, _dapperCtx);
     }
 }
