@@ -16,7 +16,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         private List<CashTransaction> _cashTransactions = new();
         private AccountBalanceInformation? _balanceInfo;
         private CashTransfer? _cashTransfer;
-        private readonly ICashAccountAggregateValidationService _validationService;
 
         protected CashAccount() => _cashTransactions = new();
 
@@ -29,8 +28,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CashAccountNumber acctNumber,
             RoutingTransitNumber routingTransitNumber,
             DateOpened openedDate,
-            EntityGuidID userId,
-            ICashAccountAggregateValidationService validationService
+            EntityGuidID userId
         )
             : this()
         {
@@ -42,15 +40,18 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             RoutingTransitNumber = routingTransitNumber ?? throw new ArgumentNullException("The routing account number is required.");
             DateOpened = openedDate ?? throw new ArgumentNullException("The date that the cash account was opened is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
-            _validationService = validationService;
 
+            // Just to stop compiler warnings!!
+            _balanceInfo = AccountBalanceInformation.Create(CashTransactionAmount.Create(0),
+                                                            CashTransactionAmount.Create(0),
+                                                            CashTransactionAmount.Create(0));
             CheckValidity();
         }
 
         public CashAccountTypeEnum CashAccountType { get; private set; }
         public void UpdateCashAccountType(CashAccountTypeEnum cashAccountType)
         {
-            //TODO Don't allow editing if the account has transactions
+            //TODO Don't allow editing if the account has transactions not compatible with desired new type
             CashAccountType = cashAccountType;
             UpdateLastModifiedDate();
             CheckValidity();
@@ -136,15 +137,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             }
         }
 
-        public async Task DepositCash(CashDeposit deposit)
+        public void DepositCash(CashDeposit deposit)
         {
-            ValidationResult result = await _validationService.IsValidCashDeposit(deposit);
-
-            if (!result.IsValid)
-            {
-                throw new ArgumentException(result.Messages[0]);
-            }
-
             _cashTransactions.Add
             (
                 new CashTransaction
@@ -164,15 +158,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             AddDomainEvent(CashDepositCreated.Create(deposit));
         }
 
-        public async Task DisburseCash(CashDisbursement disbursement)
+        public void DisburseCash(CashDisbursement disbursement)
         {
-            ValidationResult result = await _validationService.IsValidCashDisbursement(disbursement);
-
-            if (!result.IsValid)
-            {
-                throw new ArgumentException(result.Messages[0]);
-            }
-
             _cashTransactions.Add
             (
                 new CashTransaction

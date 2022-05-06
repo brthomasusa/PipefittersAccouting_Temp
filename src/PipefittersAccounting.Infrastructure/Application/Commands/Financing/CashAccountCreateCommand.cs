@@ -41,9 +41,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 CashAccountNumber.Create(model.CashAccountNumber),
                 RoutingTransitNumber.Create(model.RoutingTransitNumber),
                 DateOpened.Create(model.DateOpened),
-                EntityGuidID.Create(model.UserId),
-                _validationService
+                EntityGuidID.Create(model.UserId)
             );
+
+            // Calling the CashAccount ctor causes a CreateCashAccount event to be raised.
+            // The eventhandler for this event does validation and does nothing if no
+            // validation errors were found and 'repository.AddCashAccountAsync(cashAccount)'
+            // is called. 
 
             await repository.AddCashAccountAsync(cashAccount);
             await uow.Commit();

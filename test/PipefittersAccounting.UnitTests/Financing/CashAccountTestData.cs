@@ -11,7 +11,7 @@ namespace PipefittersAccounting.UnitTests.Financing
 {
     public class CashAccountTestData
     {
-        public static CashAccount GetCashAccount(ICashAccountAggregateValidationService validationService)
+        public static CashAccount GetCashAccount()
             => new
             (
                 EntityGuidID.Create(new Guid("e848ffef-dd33-4e2c-a4eb-26925c3713d1")),
@@ -21,8 +21,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 CashAccountNumber.Create("12345-56-5547"),
                 RoutingTransitNumber.Create("787896114"),
                 DateOpened.Create(new DateTime(2022, 4, 17)),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                validationService
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
         private static CashTransaction GetCashTransactionLoanProceeds()

@@ -20,8 +20,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 CashAccountNumber.Create("12345-56-5547"),
                 RoutingTransitNumber.Create("787-896-1144"),
                 DateOpened.Create(new DateTime(2022, 5, 3)),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                validationService
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
         public static CashAccount GetCashAccountWithDupeAcctNumber(ICashAccountAggregateValidationService validationService)
@@ -34,8 +33,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 CashAccountNumber.Create("XXXXX-XXXXXXX"),
                 RoutingTransitNumber.Create("787-896-1144"),
                 DateOpened.Create(new DateTime(2022, 5, 3)),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                validationService
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
         public static CashAccount GetCashAccountWithDuplicateCashAccountId(ICashAccountAggregateValidationService validationService)
@@ -48,8 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 CashAccountNumber.Create("12345-56-5547"),
                 RoutingTransitNumber.Create("787-896-1144"),
                 DateOpened.Create(new DateTime(2022, 5, 3)),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                validationService
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
         private static CashTransaction GetCashTransactionLoanProceeds()
