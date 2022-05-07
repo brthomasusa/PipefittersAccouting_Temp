@@ -1,8 +1,11 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
@@ -12,7 +15,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public CashAccountAggregateValidationService(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
-
 
         public virtual async Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement)
         {
@@ -45,6 +47,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
                 _ => throw new ArgumentException($"Unrecognized cash deposit type: {depositType}."),
             };
+        }
+
+        public Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,37 +1,52 @@
 #pragma warning disable CS8600
 #pragma warning disable CS8602
 #pragma warning disable CS8618
+#pragma warning disable CS8625
 
 using System.Reflection;
 using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.SharedKernel
 {
-    public class DomainEvent
+    public static class DomainEvent
     {
-        private static List<Type> _handlers;
+        [ThreadStatic]
+        private static List<Delegate> _actions;
 
-        public static void Init()
+        public static IServiceProvider _serviceProvider { get; set; }
+
+
+        public static void Register<T>(Action<T> callback) where T : IDomainEvent
         {
-            _handlers = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IHandler<>)))
-                .ToList();
+            _actions = _actions ?? new List<Delegate>();
+            _actions.Add(callback);
         }
 
-        public static void Dispatch(IDomainEvent domainEvent)
+        public static void ClearCallbacks()
         {
-            foreach (Type handlerType in _handlers)
-            {
-                bool canHandleEvent = handlerType.GetInterfaces()
-                    .Any(x => x.IsGenericType &&
-                         x.GetGenericTypeDefinition() == typeof(IHandler<>) &&
-                         x.GenericTypeArguments[0] == domainEvent.GetType());
+            _actions = null;
+        }
 
-                if (canHandleEvent)
+        public static void Raise<T>(T args) where T : IDomainEvent
+        {
+            if (_serviceProvider != null)
+            {
+                //Fetch all handler of this type from the IoC container and invoke their handle method.
+                foreach (var handler in (IEnumerable<IDomainEventHandler<T>>)_serviceProvider
+                    .GetService(typeof(IEnumerable<IDomainEventHandler<T>>)))
                 {
-                    dynamic handler = Activator.CreateInstance(handlerType);
-                    handler.Handle((dynamic)domainEvent);
+                    handler.Handle(args);
+                }
+            }
+
+            if (_actions != null)
+            {
+                foreach (var action in _actions)
+                {
+                    if (action is Action<T>)
+                    {
+                        ((Action<T>)action)(args);
+                    }
                 }
             }
         }

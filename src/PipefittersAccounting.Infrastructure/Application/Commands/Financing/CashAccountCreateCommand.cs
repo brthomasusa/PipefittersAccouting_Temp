@@ -1,12 +1,15 @@
 #pragma warning disable CS8604
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
@@ -48,6 +51,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             // The eventhandler for this event does validation and does nothing if no
             // validation errors were found and 'repository.AddCashAccountAsync(cashAccount)'
             // is called. 
+            // CashAccountCreatedEvent createCashAcct = new(cashAccount);
+            // DomainEvent.Raise(createCashAcct);
 
             await repository.AddCashAccountAsync(cashAccount);
             await uow.Commit();

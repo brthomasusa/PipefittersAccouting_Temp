@@ -30,6 +30,7 @@ try
     builder.Services.ConfigureEfCoreDbContext(builder.Configuration);
     builder.Services.ConfigureDapper(builder.Configuration);
     builder.Services.ConfigureJWT(builder.Configuration);
+    builder.Services.RegisterDomainEventHandlers();
 
     var app = builder.Build();
 

@@ -3,18 +3,14 @@
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
-using PipefittersAccounting.Core.Interfaces;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
     public class CashAccount : AggregateRoot<Guid>
     {
         private List<CashTransaction> _cashTransactions = new();
-        private AccountBalanceInformation? _balanceInfo;
         private CashTransfer? _cashTransfer;
 
         protected CashAccount() => _cashTransactions = new();
@@ -41,10 +37,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             DateOpened = openedDate ?? throw new ArgumentNullException("The date that the cash account was opened is required.");
             UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
 
-            // Just to stop compiler warnings!!
-            _balanceInfo = AccountBalanceInformation.Create(CashTransactionAmount.Create(0),
-                                                            CashTransactionAmount.Create(0),
-                                                            CashTransactionAmount.Create(0));
             CheckValidity();
         }
 
@@ -99,43 +91,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
         }
 
         public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
-
-        public CashTransactionAmount CashInflow
-        {
-            get
-            {
-                if (_balanceInfo is null)
-                {
-
-                }
-
-                throw new NotImplementedException();
-            }
-        }
-
-        public CashTransactionAmount CashOutflow
-        {
-            get
-            {
-                if (_balanceInfo is null)
-                {
-
-                }
-                throw new NotImplementedException();
-            }
-        }
-
-        public CashTransactionAmount CurrentBalance
-        {
-            get
-            {
-                if (_balanceInfo is null)
-                {
-
-                }
-                throw new NotImplementedException();
-            }
-        }
 
         public void DepositCash(CashDeposit deposit)
         {

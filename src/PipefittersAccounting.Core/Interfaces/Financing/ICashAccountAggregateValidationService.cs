@@ -7,5 +7,7 @@ namespace PipefittersAccounting.Core.Interfaces.Financing
         Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement);
 
         Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit);
+
+        Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount);
     }
 }

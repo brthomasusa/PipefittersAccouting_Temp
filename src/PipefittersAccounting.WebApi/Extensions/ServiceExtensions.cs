@@ -3,11 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
+using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
 using PipefittersAccounting.Infrastructure.Identity;
@@ -18,13 +17,33 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanResources;
+using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 using PipefittersAccounting.WebApi.Controllers.QueryHandlers;
+
+
+
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceExtensions
     {
+        public static IServiceCollection RegisterDomainEventHandlers(this IServiceCollection services)
+        {
+            var serviceProvider = services
+                .Scan(scan => scan
+                    .FromAssemblyOf<CreateCashAccountEventHandler>()
+                    .AddClasses(classes =>
+                        classes.AssignableTo(typeof(IDomainEventHandler<>)))
+                    .AsImplementedInterfaces()
+                ).BuildServiceProvider();
+
+            DomainEvent._serviceProvider = serviceProvider;
+
+            return services;
+        }
+
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             return services
