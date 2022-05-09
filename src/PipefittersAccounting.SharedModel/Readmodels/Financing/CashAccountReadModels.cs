@@ -64,4 +64,18 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal Outflow { get; set; }
         public decimal Balance { get; set; }
     }
+
+    public class CashAccountReadModel
+    {
+        public Guid CashAccountId { get; set; }
+        public string? AccountType { get; set; }
+        public string? BankName { get; set; }
+        public string? AccountName { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? RoutingTransitNumber { get; set; }
+        public DateTime DateOpened { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+    }
 }

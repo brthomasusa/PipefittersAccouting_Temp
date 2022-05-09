@@ -33,4 +33,14 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
+
+    public class GetCashAccountWithAccountName
+    {
+        public string? AccountName { get; set; }
+    }
+
+    public class GetCashAccountWithAccountNumber
+    {
+        public string? AccountNumber { get; set; }
+    }
 }

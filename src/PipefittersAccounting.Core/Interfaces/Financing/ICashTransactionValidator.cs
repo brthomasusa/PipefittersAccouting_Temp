@@ -1,4 +1,5 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {

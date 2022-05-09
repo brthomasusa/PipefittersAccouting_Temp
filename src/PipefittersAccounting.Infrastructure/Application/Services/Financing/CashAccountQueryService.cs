@@ -32,6 +32,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters)
             => await GetCashAccountDetailsQuery.Query(queryParameters, _dapperCtx);
 
+        public async Task<OperationResult<CashAccountReadModel>> GetCashAccountReadModel(GetCashAccount queryParameters)
+            => await GetCashAccountReadModelQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<CashAccountReadModel>> GetCashAccountWithAccountName(GetCashAccountWithAccountName queryParameters)
+            => await GetCashAccountWithAccountNameQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<CashAccountReadModel>> GetCashAccountWithAccountNumber(GetCashAccountWithAccountNumber queryParameters)
+            => await GetCashAccountWithAccountNumberQuery.Query(queryParameters, _dapperCtx);
+
         public async Task<OperationResult<PagedList<CashAccountListItem>>> GetCashAccountListItems(GetCashAccounts queryParameters)
             => await GetCashAccountListItemQuery.Query(queryParameters, _dapperCtx);
     }

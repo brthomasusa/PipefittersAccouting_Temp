@@ -1,4 +1,4 @@
-namespace PipefittersAccounting.Core.Interfaces
+namespace PipefittersAccounting.SharedKernel
 {
     public class ValidationResult
     {

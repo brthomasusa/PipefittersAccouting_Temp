@@ -1,9 +1,9 @@
 #pragma warning disable CS8602
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 

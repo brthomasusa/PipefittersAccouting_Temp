@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 using Xunit;
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
-using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
