@@ -166,6 +166,50 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(msg, validationResult.Messages[0]);
         }
 
+        [Fact]
+        public async Task Validate_CreateCashAccountInfoValidation_ShouldSucceed()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            ValidationResult validationResult = await CreateCashAccountInfoValidation.Validate(model, _queryService);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateCashAccountInfoValidation_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            model.CashAccountName = "Payroll";
+            ValidationResult validationResult = await CreateCashAccountInfoValidation.Validate(model, _queryService);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task IsValidCreateCashAccountInfo_CashAccountAggregateValidationService_ShouldSucceed()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            ValidationResult validationResult = await _validationService.IsValidCreateCashAccountInfo(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidCreateCashAccountInfo_CashAccountAggregateValidationService_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            model.CashAccountName = "Payroll";
+            ValidationResult validationResult = await _validationService.IsValidCreateCashAccountInfo(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
 
 
 

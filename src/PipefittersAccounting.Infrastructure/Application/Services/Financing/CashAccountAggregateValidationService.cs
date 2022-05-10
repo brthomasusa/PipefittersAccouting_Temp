@@ -1,11 +1,9 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
-using PipefittersAccounting.Core.Interfaces;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
+using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedKernel.Interfaces;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
@@ -50,8 +48,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         }
 
         public Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
+
+        public async Task<ValidationResult> IsValidCreateCashAccountInfo(CreateCashAccountInfo writeModel)
+            => await CreateCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
+
+        public Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel)
+            => throw new NotImplementedException();
+
+        public Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel)
+            => throw new NotImplementedException();
     }
 }

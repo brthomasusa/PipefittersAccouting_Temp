@@ -3,6 +3,7 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 
