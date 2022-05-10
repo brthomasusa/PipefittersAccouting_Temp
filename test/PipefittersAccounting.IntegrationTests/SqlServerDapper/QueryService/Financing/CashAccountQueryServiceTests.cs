@@ -141,5 +141,48 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             int records = result.Result.Count;
             Assert.Equal(4, records);
         }
+
+        [Fact]
+        public async Task GetCashAccountWithAccountName_CashAccountQueryService_ExistingName_ShouldSucceed()
+        {
+            GetCashAccountWithAccountName queryParameters = new() { AccountName = "Payroll" };
+            OperationResult<CashAccountReadModel> result = await _queryService.GetCashAccountWithAccountName(queryParameters);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task GetCashAccountWithAccountName_CashAccountQueryService_NonExistingName_ShouldFail()
+        {
+            GetCashAccountWithAccountName queryParameters = new() { AccountName = "Money Laundering" };
+            OperationResult<CashAccountReadModel> result = await _queryService.GetCashAccountWithAccountName(queryParameters);
+
+            Assert.False(result.Success);
+
+            string msg = $"Unable to locate a cash account with account name '{queryParameters.AccountName}'!";
+            Assert.Equal(msg, result.NonSuccessMessage);
+        }
+
+        [Fact]
+        public async Task GetCashAccountWithAccountNumber_CashAccountQueryService_ExistingNumber_ShouldSucceed()
+        {
+            GetCashAccountWithAccountNumber queryParameters = new() { AccountNumber = "36547-9098812" };
+            OperationResult<CashAccountReadModel> result = await _queryService.GetCashAccountWithAccountNumber(queryParameters);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task GetCashAccountWithAccountNumber_CashAccountQueryService_NonExistingNumber_ShouldFail()
+        {
+            GetCashAccountWithAccountNumber queryParameters = new() { AccountNumber = "12345-9098812" };
+            OperationResult<CashAccountReadModel> result = await _queryService.GetCashAccountWithAccountNumber(queryParameters);
+
+            Assert.False(result.Success);
+
+            string msg = $"Unable to locate a cash account with account number '{queryParameters.AccountNumber}'!";
+            Assert.Equal(msg, result.NonSuccessMessage);
+        }
+
     }
 }

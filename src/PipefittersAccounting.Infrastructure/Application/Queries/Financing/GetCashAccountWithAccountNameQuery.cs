@@ -20,14 +20,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
                 WHERE AccountName = @ACCTNAME";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("ACCTNAME", queryParameters.AccountName, DbType.Guid);
+                parameters.Add("ACCTNAME", queryParameters.AccountName, DbType.String);
 
                 using (var connection = ctx.CreateConnection())
                 {
                     CashAccountReadModel detail = await connection.QueryFirstOrDefaultAsync<CashAccountReadModel>(sql, parameters);
                     if (detail is null)
                     {
-                        string msg = $"Unable to locate a cash account with Id '{queryParameters.AccountName}'!";
+                        string msg = $"Unable to locate a cash account with account name '{queryParameters.AccountName}'!";
                         return OperationResult<CashAccountReadModel>.CreateFailure(msg);
                     }
 

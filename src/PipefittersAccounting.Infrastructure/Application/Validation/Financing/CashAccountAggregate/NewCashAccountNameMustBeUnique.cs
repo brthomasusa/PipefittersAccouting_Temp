@@ -25,13 +25,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             if (getResult.Success)
             {
                 string msg = $"There is an existing cash account with account name '{cashAccount.CashAccountName}'";
-                validationResult.IsValid = false;
                 validationResult.Messages.Add(msg);
             }
             else
             {
                 validationResult.IsValid = true;
-                validationResult = await base.Validate(cashAccount);
+
+                if (Next is not null)
+                {
+                    validationResult = await Next.Validate(cashAccount);
+                }
             }
 
             return validationResult;

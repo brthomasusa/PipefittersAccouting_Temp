@@ -62,7 +62,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateCashAccount_CashAccountsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/create";
-            CreateCashAccountInfo model = GetCreateCashAccountInfo();
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -93,7 +93,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task EditCashAccount_CashAccountsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/edit";
-            EditCashAccountInfo model = GetEditCashAccountInfo();
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -142,30 +142,5 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                 }
             }
         }
-
-        private CreateCashAccountInfo GetCreateCashAccountInfo()
-            => new CreateCashAccountInfo
-            {
-                CashAccountId = new Guid("210d34d7-7474-44e7-a90b-93998137917a"),
-                CashAccountType = 2,
-                BankName = "Big Bank",
-                CashAccountName = "Party Party Party!",
-                CashAccountNumber = "123456789",
-                RoutingTransitNumber = "987654321",
-                DateOpened = new DateTime(2022, 5, 3),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
-
-        private EditCashAccountInfo GetEditCashAccountInfo()
-            => new EditCashAccountInfo
-            {
-                CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
-                CashAccountType = 2,
-                BankName = "Big Bank",
-                CashAccountName = "Party Party Party!",
-                RoutingTransitNumber = "987654321",
-                DateOpened = new DateTime(2022, 5, 3),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
     }
 }

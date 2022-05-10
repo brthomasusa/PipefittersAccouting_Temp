@@ -5,6 +5,7 @@ using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.IntegrationTests.Base
 {
@@ -104,5 +105,30 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 RemittanceAdvice.Create("ABCDE"),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
+
+        public static CreateCashAccountInfo GetCreateCashAccountInfo()
+            => new CreateCashAccountInfo
+            {
+                CashAccountId = new Guid("210d34d7-7474-44e7-a90b-93998137917a"),
+                CashAccountType = 2,
+                BankName = "Big Bank",
+                CashAccountName = "Party Party Party!",
+                CashAccountNumber = "123456789",
+                RoutingTransitNumber = "987654321",
+                DateOpened = new DateTime(2022, 5, 3),
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static EditCashAccountInfo GetEditCashAccountInfo()
+            => new EditCashAccountInfo
+            {
+                CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
+                CashAccountType = 2,
+                BankName = "Big Bank",
+                CashAccountName = "Party Party Party!",
+                RoutingTransitNumber = "987654321",
+                DateOpened = new DateTime(2022, 5, 3),
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
     }
 }

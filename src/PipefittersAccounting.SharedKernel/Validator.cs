@@ -6,19 +6,21 @@ namespace PipefittersAccounting.SharedKernel
 {
     public abstract class Validator<T> : IValidator<T>
     {
-        private IValidator<T>? Next { get; set; }
+        protected IValidator<T>? Next { get; private set; }
 
-        public IValidator<T> SetNext(IValidator<T> next)
+        public void SetNext(IValidator<T> next)
         {
             Next = next;
-            return Next;
         }
 
         public virtual async Task<ValidationResult> Validate(T request)
         {
             ValidationResult validationResult = new();
 
-            await Next?.Validate(request);
+            if (Next is not null)
+            {
+                await Next.Validate(request);
+            }
 
             return validationResult;
         }

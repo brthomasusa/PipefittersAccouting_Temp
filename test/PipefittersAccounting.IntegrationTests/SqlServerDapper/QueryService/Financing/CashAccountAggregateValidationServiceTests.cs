@@ -7,22 +7,39 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
+using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
 {
     [Trait("Integration", "DapperQueryService")]
-    public class CashTransactionValidationServiceTests : TestBaseDapper
+    public class CashAccountAggregateValidationServiceTests : TestBaseDapper
     {
         private readonly ICashAccountQueryService _queryService;
-        private readonly ICashAccountAggregateValidationService _cashTransactionValidationService;
+        private readonly ICashAccountAggregateValidationService _validationService;
 
-        public CashTransactionValidationServiceTests()
+        public CashAccountAggregateValidationServiceTests()
         {
             _queryService = new CashAccountQueryService(_dapperCtx);
-            _cashTransactionValidationService = new CashAccountAggregateValidationService(_queryService);
+            _validationService = new CashAccountAggregateValidationService(_queryService);
+        }
+
+        [Fact]
+        public void Create_NewCashAccountNameMustBeUniqueValidator_ShouldSucceed()
+        {
+            var exception = Record.Exception(() => new NewCashAccountNameMustBeUniqueValidator(_queryService));
+            Assert.Null(exception);
+        }
+
+        [Fact]
+        public void Create_NewCashAccountNumberMustBeUniqueValidator_ShouldSucceed()
+        {
+            var exception = Record.Exception(() => new NewCashAccountNumberMustBeUniqueValidator(_queryService));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -31,6 +48,127 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             var exception = Record.Exception(() => GetCashDepositForLoanProceeds());
             Assert.Null(exception);
         }
+
+        [Fact]
+        public async Task Validate_NewCashAccountNameMustBeUniqueValidator_ValidAcctName_ShouldSucceed()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_NewCashAccountNameMustBeUniqueValidator_ExistingAcctName_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            model.CashAccountName = "Payroll";
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task Validate_NewCashAccountNumberMustBeUniqueValidator_ValidAcctNumber_ShouldSucceed()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNumberValidator.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_NewCashAccountNumberMustBeUniqueValidator_ExistingAcctNumber_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            model.CashAccountNumber = "36547-9098812";
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNumberValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account number '{model.CashAccountNumber}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task Validate_ChainedCashAccountNameAndNumberValidators_ValidAcctNameAndNumber_ShouldSucceed()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            acctNameValidator.SetNext(acctNumberValidator);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_ChainedCashAccountNameAndNumberValidators_InvalidAcctNameAndValidNumber_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            model.CashAccountName = "Payroll";
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            acctNameValidator.SetNext(acctNumberValidator);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task Validate_ChainedCashAccountNameAndNumberValidators_InvalidAcctNameAndInvalidNumber_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            model.CashAccountName = "Payroll";
+            model.CashAccountNumber = "36547-9098812";
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            acctNameValidator.SetNext(acctNumberValidator);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task Validate_ChainedCashAccountNameAndNumberValidators_ValidAcctNameAndInvalidNumber_ShouldFail()
+        {
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            model.CashAccountNumber = "36547-9098812";
+            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            acctNameValidator.SetNext(acctNumberValidator);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account number '{model.CashAccountNumber}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+
+
+
 
         [Fact]
         public async Task Validate_FinancierValidator_ValidFinancierId_ShouldSucceed()
@@ -249,7 +387,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         // // Test CashTransactionValidationService
 
         // [Fact]
-        // public async Task Validate_CashTransactionValidationService_LoanProceeds_ShouldSucceed()
+        // public async Task Validate_validationService_LoanProceeds_ShouldSucceed()
         // {
         //     CashTransaction cashTransaction = GetCashTransactionLoanProceeds();
 
@@ -260,7 +398,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         // }
 
         // [Fact]
-        // public async Task Validate_CashTransactionValidationService_LoanPymt_ShouldSucceed()
+        // public async Task Validate_validationService_LoanPymt_ShouldSucceed()
         // {
         //     CashTransaction cashTransaction = GetCashTransactionLoanInstallmentPymt();
 
