@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
     // Verify that a financier is known to the system before 
     // receiving funds from or sending funds to.

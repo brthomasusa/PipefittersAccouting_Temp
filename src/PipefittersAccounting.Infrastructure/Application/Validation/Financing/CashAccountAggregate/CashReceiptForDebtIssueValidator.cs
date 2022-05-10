@@ -1,4 +1,5 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 

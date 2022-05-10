@@ -36,29 +36,41 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
-            CashAccount cashAccount = new
-            (
-                EntityGuidID.Create(model.CashAccountId),
-                (CashAccountTypeEnum)Enum.ToObject(typeof(CashAccountTypeEnum), model.CashAccountType),
-                BankName.Create(model.BankName),
-                CashAccountName.Create(model.CashAccountName),
-                CashAccountNumber.Create(model.CashAccountNumber),
-                RoutingTransitNumber.Create(model.RoutingTransitNumber),
-                DateOpened.Create(model.DateOpened),
-                EntityGuidID.Create(model.UserId)
-            );
+            ValidationResult validationResult = await _validationService.IsValidCreateCashAccountInfo(model);
 
-            // Calling the CashAccount ctor causes a CreateCashAccount event to be raised.
-            // The eventhandler for this event does validation and does nothing if no
-            // validation errors were found and 'repository.AddCashAccountAsync(cashAccount)'
-            // is called. 
-            // CashAccountCreatedEvent createCashAcct = new(cashAccount);
-            // DomainEvent.Raise(createCashAcct);
+            if (validationResult.IsValid)
+            {
+                try
+                {
+                    CashAccount cashAccount = new
+                    (
+                        EntityGuidID.Create(model.CashAccountId),
+                        (CashAccountTypeEnum)Enum.ToObject(typeof(CashAccountTypeEnum), model.CashAccountType),
+                        BankName.Create(model.BankName),
+                        CashAccountName.Create(model.CashAccountName),
+                        CashAccountNumber.Create(model.CashAccountNumber),
+                        RoutingTransitNumber.Create(model.RoutingTransitNumber),
+                        DateOpened.Create(model.DateOpened),
+                        EntityGuidID.Create(model.UserId)
+                    );
 
-            await repository.AddCashAccountAsync(cashAccount);
-            await uow.Commit();
+                    await repository.AddCashAccountAsync(cashAccount);
+                    await uow.Commit();
 
-            return OperationResult<bool>.CreateSuccessResult(true);
+                    // CashAccountCreatedEvent createCashAcct = new(cashAccount);
+                    // DomainEvent.Raise(createCashAcct);
+
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                catch (Exception ex)
+                {
+                    return OperationResult<bool>.CreateFailure(ex.Message);
+                }
+            }
+            else
+            {
+                return OperationResult<bool>.CreateFailure(validationResult.Messages[0]);
+            }
         }
     }
 }

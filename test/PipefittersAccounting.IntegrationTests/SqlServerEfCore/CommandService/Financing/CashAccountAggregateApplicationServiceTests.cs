@@ -13,6 +13,7 @@ using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.Financing
 {
@@ -36,7 +37,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         public async void Process_CashAccountCreateCommand_ShouldSucceed()
         {
             CashAccountCreateCommand cmd = new(_validationService);
-            CreateCashAccountInfo model = GetCreateCashAccountInfo();
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
 
             OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
 
@@ -44,10 +45,23 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         }
 
         [Fact]
+        public async void Process_CashAccountCreateCommand_WithExistingAcctNumber_ShouldFail()
+        {
+            CashAccountCreateCommand cmd = new(_validationService);
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            model.CashAccountNumber = "36547-9098812";
+            OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
+
+            Assert.False(result.Success);
+            string msg = $"There is an existing cash account with account number '{model.CashAccountNumber}'";
+            Assert.Equal(msg, result.NonSuccessMessage);
+        }
+
+        [Fact]
         public async void Process_CashAccountUpdateCommand_ShouldSucceed()
         {
             CashAccountUpdateCommand cmd = new(_validationService);
-            EditCashAccountInfo model = GetEditCashAccountInfo();
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
 
             OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
 
@@ -73,7 +87,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void CreateCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
-            CreateCashAccountInfo model = GetCreateCashAccountInfo();
+            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
 
             OperationResult<bool> result = await _appService.CreateCashAccount(model);
 
@@ -83,7 +97,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
-            EditCashAccountInfo model = GetEditCashAccountInfo();
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
 
@@ -104,30 +118,5 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
 
             Assert.True(result.Success);
         }
-
-        private CreateCashAccountInfo GetCreateCashAccountInfo()
-            => new CreateCashAccountInfo
-            {
-                CashAccountId = new Guid("210d34d7-7474-44e7-a90b-93998137917a"),
-                CashAccountType = (int)CashAccountTypeEnum.NonPayrollOperations,
-                BankName = "Big Bank",
-                CashAccountName = "Party Party Party!",
-                CashAccountNumber = "123456789",
-                RoutingTransitNumber = "987654321",
-                DateOpened = new DateTime(2022, 5, 3),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
-
-        private EditCashAccountInfo GetEditCashAccountInfo()
-            => new EditCashAccountInfo
-            {
-                CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
-                CashAccountType = (int)CashAccountTypeEnum.PayrollOperations,
-                BankName = "Big Bank",
-                CashAccountName = "Party Party Party!",
-                RoutingTransitNumber = "987654321",
-                DateOpened = new DateTime(2022, 5, 3),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
     }
 }
