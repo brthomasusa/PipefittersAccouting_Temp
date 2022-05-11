@@ -27,5 +27,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<CashAccountReadModel>> GetCashAccountWithAccountNumber(GetCashAccountWithAccountNumber queryParameters);
 
         Task<OperationResult<PagedList<CashAccountListItem>>> GetCashAccountListItems(GetCashAccounts queryParameters);
+
+        Task<OperationResult<int>> GetNumberOfCashAccountTransactions(GetCashAccount queryParameters);
     }
 }

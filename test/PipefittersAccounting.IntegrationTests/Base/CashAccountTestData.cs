@@ -131,5 +131,17 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 DateOpened = new DateTime(2022, 5, 3),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
+
+        public static EditCashAccountInfo GetEditCashAccountInfoWithAcctTypeUpdate()
+            => new EditCashAccountInfo
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                CashAccountType = 3,
+                BankName = "First Bank and Trust",
+                CashAccountName = "Primary Checking",
+                RoutingTransitNumber = "987654321",
+                DateOpened = new DateTime(2022, 5, 10),
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
     }
 }

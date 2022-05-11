@@ -53,10 +53,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual async Task<ValidationResult> IsValidCreateCashAccountInfo(CreateCashAccountInfo writeModel)
             => await CreateCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
-        public virtual Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel)
-            => throw new NotImplementedException();
+        public virtual async Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel)
+            => await EditCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
-        public virtual Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel)
-            => throw new NotImplementedException();
+        public virtual async Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel)
+            => await DeleteCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
     }
 }

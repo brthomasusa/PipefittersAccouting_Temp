@@ -5,6 +5,7 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
@@ -31,19 +32,28 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
-            OperationResult<CashAccount> getResult = await repository.GetCashAccountByIdAsync(model.CashAccountId);
+            ValidationResult validationResult = await _validationService.IsValidDeleteCashAccountInfo(model);
 
-            if (getResult.Success)
+            if (validationResult.IsValid)
             {
-                CashAccount cashAccount = getResult.Result;
-                await repository.DeleteCashAccountAsync(model.CashAccountId);
-                await uow.Commit();
+                OperationResult<CashAccount> getResult = await repository.GetCashAccountByIdAsync(model.CashAccountId);
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                if (getResult.Success)
+                {
+                    CashAccount cashAccount = getResult.Result;
+                    await repository.DeleteCashAccountAsync(model.CashAccountId);
+                    await uow.Commit();
+
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             else
             {
-                return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                return OperationResult<bool>.CreateFailure(validationResult.Messages[0]);
             }
         }
     }

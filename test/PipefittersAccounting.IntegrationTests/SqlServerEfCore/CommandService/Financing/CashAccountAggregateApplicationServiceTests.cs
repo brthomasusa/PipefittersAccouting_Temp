@@ -105,6 +105,48 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         }
 
         [Fact]
+        public async void UpdateCashAccount_CashAccountApplicationService_CannotChangeAcctType_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
+
+            OperationResult<bool> result = await _appService.UpdateCashAccount(model);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void UpdateCashAccount_CashAccountApplicationService_ExistingAcctName_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountName = "Primary Checking";
+
+            OperationResult<bool> result = await _appService.UpdateCashAccount(model);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void UpdateCashAccount_CashAccountApplicationService_ChangeAcctTypeNoTrans_ShouldSucceed()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountType = 3;
+
+            OperationResult<bool> result = await _appService.UpdateCashAccount(model);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void UpdateCashAccount_CashAccountApplicationService_CannotChangeAcctTypeWithTransactions_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
+
+            OperationResult<bool> result = await _appService.UpdateCashAccount(model);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
         public async void DeleteCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
             DeleteCashAccountInfo model
@@ -117,6 +159,21 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             OperationResult<bool> result = await _appService.DeleteCashAccount(model);
 
             Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void DeleteCashAccount_CashAccountApplicationService_AcctHasTransactions_ShouldFail()
+        {
+            DeleteCashAccountInfo model
+                = new()
+                {
+                    CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                    UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+                };
+
+            OperationResult<bool> result = await _appService.DeleteCashAccount(model);
+
+            Assert.False(result.Success);
         }
     }
 }

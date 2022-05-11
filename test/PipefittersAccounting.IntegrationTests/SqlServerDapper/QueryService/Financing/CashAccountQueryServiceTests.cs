@@ -184,5 +184,27 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(msg, result.NonSuccessMessage);
         }
 
+        [Fact]
+        public async Task GetNumberOfCashAccountTransactions_CashAccountQueryService_AcctWithTransactions_ShouldSucceed()
+        {
+            GetCashAccount queryParameters = new() { CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e") };
+            OperationResult<int> result = await _queryService.GetNumberOfCashAccountTransactions(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(16, result.Result);
+        }
+
+        [Fact]
+        public async Task GetNumberOfCashAccountTransactions_CashAccountQueryService_AcctWithoutTransactions_ShouldSucceed()
+        {
+            GetCashAccount queryParameters = new() { CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76") };
+            OperationResult<int> result = await _queryService.GetNumberOfCashAccountTransactions(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(0, result.Result);
+        }
+
     }
 }

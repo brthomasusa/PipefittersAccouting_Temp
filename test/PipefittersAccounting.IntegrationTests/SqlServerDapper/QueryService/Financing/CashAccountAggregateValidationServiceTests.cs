@@ -167,6 +167,32 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
+        public async Task Validate_EditedCashAccountNameMustBeUniqueValidator_ValidAcctName_ShouldSucceed()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            EditedCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_EditedCashAccountNameMustBeUniqueValidator_ExistingAcctName_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountName = "Payroll";
+            EditedCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+
+            ValidationResult validationResult = await acctNameValidator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
         public async Task Validate_CreateCashAccountInfoValidation_ShouldSucceed()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
@@ -181,6 +207,28 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
             model.CashAccountName = "Payroll";
             ValidationResult validationResult = await CreateCashAccountInfoValidation.Validate(model, _queryService);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task Validate_EditCashAccountInfoValidation_ShouldSucceed()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            ValidationResult validationResult = await EditCashAccountInfoValidation.Validate(model, _queryService);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_EditCashAccountInfoValidation_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountName = "Financing Proceeds";
+            ValidationResult validationResult = await EditCashAccountInfoValidation.Validate(model, _queryService);
 
             Assert.False(validationResult.IsValid);
 
@@ -210,8 +258,46 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(msg, validationResult.Messages[0]);
         }
 
+        [Fact]
+        public async Task IsValidEditCashAccountInfo_CashAccountAggregateValidationService_ShouldSucceed()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            ValidationResult validationResult = await _validationService.IsValidEditCashAccountInfo(model);
 
+            Assert.True(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task IsValidEditCashAccountInfo_CashAccountAggregateValidationService_CannotChangeAcctType_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
+            ValidationResult validationResult = await _validationService.IsValidEditCashAccountInfo(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidEditCashAccountInfo_CashAccountAggregateValidationService_ShouldFail()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountName = "Primary Checking";
+            ValidationResult validationResult = await _validationService.IsValidEditCashAccountInfo(model);
+
+            Assert.False(validationResult.IsValid);
+
+            string msg = $"There is an existing cash account with account name '{model.CashAccountName}'";
+            Assert.Equal(msg, validationResult.Messages[0]);
+        }
+
+        [Fact]
+        public async Task IsValidEditCashAccountInfo_CashAccountAggregateValidationService_ChangeAcctTypeNoTrans_ShouldSucceed()
+        {
+            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            model.CashAccountType = 3;
+            ValidationResult validationResult = await _validationService.IsValidEditCashAccountInfo(model);
+
+            Assert.True(validationResult.IsValid);
+        }
 
 
         [Fact]

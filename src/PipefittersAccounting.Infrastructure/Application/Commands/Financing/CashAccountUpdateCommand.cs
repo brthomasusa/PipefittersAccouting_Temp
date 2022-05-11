@@ -6,6 +6,7 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 
@@ -33,27 +34,43 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
-            OperationResult<CashAccount> getResult = await repository.GetCashAccountByIdAsync(model.CashAccountId);
+            ValidationResult validationResult = await _validationService.IsValidEditCashAccountInfo(model);
 
-            if (getResult.Success)
+            if (validationResult.IsValid)
             {
-                CashAccount cashAccount = getResult.Result;
+                OperationResult<CashAccount> getResult = await repository.GetCashAccountByIdAsync(model.CashAccountId);
 
-                cashAccount.UpdateCashAccountType((CashAccountTypeEnum)model.CashAccountType);
-                cashAccount.UpdateBankName(BankName.Create(model.BankName));
-                cashAccount.UpdateCashAccountName(CashAccountName.Create(model.CashAccountName));
-                cashAccount.UpdateRoutingTransitNumber(RoutingTransitNumber.Create(model.RoutingTransitNumber));
-                cashAccount.UpdateDateOpened(DateOpened.Create(model.DateOpened));
-                cashAccount.UpdateUserId(EntityGuidID.Create(model.UserId));
+                if (getResult.Success)
+                {
+                    try
+                    {
+                        CashAccount cashAccount = getResult.Result;
 
-                await repository.UpdateCashAccountAsync(cashAccount);
-                await uow.Commit();
+                        cashAccount.UpdateCashAccountType((CashAccountTypeEnum)model.CashAccountType);
+                        cashAccount.UpdateBankName(BankName.Create(model.BankName));
+                        cashAccount.UpdateCashAccountName(CashAccountName.Create(model.CashAccountName));
+                        cashAccount.UpdateRoutingTransitNumber(RoutingTransitNumber.Create(model.RoutingTransitNumber));
+                        cashAccount.UpdateDateOpened(DateOpened.Create(model.DateOpened));
+                        cashAccount.UpdateUserId(EntityGuidID.Create(model.UserId));
 
-                return OperationResult<bool>.CreateSuccessResult(true);
+                        await repository.UpdateCashAccountAsync(cashAccount);
+                        await uow.Commit();
+
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        return OperationResult<bool>.CreateFailure(ex.Message);
+                    }
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
             }
             else
             {
-                return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                return OperationResult<bool>.CreateFailure(validationResult.Messages[0]);
             }
         }
     }
