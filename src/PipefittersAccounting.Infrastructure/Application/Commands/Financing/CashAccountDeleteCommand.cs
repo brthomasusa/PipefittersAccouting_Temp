@@ -41,10 +41,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 if (getResult.Success)
                 {
                     CashAccount cashAccount = getResult.Result;
-                    await repository.DeleteCashAccountAsync(model.CashAccountId);
-                    await uow.Commit();
+                    OperationResult<bool> deleteResult = await repository.DeleteCashAccountAsync(model.CashAccountId);
 
-                    return OperationResult<bool>.CreateSuccessResult(true);
+                    if (deleteResult.Success)
+                    {
+                        await uow.Commit();
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(deleteResult.NonSuccessMessage);
+                    }
                 }
                 else
                 {
@@ -58,3 +65,4 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         }
     }
 }
+

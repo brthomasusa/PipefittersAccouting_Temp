@@ -13,14 +13,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
             ICashAccountQueryService queryService
         )
         {
-            FinancierValidator financierValidator = new(queryService);
-            CreditorHasLoanAgreeValidator creditorHasLoanAgreeValidator = new(queryService);
-            ReceiptLoanProceedsValidator receiptLoanProceedsValidator = new(queryService);
+            // FinancierAsPayorIdentificationValidator financierValidator = new(queryService);
+            // CreditorHasLoanAgreeValidator creditorHasLoanAgreeValidator = new(queryService);
+            // ReceiptLoanProceedsValidator receiptLoanProceedsValidator = new(queryService);
 
-            financierValidator.Next = creditorHasLoanAgreeValidator;
-            creditorHasLoanAgreeValidator.Next = receiptLoanProceedsValidator;
+            // financierValidator.Next = creditorHasLoanAgreeValidator;
+            // creditorHasLoanAgreeValidator.Next = receiptLoanProceedsValidator;
 
-            return await financierValidator.Validate(deposit);
+            // return await financierValidator.Validate(deposit);
+
+            throw new NotImplementedException();
         }
 
         public static Task<ValidationResult> Validate

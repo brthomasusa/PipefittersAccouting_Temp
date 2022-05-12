@@ -1,31 +1,28 @@
 #pragma warning disable CS8602
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
     // Verify that a financier is known to the system before 
     // receiving funds from or sending funds to.
-    public class FinancierValidator : ICashTransactionValidator
+    public class FinancierAsPayorIdentificationValidator : Validator<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public FinancierValidator(ICashAccountQueryService cashAcctQrySvc)
+        public FinancierAsPayorIdentificationValidator(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public ICashTransactionValidator? Next { get; set; }
-
-        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
+        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
         {
             ValidationResult validationResult = new();
 
             FinancierIdValidationParams financierParam =
-                new() { FinancierId = (deposit as CashDeposit).Payor.Id };
+                new() { FinancierId = transactionInfo.AgentId };
 
             OperationResult<FinancierIdValidationModel> financierResult =
                 await _cashAcctQrySvc.GetFinancierIdValidationModel(financierParam);
@@ -36,16 +33,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
                 if (Next is not null)
                 {
-                    validationResult = await Next?.Validate(deposit);
+                    validationResult = await Next?.Validate(transactionInfo);
                 }
             }
             else
             {
-                validationResult.IsValid = false;
                 validationResult.Messages.Add(financierResult.NonSuccessMessage);
             }
 
-            return validationResult; ;
+            return validationResult;
         }
     }
 }

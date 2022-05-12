@@ -17,5 +17,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel);
 
         Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel);
+        Task<ValidationResult> IsValidCreateCashDepositInfo(CreateCashDepositInfo writeModel);
+        Task<ValidationResult> IsValidCreateCashDisbursementInfo(CreateCashDisbursementInfo writeModel);
     }
 }

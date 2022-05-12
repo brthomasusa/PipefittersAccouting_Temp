@@ -1,36 +1,33 @@
 #pragma warning disable CS8602
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class ReceiptLoanProceedsValidator : ICashTransactionValidator
+    public class ReceiptLoanProceedsValidator : Validator<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public ReceiptLoanProceedsValidator(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public ICashTransactionValidator? Next { get; set; }
-
-        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
+        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
         {
             ValidationResult validationResult = new();
 
             ReceiptLoanProceedsValidationParams loanAmountParam =
-                new() { FinancierId = (deposit as CashDeposit).Payor.Id, LoanId = (deposit as CashDeposit).GoodsOrServiceSold.Id };
+                new() { FinancierId = transactionInfo.AgentId, LoanId = transactionInfo.EventId };
 
             OperationResult<DepositLoanProceedsValidationModel> loanAmountResult =
                 await _cashAcctQrySvc.GetReceiptLoanProceedsValidationModel(loanAmountParam);
 
             if (loanAmountResult.Success)
             {
-                if (loanAmountResult.Result.LoanAmount == deposit.TransactionAmount)
+                if (loanAmountResult.Result.LoanAmount == transactionInfo.TransactionAmount)
                 {
                     if (loanAmountResult.Result.AmountReceived == 0)
                     {
@@ -38,7 +35,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
                         if (Next is not null)
                         {
-                            validationResult = await Next?.Validate(deposit);
+                            validationResult = await Next?.Validate(transactionInfo);
                         }
                     }
                     else

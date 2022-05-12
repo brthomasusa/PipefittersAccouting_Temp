@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using NLog.Web;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation.AspNetCore;
-using System.Reflection;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -16,6 +14,7 @@ try
     builder.Services.AddRazorPages();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+
     builder.Services.AddApiVersioning(config =>
     {
         config.DefaultApiVersion = new ApiVersion(1, 0);

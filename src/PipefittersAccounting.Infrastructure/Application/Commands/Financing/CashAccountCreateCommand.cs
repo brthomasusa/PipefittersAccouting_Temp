@@ -1,10 +1,8 @@
 #pragma warning disable CS8604
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
-using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

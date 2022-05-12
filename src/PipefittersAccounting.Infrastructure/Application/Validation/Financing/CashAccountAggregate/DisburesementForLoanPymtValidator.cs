@@ -1,29 +1,26 @@
 #pragma warning disable CS8602
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DisburesementForLoanPymtValidator : ICashTransactionValidator
+    public class DisburesementForLoanPymtValidator : Validator<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public DisburesementForLoanPymtValidator(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public ICashTransactionValidator? Next { get; set; }
-
-        public async Task<ValidationResult> Validate(CashAccountTransaction deposit)
+        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
         {
             ValidationResult validationResult = new();
 
             DisburesementLoanPymtValidationParams queryParam =
-                new() { LoanInstallmentId = (deposit as CashDeposit).GoodsOrServiceSold.Id };  // 
+                new() { LoanInstallmentId = transactionInfo.EventId };
 
             OperationResult<DisburesementLoanPymtValidationModel> loanPymtResult =
                 await _cashAcctQrySvc.GetDisburesementLoanPymtValidationModel(queryParam);
@@ -31,10 +28,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             if (loanPymtResult.Success)
             {
                 // Check FinancierId
-                if (loanPymtResult.Result.FinancierId == (deposit as CashDeposit).Payor.Id)
+                if (loanPymtResult.Result.FinancierId == transactionInfo.AgentId)
                 {
                     // Check payment amount against transaction amount
-                    if (loanPymtResult.Result.EqualMonthlyInstallment == deposit.TransactionAmount)
+                    if (loanPymtResult.Result.EqualMonthlyInstallment == transactionInfo.TransactionAmount)
                     {
                         // Check that pymt has not already been paid
                         if (loanPymtResult.Result.AmountPaid == 0)
@@ -43,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
                             if (Next is not null)
                             {
-                                validationResult = await Next?.Validate(deposit);
+                                validationResult = await Next?.Validate(transactionInfo);
                             }
                         }
                         else
@@ -58,7 +55,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                     }
                     else
                     {
-                        decimal transAmt = deposit.TransactionAmount;
+                        decimal transAmt = transactionInfo.TransactionAmount;
                         decimal pymtAmt = loanPymtResult.Result.EqualMonthlyInstallment;
                         string msg = $"The transaction amount {transAmt} does not match the installment amount {pymtAmt}.";
 
@@ -68,7 +65,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    Guid eventId = (deposit as CashDeposit).GoodsOrServiceSold.Id;
+                    Guid eventId = transactionInfo.EventId;
                     Guid financierId = loanPymtResult.Result.FinancierId;
                     string msg = $"The financier in the transaction {eventId} does not match the financier in the loan agreement {financierId}.";
 

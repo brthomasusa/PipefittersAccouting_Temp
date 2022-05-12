@@ -300,15 +300,15 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
 
-        [Fact]
-        public async Task Validate_FinancierValidator_ValidFinancierId_ShouldSucceed()
-        {
-            CashDeposit deposit = GetCashDepositForLoanProceeds();
-            FinancierValidator financierValidator = new(_queryService);
-            ValidationResult validationResult = await financierValidator.Validate(deposit);
+        // [Fact]
+        // public async Task Validate_FinancierValidator_ValidFinancierId_ShouldSucceed()
+        // {
+        //     CashDeposit deposit = GetCashDepositForLoanProceeds();
+        //     FinancierAsPayorIdentificationValidator financierValidator = new(_queryService);
+        //     ValidationResult validationResult = await financierValidator.Validate(deposit);
 
-            Assert.True(validationResult.IsValid);
-        }
+        //     Assert.True(validationResult.IsValid);
+        // }
 
         // [Fact]
         // public async Task Validate_FinancierValidator_InvalidFinancierId_ShouldFail()
