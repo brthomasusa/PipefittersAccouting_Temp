@@ -10,17 +10,13 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CashAccountDeleteCommand : IWriteModelProcessor<DeleteCashAccountInfo, ICashAccountAggregateRepository>
+    public class CashAccountDeleteCommand
     {
-        private readonly ICashAccountAggregateValidationService _validationService;
-
-        public CashAccountDeleteCommand(ICashAccountAggregateValidationService validationService)
-            => _validationService = validationService;
-
-        public async Task<OperationResult<bool>> Process
+        public static async Task<OperationResult<bool>> Process
         (
             DeleteCashAccountInfo model,
             ICashAccountAggregateRepository repository,
+            ICashAccountAggregateValidationService validationService,
             IUnitOfWork uow
         )
         {
@@ -32,7 +28,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
-            ValidationResult validationResult = await _validationService.IsValidDeleteCashAccountInfo(model);
+            ValidationResult validationResult = await validationService.IsValidDeleteCashAccountInfo(model);
 
             if (validationResult.IsValid)
             {

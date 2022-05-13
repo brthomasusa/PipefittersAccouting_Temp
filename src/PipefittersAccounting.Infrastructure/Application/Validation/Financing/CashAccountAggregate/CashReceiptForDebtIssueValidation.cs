@@ -2,6 +2,7 @@ using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 {
@@ -9,18 +10,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
     {
         public static async Task<ValidationResult> Validate
         (
-            CashAccountTransaction deposit,
+            CreateCashAccountTransactionInfo deposit,
             ICashAccountQueryService queryService
         )
         {
-            // FinancierAsPayorIdentificationValidator financierValidator = new(queryService);
+            FinancierAsPayorIdentificationValidator financierValidator = new(queryService);
             // CreditorHasLoanAgreeValidator creditorHasLoanAgreeValidator = new(queryService);
             // ReceiptLoanProceedsValidator receiptLoanProceedsValidator = new(queryService);
 
             // financierValidator.Next = creditorHasLoanAgreeValidator;
             // creditorHasLoanAgreeValidator.Next = receiptLoanProceedsValidator;
 
-            // return await financierValidator.Validate(deposit);
+            return await financierValidator.Validate(deposit);
 
             throw new NotImplementedException();
         }

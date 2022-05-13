@@ -12,17 +12,13 @@ using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CashAccountCreateCommand : IWriteModelProcessor<CreateCashAccountInfo, ICashAccountAggregateRepository>
+    public class CashAccountCreateCommand
     {
-        private readonly ICashAccountAggregateValidationService _validationService;
-
-        public CashAccountCreateCommand(ICashAccountAggregateValidationService validationService)
-            => _validationService = validationService;
-
-        public async Task<OperationResult<bool>> Process
+        public static async Task<OperationResult<bool>> Process
         (
             CreateCashAccountInfo model,
             ICashAccountAggregateRepository repository,
+            ICashAccountAggregateValidationService validationService,
             IUnitOfWork uow
         )
         {
@@ -34,7 +30,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
-            ValidationResult validationResult = await _validationService.IsValidCreateCashAccountInfo(model);
+            ValidationResult validationResult = await validationService.IsValidCreateCashAccountInfo(model);
 
             if (validationResult.IsValid)
             {

@@ -1,14 +1,15 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public interface ICashAccountAggregateValidationService
+    public interface ICashAccountAggregateValidationService : IDomainService
     {
-        Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement);
+        Task<ValidationResult> IsValidCashDisbursement(CreateCashAccountTransactionInfo transactionInfo);
 
-        Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit);
+        Task<ValidationResult> IsValidCashDeposit(CreateCashAccountTransactionInfo transactionInfo);
 
         Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount);
 
@@ -17,7 +18,5 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel);
 
         Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel);
-        Task<ValidationResult> IsValidCreateCashDepositInfo(CreateCashDepositInfo writeModel);
-        Task<ValidationResult> IsValidCreateCashDisbursementInfo(CreateCashDisbursementInfo writeModel);
     }
 }

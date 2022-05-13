@@ -14,32 +14,32 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public CashAccountAggregateValidationService(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public virtual async Task<ValidationResult> IsValidCashDisbursement(CashDisbursement disbursement)
+        public virtual async Task<ValidationResult> IsValidCashDisbursement(CreateCashAccountTransactionInfo transactionInfo)
         {
-            CashTransactionTypeEnum disbursementType = disbursement.DisbursementType;
+            CashTransactionTypeEnum disbursementType = (CashTransactionTypeEnum)transactionInfo.TransactionType;
             ValidationResult result = new();
 
             return result = disbursementType switch
             {
                 CashTransactionTypeEnum.CashDisbursementLoanPayment
-                    => await LoanInstallmentPaymentValidation.Validate(disbursement, _cashAcctQrySvc),
+                    => await LoanInstallmentPaymentValidation.Validate(transactionInfo, _cashAcctQrySvc),
 
                 _ => throw new ArgumentException($"Unrecognized cash disbursement type: {disbursementType}."),
             };
         }
 
-        public virtual async Task<ValidationResult> IsValidCashDeposit(CashDeposit deposit)
+        public virtual async Task<ValidationResult> IsValidCashDeposit(CreateCashAccountTransactionInfo transactionInfo)
         {
-            CashTransactionTypeEnum depositType = deposit.DepositType;
+            CashTransactionTypeEnum depositType = (CashTransactionTypeEnum)transactionInfo.TransactionType;
             ValidationResult result = new();
 
             return result = depositType switch
             {
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds
-                    => await CashReceiptForDebtIssueValidator.Validate(deposit, _cashAcctQrySvc),
+                    => await CashReceiptForDebtIssueValidator.Validate(transactionInfo, _cashAcctQrySvc),
 
                 CashTransactionTypeEnum.CashReceiptStockIssueProceeds
-                    => await CashReceiptForDebtIssueValidator.Validate(deposit, _cashAcctQrySvc),
+                    => await CashReceiptForDebtIssueValidator.Validate(transactionInfo, _cashAcctQrySvc),
 
                 // CashTransactionTypeEnum.CashReceiptSales => ,
 
@@ -59,10 +59,5 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual async Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel)
             => await DeleteCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
-        public Task<ValidationResult> IsValidCreateCashDepositInfo(CreateCashDepositInfo writeModel)
-            => throw new NotImplementedException();
-
-        public Task<ValidationResult> IsValidCreateCashDisbursementInfo(CreateCashDisbursementInfo writeModel)
-            => throw new NotImplementedException();
     }
 }

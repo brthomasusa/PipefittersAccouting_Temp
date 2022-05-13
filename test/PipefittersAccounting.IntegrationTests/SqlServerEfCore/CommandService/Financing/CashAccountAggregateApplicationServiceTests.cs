@@ -36,10 +36,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountCreateCommand_ShouldSucceed()
         {
-            CashAccountCreateCommand cmd = new(_validationService);
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
 
-            OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
+            OperationResult<bool> result =
+                await CashAccountCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.True(result.Success);
         }
@@ -47,10 +47,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountCreateCommand_WithExistingAcctNumber_ShouldFail()
         {
-            CashAccountCreateCommand cmd = new(_validationService);
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
             model.CashAccountNumber = "36547-9098812";
-            OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
+            OperationResult<bool> result =
+                await CashAccountCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.False(result.Success);
             string msg = $"There is an existing cash account with account number '{model.CashAccountNumber}'";
@@ -60,10 +60,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountUpdateCommand_ShouldSucceed()
         {
-            CashAccountUpdateCommand cmd = new(_validationService);
             EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
 
-            OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
+            OperationResult<bool> result =
+                await CashAccountUpdateCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.True(result.Success);
         }
@@ -71,7 +71,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountDeleteCommand_ShouldSucceed()
         {
-            CashAccountDeleteCommand cmd = new(_validationService);
             DeleteCashAccountInfo model
                 = new()
                 {
@@ -79,7 +78,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
                     UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
                 };
 
-            OperationResult<bool> result = await cmd.Process(model, _repository, _unitOfWork);
+            OperationResult<bool> result =
+                await CashAccountDeleteCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.True(result.Success);
         }

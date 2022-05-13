@@ -26,27 +26,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         }
 
         public async Task<OperationResult<bool>> CreateCashAccount(CreateCashAccountInfo writeModel)
-        {
-            CashAccountCreateCommand cmd = new(_validationService);
-            return await cmd.Process(writeModel, _repository, _unitOfWork);
-        }
+            => await CashAccountCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> UpdateCashAccount(EditCashAccountInfo writeModel)
-        {
-            CashAccountUpdateCommand cmd = new(_validationService);
-            return await cmd.Process(writeModel, _repository, _unitOfWork);
-        }
+            => await CashAccountUpdateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> DeleteCashAccount(DeleteCashAccountInfo writeModel)
-        {
-            CashAccountDeleteCommand cmd = new(_validationService);
-            return await cmd.Process(writeModel, _repository, _unitOfWork);
-        }
+            => await CashAccountDeleteCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
-        public Task<OperationResult<bool>> CreateCashDeposit(CreateCashDepositInfo writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> CreateCashDeposit(CreateCashAccountTransactionInfo writeModel)
+            => await CashDepositCreateCommandDispatcher.Dispatch(writeModel, _repository, _validationService, _unitOfWork);
 
-        public Task<OperationResult<bool>> CreateCashDisbursement(CreateCashDisbursementInfo writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel)
+            => await CashDisbursementCreateCommandDispatcher.Dispatch(writeModel, _repository, _validationService, _unitOfWork);
     }
 }

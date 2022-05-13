@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<bool>> CreateCashAccount(CreateCashAccountInfo writeModel);
         Task<OperationResult<bool>> UpdateCashAccount(EditCashAccountInfo writeModel);
         Task<OperationResult<bool>> DeleteCashAccount(DeleteCashAccountInfo writeModel);
-        Task<OperationResult<bool>> CreateCashDeposit(CreateCashDepositInfo writeModel);
-        Task<OperationResult<bool>> CreateCashDisbursement(CreateCashDisbursementInfo writeModel);
+        Task<OperationResult<bool>> CreateCashDeposit(CreateCashAccountTransactionInfo writeModel);
+        Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel);
     }
 }
