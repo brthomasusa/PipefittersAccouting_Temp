@@ -47,16 +47,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<int>> GetNumberOfCashAccountTransactions(GetCashAccount queryParameters)
             => await GetNumberOfCashAccountTransactionsQuery.Query(queryParameters, _dapperCtx);
 
-        public Task<OperationResult<ExternalAgentIdentificationInfo>> GetExternalAgentIdentificationInfo(ExternalAgentIdentificationParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<ExternalAgentIdentificationInfo>> GetExternalAgentIdentificationInfo(ExternalAgentIdentificationParameters queryParameters)
+            => await GetExternalAgentIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
 
-        public Task<OperationResult<EconomicEventIdentificationInfo>> GetEconomicEventIdentificationInfo(EconomicEventIdentificationParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<EconomicEventIdentificationInfo>> GetEconomicEventIdentificationInfo(EconomicEventIdentificationParameters queryParameters)
+            => await GetEconomicEventIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
 
-        public Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorIssuedLoanAgreementValidationParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorIssuedLoanAgreementValidationParameters queryParameters)
+            => await GetCreditorIssuedLoanAgreementValidationInfoQuery.Query(queryParameters, _dapperCtx);
 
-        public Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters)
+            => await GetCashReceiptOfDebtIssueProceedsInfoQuery.Query(queryParameters, _dapperCtx);
     }
 }

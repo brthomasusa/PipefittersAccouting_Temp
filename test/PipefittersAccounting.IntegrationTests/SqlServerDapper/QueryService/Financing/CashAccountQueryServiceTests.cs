@@ -206,5 +206,59 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(0, result.Result);
         }
 
+        [Fact]
+        public async Task GetExternalAgentIdentificationInfo_CashAccountQueryService_ShouldSucceed()
+        {
+            ExternalAgentIdentificationParameters queryParameters = new() { AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601") };
+            OperationResult<ExternalAgentIdentificationInfo> result = await _queryService.GetExternalAgentIdentificationInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(6, result.Result.AgentTypeId);
+            Assert.Equal("Financier", result.Result.AgentTypeName);
+        }
+
+        [Fact]
+        public async Task GetEconomicEventIdentificationInfo_CashAccountQueryService_ShouldSucceed()
+        {
+            EconomicEventIdentificationParameters queryParameters = new() { EventId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1") };
+            OperationResult<EconomicEventIdentificationInfo> result = await _queryService.GetEconomicEventIdentificationInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(2, result.Result.EventTypeId);
+            Assert.Equal("Cash Receipt from Loan Agreement", result.Result.EventTypeName);
+        }
+
+        [Fact]
+        public async Task GetCreditorIssuedLoanAgreementValidationInfo_CashAccountQueryService_ShouldSucceed()
+        {
+            CreditorIssuedLoanAgreementValidationParameters queryParameters =
+                new() { LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"), FinancierId = new Guid("12998229-7ede-4834-825a-0c55bde75695") };
+            OperationResult<CreditorIssuedLoanAgreementValidationInfo> result = await _queryService.GetCreditorIssuedLoanAgreementValidationInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal("Arturo Sandoval", result.Result.FinancierName);
+            Assert.Equal(25000M, result.Result.LoanAmount);
+        }
+
+        [Fact]
+        public async Task GetCashReceiptOfDebtIssueProceedsInfo_CashAccountQueryService_ShouldSucceed()
+        {
+            CashReceiptOfDebtIssueProceedsParameters queryParameters =
+                new() { FinancierId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"), LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f") };
+            OperationResult<CashReceiptOfDebtIssueProceedsInfo> result = await _queryService.GetCashReceiptOfDebtIssueProceedsInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal("Paul Van Horn Enterprises", result.Result.FinancierName);
+            Assert.Equal(new DateTime(2022, 2, 2), result.Result.LoanDate);
+            Assert.Equal(new DateTime(2024, 2, 2), result.Result.MaturityDate);
+            Assert.Equal(30000M, result.Result.LoanAmount);
+            Assert.Equal(new DateTime(2022, 3, 19), result.Result.DateReceived);
+            Assert.Equal(30000M, result.Result.AmountReceived);
+        }
+
     }
 }
