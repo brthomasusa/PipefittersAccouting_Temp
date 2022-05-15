@@ -4,11 +4,11 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate
 {
-    public class GetCashAccountReadModelQuery
+    public class GetCashAccountWithAccountNumberQuery
     {
-        public async static Task<OperationResult<CashAccountReadModel>> Query(GetCashAccount queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<CashAccountReadModel>> Query(GetCashAccountWithAccountNumber queryParameters, DapperContext ctx)
         {
             try
             {
@@ -17,17 +17,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
                     CashAccountId, CashAccountTypeId, BankName, AccountName, AccountNumber,
                     RoutingTransitNumber, DateOpened, UserId, CreatedDate, LastModifiedDate
                 FROM Finance.CashAccounts
-                WHERE CashAccountId = @ID";
+                WHERE AccountNumber = @ACCTNUMBER";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("ID", queryParameters.CashAccountId, DbType.Guid);
+                parameters.Add("ACCTNUMBER", queryParameters.AccountNumber, DbType.String);
 
                 using (var connection = ctx.CreateConnection())
                 {
                     CashAccountReadModel detail = await connection.QueryFirstOrDefaultAsync<CashAccountReadModel>(sql, parameters);
                     if (detail is null)
                     {
-                        string msg = $"Unable to locate a cash account with Id '{queryParameters.CashAccountId}'!";
+                        string msg = $"Unable to locate a cash account with account number '{queryParameters.AccountNumber}'!";
                         return OperationResult<CashAccountReadModel>.CreateFailure(msg);
                     }
 

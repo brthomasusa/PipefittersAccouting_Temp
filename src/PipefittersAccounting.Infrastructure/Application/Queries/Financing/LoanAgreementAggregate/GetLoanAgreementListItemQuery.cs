@@ -5,7 +5,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.ReadModels;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.LoanAgreementAggregate
 {
     public class GetLoanAgreementListItemQuery
     {

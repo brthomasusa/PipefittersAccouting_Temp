@@ -78,4 +78,38 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
     }
+
+    public class ExternalAgentIdentificationInfo
+    {
+        public Guid AgentId { get; set; }
+        public int AgentTypeId { get; set; }
+        public string? AgentTypeName { get; set; }
+    }
+
+    public class EconomicEventIdentificationInfo
+    {
+        public Guid EventId { get; set; }
+        public int EventTypeId { get; set; }
+        public string? EventTypeName { get; set; }
+    }
+
+    public class CreditorIssuedLoanAgreementValidationInfo
+    {
+        public Guid FinancierId { get; set; }
+        public string? FinancierName { get; set; }
+        public Guid LoanId { get; set; }
+        public decimal LoanAmount { get; set; }
+    }
+
+    public class CashReceiptOfDebtIssueProceedsInfo
+    {
+        public Guid FinancierId { get; set; }
+        public Guid LoanId { get; set; }
+        public string? FinancierName { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime MaturityDate { get; set; }
+        public decimal LoanAmount { get; set; }
+        public DateTime? DateReceived { get; set; }
+        public decimal AmountReceived { get; set; }
+    }
 }

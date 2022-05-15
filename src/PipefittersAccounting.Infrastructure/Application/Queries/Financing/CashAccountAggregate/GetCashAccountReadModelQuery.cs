@@ -4,11 +4,11 @@ using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate
 {
-    public class GetCashAccountWithAccountNameQuery
+    public class GetCashAccountReadModelQuery
     {
-        public async static Task<OperationResult<CashAccountReadModel>> Query(GetCashAccountWithAccountName queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<CashAccountReadModel>> Query(GetCashAccount queryParameters, DapperContext ctx)
         {
             try
             {
@@ -17,17 +17,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
                     CashAccountId, CashAccountTypeId, BankName, AccountName, AccountNumber,
                     RoutingTransitNumber, DateOpened, UserId, CreatedDate, LastModifiedDate
                 FROM Finance.CashAccounts
-                WHERE AccountName = @ACCTNAME";
+                WHERE CashAccountId = @ID";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("ACCTNAME", queryParameters.AccountName, DbType.String);
+                parameters.Add("ID", queryParameters.CashAccountId, DbType.Guid);
 
                 using (var connection = ctx.CreateConnection())
                 {
                     CashAccountReadModel detail = await connection.QueryFirstOrDefaultAsync<CashAccountReadModel>(sql, parameters);
                     if (detail is null)
                     {
-                        string msg = $"Unable to locate a cash account with account name '{queryParameters.AccountName}'!";
+                        string msg = $"Unable to locate a cash account with Id '{queryParameters.CashAccountId}'!";
                         return OperationResult<CashAccountReadModel>.CreateFailure(msg);
                     }
 

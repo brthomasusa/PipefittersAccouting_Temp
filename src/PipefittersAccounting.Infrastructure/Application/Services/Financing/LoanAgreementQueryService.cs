@@ -1,7 +1,7 @@
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
-using PipefittersAccounting.Infrastructure.Application.Queries.Financing;
+using PipefittersAccounting.Infrastructure.Application.Queries.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 

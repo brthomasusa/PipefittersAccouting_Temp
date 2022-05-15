@@ -1,5 +1,5 @@
+using PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
-using PipefittersAccounting.Infrastructure.Application.Queries.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
@@ -46,5 +46,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<int>> GetNumberOfCashAccountTransactions(GetCashAccount queryParameters)
             => await GetNumberOfCashAccountTransactionsQuery.Query(queryParameters, _dapperCtx);
+
+        public Task<OperationResult<ExternalAgentIdentificationInfo>> GetExternalAgentIdentificationInfo(ExternalAgentIdentificationParameters queryParameters)
+            => throw new NotImplementedException();
+
+        public Task<OperationResult<EconomicEventIdentificationInfo>> GetEconomicEventIdentificationInfo(EconomicEventIdentificationParameters queryParameters)
+            => throw new NotImplementedException();
+
+        public Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorIssuedLoanAgreementValidationParameters queryParameters)
+            => throw new NotImplementedException();
+
+        public Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters)
+            => throw new NotImplementedException();
     }
 }

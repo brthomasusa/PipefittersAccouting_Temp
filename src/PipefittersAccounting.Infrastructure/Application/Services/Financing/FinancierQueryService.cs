@@ -1,4 +1,4 @@
-using PipefittersAccounting.Infrastructure.Application.Queries.Financing;
+using PipefittersAccounting.Infrastructure.Application.Queries.Financing.FinancierAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;

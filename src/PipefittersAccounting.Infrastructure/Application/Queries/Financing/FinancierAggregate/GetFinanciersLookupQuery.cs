@@ -1,11 +1,12 @@
 using System.Data;
 using Dapper;
+using PipefittersAccounting.Infrastructure.Application.Queries.Financing.FinancierAggregate;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.FinancierAggregate
 {
     public class GetFinanciersLookupQuery
     {

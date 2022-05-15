@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             {
                 if (getResult.Result.CashAccountTypeId != accountInfo.CashAccountType)
                 {
-                    CannotEditCashAcctAcctTypeIfTransactionsAttachedValidator transactionCountValidator = new(queryService);
+                    CannotEditCashAcctAcctTypeIfTransactionsExistValidator transactionCountValidator = new(queryService);
                     acctNameValidator.SetNext(transactionCountValidator);
                 }
             }

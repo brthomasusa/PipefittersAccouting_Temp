@@ -7,10 +7,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface ICashAccountAggregateValidationService : IDomainService
     {
-        Task<ValidationResult> IsValidCashDisbursement(CreateCashAccountTransactionInfo transactionInfo);
-
-        Task<ValidationResult> IsValidCashDeposit(CreateCashAccountTransactionInfo transactionInfo);
-
         Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount);
 
         Task<ValidationResult> IsValidCreateCashAccountInfo(CreateCashAccountInfo writeModel);
@@ -18,5 +14,11 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel);
 
         Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel);
+
+        Task<ValidationResult> IsValidCashDepositOfSalesProceeds(CreateCashAccountTransactionInfo transactionInfo);
+
+        Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
+
+        Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
     }
 }
