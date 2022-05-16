@@ -7,6 +7,8 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 {
+    // Facade pattern; hides the Commands that do the actual work
+
     public class CashAccountApplicationService : ICashAccountApplicationService
     {
         private readonly ICashAccountAggregateValidationService _validationService;

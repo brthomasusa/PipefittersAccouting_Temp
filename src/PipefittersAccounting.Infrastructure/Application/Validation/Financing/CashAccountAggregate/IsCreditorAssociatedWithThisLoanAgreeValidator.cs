@@ -8,24 +8,26 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DidCreditorIssuedThisLoanAgreeValidator : Validator<CreateCashAccountTransactionInfo>
+    // Verify that a financier and a loan agreement are known to the system  
+    // and that the financier is associated with this particular loan agreement.
+
+    public class IsCreditorAssociatedWithThisLoanAgreeValidator : Validator<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public DidCreditorIssuedThisLoanAgreeValidator(ICashAccountQueryService cashAcctQrySvc)
+        public IsCreditorAssociatedWithThisLoanAgreeValidator(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transaction)
         {
             ValidationResult validationResult = new();
 
-            CreditorHasLoanAgreeValidationParams loanAgreementParam =
-                new() { FinancierId = transaction.AgentId, LoanId = transaction.EventId };
+            CreditorIssuedLoanAgreementValidationParameters queryParameters = new() { LoanId = transaction.EventId, FinancierId = transaction.AgentId };
 
-            OperationResult<CreditorHasLoanAgreeValidationModel> loanAgreementResult =
-                await _cashAcctQrySvc.GetCreditorHasLoanAgreeValidationModel(loanAgreementParam);
+            OperationResult<CreditorIssuedLoanAgreementValidationInfo> result =
+                await _cashAcctQrySvc.GetCreditorIssuedLoanAgreementValidationInfo(queryParameters);
 
-            if (loanAgreementResult.Success)
+            if (result.Success)
             {
                 validationResult.IsValid = true;
 
@@ -35,9 +37,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
             }
             else
+            // The loan id and financier id have been validated.
+            // So, to be here means the loan ageement was not issued
+            // by this financier.
             {
-                validationResult.IsValid = false;
-                validationResult.Messages.Add(loanAgreementResult.NonSuccessMessage);
+                validationResult.Messages.Add(result.NonSuccessMessage);
             }
 
             return validationResult; ;

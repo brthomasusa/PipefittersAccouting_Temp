@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             ICashAccountQueryService queryService
         )
         {
-            FinancierAsPayorIdentificationValidator financierValidator = new(queryService);
+            FinancierAsExternalAgentValidator financierValidator = new(queryService);
             // CreditorHasLoanAgreeValidator creditorHasLoanAgreeValidator = new(queryService);
             // ReceiptLoanProceedsValidator receiptLoanProceedsValidator = new(queryService);
 

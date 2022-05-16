@@ -9,14 +9,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
     public class CashDepositTransactionCommandDispatcher : BaseCashTransactionCommandDispatcher
     {
-        /*    
-            An implementation of the Open/Close principle; the O in SOLID.
-            When new dispatch logic is required, a new implementation of
-            BaseCashTransactionCommandDispatcher is created. So, we are extending
-            the dispatch logic by creating a new implementation rather than
-            modifying the dispatch logic in this class.     
-        */
-
         public CashDepositTransactionCommandDispatcher
         (
             CreateCashAccountTransactionInfo model,

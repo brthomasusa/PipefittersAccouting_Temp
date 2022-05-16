@@ -10,9 +10,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         This class arranges a group of validators into a chain.
         Execution of the chain will completely validate a
         CreateCashAccountTransactionInfo. The position of each
-        validator within the chain is important. Using the OCP,
-        if new validation logic is required then we would create
-        a new validation class rather than modifying this one.
+        validator within the chain is important. In other words,
+        the sequence in which the validation is performed is
+        important.
     */
 
     public class DepositOfDebtIssueProceedsValidation : BaseCashAccountTransactionValidation
@@ -29,8 +29,25 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
         public async override Task<ValidationResult> Validate()
         {
-            FinancierAsPayorIdentificationValidator financierValidator = new(QueryService);
-            return await financierValidator.Validate(CashAccountTransactionInfo);
+            // Check that financier is known to the system
+            FinancierAsExternalAgentValidator agentValidator = new(QueryService);
+
+            // Check that loan agreement is known to the system
+            LoanAgreementAsEconomicEventValidator eventValidator = new(QueryService);
+
+            // Ensure that loan agreement belongs to this financier
+            IsCreditorAssociatedWithThisLoanAgreeValidator loanAgreementIssuedByFinancierValidator = new(QueryService);
+
+            // Verify that transaction date is between loan date and maturity
+            // Verify that transaction amount equals loan agreement amount
+            // Verify that this deposit has not already been made
+            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator miscDetailsValidator = new(QueryService);
+
+            agentValidator.SetNext(eventValidator);
+            eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);
+            loanAgreementIssuedByFinancierValidator.SetNext(miscDetailsValidator);
+
+            return await agentValidator.Validate(CashAccountTransactionInfo);
         }
     }
 }
