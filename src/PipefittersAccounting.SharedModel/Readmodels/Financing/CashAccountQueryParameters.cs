@@ -43,4 +43,9 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     {
         public string? AccountNumber { get; set; }
     }
+
+    public class GetLoanInstallmentInfoParameters
+    {
+        public Guid LoanInstallmentId { get; set; }
+    }
 }

@@ -59,22 +59,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
-        public async Task GetDisburesementLoanPymtValidationModel_CashAccountQueryService_WithValidIdLoanInstallmentId_ShouldSucceed()
-        {
-            Guid loanInstallmentID = new Guid("76e6164a-249d-47a2-b47c-f09a332181b6");
-
-            DisburesementLoanPymtValidationParams qryParam = new() { LoanInstallmentId = loanInstallmentID };
-            OperationResult<DisburesementLoanPymtValidationModel> result =
-                await _queryService.GetDisburesementLoanPymtValidationModel(qryParam);
-
-            Assert.True(result.Success);
-            Assert.Equal(new Guid("12998229-7ede-4834-825a-0c55bde75695"), result.Result.FinancierId);
-            Assert.Equal(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"), result.Result.LoanId);
-        }
-
-
-
-        [Fact]
         public async Task GetCreditorHasLoanAgreeValidationModel_CashAccountQueryService_ValidFinancierIdLoanId_ShouldSucceed()
         {
             Guid financierID = new Guid("12998229-7ede-4834-825a-0c55bde75695");
@@ -259,6 +243,38 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(new DateTime(2022, 3, 19), result.Result.DateReceived);
             Assert.Equal(30000M, result.Result.AmountReceived);
         }
+
+        [Fact]
+        public async Task GetCashDisbursementForLoanInstallmentPaymentInfoQuery_CashAccountQueryService_ShouldSucceed()
+        {
+            GetLoanInstallmentInfoParameters queryParameters =
+                new() { LoanInstallmentId = new Guid("8e804651-5021-4577-bbda-e7ee45a74e44") };
+            OperationResult<CashDisbursementForLoanInstallmentPaymentInfo> result = await _queryService.GetCashDisbursementForLoanInstallmentPaymentInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(new DateTime(2022, 2, 2), result.Result.LoanDate);
+            Assert.Equal(new DateTime(2024, 2, 2), result.Result.MaturityDate);
+            Assert.Equal(1370.54M, result.Result.EqualMonthlyInstallment);
+            Assert.Equal(new DateTime(2022, 3, 2), result.Result.DatePaid);
+            Assert.Equal(1370.54M, result.Result.AmountPaid);
+        }
+
+        [Fact]
+        public async Task GetFinancierToLoanInstallmentValidationInfoQuery_CashAccountQueryService_ShouldSucceed()
+        {
+            GetLoanInstallmentInfoParameters queryParameters =
+                new() { LoanInstallmentId = new Guid("8e804651-5021-4577-bbda-e7ee45a74e44") };
+            OperationResult<FinancierToLoanInstallmentValidationInfo> result = await _queryService.GetFinancierToLoanInstallmentValidationInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"), result.Result.FinancierId);
+            Assert.Equal(new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f"), result.Result.LoanId);
+        }
+
+
+
 
     }
 }

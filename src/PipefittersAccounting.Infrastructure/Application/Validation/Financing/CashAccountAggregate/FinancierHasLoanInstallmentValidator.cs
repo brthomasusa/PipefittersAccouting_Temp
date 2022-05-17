@@ -9,30 +9,27 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    // A cash transaction must point to the event that cause 
-    // the deposit or disbursement of cash. For deposit of debt issue
-    // proceeds that event should be a specific loan agreement.
-
-    public class LoanAgreementAsEconomicEventValidator : Validator<CreateCashAccountTransactionInfo>
+    public class FinancierHasLoanInstallmentValidator : Validator<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public LoanAgreementAsEconomicEventValidator(ICashAccountQueryService cashAcctQrySvc)
+        public FinancierHasLoanInstallmentValidator(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
         {
             ValidationResult validationResult = new();
 
-            EconomicEventIdentificationParameters queryParameters = new() { EventId = transactionInfo.EventId };
-            OperationResult<EconomicEventIdentificationInfo> eventResult =
-                await _cashAcctQrySvc.GetEconomicEventIdentificationInfo(queryParameters);
+            GetLoanInstallmentInfoParameters queryParameters = new() { LoanInstallmentId = transactionInfo.EventId };
+            OperationResult<FinancierToLoanInstallmentValidationInfo> eventResult =
+                await _cashAcctQrySvc.GetFinancierToLoanInstallmentValidationInfo(queryParameters);
 
             // Is the event id known to the system?
             if (eventResult.Success)
             {
-                // Does the event id represent a loan agreement?
-                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.LoanAgreement)
+                // Is the loan installment associated with the financier? Or, should
+                // a payment be disbursed to this financier for this loan installment?
+                if (eventResult.Result.FinancierId == transactionInfo.AgentId)
                 {
                     validationResult.IsValid = true;
 
@@ -43,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting a loan agreement!";
+                    string msg = $"This financier '{transactionInfo.AgentId}' is not the correct payee for this loan installment!";
                     validationResult.Messages.Add(msg);
                 }
             }

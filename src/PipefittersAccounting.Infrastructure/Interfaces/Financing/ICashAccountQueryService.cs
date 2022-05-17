@@ -15,9 +15,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<DepositLoanProceedsValidationModel>>
             GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters);
 
-        Task<OperationResult<DisburesementLoanPymtValidationModel>>
-            GetDisburesementLoanPymtValidationModel(DisburesementLoanPymtValidationParams queryParameters);
-
         Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters);
 
         Task<OperationResult<CashAccountReadModel>> GetCashAccountReadModel(GetCashAccount queryParameters);
@@ -37,5 +34,9 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorIssuedLoanAgreementValidationParameters queryParameters);
 
         Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters);
+
+        Task<OperationResult<CashDisbursementForLoanInstallmentPaymentInfo>> GetCashDisbursementForLoanInstallmentPaymentInfo(GetLoanInstallmentInfoParameters queryParameters);
+
+        Task<OperationResult<FinancierToLoanInstallmentValidationInfo>> GetFinancierToLoanInstallmentValidationInfo(GetLoanInstallmentInfoParameters queryParameters);
     }
 }

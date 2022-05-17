@@ -112,4 +112,23 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime? DateReceived { get; set; }
         public decimal AmountReceived { get; set; }
     }
+
+    public class FinancierToLoanInstallmentValidationInfo
+    {
+        public Guid FinancierId { get; set; }
+        public Guid LoanId { get; set; }
+        public Guid LoanInstallmentId { get; set; }
+    }
+
+    public class CashDisbursementForLoanInstallmentPaymentInfo
+    {
+        public Guid FinancierId { get; set; }
+        public Guid LoanId { get; set; }
+        public Guid LoanInstallmentId { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime MaturityDate { get; set; }
+        public decimal EqualMonthlyInstallment { get; set; }
+        public DateTime DatePaid { get; set; }
+        public decimal AmountPaid { get; set; }
+    }
 }

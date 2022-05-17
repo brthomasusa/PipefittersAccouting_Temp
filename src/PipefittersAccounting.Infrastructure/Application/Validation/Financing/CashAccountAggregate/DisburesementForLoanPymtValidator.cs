@@ -19,21 +19,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         {
             ValidationResult validationResult = new();
 
-            DisburesementLoanPymtValidationParams queryParam =
+            GetLoanInstallmentInfoParameters queryParam =
                 new() { LoanInstallmentId = transactionInfo.EventId };
 
-            OperationResult<DisburesementLoanPymtValidationModel> loanPymtResult =
-                await _cashAcctQrySvc.GetDisburesementLoanPymtValidationModel(queryParam);
+            OperationResult<CashDisbursementForLoanInstallmentPaymentInfo> loanPymtResult =
+                await _cashAcctQrySvc.GetCashDisbursementForLoanInstallmentPaymentInfo(queryParam);
 
             if (loanPymtResult.Success)
             {
-                // Check FinancierId
-                if (loanPymtResult.Result.FinancierId == transactionInfo.AgentId)
+                // Check that transaction date is between loan date and maturity date
+                if (transactionInfo.TransactionDate >= loanPymtResult.Result.LoanDate &&
+                    transactionInfo.TransactionDate <= loanPymtResult.Result.MaturityDate)
                 {
-                    // Check payment amount against transaction amount
+                    // Check transaction amount against EMI amount
                     if (loanPymtResult.Result.EqualMonthlyInstallment == transactionInfo.TransactionAmount)
                     {
-                        // Check that pymt has not already been paid
                         if (loanPymtResult.Result.AmountPaid == 0)
                         {
                             validationResult.IsValid = true;
@@ -45,11 +45,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                         }
                         else
                         {
-                            decimal amtPaid = loanPymtResult.Result.AmountPaid;
-                            DateTime datePaid = loanPymtResult.Result.DatePaid;
-                            string msg = $"This installment has already been paid. ${amtPaid} was paid on {datePaid}.";
-
-                            validationResult.IsValid = false;
+                            string msg = $"Duplicate payment! This loan installment payment was paid on {loanPymtResult.Result.DatePaid}.";
                             validationResult.Messages.Add(msg);
                         }
                     }
@@ -57,25 +53,19 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                     {
                         decimal transAmt = transactionInfo.TransactionAmount;
                         decimal pymtAmt = loanPymtResult.Result.EqualMonthlyInstallment;
-                        string msg = $"The transaction amount {transAmt} does not match the installment amount {pymtAmt}.";
+                        string msg = $"Invalid disbursement amount ({transAmt})! The disbursement amount should be {pymtAmt} (Equal Monthly Installment).";
 
-                        validationResult.IsValid = false;
                         validationResult.Messages.Add(msg);
                     }
                 }
                 else
                 {
-                    Guid eventId = transactionInfo.EventId;
-                    Guid financierId = loanPymtResult.Result.FinancierId;
-                    string msg = $"The financier in the transaction {eventId} does not match the financier in the loan agreement {financierId}.";
-
-                    validationResult.IsValid = false;
+                    string msg = $"Invalid transaction date; the transaction date must be between {loanPymtResult.Result.LoanDate} and {loanPymtResult.Result.MaturityDate}.";
                     validationResult.Messages.Add(msg);
                 }
             }
             else
             {
-                validationResult.IsValid = false;
                 validationResult.Messages.Add(loanPymtResult.NonSuccessMessage);
             }
 

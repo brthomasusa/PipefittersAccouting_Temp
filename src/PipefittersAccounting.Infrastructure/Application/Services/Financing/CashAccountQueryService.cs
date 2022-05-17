@@ -25,10 +25,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters)
                 => await GetReceiptLoanProceedsValidationModelQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<DisburesementLoanPymtValidationModel>>
-            GetDisburesementLoanPymtValidationModel(DisburesementLoanPymtValidationParams queryParameters)
-                => await GetDisburesementLoanPymtValidationModelQuery.Query(queryParameters, _dapperCtx);
-
         public async Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters)
             => await GetCashAccountDetailsQuery.Query(queryParameters, _dapperCtx);
 
@@ -58,5 +54,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters)
             => await GetCashReceiptOfDebtIssueProceedsInfoQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<CashDisbursementForLoanInstallmentPaymentInfo>> GetCashDisbursementForLoanInstallmentPaymentInfo(GetLoanInstallmentInfoParameters queryParameters)
+            => await GetCashDisbursementForLoanInstallmentPaymentInfoQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<FinancierToLoanInstallmentValidationInfo>> GetFinancierToLoanInstallmentValidationInfo(GetLoanInstallmentInfoParameters queryParameters)
+            => await GetFinancierToLoanInstallmentValidationInfoQuery.Query(queryParameters, _dapperCtx);
     }
 }

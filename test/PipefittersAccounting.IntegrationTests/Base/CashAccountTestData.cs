@@ -135,6 +135,34 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
+        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymt()
+            => new()
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                TransactionType = 4,
+                TransactionDate = new DateTime(2022, 5, 17),
+                TransactionAmount = 1100M,
+                AgentId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
+                EventId = new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2"),
+                CheckNumber = "2001",
+                RemittanceAdvice = "ABCDE",
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymtDuplicate()
+            => new()
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                TransactionType = 4,
+                TransactionDate = new DateTime(2022, 5, 17),
+                TransactionAmount = 1370.54M,
+                AgentId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
+                EventId = new Guid("8e804651-5021-4577-bbda-e7ee45a74e44"),
+                CheckNumber = "2001",
+                RemittanceAdvice = "ABCDE",
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
         public static CreateCashAccountInfo GetCreateCashAccountInfo()
             => new CreateCashAccountInfo
             {

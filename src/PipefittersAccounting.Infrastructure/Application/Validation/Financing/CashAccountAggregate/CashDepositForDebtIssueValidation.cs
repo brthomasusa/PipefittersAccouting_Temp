@@ -6,7 +6,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing
 {
-    public class CashReceiptForDebtIssueValidator
+    public class CashDepositForDebtIssueValidator
     {
         public static async Task<ValidationResult> Validate
         (
