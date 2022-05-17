@@ -175,5 +175,27 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
 
             Assert.False(result.Success);
         }
+
+        [Fact]
+        public async void Process_CreateCashDepositForDebtIssueProceedsCommand_ShouldSucceed()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+
+            OperationResult<bool> result =
+                await CreateCashDepositForDebtIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForDebtIssueProceedsCommand_DuplicateLoanProceedsDeposit_ShouldSucceed()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
+
+            OperationResult<bool> result =
+                await CreateCashDepositForDebtIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
     }
 }

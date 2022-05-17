@@ -190,5 +190,61 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.False(validationResult.IsValid);
         }
+
+        /*********************************************************************/
+        /*                   Validation service                      */
+        /*********************************************************************/
+
+        [Fact]
+        public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_ShouldSucceed()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidTransactionDate_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            model.TransactionDate = new DateTime(2022, 3, 15);
+
+            ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidEventType_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
+
+            ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidPaymentAmount_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            model.TransactionAmount = 1200M;
+
+            ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_DuplicatePymtAttempt_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+
+            ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
+
+            Assert.False(validationResult.IsValid);
+        }
     }
 }

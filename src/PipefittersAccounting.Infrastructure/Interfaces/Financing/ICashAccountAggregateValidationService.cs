@@ -20,5 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
 
         Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
+
+        Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo);
     }
 }

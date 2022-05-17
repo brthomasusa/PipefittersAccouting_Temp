@@ -30,16 +30,29 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             => throw new NotImplementedException();
 
         public virtual async Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo transactionInfo)
-            => await ValidateDepositOfDebtIssueProceeds(transactionInfo);
+            => await ValidateDepositOfDebtIssueProceeds(transactionInfo);   // TODO ValidationService testing of IsValidCashDepositOfDebtIssueProceeds
 
 
         public virtual Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CreateCashAccountTransactionInfo transactionInfo)
         => throw new NotImplementedException();
 
+        public virtual async Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo)
+            => await ValidateDisbursementForLoanPayment(transactionInfo);
+
+
+
+
+
         private async Task<ValidationResult> ValidateDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo model)
         {
-            DepositOfDebtIssueProceedsValidation depositValidation = new(model, _cashAcctQrySvc);
-            return await depositValidation.Validate();
+            DepositOfDebtIssueProceedsValidation validation = new(model, _cashAcctQrySvc);
+            return await validation.Validate();
+        }
+
+        private async Task<ValidationResult> ValidateDisbursementForLoanPayment(CreateCashAccountTransactionInfo model)
+        {
+            DisbursementForLoanPaymentValidation validation = new(model, _cashAcctQrySvc);
+            return await validation.Validate();
         }
     }
 }

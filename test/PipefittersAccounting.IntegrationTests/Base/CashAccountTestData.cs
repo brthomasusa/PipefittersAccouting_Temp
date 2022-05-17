@@ -107,7 +107,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfo()
+        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionLoanProceedsInfo()
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
@@ -121,7 +121,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoDuplicateDeposit()
+        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit()
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),

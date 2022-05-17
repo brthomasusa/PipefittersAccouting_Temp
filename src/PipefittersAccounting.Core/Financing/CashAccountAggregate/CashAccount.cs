@@ -92,47 +92,10 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public virtual IReadOnlyCollection<CashTransaction> CashTransactions => _cashTransactions.ToList();
 
-        public void DepositCash(CashDeposit deposit)
-        {
-            _cashTransactions.Add
-            (
-                new CashTransaction
-                (
-                    deposit.DepositType,
-                    EntityGuidID.Create(this.Id),  // CashAccount Id 
-                    deposit.TransactionDate,
-                    deposit.TransactionAmount,
-                    EntityGuidID.Create(deposit.Payor.Id),
-                    EntityGuidID.Create(deposit.GoodsOrServiceSold.Id),
-                    deposit.CheckNumber,
-                    deposit.RemittanceAdvice,
-                    EntityGuidID.Create(deposit.UserId)
-                )
-            );
+        public void DepositCash(CashTransaction deposit) => _cashTransactions.Add(deposit);
 
-            AddDomainEvent(CashDepositCreated.Create(deposit));
-        }
 
-        public void DisburseCash(CashDisbursement disbursement)
-        {
-            _cashTransactions.Add
-            (
-                new CashTransaction
-                (
-                    disbursement.DisbursementType,
-                    EntityGuidID.Create(this.Id),  // CashAccount Id financing proceeds
-                    disbursement.TransactionDate,
-                    disbursement.TransactionAmount,
-                    EntityGuidID.Create(disbursement.Payee.Id),
-                    EntityGuidID.Create(disbursement.GoodsOrServicePurchased.Id),
-                    disbursement.CheckNumber,
-                    disbursement.RemittanceAdvice,
-                    EntityGuidID.Create(disbursement.UserId)
-                )
-            );
-
-            AddDomainEvent(CashDisbursementCreated.Create(disbursement));
-        }
+        public void DisburseCash(CashTransaction disbursement) => _cashTransactions.Add(disbursement);
 
         public void TransferCash(CashTransfer cashTransfer)
         {

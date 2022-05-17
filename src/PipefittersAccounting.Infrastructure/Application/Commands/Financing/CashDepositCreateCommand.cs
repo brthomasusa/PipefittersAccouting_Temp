@@ -1,3 +1,4 @@
+using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
@@ -15,17 +16,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             ICashAccountAggregateValidationService validationService,
             IUnitOfWork unitOfWork
         )
-        {
-            OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
-
-            if (!result.Success)
+            => (CashTransactionTypeEnum)model.TransactionType switch
             {
-                string errMsg = $"Create operation failed! Could not locate a cash account with this Id '{model.CashAccountId}'!";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
+                CashTransactionTypeEnum.CashReceiptSales => throw new NotImplementedException(),
 
-            CashDepositTransactionCommandDispatcher dispatcher = new(model, repository, validationService, unitOfWork);
-            return await dispatcher.Dispatch();
-        }
+                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds =>
+                    await CreateCashDepositForDebtIssueProceedsCommand.Process(model, repository, validationService, unitOfWork),
+
+                CashTransactionTypeEnum.CashReceiptStockIssueProceeds => throw new NotImplementedException(),
+
+                _ => OperationResult<bool>.CreateFailure($"Unexpected deposit transaction type: {(CashTransactionTypeEnum)model.TransactionType}"),
+            };
     }
 }
