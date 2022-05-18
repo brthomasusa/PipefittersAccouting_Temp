@@ -23,8 +23,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Check that loan installment is known to the system
             LoanInstallmentPaymentAsEconomicEventValidator eventValidator = new(QueryService);
 
-            // Check that financier is valid payee for this loan installment
+            // Check that the financier is valid payee for this loan installment
             FinancierHasLoanInstallmentValidator payeeValidator = new(QueryService);
+
+            // Verify that debt issue proceeds have been received.
+            VerifyDebtIssueProceedsHaveBeenReceivedValidator verifyProceedsReceivedValidator = new(QueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals installment's EMI
@@ -32,7 +35,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             DisburesementForLoanPymtValidator disburesementValidator = new(QueryService);
 
             eventValidator.SetNext(payeeValidator);
-            payeeValidator.SetNext(disburesementValidator);
+            payeeValidator.SetNext(verifyProceedsReceivedValidator);
+            verifyProceedsReceivedValidator.SetNext(disburesementValidator);
 
             return await eventValidator.Validate(CashAccountTransactionInfo);
         }

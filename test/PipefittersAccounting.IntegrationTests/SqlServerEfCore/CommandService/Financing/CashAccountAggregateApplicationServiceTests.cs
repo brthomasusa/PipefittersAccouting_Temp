@@ -188,12 +188,45 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         }
 
         [Fact]
-        public async void Process_CreateCashDepositForDebtIssueProceedsCommand_DuplicateLoanProceedsDeposit_ShouldSucceed()
+        public async void Process_CreateCashDepositForDebtIssueProceedsCommand_DuplicateLoanProceedsDeposit_ShouldFail()
         {
             CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
 
             OperationResult<bool> result =
                 await CreateCashDepositForDebtIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForLoanPaymentCommand_ShouldSucceed()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForLoanPaymentCommand_Duplicate_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForLoanPaymentCommand_ProceedsNotReceived_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.False(result.Success);
         }

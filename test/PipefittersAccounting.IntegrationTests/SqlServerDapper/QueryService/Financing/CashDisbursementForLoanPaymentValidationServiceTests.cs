@@ -81,6 +81,30 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
+        public async Task Validate_VerifyDebtIssueProceedsHaveBeenReceivedValidator_ShouldSucceed()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+
+            VerifyDebtIssueProceedsHaveBeenReceivedValidator validator = new(_queryService);
+
+            ValidationResult validationResult = await validator.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyDebtIssueProceedsHaveBeenReceivedValidator_ProceedsNotReceived_ShouldFail()
+        {
+            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
+
+            VerifyDebtIssueProceedsHaveBeenReceivedValidator validator = new(_queryService);
+
+            ValidationResult validationResult = await validator.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
         public async Task Validate_DisburesementForLoanPymtValidator_ShouldSucceed()
         {
             CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
@@ -96,7 +120,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_DisburesementForLoanPymtValidator_InvalidTransactionDate_ShouldFail()
         {
             CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
-            model.TransactionDate = new DateTime(2022, 3, 15);
+            model.TransactionDate = new DateTime(2022, 2, 1);
 
             DisburesementForLoanPymtValidator validator = new(_queryService);
 
@@ -169,7 +193,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_DisbursementForLoanPaymentValidation_TransactionDateOutOfRange_ShouldFail()
         {
             CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
-            model.TransactionDate = new DateTime(2022, 3, 15);
+            model.TransactionDate = new DateTime(2022, 2, 1);
 
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
 
@@ -208,7 +232,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidTransactionDate_ShouldFail()
         {
             CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
-            model.TransactionDate = new DateTime(2022, 3, 15);
+            model.TransactionDate = new DateTime(2022, 2, 1);
 
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
 

@@ -7,9 +7,9 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CashDepositCreateCommand
+    public class CashDisbursementCreateCommandDispatcher
     {
-        public async static Task<OperationResult<bool>> Process
+        public static async Task<OperationResult<bool>> Process
         (
             CreateCashAccountTransactionInfo model,
             ICashAccountAggregateRepository repository,
@@ -18,12 +18,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         )
             => (CashTransactionTypeEnum)model.TransactionType switch
             {
-                CashTransactionTypeEnum.CashReceiptSales => throw new NotImplementedException(),
+                CashTransactionTypeEnum.CashDisbursementDividentPayment => throw new NotImplementedException(),
 
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds =>
-                    await CreateCashDepositForDebtIssueProceedsCommand.Process(model, repository, validationService, unitOfWork),
+                CashTransactionTypeEnum.CashDisbursementLoanPayment
+                    => await CreateCashDisbursementForLoanPaymentCommand.Process(model, repository, validationService, unitOfWork),
 
-                CashTransactionTypeEnum.CashReceiptStockIssueProceeds => throw new NotImplementedException(),
+                CashTransactionTypeEnum.CashDisbursementPurchaseReceipt => throw new NotImplementedException(),
+
+                CashTransactionTypeEnum.CashDisbursementTimeCardPayment => throw new NotImplementedException(),
 
                 _ => OperationResult<bool>.CreateFailure($"Unexpected deposit transaction type: {(CashTransactionTypeEnum)model.TransactionType}"),
             };

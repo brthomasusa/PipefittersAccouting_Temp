@@ -37,10 +37,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             => await CashAccountDeleteCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> CreateCashDeposit(CreateCashAccountTransactionInfo writeModel)
-        => await CashDepositCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
+        => await CashDepositCreateCommandDispatcher.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel)
-            => await CashDisbursementCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
+            => await CashDisbursementCreateCommandDispatcher.Process(writeModel, _repository, _validationService, _unitOfWork);
 
     }
 }

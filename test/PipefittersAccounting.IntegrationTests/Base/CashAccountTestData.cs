@@ -140,11 +140,11 @@ namespace PipefittersAccounting.IntegrationTests.Base
             {
                 CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
                 TransactionType = 4,
-                TransactionDate = new DateTime(2022, 5, 17),
-                TransactionAmount = 1100M,
-                AgentId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
-                EventId = new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2"),
-                CheckNumber = "2001",
+                TransactionDate = new DateTime(2022, 5, 2),
+                TransactionAmount = 1370.54M,
+                AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"),
+                EventId = new Guid("e4ca6c30-6fd7-44ea-89b5-e11ecfc5989b"),
+                CheckNumber = "2311",
                 RemittanceAdvice = "ABCDE",
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
@@ -156,8 +156,22 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 TransactionType = 4,
                 TransactionDate = new DateTime(2022, 5, 17),
                 TransactionAmount = 1370.54M,
+                AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"),
+                EventId = new Guid("97fa51e0-e02a-46c1-9f09-73f72a5519c9"),
+                CheckNumber = "2312",
+                RemittanceAdvice = "ABCDE",
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited()
+            => new()
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                TransactionType = 4,
+                TransactionDate = new DateTime(2022, 5, 17),
+                TransactionAmount = 1100M,
                 AgentId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
-                EventId = new Guid("8e804651-5021-4577-bbda-e7ee45a74e44"),
+                EventId = new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2"),
                 CheckNumber = "2001",
                 RemittanceAdvice = "ABCDE",
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
