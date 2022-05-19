@@ -33,32 +33,6 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public Guid UserId { get; set; }
     }
 
-    public class CreateCashDepositInfo : IWriteModel
-    {
-        public Guid CashAccountId { get; set; }
-        public int DepositType { get; set; }
-        public Guid Payor { get; set; }
-        public Guid GoodsOrServices { get; set; }
-        public decimal DepositAmount { get; set; }
-        public DateTime DepositDate { get; set; }
-        public string? CheckNumber { get; set; }
-        public string? RemittanceAdvice { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class CreateCashDisbursementInfo : IWriteModel
-    {
-        public Guid CashAccountId { get; set; }
-        public int DisbursementType { get; set; }
-        public Guid Payee { get; set; }
-        public Guid GoodsOrServices { get; set; }
-        public decimal DisbursementAmount { get; set; }
-        public DateTime DisbursementDate { get; set; }
-        public string? CheckNumber { get; set; }
-        public string? RemittanceAdvice { get; set; }
-        public Guid UserId { get; set; }
-    }
-
     public class CreateCashAccountTransactionInfo : IWriteModel
     {
         public Guid CashAccountId { get; set; }

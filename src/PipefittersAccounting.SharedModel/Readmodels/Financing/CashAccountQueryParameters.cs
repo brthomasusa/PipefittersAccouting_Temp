@@ -48,4 +48,16 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     {
         public Guid LoanInstallmentId { get; set; }
     }
+
+    public class GetCashAccountTransactionDetailParameters
+    {
+        public int CashTransactionId { get; set; }
+    }
+
+    public class GetCashAccountTransactionListItemsParameters
+    {
+        public Guid CashAccountId { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
 }

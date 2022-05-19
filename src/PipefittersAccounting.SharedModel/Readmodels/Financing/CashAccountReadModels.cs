@@ -131,4 +131,35 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime DatePaid { get; set; }
         public decimal AmountPaid { get; set; }
     }
+
+    public class CashAccountTransactionDetail
+    {
+        public int CashTransactionId { get; set; }
+        public DateTime CashAcctTransactionDate { get; set; }
+        public decimal CashAcctTransactionAmount { get; set; }
+        public Guid AgentId { get; set; }
+        public int AgentTypeId { get; set; }
+        public string? AgentName { get; set; }
+        public string? AgentTypeName { get; set; }
+        public Guid EventId { get; set; }
+        public string? CashTransactionTypeName { get; set; }
+        public string? CheckNumber { get; set; }
+        public string? RemittanceAdvice { get; set; }
+        public Guid UserId { get; set; }
+        public string? UserFullName { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+    }
+
+    public class CashAccountTransactionListItem
+    {
+        public int CashTransactionId { get; set; }
+        public DateTime CashAcctTransactionDate { get; set; }
+        public decimal CashAcctTransactionAmount { get; set; }
+        public Guid AgentId { get; set; }
+        public int AgentTypeId { get; set; }
+        public string? AgentName { get; set; }
+        public string? AgentTypeName { get; set; }
+        public string? CashTransactionTypeName { get; set; }
+    }
 }

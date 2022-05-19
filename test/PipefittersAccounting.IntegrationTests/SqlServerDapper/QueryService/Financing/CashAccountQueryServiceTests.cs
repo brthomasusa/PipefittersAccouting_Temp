@@ -273,8 +273,30 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f"), result.Result.LoanId);
         }
 
+        [Fact]
+        public async Task GetCashAccountTransactionDetailsQuery_CashAccountQueryService_ShouldSucceed()
+        {
+            GetCashAccountTransactionDetailParameters queryParameters =
+                new() { CashTransactionId = 1 };
+            OperationResult<CashAccountTransactionDetail> result = await _queryService.GetCashAccountTransactionDetail(queryParameters);
 
+            Assert.True(result.Success);
 
+            Assert.Equal(new DateTime(2022, 1, 10), result.Result.CashAcctTransactionDate);
+            Assert.Equal(10000M, result.Result.CashAcctTransactionAmount);
+        }
+
+        [Fact]
+        public async Task GetCashAccountTransactionListItemQuery_CashAccountQueryService_ShouldSucceed()
+        {
+            GetCashAccountTransactionListItemsParameters queryParameters =
+                new() { CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"), Page = 1, PageSize = 10 };
+            OperationResult<PagedList<CashAccountTransactionListItem>> result = await _queryService.GetCashAccountTransactionListItem(queryParameters);
+
+            Assert.True(result.Success);
+            int count = result.Result.Count;
+            Assert.True(count > 0);
+        }
 
     }
 }

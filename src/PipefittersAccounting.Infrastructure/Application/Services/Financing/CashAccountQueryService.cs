@@ -60,5 +60,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<FinancierToLoanInstallmentValidationInfo>> GetFinancierToLoanInstallmentValidationInfo(GetLoanInstallmentInfoParameters queryParameters)
             => await GetFinancierToLoanInstallmentValidationInfoQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<CashAccountTransactionDetail>> GetCashAccountTransactionDetail(GetCashAccountTransactionDetailParameters queryParameters)
+            => await GetCashAccountTransactionDetailsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<CashAccountTransactionListItem>>> GetCashAccountTransactionListItem(GetCashAccountTransactionListItemsParameters queryParameters)
+            => await GetCashAccountTransactionListItemQuery.Query(queryParameters, _dapperCtx);
     }
 }

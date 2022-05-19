@@ -11,7 +11,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
 {
     [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/{v:apiVersion}/[controller]")]
+    [Route("api/{v:apiVersion}/CashAccounts")]
     public class CashAccountsController : ControllerBase
     {
         private readonly ILogger<CashAccountsController> _logger;
