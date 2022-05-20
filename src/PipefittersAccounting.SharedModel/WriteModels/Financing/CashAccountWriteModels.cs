@@ -35,6 +35,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 
     public class CreateCashAccountTransactionInfo : IWriteModel
     {
+        public int CashTransactionId { get; set; }
         public Guid CashAccountId { get; set; }
         public int TransactionType { get; set; }
         public DateTime TransactionDate { get; set; }

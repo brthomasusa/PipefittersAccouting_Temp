@@ -50,6 +50,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                         cashAccount.DisburseCash(transaction);
                         await repository.UpdateCashAccountAsync(cashAccount);
                         await uow.Commit();
+                        model.CashTransactionId = transaction.Id;
                     }
                     else
                     {

@@ -30,15 +30,123 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             _appSvc = applicationService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route("cashtransaction/{cashTransactionId:int}")]
+        public async Task<ActionResult<CashAccountTransactionDetail>> GetCashAccountTransactionDetails(int cashTransactionId)
         {
-            return View();
+            GetCashAccountTransactionDetailParameters queryParams =
+                new()
+                {
+                    CashTransactionId = cashTransactionId
+                };
+
+            OperationResult<CashAccountTransactionDetail> result = await _qrySvc.GetCashAccountTransactionDetail(queryParams);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            if (result.Exception is null)
+            {
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        [Route("cashtransactions")]
+        public async Task<ActionResult<PagedList<CashAccountTransactionListItem>>> GetCashAccountTransactionListItems([FromQuery] GetCashAccountTransactionListItemsParameters qryParams)
         {
-            return View("Error!");
+            OperationResult<PagedList<CashAccountTransactionListItem>> result =
+                await _qrySvc.GetCashAccountTransactionListItem(qryParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            if (result.Exception is null)
+            {
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
         }
+
+        [HttpPost("cashtransaction/createdeposit/debtissueproceeds")]
+        public async Task<IActionResult> CreateDepositForDebtIssueProceeds([FromBody] CreateCashAccountTransactionInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _appSvc.CreateCashDeposit(writeModel);
+
+            if (writeResult.Success)
+            {
+                GetCashAccountTransactionDetailParameters queryParams =
+                    new()
+                    {
+                        CashTransactionId = writeModel.CashTransactionId
+                    };
+                OperationResult<CashAccountTransactionDetail> getResult = await _qrySvc.GetCashAccountTransactionDetail(queryParams);
+
+                if (getResult.Success)
+                {
+                    return CreatedAtAction(nameof(GetCashAccountTransactionDetails), new { cashTransactionId = writeModel.CashTransactionId }, getResult.Result);
+                }
+                else
+                {
+                    return StatusCode(201, "Create cash deposit for debt issue proceeds succeeded; unable to return newly created cash transaction.");
+                }
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
+        [HttpPost("cashtransaction/createdisbursement/loaninstallmentpayment")]
+        public async Task<IActionResult> CreateDisbursementForLoanInstallmentPayment([FromBody] CreateCashAccountTransactionInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _appSvc.CreateCashDisbursement(writeModel);
+
+            if (writeResult.Success)
+            {
+                GetCashAccountTransactionDetailParameters queryParams =
+                    new()
+                    {
+                        CashTransactionId = writeModel.CashTransactionId
+                    };
+                OperationResult<CashAccountTransactionDetail> getResult = await _qrySvc.GetCashAccountTransactionDetail(queryParams);
+
+                if (getResult.Success)
+                {
+                    return CreatedAtAction(nameof(GetCashAccountTransactionDetails), new { cashTransactionId = writeModel.CashTransactionId }, getResult.Result);
+                }
+                else
+                {
+                    return StatusCode(201, "Create cash disbursement for loan installment payment succeeded; unable to return newly created cash transaction.");
+                }
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
     }
 }
