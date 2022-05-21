@@ -8,6 +8,7 @@ namespace PipefittersAccounting.Core.Shared
         LoanPayment = 4,
         DividentPayment = 5,
         TimeCardPayment = 6,
-        InventoryReceipt = 7
+        InventoryReceipt = 7,
+        CashTransfer = 8
     }
 }

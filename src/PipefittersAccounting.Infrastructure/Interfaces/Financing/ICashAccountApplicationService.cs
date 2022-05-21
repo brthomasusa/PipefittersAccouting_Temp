@@ -13,5 +13,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<bool>> DeleteCashAccount(DeleteCashAccountInfo writeModel);
         Task<OperationResult<bool>> CreateCashDeposit(CreateCashAccountTransactionInfo writeModel);
         Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel);
+        Task<OperationResult<bool>> CreateCashTransfer(CreateCashAccountTransferInfo writeModel);
     }
 }

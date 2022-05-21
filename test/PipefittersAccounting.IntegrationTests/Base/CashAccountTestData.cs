@@ -213,5 +213,16 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 DateOpened = new DateTime(2022, 5, 10),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
+
+        public static CreateCashAccountTransferInfo GetCreateCashAccountTransferInfo()
+            => new CreateCashAccountTransferInfo
+            {
+                CashTransferId = new Guid("b954a137-ab47-4f13-85ae-762a97944230"),
+                SourceCashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
+                DestinationCashAccountId = new Guid("c98ac84f-00bb-463d-9116-5828b2e9f718"),
+                CashTransferDate = new DateTime(2022, 5, 20),
+                CashTransferAmount = 19999.99M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
     }
 }

@@ -42,5 +42,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel)
             => await CashDisbursementCreateCommandDispatcher.Process(writeModel, _repository, _validationService, _unitOfWork);
 
+        public async Task<OperationResult<bool>> CreateCashTransfer(CreateCashAccountTransferInfo writeModel)
+            => await CashAccountTransferCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
     }
 }

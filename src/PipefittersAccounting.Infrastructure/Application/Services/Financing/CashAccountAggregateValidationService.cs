@@ -30,8 +30,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             => throw new NotImplementedException();
 
         public virtual async Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo transactionInfo)
-            => await ValidateDepositOfDebtIssueProceeds(transactionInfo);   // TODO ValidationService testing of IsValidCashDepositOfDebtIssueProceeds
-
+            => await ValidateDepositOfDebtIssueProceeds(transactionInfo);
 
         public virtual Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CreateCashAccountTransactionInfo transactionInfo)
         => throw new NotImplementedException();
@@ -39,10 +38,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual async Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo)
             => await ValidateDisbursementForLoanPayment(transactionInfo);
 
+        public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CreateCashAccountTransferInfo transferInfo)
+            => await CashAccountTransferValidation.Validate(transferInfo, _cashAcctQrySvc);
 
 
 
 
+
+
+        // private stuff
         private async Task<ValidationResult> ValidateDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo model)
         {
             DepositOfDebtIssueProceedsValidation validation = new(model, _cashAcctQrySvc);
@@ -54,5 +58,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             DisbursementForLoanPaymentValidation validation = new(model, _cashAcctQrySvc);
             return await validation.Validate();
         }
+
     }
 }

@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Shared;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing
 {
+
+
     public class CashAccountAggregateRepository : ICashAccountAggregateRepository
     {
         private bool _isDisposed;
@@ -16,6 +20,23 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
         public CashAccountAggregateRepository(AppDbContext ctx) => _dbContext = ctx;
         ~CashAccountAggregateRepository() => Dispose(false);
+
+        public async Task<OperationResult<bool>> ExecuteInATransaction(DoTransactionDelegate funcToExecute)
+        {
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            try
+            {
+                await funcToExecute();
+                await transaction.CommitAsync();
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
 
         public async Task<OperationResult<CashAccount>> GetCashAccountByIdAsync(Guid cashAccountId)
         {
@@ -89,6 +110,22 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                 }
 
                 await _dbContext.CashAccounts.AddAsync(cashAccount);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public async Task<OperationResult<bool>> AddCashTransferAsync(CashTransfer cashTransfer)
+        {
+            try
+            {
+                EconomicEvent evt = new(EntityGuidID.Create(cashTransfer.Id), EventTypeEnum.CashTransfer);
+                await _dbContext.EconomicEvents.AddAsync(evt);
+                await _dbContext.CashAccountTransfers.AddAsync(cashTransfer);
+
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
             catch (Exception ex)

@@ -148,5 +148,25 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, writeResult.Exception.Message);
         }
 
+        [HttpPost("cashtransaction/createtransfer")]
+        public async Task<IActionResult> CreateCashTransfer([FromBody] CreateCashAccountTransferInfo writeModel)
+        {
+            OperationResult<bool> writeResult = await _appSvc.CreateCashTransfer(writeModel);
+
+            if (writeResult.Success)
+            {
+                return StatusCode(201, "Create cash transfer succeeded.");
+            }
+
+            if (writeResult.Exception is null)
+            {
+                _logger.LogWarning(writeResult.NonSuccessMessage);
+                return StatusCode(400, writeResult.NonSuccessMessage);
+            }
+
+            _logger.LogError(writeResult.Exception.Message);
+            return StatusCode(500, writeResult.Exception.Message);
+        }
+
     }
 }

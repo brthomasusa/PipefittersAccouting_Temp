@@ -12,6 +12,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public CashTransfer
         (
+            EntityGuidID cashTransferId,
             EntityGuidID sourceAcctId,
             EntityGuidID destinationAcctId,
             CashTransactionAmount transferAmount,
@@ -19,6 +20,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             EntityGuidID userId
         ) : this()
         {
+            Id = cashTransferId;
             SourceCashAccountId = sourceAcctId;
             DestintaionCashAccountId = destinationAcctId;
             TransferAmount = transferAmount;

@@ -11,7 +11,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
     public class CashAccount : AggregateRoot<Guid>
     {
         private List<CashTransaction> _cashTransactions = new();
-        private CashTransfer? _cashTransfer;
 
         protected CashAccount() => _cashTransactions = new();
 
@@ -97,15 +96,45 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public void DisburseCash(CashTransaction disbursement) => _cashTransactions.Add(disbursement);
 
-        public void TransferCash(CashTransfer cashTransfer)
+        public void TransferCashIntoAccount(CashTransfer cashTransfer)
         {
-            _cashTransfer = cashTransfer;
-            AddDomainEvent(CashTransferCreated.Create(cashTransfer));
+            CashTransaction transaction = new
+            (
+                CashTransactionTypeEnum.CashReceiptCashTransferIn,
+                EntityGuidID.Create(this.Id),
+                cashTransfer.TransactionDate,
+                cashTransfer.TransferAmount,
+                EntityGuidID.Create(cashTransfer.UserId),
+                EntityGuidID.Create(cashTransfer.Id),
+                CheckNumber.Create(cashTransfer.Id.ToString().Substring(0, 25)),
+                RemittanceAdvice.Create(cashTransfer.Id.ToString()),
+                EntityGuidID.Create(cashTransfer.UserId)
+            );
+
+            _cashTransactions.Add(transaction);
+        }
+
+        public void TransferCashOutOfAccount(CashTransfer cashTransfer)
+        {
+            CashTransaction transaction = new
+            (
+                CashTransactionTypeEnum.CashDisbursementCashTransferOut,
+                EntityGuidID.Create(this.Id),
+                cashTransfer.TransactionDate,
+                cashTransfer.TransferAmount,
+                EntityGuidID.Create(cashTransfer.UserId),
+                EntityGuidID.Create(cashTransfer.Id),
+                CheckNumber.Create(cashTransfer.Id.ToString().Substring(0, 25)),
+                RemittanceAdvice.Create(cashTransfer.Id.ToString()),
+                EntityGuidID.Create(cashTransfer.UserId)
+            );
+
+            _cashTransactions.Add(transaction);
         }
 
         protected override void CheckValidity()
         {
-            //
+
         }
     }
 }

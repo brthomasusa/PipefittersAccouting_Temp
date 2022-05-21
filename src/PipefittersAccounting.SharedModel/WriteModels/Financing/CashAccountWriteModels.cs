@@ -46,4 +46,14 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public string? RemittanceAdvice { get; set; }
         public Guid UserId { get; set; }
     }
+
+    public class CreateCashAccountTransferInfo : IWriteModel
+    {
+        public Guid CashTransferId { get; set; }
+        public Guid SourceCashAccountId { get; set; }
+        public Guid DestinationCashAccountId { get; set; }
+        public DateTime CashTransferDate { get; set; }
+        public decimal CashTransferAmount { get; set; }
+        public Guid UserId { get; set; }
+    }
 }
