@@ -1,19 +1,19 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 {
-    public class Employee : AggregateRoot<Guid>, IAggregateRoot
+    public class Employee : AggregateRoot<Guid>, IAggregateRoot, IExternalAgent
     {
         protected Employee() { }
 
         public Employee
         (
-            EmployeeAgent agent,
+            EntityGuidID employeeId,
             EntityGuidID supervisorId,
             PersonName employeeName,
             SocialSecurityNumber ssn,
@@ -28,12 +28,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         )
             : this()
         {
-            if (agent is null)
-            {
-                throw new ArgumentNullException("An employee agent is required.");
-            }
-            Id = agent.ExternalAgent.Id;
-
+            Id = employeeId ?? throw new ArgumentNullException("The employee id is required.");
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             EmployeeName = employeeName ?? throw new ArgumentNullException("An employee name is required.");
             SSN = ssn ?? throw new ArgumentNullException("A social security number is required.");

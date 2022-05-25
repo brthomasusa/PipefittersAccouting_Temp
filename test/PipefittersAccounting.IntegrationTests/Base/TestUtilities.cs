@@ -3,10 +3,9 @@
 using System;
 using System.Collections.Generic;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -19,7 +18,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
         public static Employee GetNewEmployee() =>
             new Employee
             (
-                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 EntityGuidID.Create(new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E")),
                 PersonName.Create("Dough", "Jonnie", "J"),
                 SocialSecurityNumber.Create("123789901"),
@@ -117,7 +116,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
         public static Financier GetFinancierForCreating() =>
             new Financier
             (
-                FinancierAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 OrganizationName.Create("Wide World Financiers"),
                 PhoneNumber.Create("817-235-9874"),
                 Address.Create("666 Trump Plaza", "Ste 666", "Fort Worth", "TX", "78965"),
@@ -129,7 +128,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
         public static Financier GetFinancierForEditing() =>
             new Financier
             (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695"))),
+                    EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")),
                     OrganizationName.Create("Arturo Sandoval"),
                     PhoneNumber.Create("888-719-8128"),
                     Address.Create("5232 Outriggers Way", "Ste 401", "Oxnard", "CA", "93035"),
@@ -143,7 +142,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             {
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695"))),
+                    EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")),
                     OrganizationName.Create("Arturo Sandoval"),
                     PhoneNumber.Create("888-719-8128"),
                     Address.Create("5232 Outriggers Way", "Ste 401", "Oxnard", "CA", "93035"),
@@ -153,7 +152,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 ),
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"))),
+                    EntityGuidID.Create(new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601")),
                     OrganizationName.Create("Paul Van Horn Enterprises"),
                     PhoneNumber.Create("415-328-9870"),
                     Address.Create("825 Mandalay Beach Rd", "Level 2", "Oxnard", "CA", "94402"),
@@ -163,7 +162,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 ),
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886"))),
+                    EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
                     OrganizationName.Create("New World Tatoo Parlor"),
                     PhoneNumber.Create("630-321-9875"),
                     Address.Create("1690 S. El Camino Real", "Room 2C", "San Mateo", "CA", "94402"),
@@ -173,7 +172,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 ),
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"))),
+                    EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),
                     OrganizationName.Create("Bertha Mae Jones Innovative Financing"),
                     PhoneNumber.Create("886-587-0001"),
                     Address.Create("12333 Menard Heights Blvd", "Ste 1001", "Palo Alto", "CA", "94901"),
@@ -183,7 +182,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 ),
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("01da50f9-021b-4d03-853a-3fd2c95e207d"))),
+                    EntityGuidID.Create(new Guid("01da50f9-021b-4d03-853a-3fd2c95e207d")),
                     OrganizationName.Create("Pimps-R-US Financial Management, Inc."),
                     PhoneNumber.Create("415-931-5570"),
                     Address.Create("96541 Sunset Rise Plaza", "Ste 2", "Oxnard", "CA", "93035"),
@@ -193,7 +192,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 ),
                 new Financier
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(new Guid("84164388-28ff-4b47-bd63-dd9326d32236"))),
+                    EntityGuidID.Create(new Guid("84164388-28ff-4b47-bd63-dd9326d32236")),
                     OrganizationName.Create("I Exist-Only-To-Be-Deleted"),
                     PhoneNumber.Create("415-912-5570"),
                     Address.Create("985211 Highway 78 East", null, "Oxnard", "CA", "93035"),

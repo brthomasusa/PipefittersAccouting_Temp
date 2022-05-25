@@ -17,7 +17,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         {
             Financier financier = new Financier
             (
-                FinancierAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
@@ -130,7 +130,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         private Financier GetFinancier() =>
             new Financier
             (
-                FinancierAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),

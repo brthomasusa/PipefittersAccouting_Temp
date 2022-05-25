@@ -1,19 +1,18 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.FinancierAggregate
 {
-    public class Financier : AggregateRoot<Guid>
+    public class Financier : AggregateRoot<Guid>, IExternalAgent
     {
         protected Financier() { }
 
         public Financier
         (
-            FinancierAgent agent,
+            EntityGuidID agentId,
             OrganizationName name,
             PhoneNumber telephone,
             Address address,
@@ -22,17 +21,12 @@ namespace PipefittersAccounting.Core.Financing.FinancierAggregate
             bool isActive
         )
         {
-            if (agent is null)
-            {
-                throw new ArgumentNullException("A financier agent is required.");
-            }
-            Id = agent.ExternalAgent.Id;
-
-            FinancierName = name ?? throw new ArgumentNullException("A financier name is required."); ;
-            FinancierTelephone = telephone ?? throw new ArgumentNullException("A financier telephone number is required."); ;
-            FinancierAddress = address ?? throw new ArgumentNullException("A financier address is required."); ;
-            PointOfContact = contact ?? throw new ArgumentNullException("A point of contact is required."); ;
-            UserId = userId ?? throw new ArgumentNullException("The user Id is required."); ;
+            Id = agentId ?? throw new ArgumentNullException("A financier id is required.");
+            FinancierName = name ?? throw new ArgumentNullException("A financier name is required.");
+            FinancierTelephone = telephone ?? throw new ArgumentNullException("A financier telephone number is required.");
+            FinancierAddress = address ?? throw new ArgumentNullException("A financier address is required.");
+            PointOfContact = contact ?? throw new ArgumentNullException("A point of contact is required.");
+            UserId = userId ?? throw new ArgumentNullException("The user Id is required.");
             IsActive = isActive;
         }
 

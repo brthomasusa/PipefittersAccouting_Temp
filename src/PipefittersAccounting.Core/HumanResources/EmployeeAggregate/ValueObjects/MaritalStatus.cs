@@ -2,7 +2,7 @@
 
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
+namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects
 {
     public class MaritalStatus : ValueObject
     {

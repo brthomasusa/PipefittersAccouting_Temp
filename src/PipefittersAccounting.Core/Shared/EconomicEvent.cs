@@ -2,7 +2,6 @@
 
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 
 namespace PipefittersAccounting.Core.Shared
 {
@@ -17,6 +16,18 @@ namespace PipefittersAccounting.Core.Shared
             EventType = eventType;
         }
 
-        public EventTypeEnum EventType { get; private set; }
+        public EventTypeEnum EventType { get; protected set; }
+    }
+
+    public enum EventTypeEnum : int
+    {
+        Sales = 1,
+        LoanAgreement = 2,
+        StockSubscription = 3,
+        LoanPayment = 4,
+        DividentPayment = 5,
+        TimeCardPayment = 6,
+        InventoryReceipt = 7,
+        CashTransfer = 8
     }
 }

@@ -3,10 +3,10 @@
 
 using System;
 using Xunit;
-using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
+
 
 namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
 {
@@ -17,7 +17,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
         {
             Employee employee = new Employee
             (
-                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
@@ -42,7 +42,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
 
             Employee employee = new Employee
             (
-                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
@@ -352,7 +352,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
         private Employee GetEmployee() =>
             new Employee
             (
-                EmployeeAgent.Create(EntityGuidID.Create(Guid.NewGuid())),
+                EntityGuidID.Create(Guid.NewGuid()),
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),

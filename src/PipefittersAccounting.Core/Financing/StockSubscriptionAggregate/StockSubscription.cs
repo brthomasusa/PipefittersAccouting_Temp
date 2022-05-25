@@ -8,7 +8,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
 {
-    public class StockSubscription : AggregateRoot<Guid>, IAggregateRoot
+    public class StockSubscription : AggregateRoot<Guid>, IAggregateRoot, IEconomicEvent
     {
         protected StockSubscription() { }
 
@@ -27,7 +27,7 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             FinancierId = financierId ?? throw new ArgumentNullException("The financier id is required.");
         }
 
-        public EntityGuidID FinancierId { get; private set; }
+        public virtual EntityGuidID FinancierId { get; private set; }
 
         public virtual SharesIssured SharesIssured { get; private set; }
         public void UpdateSharesIssured(SharesIssured value)
@@ -53,5 +53,11 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             CheckValidity();
         }
 
+        public EntityGuidID UserId { get; private set; }
+        public void UpdateUserId(EntityGuidID value)
+        {
+            UserId = value ?? throw new ArgumentNullException("The User id can not be null.");
+            UpdateLastModifiedDate();
+        }
     }
 }

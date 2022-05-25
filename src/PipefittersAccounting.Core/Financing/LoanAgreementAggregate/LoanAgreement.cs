@@ -9,7 +9,7 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
-    public class LoanAgreement : AggregateRoot<Guid>
+    public class LoanAgreement : AggregateRoot<Guid>, IEconomicEvent
     {
         private List<LoanInstallment> _loanAmortizationTable;
 

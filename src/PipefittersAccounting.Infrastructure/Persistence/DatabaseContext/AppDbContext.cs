@@ -6,6 +6,7 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Core.Shared;
 
 
@@ -18,14 +19,14 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         { }
 
         public DbSet<ExternalAgent> ExternalAgents { get; set; }
-        public DbSet<AgentType> ExternalAgentTypes { get; set; }
         public DbSet<EconomicEvent> EconomicEvents { get; set; }
-        public DbSet<EventType> EconomicEventTypes { get; set; }
+        public DbSet<EconomicResource> EconomicResources { get; set; }
         public DbSet<DomainUser> DomainUsers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Financier> Financiers { get; set; }
         public DbSet<LoanAgreement> LoanAgreements { get; set; }
         public DbSet<LoanInstallment> LoanInstallments { get; set; }
+        public DbSet<StockSubscription> StockSubscriptions { get; set; }
         public DbSet<CashAccount> CashAccounts { get; set; }
         public DbSet<CashTransaction> CashTransactions { get; set; }
         public DbSet<CashTransfer> CashAccountTransfers { get; set; }

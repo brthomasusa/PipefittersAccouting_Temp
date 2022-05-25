@@ -35,7 +35,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 
                 Financier financier = new
                 (
-                    FinancierAgent.Create(EntityGuidID.Create(model.Id)),
+                    EntityGuidID.Create(model.Id),
                     OrganizationName.Create(model.FinancierName),
                     PhoneNumber.Create(model.Telephone),
                     Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode),

@@ -3,10 +3,11 @@
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
-    public class CashTransaction : Entity<int>
+    public class CashTransaction : Entity<int>, IEconomicEvent
     {
         protected CashTransaction() { }
 

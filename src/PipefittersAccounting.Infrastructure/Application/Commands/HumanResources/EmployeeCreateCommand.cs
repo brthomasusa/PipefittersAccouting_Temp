@@ -1,6 +1,7 @@
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
@@ -42,7 +43,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             {
                 Employee employee = new Employee
                 (
-                    EmployeeAgent.Create(EntityGuidID.Create(model.Id)),
+                    EntityGuidID.Create(model.Id),
                     EntityGuidID.Create(model.SupervisorId),
                     PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial),
                     SocialSecurityNumber.Create(model.SSN),

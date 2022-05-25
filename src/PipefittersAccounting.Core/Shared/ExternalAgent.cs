@@ -2,8 +2,6 @@
 
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
 namespace PipefittersAccounting.Core.Shared
 {
@@ -18,6 +16,16 @@ namespace PipefittersAccounting.Core.Shared
             AgentType = agentType;
         }
 
-        public AgentTypeEnum AgentType { get; private set; }
+        public AgentTypeEnum AgentType { get; protected set; }
+    }
+
+    public enum AgentTypeEnum : int
+    {
+        Customer = 1,
+        Creditor = 2,
+        Stockholder = 3,
+        Vendor = 4,
+        Employee = 5,
+        Financier = 6
     }
 }

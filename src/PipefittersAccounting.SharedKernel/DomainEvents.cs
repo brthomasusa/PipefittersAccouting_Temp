@@ -5,7 +5,7 @@ namespace PipefittersAccounting.SharedKernel
 {
     public static class DomainEvents
     {
-        private static Dictionary<Type, List<Delegate>> _handlers;
+        private static Dictionary<Type, List<Delegate>> _handlers = new();
 
         public static void Register<T>(Action<T> eventHandler) where T : IDomainEvent
         {

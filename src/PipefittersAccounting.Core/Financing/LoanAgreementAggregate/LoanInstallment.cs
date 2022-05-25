@@ -1,12 +1,13 @@
 #pragma warning disable CS8618
 
 using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 
 namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
 {
-    public class LoanInstallment : Entity<Guid>
+    public class LoanInstallment : Entity<Guid>, IEconomicEvent
     {
         protected LoanInstallment() { }
 
