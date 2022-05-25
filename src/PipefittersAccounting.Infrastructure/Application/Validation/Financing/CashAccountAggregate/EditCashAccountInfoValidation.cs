@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate(EditCashAccountInfo accountInfo, ICashAccountQueryService queryService)
         {
-            EditedCashAccountNameMustBeUniqueValidator acctNameValidator = new(queryService);
+            EditedCashAccountNameMustBeUniqueRule acctNameValidator = new(queryService);
 
             // Check if user is attempting to update CashAccountType,  
             // which can only be done if cash account has no transactions
@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             {
                 if (getResult.Result.CashAccountTypeId != accountInfo.CashAccountType)
                 {
-                    CannotEditCashAcctAcctTypeIfTransactionsExistValidator transactionCountValidator = new(queryService);
+                    CannotEditCashAcctAcctTypeIfTransactionsExistRule transactionCountValidator = new(queryService);
                     acctNameValidator.SetNext(transactionCountValidator);
                 }
             }

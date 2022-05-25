@@ -8,9 +8,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate(CreateCashAccountTransferInfo accountInfo, ICashAccountQueryService queryService)
         {
-            SourceCashAccountValidator sourceValidator = new(queryService);
-            DestinationCashAccountValidator destinationValidator = new(queryService);
-            SourceCashAccountBalanceValidator sourceBalanceValidator = new(queryService);
+            SourceCashAccountRule sourceValidator = new(queryService);
+            DestinationCashAccountRule destinationValidator = new(queryService);
+            SourceCashAccountBalanceRule sourceBalanceValidator = new(queryService);
 
             sourceValidator.SetNext(destinationValidator);
             destinationValidator.SetNext(sourceBalanceValidator);

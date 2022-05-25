@@ -1,8 +1,8 @@
 namespace PipefittersAccounting.SharedKernel.Interfaces
 {
-    public interface IValidator<T>
+    public interface IBusinessRule<T>
     {
-        void SetNext(IValidator<T> next);
+        void SetNext(IBusinessRule<T> next);
 
         Task<ValidationResult> Validate(T request);
     }

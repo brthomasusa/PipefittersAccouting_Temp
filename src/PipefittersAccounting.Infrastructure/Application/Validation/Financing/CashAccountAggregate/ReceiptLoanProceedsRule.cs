@@ -8,7 +8,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class ReceiptLoanProceedsValidator : Validator<CreateCashAccountTransactionInfo>
+    public class ReceiptLoanProceedsValidator : BusinessRule<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 

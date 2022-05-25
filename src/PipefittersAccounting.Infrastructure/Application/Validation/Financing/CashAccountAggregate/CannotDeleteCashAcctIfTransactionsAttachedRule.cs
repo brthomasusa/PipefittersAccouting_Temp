@@ -6,14 +6,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class CannotEditCashAcctAcctTypeIfTransactionsExistValidator : Validator<EditCashAccountInfo>
+    public class CannotDeleteCashAcctIfTransactionsAttachedRule : BusinessRule<DeleteCashAccountInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public CannotEditCashAcctAcctTypeIfTransactionsExistValidator(ICashAccountQueryService cashAcctQrySvc)
+        public CannotDeleteCashAcctIfTransactionsAttachedRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(EditCashAccountInfo cashAccount)
+        public override async Task<ValidationResult> Validate(DeleteCashAccountInfo cashAccount)
         {
             ValidationResult validationResult = new();
 
@@ -35,7 +35,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"This cash account has {getResult.Result} transactions. Cannot change the account type.";
+                    string msg = $"This cash account has {getResult.Result} transactions. It can not be deleted.";
                     validationResult.Messages.Add(msg);
                 }
             }

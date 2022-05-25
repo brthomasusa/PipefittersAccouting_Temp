@@ -6,30 +6,25 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class EditedCashAccountNameMustBeUniqueValidator : Validator<EditCashAccountInfo>
+    public class CannotEditCashAcctAcctTypeIfTransactionsExistRule : BusinessRule<EditCashAccountInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public EditedCashAccountNameMustBeUniqueValidator(ICashAccountQueryService cashAcctQrySvc)
+        public CannotEditCashAcctAcctTypeIfTransactionsExistRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(EditCashAccountInfo cashAccount)
         {
             ValidationResult validationResult = new();
 
-            GetCashAccountWithAccountName queryParams = new() { AccountName = cashAccount.CashAccountName };
+            GetCashAccount queryParams = new() { CashAccountId = cashAccount.CashAccountId };
 
-            OperationResult<CashAccountReadModel> getResult =
-                await _cashAcctQrySvc.GetCashAccountWithAccountName(queryParams);
+            OperationResult<int> getResult =
+                await _cashAcctQrySvc.GetNumberOfCashAccountTransactions(queryParams);
 
             if (getResult.Success)
             {
-                if (cashAccount.CashAccountId != getResult.Result.CashAccountId)
-                {
-                    string msg = $"There is an existing cash account with account name '{cashAccount.CashAccountName}'";
-                    validationResult.Messages.Add(msg);
-                }
-                else
+                if (getResult.Result == 0)
                 {
                     validationResult.IsValid = true;
 
@@ -38,15 +33,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                         validationResult = await Next.Validate(cashAccount);
                     }
                 }
+                else
+                {
+                    string msg = $"This cash account has {getResult.Result} transactions. Cannot change the account type.";
+                    validationResult.Messages.Add(msg);
+                }
             }
             else
             {
-                validationResult.IsValid = true;
-
-                if (Next is not null)
-                {
-                    validationResult = await Next.Validate(cashAccount);
-                }
+                validationResult.Messages.Add(getResult.NonSuccessMessage);
             }
 
             return validationResult;

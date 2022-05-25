@@ -8,8 +8,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate(CreateCashAccountInfo accountInfo, ICashAccountQueryService queryService)
         {
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(queryService);
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(queryService);
             acctNameValidator.SetNext(acctNumberValidator);
 
             return await acctNameValidator.Validate(accountInfo);

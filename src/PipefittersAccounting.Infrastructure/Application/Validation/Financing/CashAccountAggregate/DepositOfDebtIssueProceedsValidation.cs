@@ -30,18 +30,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public async override Task<ValidationResult> Validate()
         {
             // Check that financier is known to the system
-            FinancierAsExternalAgentValidator agentValidator = new(QueryService);
+            FinancierAsExternalAgentRule agentValidator = new(QueryService);
 
             // Check that loan agreement is known to the system
-            LoanAgreementAsEconomicEventValidator eventValidator = new(QueryService);
+            LoanAgreementAsEconomicEventRule eventValidator = new(QueryService);
 
             // Ensure that loan agreement belongs to this financier
-            IsCreditorAssociatedWithThisLoanAgreeValidator loanAgreementIssuedByFinancierValidator = new(QueryService);
+            IsCreditorAssociatedWithThisLoanAgreeRule loanAgreementIssuedByFinancierValidator = new(QueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals loan agreement amount
             // Verify that this deposit has not already been made
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator miscDetailsValidator = new(QueryService);
+            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(QueryService);
 
             agentValidator.SetNext(eventValidator);
             eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);

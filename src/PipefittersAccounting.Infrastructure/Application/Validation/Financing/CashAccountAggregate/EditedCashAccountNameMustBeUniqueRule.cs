@@ -6,14 +6,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class NewCashAccountNameMustBeUniqueValidator : Validator<CreateCashAccountInfo>
+    public class EditedCashAccountNameMustBeUniqueRule : BusinessRule<EditCashAccountInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public NewCashAccountNameMustBeUniqueValidator(ICashAccountQueryService cashAcctQrySvc)
+        public EditedCashAccountNameMustBeUniqueRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountInfo cashAccount)
+        public override async Task<ValidationResult> Validate(EditCashAccountInfo cashAccount)
         {
             ValidationResult validationResult = new();
 
@@ -24,8 +24,20 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
             if (getResult.Success)
             {
-                string msg = $"There is an existing cash account with account name '{cashAccount.CashAccountName}'";
-                validationResult.Messages.Add(msg);
+                if (cashAccount.CashAccountId != getResult.Result.CashAccountId)
+                {
+                    string msg = $"There is an existing cash account with account name '{cashAccount.CashAccountName}'";
+                    validationResult.Messages.Add(msg);
+                }
+                else
+                {
+                    validationResult.IsValid = true;
+
+                    if (Next is not null)
+                    {
+                        validationResult = await Next.Validate(cashAccount);
+                    }
+                }
             }
             else
             {

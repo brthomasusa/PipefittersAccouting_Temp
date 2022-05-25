@@ -10,14 +10,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
     // A cash transaction must point to the event that cause 
-    // the deposit or disbursement of cash. For disbursement for
-    // loan payment that event should be a specific loan installment.
+    // the deposit or disbursement of cash. For deposit of debt issue
+    // proceeds that event should be a specific loan agreement.
 
-    public class LoanInstallmentPaymentAsEconomicEventValidator : Validator<CreateCashAccountTransactionInfo>
+    public class LoanAgreementAsEconomicEventRule : BusinessRule<CreateCashAccountTransactionInfo>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public LoanInstallmentPaymentAsEconomicEventValidator(ICashAccountQueryService cashAcctQrySvc)
+        public LoanAgreementAsEconomicEventRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
@@ -31,8 +31,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Is the event id known to the system?
             if (eventResult.Success)
             {
-                // Does the event id represent a loan installment?
-                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.LoanPayment)
+                // Does the event id represent a loan agreement?
+                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.LoanAgreement)
                 {
                     validationResult.IsValid = true;
 
@@ -43,7 +43,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting 'Cash Disbursement for Loan Payment'!";
+                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting a loan agreement!";
                     validationResult.Messages.Add(msg);
                 }
             }

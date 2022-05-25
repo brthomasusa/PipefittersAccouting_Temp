@@ -4,11 +4,11 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.SharedKernel
 {
-    public abstract class Validator<T> : IValidator<T>
+    public abstract class BusinessRule<T> : IBusinessRule<T>
     {
-        protected IValidator<T>? Next { get; private set; }
+        protected IBusinessRule<T>? Next { get; private set; }
 
-        public void SetNext(IValidator<T> next)
+        public void SetNext(IBusinessRule<T> next)
         {
             Next = next;
         }

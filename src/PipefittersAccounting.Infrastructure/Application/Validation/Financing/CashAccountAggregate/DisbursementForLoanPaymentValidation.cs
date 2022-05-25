@@ -21,18 +21,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public async override Task<ValidationResult> Validate()
         {
             // Check that loan installment is known to the system
-            LoanInstallmentPaymentAsEconomicEventValidator eventValidator = new(QueryService);
+            LoanInstallmentPaymentAsEconomicEventRule eventValidator = new(QueryService);
 
             // Check that the financier is valid payee for this loan installment
-            FinancierHasLoanInstallmentValidator payeeValidator = new(QueryService);
+            FinancierHasLoanInstallmentRule payeeValidator = new(QueryService);
 
             // Verify that debt issue proceeds have been received.
-            VerifyDebtIssueProceedsHaveBeenReceivedValidator verifyProceedsReceivedValidator = new(QueryService);
+            VerifyDebtIssueProceedsHaveBeenReceivedRule verifyProceedsReceivedValidator = new(QueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals installment's EMI
             // Verify that this installment has not already been paid
-            DisburesementForLoanPymtValidator disburesementValidator = new(QueryService);
+            DisburesementForLoanPymtRule disburesementValidator = new(QueryService);
 
             eventValidator.SetNext(payeeValidator);
             payeeValidator.SetNext(verifyProceedsReceivedValidator);

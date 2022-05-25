@@ -33,14 +33,14 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public void Create_NewCashAccountNameMustBeUniqueValidator_ShouldSucceed()
         {
-            var exception = Record.Exception(() => new NewCashAccountNameMustBeUniqueValidator(_queryService));
+            var exception = Record.Exception(() => new NewCashAccountNameMustBeUniqueRule(_queryService));
             Assert.Null(exception);
         }
 
         [Fact]
         public void Create_NewCashAccountNumberMustBeUniqueValidator_ShouldSucceed()
         {
-            var exception = Record.Exception(() => new NewCashAccountNumberMustBeUniqueValidator(_queryService));
+            var exception = Record.Exception(() => new NewCashAccountNumberMustBeUniqueRule(_queryService));
             Assert.Null(exception);
         }
 
@@ -50,7 +50,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_NewCashAccountNameMustBeUniqueValidator_ValidAcctName_ShouldSucceed()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
 
@@ -62,7 +62,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
             model.CashAccountName = "Payroll";
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
 
@@ -76,7 +76,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_NewCashAccountNumberMustBeUniqueValidator_ValidAcctNumber_ShouldSucceed()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNumberValidator.Validate(model);
 
@@ -88,7 +88,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
             model.CashAccountNumber = "36547-9098812";
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNumberValidator.Validate(model);
 
@@ -102,8 +102,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_ChainedCashAccountNameAndNumberValidators_ValidAcctNameAndNumber_ShouldSucceed()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
             acctNameValidator.SetNext(acctNumberValidator);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
@@ -115,9 +115,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_ChainedCashAccountNameAndNumberValidators_InvalidAcctNameAndValidNumber_ShouldFail()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
             model.CashAccountName = "Payroll";
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
             acctNameValidator.SetNext(acctNumberValidator);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
@@ -132,10 +132,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_ChainedCashAccountNameAndNumberValidators_InvalidAcctNameAndInvalidNumber_ShouldFail()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
             model.CashAccountName = "Payroll";
             model.CashAccountNumber = "36547-9098812";
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
             acctNameValidator.SetNext(acctNumberValidator);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
@@ -150,9 +150,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_ChainedCashAccountNameAndNumberValidators_ValidAcctNameAndInvalidNumber_ShouldFail()
         {
             CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
-            NewCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
             model.CashAccountNumber = "36547-9098812";
-            NewCashAccountNumberMustBeUniqueValidator acctNumberValidator = new(_queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(_queryService);
             acctNameValidator.SetNext(acctNumberValidator);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
@@ -167,7 +167,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_EditedCashAccountNameMustBeUniqueValidator_ValidAcctName_ShouldSucceed()
         {
             EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
-            EditedCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            EditedCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
 
@@ -179,7 +179,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
             model.CashAccountName = "Payroll";
-            EditedCashAccountNameMustBeUniqueValidator acctNameValidator = new(_queryService);
+            EditedCashAccountNameMustBeUniqueRule acctNameValidator = new(_queryService);
 
             ValidationResult validationResult = await acctNameValidator.Validate(model);
 

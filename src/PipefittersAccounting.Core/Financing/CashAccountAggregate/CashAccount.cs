@@ -1,7 +1,6 @@
 #pragma warning disable CS8604
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
@@ -12,7 +11,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
     {
         private List<CashTransaction> _cashTransactions = new();
 
-        protected CashAccount() => _cashTransactions = new();
+        protected CashAccount() { }
 
         public CashAccount
         (
