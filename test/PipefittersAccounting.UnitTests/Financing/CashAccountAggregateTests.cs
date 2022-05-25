@@ -33,20 +33,5 @@ namespace PipefittersAccounting.UnitTests.Financing
 
             Assert.Null(exception);
         }
-
-        [Fact]
-        public void AddDeposit_CashAccount_ShouldSucceed()
-        {
-            CashDeposit cashDeposit = CashAccountTestData.GetCashDepositForLoanProceeds();
-
-
-        }
-
-        [Fact]
-        public void AddDeposit_CashAccount_ShouldThrowException()
-        {
-            CashDeposit cashDeposit = CashAccountTestData.GetCashDepositForLoanProceeds();
-
-        }
     }
 }

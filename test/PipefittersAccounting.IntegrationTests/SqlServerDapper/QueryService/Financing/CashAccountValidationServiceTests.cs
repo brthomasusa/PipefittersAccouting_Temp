@@ -44,12 +44,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Null(exception);
         }
 
-        [Fact]
-        public void Create_CashDeposit_ValidInfo_ShouldSucceed()
-        {
-            var exception = Record.Exception(() => GetCashDepositForLoanProceeds());
-            Assert.Null(exception);
-        }
+
 
         [Fact]
         public async Task Validate_NewCashAccountNameMustBeUniqueValidator_ValidAcctName_ShouldSucceed()
@@ -308,88 +303,5 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.True(validationResult.IsValid);
         }
-
-        /*********************************************************************/
-        /*                   Refactor all of this!!                      */
-        /*********************************************************************/
-
-        private CashDeposit GetCashDepositForLoanProceeds()
-            => new
-            (
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreement),
-                4000M,
-                new DateTime(2022, 4, 15),
-                "2001",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
-        private CashDeposit GetCashDepositForLoanProceedsInvalidFinancierId()
-            => new
-            (
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                new ExternalAgent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), AgentTypeEnum.Financier), // ** Invalid **
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement),
-                25000M,
-                new DateTime(2022, 1, 5),
-                "2001",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
-        private CashDeposit GetCashDepositForLoanProceedsInvalidLoanId()
-            => new
-            (
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement), // ** Invalid **
-                25000M,
-                new DateTime(2022, 1, 5),
-                "2001",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
-        private CashDeposit GetCashDepositForLoanProceedsInvalidDepositAmount()
-            => new
-            (
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867")), EventTypeEnum.LoanAgreement),
-                25001M,     // ** Invalid **
-                new DateTime(2022, 1, 5),
-                "2001",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
-        private CashDeposit GetCashDepositForLoanProceedsDuplicateDeposit()
-            => new
-            (
-                CashTransactionTypeEnum.CashReceiptDebtIssueProceeds,
-                new ExternalAgent(EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1")), EventTypeEnum.LoanAgreement),
-                25000M,
-                new DateTime(2022, 1, 5),
-                "2001",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
-        private CashDisbursement GetCashDisbursementForLoanPayment()
-            => new
-            (
-                CashTransactionTypeEnum.CashDisbursementLoanPayment,
-                new ExternalAgent(EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")), AgentTypeEnum.Financier),
-                new EconomicEvent(EntityGuidID.Create(new Guid("0bd39edb-8da3-40f9-854f-b90e798b82c2")), EventTypeEnum.LoanPayment),
-                1100M,
-                new DateTime(2022, 7, 15),
-                "2011",
-                "ABCDE",
-                new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            );
-
     }
 }
