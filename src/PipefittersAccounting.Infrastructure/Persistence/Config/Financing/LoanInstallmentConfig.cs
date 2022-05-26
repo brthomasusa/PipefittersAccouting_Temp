@@ -11,9 +11,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
         {
             entity.ToTable("LoanInstallments", schema: "Finance");
             entity.HasKey(e => e.Id);
-            // entity.HasOne<LoanAgreement>()
-            //     .WithMany()
-            //     .HasForeignKey(c => c.LoanId);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanInstallmentId");
             entity.Property(p => p.LoanId).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanId").IsRequired();

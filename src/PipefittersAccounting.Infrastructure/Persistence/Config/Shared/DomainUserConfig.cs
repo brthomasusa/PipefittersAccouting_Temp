@@ -10,8 +10,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
         {
             entity.ToTable("DomainUsers", schema: "Shared");
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.Email, "idx_DomainUsers$Email").IsUnique();
-            entity.HasIndex(e => e.UserName, "idx_DomainUsers$UserName").IsUnique();
             entity.HasOne<ExternalAgent>(e => e.Agent).WithOne().HasForeignKey<DomainUser>(e => e.Id);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("UserId").ValueGeneratedNever();

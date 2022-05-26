@@ -11,7 +11,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
         {
             entity.ToTable("LoanAgreements", schema: "Finance");
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.UserId, "idx_LoanAgreement$UserID");
             entity.HasMany<LoanInstallment>(p => p.LoanAmortizationTable).WithOne().HasForeignKey(p => p.LoanId);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("LoanId").ValueGeneratedNever();

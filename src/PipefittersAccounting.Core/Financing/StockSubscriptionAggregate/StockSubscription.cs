@@ -8,6 +8,8 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
 {
     public class StockSubscription : AggregateRoot<Guid>
     {
+        private List<DividendDeclaration> _dividendDeclarations = new();
+
         protected StockSubscription() { }
 
         public StockSubscription
@@ -61,5 +63,7 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             UserId = value ?? throw new ArgumentNullException("The User id can not be null.");
             UpdateLastModifiedDate();
         }
+
+        public virtual IReadOnlyCollection<DividendDeclaration> DividendDeclarations => _dividendDeclarations.ToList();
     }
 }

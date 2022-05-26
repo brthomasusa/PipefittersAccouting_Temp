@@ -12,8 +12,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
         {
             entity.ToTable("Financiers", schema: "Finance");
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.UserId, "idx_Financier$UserId");
-            entity.HasIndex(e => e.FinancierName, "idx_FinancierName").IsUnique();
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("FinancierID").ValueGeneratedNever();
             entity.Property(p => p.FinancierName)

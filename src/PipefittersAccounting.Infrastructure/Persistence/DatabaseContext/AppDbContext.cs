@@ -27,6 +27,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<LoanAgreement> LoanAgreements { get; set; }
         public DbSet<LoanInstallment> LoanInstallments { get; set; }
         public DbSet<StockSubscription> StockSubscriptions { get; set; }
+        public DbSet<DividendDeclaration> DividendDeclarations { get; set; }
         public DbSet<CashAccount> CashAccounts { get; set; }
         public DbSet<CashTransaction> CashTransactions { get; set; }
         public DbSet<CashTransfer> CashAccountTransfers { get; set; }

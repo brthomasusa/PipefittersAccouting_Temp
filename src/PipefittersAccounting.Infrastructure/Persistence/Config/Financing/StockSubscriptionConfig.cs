@@ -12,8 +12,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
         {
             entity.ToTable("StockSubscriptions", schema: "Finance");
             entity.HasKey(e => e.Id);
+            entity.HasMany<DividendDeclaration>(p => p.DividendDeclarations).WithOne().HasForeignKey(p => p.StockId);
+
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("StockId");
-            // entity.HasOne(p => p.EconomicEvent).WithOne().HasForeignKey<StockSubscription>(p => p.Id);
             entity.Property(p => p.FinancierId)
                 .HasConversion(p => p.Value, p => EntityGuidID.Create(p))
                 .HasColumnType("UNIQUEIDENTIFIER")
