@@ -109,6 +109,8 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                     return OperationResult<bool>.CreateFailure(msg);
                 }
 
+                EconomicResource economicResource = new(EntityGuidID.Create(cashAccount.Id), ResourceTypeEnum.Cash);
+                await _dbContext.EconomicResources.AddAsync(economicResource);
                 await _dbContext.CashAccounts.AddAsync(cashAccount);
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
@@ -179,8 +181,20 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
                 if (cashAccount is not null)
                 {
-                    _dbContext.CashAccounts.Remove(cashAccount);
-                    return OperationResult<bool>.CreateSuccessResult(true);
+                    EconomicResource resource = await _dbContext.EconomicResources.FindAsync(cashAccount.Id);
+
+                    if (resource is not null)
+                    {
+                        _dbContext.CashAccounts.Remove(cashAccount);
+                        _dbContext.EconomicResources.Remove(resource);
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        string msg = $"Delete cash account failed! Unable to locate EconomicResource associated with this account.";
+                        return OperationResult<bool>.CreateFailure(msg);
+                    }
+
                 }
                 else
                 {

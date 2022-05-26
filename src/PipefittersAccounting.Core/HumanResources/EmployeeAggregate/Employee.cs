@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 {
-    public class Employee : AggregateRoot<Guid>, IAggregateRoot, IExternalAgent
+    public class Employee : AggregateRoot<Guid>, IAggregateRoot
     {
         protected Employee() { }
 

@@ -15,6 +15,7 @@ BEGIN
             Delete from HumanResources.Employees;
             Delete from Shared.ExternalAgents; 
             Delete from Shared.EconomicEvents;
+            Delete from Shared.EconomicResources;
 
             DBCC CHECKIDENT ("Finance.CashAccountTransactions", RESEED, 0);
             
@@ -230,6 +231,14 @@ BEGIN
                 ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '01da50f9-021b-4d03-853a-3fd2c95e207d', 10000, 1.00, '2022-01-13','660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '12998229-7ede-4834-825a-0c55bde75695', 5000, 3.00, '2022-02-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12500, 1.25, '2022-04-02','660bb318-649e-470d-9d2b-693bfb0b2744')
+
+            INSERT INTO Shared.EconomicResources
+                (ResourceId, ResourceTypeId)
+            VALUES
+                ('c98ac84f-00bb-463d-9116-5828b2e9f718', 1),
+                ('765ec2b0-406a-4e42-b831-c9aa63800e76', 1),
+                ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 1),
+                ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 1)
 
             INSERT INTO Finance.CashAccounts
                 (CashAccountId, CashAccountTypeId, BankName, AccountName, AccountNumber, RoutingTransitNumber, DateOpened, UserId)

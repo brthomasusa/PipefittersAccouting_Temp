@@ -26,6 +26,11 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjec
 
         private static void CheckValidity(decimal value)
         {
+            if (value % 0.01M != 0)
+            {
+                throw new ArgumentException("The interest amount can not have more than two decimal places");
+            }
+
             if (value < 0)
             {
                 throw new ArgumentException("The loan interest amount can not be negative.");

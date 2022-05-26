@@ -67,6 +67,18 @@ CREATE UNIQUE INDEX idx_ExternalAgentTypes$AgentTypeName
    ON Shared.ExternalAgentTypes (AgentTypeName)   
 GO
 
+CREATE TABLE Shared.ResourceTypes
+(
+    ResourceTypeId int IDENTITY PRIMARY KEY CLUSTERED,
+    ResourceTypeName NVARCHAR(50) NOT NULL,
+    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
+    LastModifiedDate datetime2(7) NULL     
+)
+
+CREATE UNIQUE INDEX idx_ResourceType$ResourceTypeName   
+   ON Shared.ResourceTypes (ResourceTypeName)   
+GO
+
 CREATE TABLE Shared.ExternalAgents
 (
     AgentId UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
@@ -90,6 +102,18 @@ CREATE TABLE Shared.EconomicEvents
 GO
 CREATE INDEX idx_EconomicEvents$EventTypeId   
    ON Shared.EconomicEvents (EventTypeId)   
+GO
+
+CREATE TABLE Shared.EconomicResources
+(
+    ResourceId UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+    ResourceTypeId int NOT NULL REFERENCES Shared.ResourceTypes (ResourceTypeId),
+    CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
+    LastModifiedDate datetime2(7) NULL     
+)
+GO
+CREATE INDEX idx_EconomicResources$ResourceTypeId   
+   ON Shared.EconomicResources (ResourceTypeId)   
 GO
 
 CREATE TABLE HumanResources.Employees
@@ -263,7 +287,6 @@ CREATE TABLE Finance.DividendDeclarations
     StockId uniqueidentifier NOT NULL REFERENCES Finance.StockSubscriptions (StockId),
     DividendDeclarationDate DATETIME2(0) NOT NULL,
     DividendPerShare DECIMAL(18,2) CHECK (DividendPerShare >= 0) NOT NULL,
-    IsPaid BIT DEFAULT 0 NOT NULL,
     UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
     CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
     LastModifiedDate datetime2(7) NULL
@@ -272,10 +295,6 @@ GO
 
 CREATE INDEX idx_DividendPymtRate$StockId 
   ON Finance.DividendDeclarations (StockId)
-GO
-
-CREATE INDEX idx_DividendPymtRate$IsPaid
-  ON Finance.DividendDeclarations (IsPaid)
 GO
 
 CREATE UNIQUE INDEX idx_DividendPymtRate$StockId_DividendDeclarationDate_DividendPerShare 
@@ -335,6 +354,12 @@ CREATE TABLE Finance.CashAccounts
     LastModifiedDate datetime2(7) NULL
 )
 GO
+ALTER TABLE Finance.CashAccounts WITH CHECK ADD CONSTRAINT [FK_CashAccounts$CashAccountId_EconomicResources$ResourceId] 
+    FOREIGN KEY(CashAccountId)
+    REFERENCES Shared.EconomicResources (ResourceId)
+    ON DELETE NO ACTION
+GO
+
 
 CREATE INDEX idx_CashAccounts$CashAccountTypeId 
   ON Finance.CashAccounts (CashAccountTypeId)
@@ -463,6 +488,15 @@ VALUES
     ('Vendor'),
     ('Employee'),
     ('Financier')
+GO
+
+INSERT INTO Shared.ResourceTypes
+    (ResourceTypeName)
+VALUES
+    ('Cash'),
+    ('Inventory'),
+    ('Product'),
+    ('Labor')
 GO
 
 INSERT INTO Shared.ExternalAgents
@@ -684,6 +718,15 @@ VALUES
     ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '01da50f9-021b-4d03-853a-3fd2c95e207d', 10000, 1.00, '2022-01-13','660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '12998229-7ede-4834-825a-0c55bde75695', 5000, 3.00, '2022-02-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12500, 1.25, '2022-04-02','660bb318-649e-470d-9d2b-693bfb0b2744')
+GO
+
+INSERT INTO Shared.EconomicResources
+  (ResourceId, ResourceTypeId)
+VALUES
+  ('c98ac84f-00bb-463d-9116-5828b2e9f718', 1),
+  ('765ec2b0-406a-4e42-b831-c9aa63800e76', 1),
+  ('417f8a5f-60e7-411a-8e87-dfab0ae62589', 1),
+  ('6a7ed605-c02c-4ec8-89c4-eac6306c885e', 1)
 GO
 
 INSERT INTO Finance.CashAccounts

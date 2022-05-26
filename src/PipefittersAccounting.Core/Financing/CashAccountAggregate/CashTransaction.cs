@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 {
-    public class CashTransaction : Entity<int>, IEconomicEvent
+    public class CashTransaction : Entity<int>
     {
         protected CashTransaction() { }
 
@@ -102,5 +102,20 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             UserId = value ?? throw new ArgumentNullException("The User id can not be null.");
             UpdateLastModifiedDate();
         }
+    }
+
+    public enum CashTransactionTypeEnum : int
+    {
+        CashReceiptSales = 1,
+        CashReceiptDebtIssueProceeds = 2,
+        CashReceiptStockIssueProceeds = 3,
+        CashDisbursementLoanPayment = 4,
+        CashDisbursementDividentPayment = 5,
+        CashDisbursementTimeCardPayment = 6,
+        CashDisbursementPurchaseReceipt = 7,
+        CashReceiptAdjustment = 8,
+        CashDisbursementAdjustment = 9,
+        CashDisbursementCashTransferOut = 10,
+        CashReceiptCashTransferIn = 11
     }
 }

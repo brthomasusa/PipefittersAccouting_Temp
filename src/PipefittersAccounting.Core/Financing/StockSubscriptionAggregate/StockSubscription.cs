@@ -1,14 +1,12 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedKernel.Interfaces;
 
 namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
 {
-    public class StockSubscription : AggregateRoot<Guid>, IAggregateRoot, IEconomicEvent
+    public class StockSubscription : AggregateRoot<Guid>
     {
         protected StockSubscription() { }
 
@@ -25,6 +23,10 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
         {
             Id = stockId ?? throw new ArgumentNullException("The stock subscription id is required.");
             FinancierId = financierId ?? throw new ArgumentNullException("The financier id is required.");
+            StockIssueDate = stockIssueDate ?? throw new ArgumentNullException("The stock issue date is required.");
+            SharesIssured = sharesIssured ?? throw new ArgumentNullException("The number of shares issued is required.");
+            PricePerShare = pricePerShare ?? throw new ArgumentNullException("The price per share is required.");
+            UserId = userId ?? throw new ArgumentNullException("The user id is required.");
         }
 
         public virtual EntityGuidID FinancierId { get; private set; }
