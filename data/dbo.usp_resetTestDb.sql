@@ -9,6 +9,7 @@ BEGIN
             Delete from Finance.CashAccounts;
             Delete from Finance.LoanInstallments;
             Delete from Finance.LoanAgreements;
+            Delete from Finance.DividendDeclarations;
             Delete from Finance.StockSubscriptions;
             Delete from Finance.Financiers;
             Delete from Shared.DomainUsers;
@@ -79,6 +80,7 @@ BEGIN
                 ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', 3),
                 ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', 3),    
                 ('5997f125-bfca-4540-a144-01e444f6dc25', 3),
+                ('971bb315-9d40-4c87-b43b-359b33c31354', 3),
                 ('93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e', 4),
                 ('f479f59a-5001-47af-9d6c-2eae07077490', 4),
                 ('76e6164a-249d-47a2-b47c-f09a332181b6', 4),
@@ -249,7 +251,8 @@ BEGIN
                 ('fb39b013-1633-4479-8186-9f9b240b5727', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 12000, 1.00, '2022-01-11','660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '01da50f9-021b-4d03-853a-3fd2c95e207d', 10000, 1.00, '2022-01-13','660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('264632b4-20bd-473f-9a9b-dd6f3b6ddbac', '12998229-7ede-4834-825a-0c55bde75695', 5000, 3.00, '2022-02-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12500, 1.25, '2022-04-02','660bb318-649e-470d-9d2b-693bfb0b2744')
+                ('5997f125-bfca-4540-a144-01e444f6dc25', '12998229-7ede-4834-825a-0c55bde75695', 12500, 1.25, '2022-04-02','660bb318-649e-470d-9d2b-693bfb0b2744'),
+                 ('971bb315-9d40-4c87-b43b-359b33c31354', '12998229-7ede-4834-825a-0c55bde75695', 5700, 1.05, '2022-05-27','660bb318-649e-470d-9d2b-693bfb0b2744')
 
             INSERT INTO Finance.DividendDeclarations
                 (DividendId, StockId, DividendDeclarationDate, DividendPerShare, UserId)
@@ -359,6 +362,14 @@ BEGIN
         BEGIN CATCH
                 -- if error, roll back any chanegs done by any of the sql statements
                 ROLLBACK TRANSACTION
+
+                SELECT
+                    ERROR_NUMBER() AS ErrorNumber,
+                    -- ERROR_STATE() AS ErrorState,
+                    -- ERROR_SEVERITY() AS ErrorSeverity,
+                    -- ERROR_PROCEDURE() AS ErrorProcedure,
+                    ERROR_LINE() AS ErrorLine,
+                    ERROR_MESSAGE() AS ErrorMessage;                
         END CATCH    
 END
 

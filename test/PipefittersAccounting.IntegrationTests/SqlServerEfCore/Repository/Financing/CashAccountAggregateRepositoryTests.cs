@@ -42,8 +42,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
                 .UseLazyLoadingProxies()
             );
 
-            // ICashAccountQueryService qryService = new CashAccountQueryService(_dapperCtx);
-            // ICashAccountAggregateValidationService validationService = new CashAccountAggregateValidationService(qryService);
             _repository = new CashAccountAggregateRepository(_dbContext);
         }
 
@@ -165,6 +163,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             CashAccount cashAccount = result.Result;
 
             OperationResult<bool> deleteResult = await _repository.DeleteCashAccountAsync(cashAccount.Id);
+            await _dbContext.SaveChangesAsync();
 
             Assert.True(deleteResult.Success);
         }
