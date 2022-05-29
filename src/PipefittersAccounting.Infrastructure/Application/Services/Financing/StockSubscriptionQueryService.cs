@@ -18,5 +18,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetCashAccountListItems(GetStockSubscriptionListItemParameters queryParameters)
             => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters)
+            => await VerifyStockSubscriptionIsUniqueQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>>
+            VerifyCashDepositOfStockIssueProceeds(VerifyCashDepositOfStockIssueProceedsParameters queryParameters)
+                => await VerifyCashDepositOfStockIssueProceedsQuery.Query(queryParameters, _dapperCtx);
     }
 }

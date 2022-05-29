@@ -29,5 +29,18 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int SharesIssued { get; set; }
         public decimal PricePerShare { get; set; }
     }
+
+    public class VerificationOfCashDepositStockIssueProceeds
+    {
+        public Guid FinancierId { get; set; }
+        public Guid StockId { get; set; }
+        public string? InvestorName { get; set; }
+        public DateTime StockIssueDate { get; set; }
+        public int SharesIssued { get; set; }
+        public decimal PricePerShare { get; set; }
+        public int CashTransactionId { get; set; }
+        public DateTime DateReceived { get; set; }
+        public decimal AmountReceived { get; set; }
+    }
 }
 

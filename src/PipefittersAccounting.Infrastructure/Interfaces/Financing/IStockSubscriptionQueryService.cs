@@ -8,5 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     {
         Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameters queryParameters);
         Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetCashAccountListItems(GetStockSubscriptionListItemParameters queryParameters);
+        Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters);
+        Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(VerifyCashDepositOfStockIssueProceedsParameters queryParameters);
     }
 }
