@@ -9,14 +9,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
     // Using Dapper ORM to verify the existence of a cash account
-    public class SourceCashAccountRule : BusinessRule<CreateCashAccountTransferInfo>
+    public class SourceCashAccountRule : BusinessRule<CashAccountTransferWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public SourceCashAccountRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransferInfo transferInfo)
+        public override async Task<ValidationResult> Validate(CashAccountTransferWriteModel transferInfo)
         {
             ValidationResult validationResult = new();
 

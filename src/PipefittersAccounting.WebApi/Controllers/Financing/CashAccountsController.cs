@@ -74,7 +74,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCashAccount([FromBody] CreateCashAccountInfo writeModel)
+        public async Task<IActionResult> CreateCashAccount([FromBody] CashAccountWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashAccount(writeModel);
 
@@ -104,7 +104,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPut("edit")]
-        public async Task<IActionResult> EditCashAccountInfo([FromBody] EditCashAccountInfo writeModel)
+        public async Task<IActionResult> EditCashAccountInfo([FromBody] CashAccountWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.UpdateCashAccount(writeModel);
 
@@ -124,7 +124,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteCashAccountInfo([FromBody] DeleteCashAccountInfo writeModel)
+        public async Task<IActionResult> DeleteCashAccountInfo([FromBody] CashAccountWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.DeleteCashAccount(writeModel);
 

@@ -9,11 +9,11 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     {
         Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount);
 
-        Task<ValidationResult> IsValidCreateCashAccountInfo(CreateCashAccountInfo writeModel);
+        Task<ValidationResult> IsValidCreateCashAccountInfo(CashAccountWriteModel writeModel);
 
-        Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel);
+        Task<ValidationResult> IsValidEditCashAccountInfo(CashAccountWriteModel writeModel);
 
-        Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel);
+        Task<ValidationResult> IsValidDeleteCashAccountInfo(CashAccountWriteModel writeModel);
 
         Task<ValidationResult> IsValidCashDepositOfSalesProceeds(CreateCashAccountTransactionInfo transactionInfo);
 
@@ -23,6 +23,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo);
 
-        Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CreateCashAccountTransferInfo transactionInfo);
+        Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transactionInfo);
     }
 }

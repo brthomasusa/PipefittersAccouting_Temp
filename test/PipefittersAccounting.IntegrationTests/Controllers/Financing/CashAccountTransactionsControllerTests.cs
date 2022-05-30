@@ -123,7 +123,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateCashTransfer_CashAccountTransactionsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createtransfer";
-            CreateCashAccountTransferInfo model = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel model = CashAccountTestData.GetCreateCashAccountTransferInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

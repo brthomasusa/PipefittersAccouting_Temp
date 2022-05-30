@@ -4,7 +4,7 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 {
-    public class CreateCashAccountInfo : IWriteModel
+    public class CashAccountWriteModel : IWriteModel
     {
         public Guid CashAccountId { get; set; }
         public int CashAccountType { get; set; }
@@ -13,23 +13,6 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public string? CashAccountNumber { get; set; }
         public string? RoutingTransitNumber { get; set; }
         public DateTime DateOpened { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class EditCashAccountInfo : IWriteModel
-    {
-        public Guid CashAccountId { get; set; }
-        public int CashAccountType { get; set; }
-        public string? BankName { get; set; }
-        public string? CashAccountName { get; set; }
-        public string? RoutingTransitNumber { get; set; }
-        public DateTime DateOpened { get; set; }
-        public Guid UserId { get; set; }
-    }
-
-    public class DeleteCashAccountInfo : IWriteModel
-    {
-        public Guid CashAccountId { get; set; }
         public Guid UserId { get; set; }
     }
 
@@ -47,7 +30,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public Guid UserId { get; set; }
     }
 
-    public class CreateCashAccountTransferInfo : IWriteModel
+    public class CashAccountTransferWriteModel : IWriteModel
     {
         public Guid CashTransferId { get; set; }
         public Guid SourceCashAccountId { get; set; }

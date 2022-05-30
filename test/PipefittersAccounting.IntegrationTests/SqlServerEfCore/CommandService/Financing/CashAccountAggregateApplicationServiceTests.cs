@@ -35,7 +35,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountCreateCommand_ShouldSucceed()
         {
-            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetCreateCashAccountInfo();
 
             OperationResult<bool> result =
                 await CashAccountCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -46,7 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountCreateCommand_WithExistingAcctNumber_ShouldFail()
         {
-            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetCreateCashAccountInfo();
             model.CashAccountNumber = "36547-9098812";
             OperationResult<bool> result =
                 await CashAccountCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -59,7 +59,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountUpdateCommand_ShouldSucceed()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
 
             OperationResult<bool> result =
                 await CashAccountUpdateCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -70,7 +70,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountDeleteCommand_ShouldSucceed()
         {
-            DeleteCashAccountInfo model
+            CashAccountWriteModel model
                 = new()
                 {
                     CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
@@ -86,7 +86,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void CreateCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
-            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetCreateCashAccountInfo();
 
             OperationResult<bool> result = await _appService.CreateCashAccount(model);
 
@@ -96,7 +96,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
 
@@ -106,7 +106,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_CannotChangeAcctType_ShouldFail()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
 
@@ -116,7 +116,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_ExistingAcctName_ShouldFail()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
             model.CashAccountName = "Primary Checking";
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
@@ -127,7 +127,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_ChangeAcctTypeNoTrans_ShouldSucceed()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
             model.CashAccountType = 3;
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
@@ -138,7 +138,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void UpdateCashAccount_CashAccountApplicationService_CannotChangeAcctTypeWithTransactions_ShouldFail()
         {
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfoWithAcctTypeUpdate();
 
             OperationResult<bool> result = await _appService.UpdateCashAccount(model);
 
@@ -148,7 +148,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void DeleteCashAccount_CashAccountApplicationService_ShouldSucceed()
         {
-            DeleteCashAccountInfo model
+            CashAccountWriteModel model
                 = new()
                 {
                     CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
@@ -163,7 +163,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void DeleteCashAccount_CashAccountApplicationService_AcctHasTransactions_ShouldFail()
         {
-            DeleteCashAccountInfo model
+            CashAccountWriteModel model
                 = new()
                 {
                     CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
@@ -233,7 +233,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountTransferCreateCommand_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo model = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel model = CashAccountTestData.GetCreateCashAccountTransferInfo();
             model.CashTransferAmount = 10000M;
 
             OperationResult<bool> result =
@@ -245,8 +245,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CashAccountTransferCreateCommand_InsufficientFunds_ShouldFail()
         {
-            CreateCashAccountTransferInfo model = CashAccountTestData.GetCreateCashAccountTransferInfo();
-            model.CashTransferAmount = 20000.01M;
+            CashAccountTransferWriteModel model = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            model.CashTransferAmount = 35625.01M;
 
             OperationResult<bool> result =
                 await CashAccountTransferCreateCommand.Process(model, _repository, _validationService, _unitOfWork);

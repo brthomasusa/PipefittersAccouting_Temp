@@ -27,13 +27,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult<bool>> CreateCashAccount(CreateCashAccountInfo writeModel)
+        public async Task<OperationResult<bool>> CreateCashAccount(CashAccountWriteModel writeModel)
             => await CashAccountCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
-        public async Task<OperationResult<bool>> UpdateCashAccount(EditCashAccountInfo writeModel)
+        public async Task<OperationResult<bool>> UpdateCashAccount(CashAccountWriteModel writeModel)
             => await CashAccountUpdateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
-        public async Task<OperationResult<bool>> DeleteCashAccount(DeleteCashAccountInfo writeModel)
+        public async Task<OperationResult<bool>> DeleteCashAccount(CashAccountWriteModel writeModel)
             => await CashAccountDeleteCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> CreateCashDeposit(CreateCashAccountTransactionInfo writeModel)
@@ -42,7 +42,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<bool>> CreateCashDisbursement(CreateCashAccountTransactionInfo writeModel)
             => await CashDisbursementCreateCommandDispatcher.Process(writeModel, _repository, _validationService, _unitOfWork);
 
-        public async Task<OperationResult<bool>> CreateCashTransfer(CreateCashAccountTransferInfo writeModel)
+        public async Task<OperationResult<bool>> CreateCashTransfer(CashAccountTransferWriteModel writeModel)
             => await CashAccountTransferCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
     }
 }

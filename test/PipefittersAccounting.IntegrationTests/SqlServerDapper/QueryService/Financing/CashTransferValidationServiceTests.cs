@@ -29,7 +29,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_SourceCashAccountBalanceValidator_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             SourceCashAccountBalanceRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(transferInfo);
@@ -40,10 +40,10 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_SourceCashAccountBalanceValidator_InsufficientBalance_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
-            transferInfo.CashTransferAmount = 20000.01M;
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            transferInfo.CashTransferAmount = 35625.01M;
 
-            SourceCashAccountRule validator = new(_queryService);
+            SourceCashAccountBalanceRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(transferInfo);
 
@@ -51,9 +51,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
-        public async Task Validate_SourceCashAccountValidator_ShouldSucceed()
+        public async Task Validate_SourceCashAccountRule_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             SourceCashAccountRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(transferInfo);
@@ -64,7 +64,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_SourceCashAccountValidator_SourceSamesAsDestination_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.DestinationCashAccountId = transferInfo.SourceCashAccountId;
 
             SourceCashAccountRule validator = new(_queryService);
@@ -77,7 +77,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_SourceCashAccountValidator_InvalidSourceAcctId_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.SourceCashAccountId = new Guid("111bb318-649e-470d-9d2b-693bfb0b2744");
 
             SourceCashAccountRule validator = new(_queryService);
@@ -90,7 +90,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DestinationCashAccountValidator_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             DestinationCashAccountRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(transferInfo);
@@ -101,7 +101,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DestinationCashAccountValidator_SourceSamesAsDestination_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.DestinationCashAccountId = transferInfo.SourceCashAccountId;
 
             DestinationCashAccountRule validator = new(_queryService);
@@ -114,7 +114,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DestinationCashAccountValidator_InvalidDestinationAcctId_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.DestinationCashAccountId = new Guid("111bb318-649e-470d-9d2b-693bfb0b2744");
 
             DestinationCashAccountRule validator = new(_queryService);
@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_CashAccountTransferValidation_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
 
             ValidationResult validationResult = await CashAccountTransferValidation.Validate(transferInfo, _queryService);
 
@@ -141,7 +141,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_CashAccountTransferValidation_SourceSamesAsDestination_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.DestinationCashAccountId = transferInfo.SourceCashAccountId;
 
             ValidationResult validationResult = await CashAccountTransferValidation.Validate(transferInfo, _queryService);
@@ -152,7 +152,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_CashAccountTransferValidation_InvalidDestinationAcctId_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.DestinationCashAccountId = new Guid("111bb318-649e-470d-9d2b-693bfb0b2744");
 
             ValidationResult validationResult = await CashAccountTransferValidation.Validate(transferInfo, _queryService);
@@ -163,7 +163,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_CashAccountTransferValidation_InvalidSourceAcctId_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             transferInfo.SourceCashAccountId = new Guid("111bb318-649e-470d-9d2b-693bfb0b2744");
 
             ValidationResult validationResult = await CashAccountTransferValidation.Validate(transferInfo, _queryService);
@@ -174,8 +174,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_CashAccountTransferValidation_InsufficientBalance_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
-            transferInfo.CashTransferAmount = 20000.01M;
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            transferInfo.CashTransferAmount = 35625.01M;
 
             ValidationResult validationResult = await CashAccountTransferValidation.Validate(transferInfo, _queryService);
 
@@ -189,7 +189,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCreateCashAccountTransferInfo_CashAccountAggregateValidationService_ShouldSucceed()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
             ValidationResult validationResult = await _validationService.IsValidCreateCashAccountTransferInfo(transferInfo);
 
             Assert.True(validationResult.IsValid);
@@ -198,8 +198,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCreateCashAccountTransferInfo_CashAccountAggregateValidationService_InsufficientBalance_ShouldFail()
         {
-            CreateCashAccountTransferInfo transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
-            transferInfo.CashTransferAmount = 20000.01M;
+            CashAccountTransferWriteModel transferInfo = CashAccountTestData.GetCreateCashAccountTransferInfo();
+            transferInfo.CashTransferAmount = 35625.01M;
 
             ValidationResult validationResult = await _validationService.IsValidCreateCashAccountTransferInfo(transferInfo);
 

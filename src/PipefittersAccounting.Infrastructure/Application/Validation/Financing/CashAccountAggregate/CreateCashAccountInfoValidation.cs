@@ -6,7 +6,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 {
     public class CreateCashAccountInfoValidation
     {
-        public static async Task<ValidationResult> Validate(CreateCashAccountInfo accountInfo, ICashAccountQueryService queryService)
+        public static async Task<ValidationResult> Validate(CashAccountWriteModel accountInfo, ICashAccountQueryService queryService)
         {
             NewCashAccountNameMustBeUniqueRule acctNameValidator = new(queryService);
             NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(queryService);

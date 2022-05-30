@@ -38,7 +38,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             List<CashAccountListItem> response = await _client
                 .GetFromJsonAsync<List<CashAccountListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/cashaccounts/list", queryParams));
 
-            Assert.Equal(2, response.Count);
+            Assert.Equal(4, response.Count);
         }
 
         [Fact]
@@ -53,14 +53,14 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             var jsonResponse = await response.Content.ReadAsStreamAsync();
             var cashAccount = await JsonSerializer.DeserializeAsync<CashAccountDetail>(jsonResponse, _options);
 
-            Assert.Equal(20000M, cashAccount.Balance);
+            Assert.Equal(35625M, cashAccount.Balance);
         }
 
         [Fact]
         public async Task CreateCashAccount_CashAccountsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/create";
-            CreateCashAccountInfo model = CashAccountTestData.GetCreateCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetCreateCashAccountInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -91,7 +91,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task EditCashAccount_CashAccountsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/edit";
-            EditCashAccountInfo model = CashAccountTestData.GetEditCashAccountInfo();
+            CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -118,7 +118,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task DeleteCashAccount_CashAccountsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/delete";
-            DeleteCashAccountInfo model = new() { CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76") };
+            CashAccountWriteModel model = new() { CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76") };
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

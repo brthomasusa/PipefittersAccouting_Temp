@@ -149,7 +149,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("cashtransaction/createtransfer")]
-        public async Task<IActionResult> CreateCashTransfer([FromBody] CreateCashAccountTransferInfo writeModel)
+        public async Task<IActionResult> CreateCashTransfer([FromBody] CashAccountTransferWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashTransfer(writeModel);
 

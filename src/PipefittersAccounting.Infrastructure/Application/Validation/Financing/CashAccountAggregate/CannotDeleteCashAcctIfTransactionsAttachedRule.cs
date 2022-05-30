@@ -6,14 +6,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class CannotDeleteCashAcctIfTransactionsAttachedRule : BusinessRule<DeleteCashAccountInfo>
+    public class CannotDeleteCashAcctIfTransactionsAttachedRule : BusinessRule<CashAccountWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public CannotDeleteCashAcctIfTransactionsAttachedRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(DeleteCashAccountInfo cashAccount)
+        public override async Task<ValidationResult> Validate(CashAccountWriteModel cashAccount)
         {
             ValidationResult validationResult = new();
 

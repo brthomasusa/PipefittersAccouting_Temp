@@ -176,8 +176,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountInfo GetCreateCashAccountInfo()
-            => new CreateCashAccountInfo
+        public static CashAccountWriteModel GetCreateCashAccountInfo()
+            => new CashAccountWriteModel
             {
                 CashAccountId = new Guid("210d34d7-7474-44e7-a90b-93998137917a"),
                 CashAccountType = 2,
@@ -189,8 +189,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static EditCashAccountInfo GetEditCashAccountInfo()
-            => new EditCashAccountInfo
+        public static CashAccountWriteModel GetEditCashAccountInfo()
+            => new CashAccountWriteModel
             {
                 CashAccountId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76"),
                 CashAccountType = 2,
@@ -201,8 +201,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static EditCashAccountInfo GetEditCashAccountInfoWithAcctTypeUpdate()
-            => new EditCashAccountInfo
+        public static CashAccountWriteModel GetEditCashAccountInfoWithAcctTypeUpdate()
+            => new CashAccountWriteModel
             {
                 CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
                 CashAccountType = 3,
@@ -213,8 +213,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransferInfo GetCreateCashAccountTransferInfo()
-            => new CreateCashAccountTransferInfo
+        public static CashAccountTransferWriteModel GetCreateCashAccountTransferInfo()
+            => new CashAccountTransferWriteModel
             {
                 CashTransferId = new Guid("b954a137-ab47-4f13-85ae-762a97944230"),
                 SourceCashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),

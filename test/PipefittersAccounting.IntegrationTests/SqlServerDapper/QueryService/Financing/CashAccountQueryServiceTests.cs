@@ -111,7 +111,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             OperationResult<CashAccountDetail> result = await _queryService.GetCashAccountDetails(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(20000M, result.Result.Balance);
+            Assert.Equal(35625M, result.Result.Balance);
         }
 
         [Fact]
@@ -176,7 +176,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.True(result.Success);
 
-            Assert.Equal(16, result.Result);
+            Assert.Equal(17, result.Result);
         }
 
         [Fact]

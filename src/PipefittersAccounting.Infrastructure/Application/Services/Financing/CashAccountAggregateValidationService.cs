@@ -17,13 +17,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount)
             => throw new NotImplementedException();
 
-        public virtual async Task<ValidationResult> IsValidCreateCashAccountInfo(CreateCashAccountInfo writeModel)
+        public virtual async Task<ValidationResult> IsValidCreateCashAccountInfo(CashAccountWriteModel writeModel)
             => await CreateCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
-        public virtual async Task<ValidationResult> IsValidEditCashAccountInfo(EditCashAccountInfo writeModel)
+        public virtual async Task<ValidationResult> IsValidEditCashAccountInfo(CashAccountWriteModel writeModel)
             => await EditCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
-        public virtual async Task<ValidationResult> IsValidDeleteCashAccountInfo(DeleteCashAccountInfo writeModel)
+        public virtual async Task<ValidationResult> IsValidDeleteCashAccountInfo(CashAccountWriteModel writeModel)
             => await DeleteCashAccountInfoValidation.Validate(writeModel, _cashAcctQrySvc);
 
         public virtual Task<ValidationResult> IsValidCashDepositOfSalesProceeds(CreateCashAccountTransactionInfo transactionInfo)
@@ -38,7 +38,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual async Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo)
             => await ValidateDisbursementForLoanPayment(transactionInfo);
 
-        public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CreateCashAccountTransferInfo transferInfo)
+        public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transferInfo)
             => await CashAccountTransferValidation.Validate(transferInfo, _cashAcctQrySvc);
 
 
