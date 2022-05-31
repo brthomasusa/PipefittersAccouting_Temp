@@ -202,5 +202,41 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.True(result.Success);
             Assert.Equal(Guid.Empty, result.Result);
         }
+
+        [Fact]
+        public async Task VerifyInvestorIdentification_StockSubscriptionQueryService_ValidFinancierId()
+        {
+            Guid id = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601");
+
+            GetInvestorIdentificationParameters queryParameters =
+                new()
+                {
+                    FinancierId = id
+                };
+
+            OperationResult<Guid> result =
+                await _queryService.VerifyInvestorIdentification(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(id, result.Result);
+        }
+
+        [Fact]
+        public async Task VerifyInvestorIdentification_StockSubscriptionQueryService_InvalidFinancierId()
+        {
+            Guid id = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e");
+
+            GetInvestorIdentificationParameters queryParameters =
+                new()
+                {
+                    FinancierId = id
+                };
+
+            OperationResult<Guid> result =
+                await _queryService.VerifyInvestorIdentification(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(Guid.Empty, result.Result);
+        }
     }
 }

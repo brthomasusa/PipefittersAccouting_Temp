@@ -28,5 +28,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameters queryParameters)
             => await VerifyStockSubscriptionIdentificationQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> VerifyInvestorIdentification(GetInvestorIdentificationParameters queryParameters)
+            => await VerifyInvestorIdentificationQuery.Query(queryParameters, _dapperCtx);
     }
 }

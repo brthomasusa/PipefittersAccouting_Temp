@@ -63,6 +63,28 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 DividendPerShare.Create(.09M),
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
+
+        public static StockSubscriptionWriteModel GetStockSubscriptionWriteModel_ExistingWithNoDeposit()
+            => new StockSubscriptionWriteModel
+            {
+                StockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354"),
+                FinancierId = new Guid("12998229-7ede-4834-825a-0c55bde75695"),
+                StockIssueDate = new DateTime(2022, 5, 27),
+                SharesIssued = 5700,
+                PricePerShare = 1.05M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static StockSubscriptionWriteModel GetStockSubscriptionWriteModel_ExistingWithDeposit()
+            => new StockSubscriptionWriteModel
+            {
+                StockId = new Guid("fb39b013-1633-4479-8186-9f9b240b5727"),
+                FinancierId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
+                StockIssueDate = new DateTime(2022, 1, 11),
+                SharesIssued = 12000,
+                PricePerShare = 1.00M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
     }
 }
 
@@ -80,3 +102,10 @@ namespace PipefittersAccounting.IntegrationTests.Base
 // DividendDeclarationDate dividendDeclarationDate,
 // DividendPerShare dividendPerShare,
 // EntityGuidID userId
+
+/* DividendDeclarationWriteModel */
+// public Guid DividendId { get; set; }
+// public Guid StockId { get; set; }
+// public DateTime DividendDeclarationDate { get; set; }
+// public decimal DividendPerShare { get; set; }
+// public Guid UserId { get; set; }

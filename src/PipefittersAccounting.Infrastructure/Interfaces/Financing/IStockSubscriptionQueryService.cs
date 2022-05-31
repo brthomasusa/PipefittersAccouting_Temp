@@ -11,5 +11,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters);
         Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(VerifyCashDepositOfStockIssueProceedsParameters queryParameters);
         Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameters queryParameters);
+        Task<OperationResult<Guid>> VerifyInvestorIdentification(GetInvestorIdentificationParameters queryParameters);
     }
 }
