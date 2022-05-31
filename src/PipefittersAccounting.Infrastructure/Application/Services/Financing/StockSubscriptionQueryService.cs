@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameters queryParameters)
             => await GetStockSubscriptionDetailsQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetCashAccountListItems(GetStockSubscriptionListItemParameters queryParameters)
+        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemParameters queryParameters)
             => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters)
@@ -25,5 +25,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>>
             VerifyCashDepositOfStockIssueProceeds(VerifyCashDepositOfStockIssueProceedsParameters queryParameters)
                 => await VerifyCashDepositOfStockIssueProceedsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameters queryParameters)
+            => await VerifyStockSubscriptionIdentificationQuery.Query(queryParameters, _dapperCtx);
     }
 }

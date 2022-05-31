@@ -31,7 +31,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task GetCashAccountListItems_StockSubscriptionQueryService_ShouldSucceed()
         {
             GetStockSubscriptionListItemParameters queryParameters = new() { Page = 1, PageSize = 10 };
-            OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetCashAccountListItems(queryParameters);
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetStockSubscriptionListItems(queryParameters);
 
             Assert.True(result.Success);
 
@@ -165,6 +165,42 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
                 await _queryService.VerifyCashDepositOfStockIssueProceeds(queryParameters);
 
             Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task VerifyStockSubscriptionIdentification_StockSubscriptionQueryService_ValidStockId()
+        {
+            Guid stockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770");
+
+            GetStockSubscriptionParameters queryParameters =
+                new()
+                {
+                    StockId = stockId
+                };
+
+            OperationResult<Guid> result =
+                await _queryService.VerifyStockSubscriptionIdentification(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(stockId, result.Result);
+        }
+
+        [Fact]
+        public async Task VerifyStockSubscriptionIdentification_StockSubscriptionQueryService_InvalidStockId()
+        {
+            Guid stockId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
+
+            GetStockSubscriptionParameters queryParameters =
+                new()
+                {
+                    StockId = stockId
+                };
+
+            OperationResult<Guid> result =
+                await _queryService.VerifyStockSubscriptionIdentification(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(Guid.Empty, result.Result);
         }
     }
 }

@@ -22,7 +22,6 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public decimal DividendPerShare { get; set; }
         public Guid UserId { get; set; }
     }
-
 }
 
 
