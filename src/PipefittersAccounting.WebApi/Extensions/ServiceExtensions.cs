@@ -58,6 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IFinancierApplicationService, FinancierApplicationService>()
                 .AddScoped<ILoanAgreementApplicationService, LoanAgreementApplicationService>()
                 .AddScoped<ICashAccountApplicationService, CashAccountApplicationService>()
+                .AddScoped<IStockSubscriptionApplicationService, StockSubscriptionApplicationService>()
                 .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
