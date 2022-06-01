@@ -95,17 +95,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
 
-                OperationResult<Guid> dupeSubscriptionResult = await CheckForDuplicateStockSubscription(subscription.FinancierId,
-                                                                                                        subscription.SharesIssured,
-                                                                                                        subscription.PricePerShare,
-                                                                                                        subscription.StockIssueDate);
-
-                if (dupeSubscriptionResult.Result != Guid.Empty)
-                {
-                    string errMsg = $"A stock subscription (StockId: {dupeSubscriptionResult.Result}) with the same FinancierId, SharesIssued, PricePerShare, and StockIssueDate is already in the database.";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
                 EconomicEvent economicEvent = new(EntityGuidID.Create(subscription.Id), EventTypeEnum.StockSubscription);
                 await _dbContext.EconomicEvents.AddAsync(economicEvent);
                 await _dbContext.StockSubscriptions.AddAsync(subscription);
@@ -117,29 +106,10 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<bool>> UpdateStockSubscriptionAsync(StockSubscription subscription)
+        public OperationResult<bool> UpdateStockSubscription(StockSubscription subscription)
         {
             try
             {
-                OperationResult<bool> searchResult = await DoesStockSubscriptionExist(subscription.Id);
-
-                if (!searchResult.Result)
-                {
-                    string errMsg = $"Update failed! A stock subscription with StockId '{subscription.Id}' could not be located.";
-                    return OperationResult<bool>.CreateFailure(errMsg); ;
-                }
-
-                OperationResult<Guid> dupeSubscriptionResult = await CheckForDuplicateStockSubscription(subscription.FinancierId,
-                                                                                                        subscription.SharesIssured,
-                                                                                                        subscription.PricePerShare,
-                                                                                                        subscription.StockIssueDate);
-
-                if (dupeSubscriptionResult.Result != Guid.Empty && dupeSubscriptionResult.Result != subscription.Id)
-                {
-                    string errMsg = $"Update failed! Your edits would result in a duplicate stock subscription that matches stock subscription with Id '{dupeSubscriptionResult.Result}'.";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
                 _dbContext.StockSubscriptions.Update(subscription);
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
@@ -183,39 +153,6 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                 return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
-
-        private async Task<OperationResult<Guid>> CheckForDuplicateStockSubscription
-        (
-            Guid financierId,
-            int sharesIssured,
-            decimal pricePerShare,
-            DateTime stockIssueDate
-        )
-        {
-            try
-            {
-                Guid returnValue = Guid.Empty;
-
-                var details = await (from subscription in _dbContext.StockSubscriptions.Where(e => e.FinancierId == financierId &&
-                                                                                                   e.SharesIssured == sharesIssured &&
-                                                                                                   e.PricePerShare == pricePerShare &&
-                                                                                                   e.StockIssueDate == stockIssueDate)
-                                                                                       .AsNoTracking()
-                                     select new { StockId = subscription.Id }).FirstOrDefaultAsync();
-
-                if (details is not null)
-                {
-                    returnValue = details.StockId;
-                }
-
-                return OperationResult<Guid>.CreateSuccessResult(returnValue);
-            }
-            catch (Exception ex)
-            {
-                return OperationResult<Guid>.CreateFailure(ex);
-            }
-        }
-
 
         public void Dispose()
         {

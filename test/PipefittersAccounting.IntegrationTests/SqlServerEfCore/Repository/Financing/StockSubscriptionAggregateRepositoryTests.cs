@@ -85,16 +85,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         }
 
         [Fact]
-        public async Task AddStockSubscriptionAsync_StockSubscriptionAggregateRepository_DuplicateFields_ShouldFail()
-        {
-            StockSubscription subscription = StockSubscriptionTestData.CreateStockSubscriptionDuplicateFields();
-
-            OperationResult<bool> result = await _repository.AddStockSubscriptionAsync(subscription);
-
-            Assert.False(result.Success);
-        }
-
-        [Fact]
         public async Task UpdateStockSubscriptionAsync_StockSubscriptionAggregateRepository_ShouldSucceed()
         {
             Guid stockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354");
@@ -105,25 +95,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             subscription.UpdateSharesIssured(SharesIssured.Create(5800));
             subscription.UpdatePricePerShare(PricePerShare.Create(1.22M));
 
-            OperationResult<bool> updateResult = await _repository.UpdateStockSubscriptionAsync(subscription);
+            OperationResult<bool> updateResult = _repository.UpdateStockSubscription(subscription);
 
             Assert.True(updateResult.Success);
-        }
-
-        [Fact]
-        public async Task UpdateStockSubscriptionAsync_StockSubscriptionAggregateRepository_DuplicateFields_ShouldFail()
-        {
-            Guid stockId = new Guid("5997f125-bfca-4540-a144-01e444f6dc25");
-            OperationResult<StockSubscription> result = await _repository.GetStockSubscriptionByIdAsync(stockId);
-            StockSubscription subscription = result.Result;
-
-            subscription.UpdateStockIssueDate(StockIssueDate.Create(new DateTime(2022, 5, 27)));
-            subscription.UpdateSharesIssured(SharesIssured.Create(5700));
-            subscription.UpdatePricePerShare(PricePerShare.Create(1.05M));
-
-            OperationResult<bool> updateResult = await _repository.UpdateStockSubscriptionAsync(subscription);
-
-            Assert.False(updateResult.Success);
         }
 
         [Fact]

@@ -64,6 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<ICashAccountQueryService, CashAccountQueryService>()
                 .AddScoped<IStockSubscriptionQueryService, StockSubscriptionQueryService>()
                 .AddScoped<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>()
+                .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>()
                 .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
         }
 

@@ -1,18 +1,15 @@
 #pragma warning disable CS8604
 
-using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;
-using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
-using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class StockSubscriptionCreateCommand
+    public class StockSubscriptionDeleteCommand
     {
         public static async Task<OperationResult<bool>> Process
         (
@@ -22,23 +19,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             IUnitOfWork uow
         )
         {
-            ValidationResult validationResult = await validationService.IsValidCreateStockSubscriptionInfo(model);
+            ValidationResult validationResult = await validationService.IsValidDeleteStockSubscriptionInfo(model);
 
             if (validationResult.IsValid)
             {
                 try
                 {
-                    StockSubscription subscription = new
-                    (
-                        EntityGuidID.Create(model.StockId),
-                        EntityGuidID.Create(model.FinancierId),
-                        StockIssueDate.Create(model.StockIssueDate),
-                        SharesIssured.Create(model.SharesIssued),
-                        PricePerShare.Create(model.PricePerShare),
-                        EntityGuidID.Create(model.UserId)
-                    );
-
-                    await repository.AddStockSubscriptionAsync(subscription);
+                    await repository.DeleteStockSubscriptionAsync(model.StockId);
                     await uow.Commit();
 
                     return OperationResult<bool>.CreateSuccessResult(true);

@@ -185,7 +185,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         /*********************************************************************/
-        /*                   Validation, not validators                      */
+        /*              Validation chains, not individual rules              */
         /*********************************************************************/
 
         [Fact]

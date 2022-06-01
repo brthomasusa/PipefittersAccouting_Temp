@@ -12,7 +12,7 @@ using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class StockSubscriptionCreateCommand
+    public class StockSubscriptionEditCommand
     {
         public static async Task<OperationResult<bool>> Process
         (
@@ -22,26 +22,30 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             IUnitOfWork uow
         )
         {
-            ValidationResult validationResult = await validationService.IsValidCreateStockSubscriptionInfo(model);
+            ValidationResult validationResult = await validationService.IsValidEditStockSubscriptionInfo(model);
 
             if (validationResult.IsValid)
             {
                 try
                 {
-                    StockSubscription subscription = new
-                    (
-                        EntityGuidID.Create(model.StockId),
-                        EntityGuidID.Create(model.FinancierId),
-                        StockIssueDate.Create(model.StockIssueDate),
-                        SharesIssured.Create(model.SharesIssued),
-                        PricePerShare.Create(model.PricePerShare),
-                        EntityGuidID.Create(model.UserId)
-                    );
+                    OperationResult<StockSubscription> getResult = await repository.GetStockSubscriptionByIdAsync(model.StockId);
+                    if (getResult.Success)
+                    {
+                        StockSubscription subscription = getResult.Result;
+                        subscription.UpdateStockIssueDate(StockIssueDate.Create(model.StockIssueDate));
+                        subscription.UpdateSharesIssured(SharesIssured.Create(model.SharesIssued));
+                        subscription.UpdatePricePerShare(PricePerShare.Create(model.PricePerShare));
+                        subscription.UpdateUserId(EntityGuidID.Create(model.UserId));
 
-                    await repository.AddStockSubscriptionAsync(subscription);
-                    await uow.Commit();
+                        repository.UpdateStockSubscription(subscription);
+                        await uow.Commit();
 
-                    return OperationResult<bool>.CreateSuccessResult(true);
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                    }
                 }
                 catch (Exception ex)
                 {

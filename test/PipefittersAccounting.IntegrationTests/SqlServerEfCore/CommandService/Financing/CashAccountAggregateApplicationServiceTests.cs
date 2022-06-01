@@ -62,7 +62,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             CashAccountWriteModel model = CashAccountTestData.GetEditCashAccountInfo();
 
             OperationResult<bool> result =
-                await CashAccountUpdateCommand.Process(model, _repository, _validationService, _unitOfWork);
+                await CashAccountEditCommand.Process(model, _repository, _validationService, _unitOfWork);
 
             Assert.True(result.Success);
         }

@@ -12,7 +12,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CashAccountUpdateCommand
+    public class CashAccountEditCommand
     {
         public static async Task<OperationResult<bool>> Process
         (

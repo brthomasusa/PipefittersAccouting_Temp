@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Core.Interfaces.Financing
         Task<OperationResult<DividendDeclaration>> GetDividendDeclarationByIdAsync(Guid dividendId);
         Task<OperationResult<bool>> DoesStockSubscriptionExist(Guid stockId);
         Task<OperationResult<bool>> AddStockSubscriptionAsync(StockSubscription subscription);
-        Task<OperationResult<bool>> UpdateStockSubscriptionAsync(StockSubscription subscription);
+        OperationResult<bool> UpdateStockSubscription(StockSubscription subscription);
         Task<OperationResult<bool>> DeleteStockSubscriptionAsync(Guid stockId);
     }
 }
