@@ -52,7 +52,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         }
 
         [Fact]
-        public async TaskProcess_StockSubscriptionCreateCommand_Duplicate_ShouldFail()
+        public async Task Process_StockSubscriptionCreateCommand_Duplicate_ShouldFail()
         {
             StockSubscriptionWriteModel model = StockSubscriptionTestData.GetStockSubscriptionWriteModel_ExistingWithNoDeposit();
             model.FinancierId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
