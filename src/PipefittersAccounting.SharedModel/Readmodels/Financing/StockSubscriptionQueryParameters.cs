@@ -24,9 +24,8 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal PricePerShare { get; set; }
     }
 
-    public class VerifyCashDepositOfStockIssueProceedsParameters
+    public class GetDividendDeclarationParameters
     {
-        public Guid FinancierId { get; set; }
-        public Guid StockId { get; set; }
+        public Guid DividendId { get; set; }
     }
 }

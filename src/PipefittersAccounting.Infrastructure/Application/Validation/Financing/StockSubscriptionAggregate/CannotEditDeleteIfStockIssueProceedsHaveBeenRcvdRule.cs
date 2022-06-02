@@ -8,28 +8,28 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
 {
-    public class VerifyInvestorIdentificationRule : BusinessRule<StockSubscriptionWriteModel>
+    public class CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule : BusinessRule<StockSubscriptionWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyInvestorIdentificationRule(IStockSubscriptionQueryService qrySvc)
-            => _qrySvc = qrySvc;
+        public CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule(IStockSubscriptionQueryService cashAcctQrySvc)
+            => _qrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
         {
             ValidationResult validationResult = new();
-            GetInvestorIdentificationParameters queryParameters =
+            GetStockSubscriptionParameters queryParameters =
                 new()
                 {
-                    FinancierId = subscriptionInfo.FinancierId
+                    StockId = subscriptionInfo.StockId
                 };
 
-            OperationResult<Guid> result =
-                await _qrySvc.VerifyInvestorIdentification(queryParameters);
+            OperationResult<VerificationOfCashDepositStockIssueProceeds> result =
+                await _qrySvc.VerifyCashDepositOfStockIssueProceeds(queryParameters);
 
             if (result.Success)
             {
-                if (result.Result != Guid.Empty)
+                if (result.Result.AmountReceived == 0)
                 {
                     validationResult.IsValid = true;
 
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"Validation failed: '{subscriptionInfo.FinancierId}' is not a valid investor identifier.";
+                    string msg = $"Cannot edit or delete stock subscription if stock issue proceeds have been deposited! {result.Result.AmountReceived} was deposited on {result.Result.DateReceived}.";
                     validationResult.Messages.Add(msg);
                 }
             }

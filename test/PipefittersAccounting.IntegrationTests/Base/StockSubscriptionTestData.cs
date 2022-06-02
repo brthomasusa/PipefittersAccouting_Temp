@@ -44,26 +44,6 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        public static DividendDeclaration GetDividendDeclarationValidInfo()
-            => new
-            (
-                EntityGuidID.Create(new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9")),
-                EntityGuidID.Create(new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac")),
-                DividendDeclarationDate.Create(new DateTime(2022, 6, 1)),
-                DividendPerShare.Create(.01M),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-            );
-
-        public static DividendDeclaration GetDividendDeclarationDuplicateFields()
-            => new
-            (
-                EntityGuidID.Create(new Guid("64fb1715-3eed-4953-b9fc-acd491e1317a")),
-                EntityGuidID.Create(new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac")),
-                DividendDeclarationDate.Create(new DateTime(2022, 4, 1)),
-                DividendPerShare.Create(.09M),
-                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-            );
-
         public static StockSubscriptionWriteModel GetStockSubscriptionWriteModel_ExistingWithNoDeposit()
             => new StockSubscriptionWriteModel
             {
@@ -85,27 +65,46 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 PricePerShare = 1.00M,
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
+
+        public static DividendDeclaration GetDividendDeclarationValidInfo()
+            => new
+            (
+                EntityGuidID.Create(new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9")),
+                EntityGuidID.Create(new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac")),
+                DividendDeclarationDate.Create(new DateTime(2022, 6, 1)),
+                DividendPerShare.Create(.01M),
+                EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+            );
+
+        public static DividendDeclarationWriteModel GetDividendDeclarationWriteModelForCreate()
+            => new DividendDeclarationWriteModel
+            {
+                DividendId = new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9"),
+                StockId = new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac"),
+                DividendDeclarationDate = new DateTime(2022, 6, 1),
+                DividendPerShare = .01M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static DividendDeclarationWriteModel GetDividendDeclarationWriteModelForEditNotPaid()
+            => new DividendDeclarationWriteModel
+            {
+                DividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f"),
+                StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770"),
+                DividendDeclarationDate = new DateTime(2022, 6, 3),
+                DividendPerShare = 0,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static DividendDeclarationWriteModel GetDividendDeclarationWriteModelForEditPaid()
+            => new DividendDeclarationWriteModel
+            {
+                DividendId = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc"),
+                StockId = new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac"),
+                DividendDeclarationDate = new DateTime(2022, 3, 1),
+                DividendPerShare = .09M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
     }
 }
 
-/* StockSubscription  */
-// EntityGuidID stockId,
-// EntityGuidID financierId,
-// StockIssueDate stockIssueDate,
-// SharesIssured sharesIssured,
-// PricePerShare pricePerShare,
-// EntityGuidID userId
-
-/*  DividendDeclaration   */
-// EntityGuidID dividendId,
-// EntityGuidID stockId,
-// DividendDeclarationDate dividendDeclarationDate,
-// DividendPerShare dividendPerShare,
-// EntityGuidID userId
-
-/* DividendDeclarationWriteModel */
-// public Guid DividendId { get; set; }
-// public Guid StockId { get; set; }
-// public DateTime DividendDeclarationDate { get; set; }
-// public decimal DividendPerShare { get; set; }
-// public Guid UserId { get; set; }

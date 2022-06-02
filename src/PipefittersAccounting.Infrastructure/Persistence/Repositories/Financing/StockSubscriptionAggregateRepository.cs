@@ -110,6 +110,17 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
         {
             try
             {
+                foreach (DividendDeclaration dividend in subscription.DividendDeclarations)
+                {
+                    EntityState entityState = _dbContext.Entry(dividend).State;
+
+                    if (entityState == EntityState.Added)
+                    {
+                        EconomicEvent economicEvent = new(EntityGuidID.Create(dividend.Id), EventTypeEnum.DividentPayment);
+                        _dbContext.EconomicEvents.Add(economicEvent);
+                    }
+                }
+
                 _dbContext.StockSubscriptions.Update(subscription);
                 return OperationResult<bool>.CreateSuccessResult(true);
             }

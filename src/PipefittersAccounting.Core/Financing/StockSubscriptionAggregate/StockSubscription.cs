@@ -3,6 +3,7 @@
 using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
 {
@@ -65,5 +66,91 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
         }
 
         public virtual IReadOnlyCollection<DividendDeclaration> DividendDeclarations => _dividendDeclarations.ToList();
+
+        public OperationResult<bool> AddDividendDeclaration
+        (
+            Guid dividendId,
+            DateTime dividendDeclarationDate,
+            decimal dividendPerShare,
+            Guid userId
+        )
+        {
+            if (dividendId == Guid.Empty)
+                return OperationResult<bool>.CreateFailure("A dividend id is required.");
+
+            if (dividendDeclarationDate < StockIssueDate)
+                return OperationResult<bool>.CreateFailure("Dividend declaration date must be greater than stock issue date.");
+
+            try
+            {
+                _dividendDeclarations.Add(new DividendDeclaration
+                (
+                    EntityGuidID.Create(dividendId),
+                    EntityGuidID.Create(this.Id),
+                    DividendDeclarationDate.Create(dividendDeclarationDate),
+                    DividendPerShare.Create(dividendPerShare),
+                    EntityGuidID.Create(userId)
+                ));
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> EditDividendDeclaration
+        (
+            Guid dividendId,
+            DateTime dividendDeclarationDate,
+            decimal dividendPerShare,
+            Guid userId
+        )
+        {
+            if (dividendId == Guid.Empty)
+                return OperationResult<bool>.CreateFailure("A dividend id is required.");
+
+            if (dividendDeclarationDate < StockIssueDate)
+                return OperationResult<bool>.CreateFailure("Dividend declaration date must be greater than stock issue date.");
+
+            DividendDeclaration? dividend
+                = _dividendDeclarations.Find(x => x.Id == dividendId);
+
+            if (dividend is null)
+                return OperationResult<bool>.CreateFailure($"Update failed! Unable to locate a dividend declaration with id '{dividendId}'");
+
+            try
+            {
+                dividend.UpdateDividendDeclarationDate(DividendDeclarationDate.Create(dividendDeclarationDate));
+                dividend.UpdateDividendPerShare(DividendPerShare.Create(dividendPerShare));
+                dividend.UpdateUserId(EntityGuidID.Create(userId));
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> DeleteDividendDeclaration(Guid dividendId)
+        {
+            DividendDeclaration? dividend
+                = _dividendDeclarations.Find(x => x.Id == dividendId);
+
+            if (dividend is null)
+                return OperationResult<bool>.CreateFailure($"Delete failed! Unable to locate a dividend declaration with id '{dividendId}'");
+
+            try
+            {
+                _dividendDeclarations.Remove(dividend);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
     }
 }

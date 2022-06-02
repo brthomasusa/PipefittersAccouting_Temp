@@ -22,6 +22,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             IUnitOfWork uow
         )
         {
+            if (model.StockId == Guid.Empty)
+                model.StockId = Guid.NewGuid();
+
             ValidationResult validationResult = await validationService.IsValidCreateStockSubscriptionInfo(model);
 
             if (validationResult.IsValid)

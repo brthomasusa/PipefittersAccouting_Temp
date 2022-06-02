@@ -8,8 +8,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscription, IStockSubscriptionQueryService queryService)
         {
-            VerifyStockSubscriptionIdentificationRule stockIdRule = new(queryService);
-            CannotEditOrDeleteIfStockIssueProceedsRcvdRule checkDepositRule = new(queryService);
+            VerifyStockSubscriptionStockIdRule stockIdRule = new(queryService);
+            CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule checkDepositRule = new(queryService);
 
             stockIdRule.SetNext(checkDepositRule);
 

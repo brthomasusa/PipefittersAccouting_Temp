@@ -18,14 +18,13 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public StockSubscriptionValidationServiceTests()
         {
             _queryService = new StockSubscriptionQueryService(_dapperCtx);
-
         }
 
         [Fact]
         public async Task Validate_VerifyStockSubscriptionIdentificationRule_ShouldSucceed()
         {
             StockSubscriptionWriteModel model = StockSubscriptionTestData.GetStockSubscriptionWriteModel_ExistingWithNoDeposit();
-            VerifyStockSubscriptionIdentificationRule rule = new(_queryService);
+            VerifyStockSubscriptionStockIdRule rule = new(_queryService);
 
             ValidationResult validationResult = await rule.Validate(model);
 
@@ -90,7 +89,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_CannotEditOrDeleteIfStockIssueProceedsRcvdRule_ShouldSucceed()
         {
             StockSubscriptionWriteModel model = StockSubscriptionTestData.GetStockSubscriptionWriteModel_ExistingWithNoDeposit();
-            CannotEditOrDeleteIfStockIssueProceedsRcvdRule rule = new(_queryService);
+            CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule rule = new(_queryService);
 
             ValidationResult validationResult = await rule.Validate(model);
 
@@ -101,7 +100,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_CannotEditOrDeleteIfStockIssueProceedsRcvdRule_DepositRcvd_ShouldFail()
         {
             StockSubscriptionWriteModel model = StockSubscriptionTestData.GetStockSubscriptionWriteModel_ExistingWithDeposit();
-            CannotEditOrDeleteIfStockIssueProceedsRcvdRule rule = new(_queryService);
+            CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule rule = new(_queryService);
 
             ValidationResult validationResult = await rule.Validate(model);
 
@@ -109,12 +108,73 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
-        public async Task Validate_CannotEditOrDeleteIfStockIssueProceedsRcvdRule_InvalidStockIdFinancierIdCombo_ShouldFail()
+        public async Task Validate_VerifyDividendDeclarationStockIdRule_ShouldSucceed()
         {
-            StockSubscriptionWriteModel model = StockSubscriptionTestData.GetStockSubscriptionWriteModel_ExistingWithNoDeposit();
-            model.FinancierId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");   // This is a valid financier id, but not valid with this stock id
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
 
-            CannotEditOrDeleteIfStockIssueProceedsRcvdRule rule = new(_queryService);
+            VerifyDividendDeclarationStockIdRule rule = new(_queryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyDividendDeclarationStockIdRule_InvalidStockId_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9");
+
+            VerifyDividendDeclarationStockIdRule rule = new(_queryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+
+            CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule rule = new(_queryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule_NotRcvd_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354");
+
+            CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule rule = new(_queryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CannotEditDeleteDividendDeclarationIfPaidRule_NotPaid_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditNotPaid();
+
+            CannotEditDeleteDividendDeclarationIfPaidRule rule = new(_queryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CannotEditDeleteDividendDeclarationIfPaidRule_Paid_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditPaid();
+
+            CannotEditDeleteDividendDeclarationIfPaidRule rule = new(_queryService);
 
             ValidationResult validationResult = await rule.Validate(model);
 
@@ -255,5 +315,64 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.False(validationResult.IsValid);
         }
+
+        [Fact]
+        public async Task Validate_CreateDividendDeclarationValidation_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            ValidationResult validationResult = await CreateDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateDividendDeclarationValidation_InvalidStockId_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9");
+
+            ValidationResult validationResult = await CreateDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateDividendDeclarationValidation_ProceedsRcvd_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            ValidationResult validationResult = await CreateDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateDividendDeclarationValidation_ProceedsNotRcvd_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354");
+
+            ValidationResult validationResult = await CreateDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_EditDividendDeclarationValidation_NotPaid_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditNotPaid();
+            ValidationResult validationResult = await EditDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_EditDividendDeclarationValidation_Paid_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditPaid();
+            ValidationResult validationResult = await EditDividendDeclarationValidation.Validate(model, _queryService);
+
+            Assert.False(validationResult.IsValid);
+        }
+
     }
 }

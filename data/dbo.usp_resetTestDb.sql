@@ -174,7 +174,8 @@ BEGIN
                 ('86625460-52aa-4c50-a06a-607b76882181', 5),
                 ('f6d18883-9f06-4209-9314-6511ed71408e', 5), 
                 ('84a6be5d-10b7-48d5-8084-5a7bd22bae6b', 5),
-                ('baa4ef8e-565d-494b-a4cf-87901a6b131f', 5)                                                      
+                ('baa4ef8e-565d-494b-a4cf-87901a6b131f', 5),
+                ('ff0dc77f-7f80-426a-bc24-09d3c10a957f', 5)                                                      
 
             INSERT INTO Finance.LoanAgreements
                 (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, NumberOfInstallments, UserId)
@@ -275,7 +276,8 @@ BEGIN
                 ('df33c148-a0ab-4ea3-b60f-394749c08294', '6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '2022-05-03', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('ef21754e-51fb-4721-a04b-281cdfa8e66b', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '2022-05-03', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('86625460-52aa-4c50-a06a-607b76882181', 'fb39b013-1633-4479-8186-9f9b240b5727', '2022-05-11', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('f6d18883-9f06-4209-9314-6511ed71408e', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '2022-05-13', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744')     
+                ('f6d18883-9f06-4209-9314-6511ed71408e', '6632cec7-29c5-4ec3-a5a9-c82bf8f5eae3', '2022-05-13', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('ff0dc77f-7f80-426a-bc24-09d3c10a957f', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '2022-06-03', 0.01, '660bb318-649e-470d-9d2b-693bfb0b2744')     
 
             INSERT INTO Shared.EconomicResources
                 (ResourceId, ResourceTypeId)

@@ -12,8 +12,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyStockSubscriptionIsUniqueRule(IStockSubscriptionQueryService cashAcctQrySvc)
-            => _qrySvc = cashAcctQrySvc;
+        public VerifyStockSubscriptionIsUniqueRule(IStockSubscriptionQueryService qrySvc)
+            => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
         {

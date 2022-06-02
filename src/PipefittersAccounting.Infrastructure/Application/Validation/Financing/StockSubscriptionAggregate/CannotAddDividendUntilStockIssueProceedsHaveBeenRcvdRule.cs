@@ -8,39 +8,39 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
 {
-    public class VerifyInvestorIdentificationRule : BusinessRule<StockSubscriptionWriteModel>
+    public class CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule : BusinessRule<DividendDeclarationWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyInvestorIdentificationRule(IStockSubscriptionQueryService qrySvc)
+        public CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule(IStockSubscriptionQueryService qrySvc)
             => _qrySvc = qrySvc;
 
-        public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
+        public override async Task<ValidationResult> Validate(DividendDeclarationWriteModel dividendInfo)
         {
             ValidationResult validationResult = new();
-            GetInvestorIdentificationParameters queryParameters =
+            GetStockSubscriptionParameters queryParameters =
                 new()
                 {
-                    FinancierId = subscriptionInfo.FinancierId
+                    StockId = dividendInfo.StockId
                 };
 
-            OperationResult<Guid> result =
-                await _qrySvc.VerifyInvestorIdentification(queryParameters);
+            OperationResult<VerificationOfCashDepositStockIssueProceeds> result =
+                await _qrySvc.VerifyCashDepositOfStockIssueProceeds(queryParameters);
 
             if (result.Success)
             {
-                if (result.Result != Guid.Empty)
+                if (result.Result.AmountReceived > 0)
                 {
                     validationResult.IsValid = true;
 
                     if (Next is not null)
                     {
-                        validationResult = await Next.Validate(subscriptionInfo);
+                        validationResult = await Next.Validate(dividendInfo);
                     }
                 }
                 else
                 {
-                    string msg = $"Validation failed: '{subscriptionInfo.FinancierId}' is not a valid investor identifier.";
+                    string msg = $"Cannot edit or delete stock subscription if stock issue proceeds have been deposited! {result.Result.AmountReceived} was deposited on {result.Result.DateReceived}.";
                     validationResult.Messages.Add(msg);
                 }
             }

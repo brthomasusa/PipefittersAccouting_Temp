@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 {
     public class VerifyCashDepositOfStockIssueProceedsQuery
     {
-        public async static Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> Query(VerifyCashDepositOfStockIssueProceedsParameters queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> Query(GetStockSubscriptionParameters queryParameters, DapperContext ctx)
         {
             try
             {
@@ -24,11 +24,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
                 FROM Finance.Financiers fin 
                 LEFT JOIN Finance.StockSubscriptions sub ON fin.FinancierID = sub.FinancierId
                 LEFT JOIN Finance.CashAccountTransactions cash ON sub.StockId = cash.EventID
-                WHERE fin.FinancierID = @FINANCIERID AND sub.StockId = @STOCKID";
+                WHERE sub.StockId = @ID";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("FINANCIERID", queryParameters.FinancierId, DbType.Guid);
-                parameters.Add("STOCKID", queryParameters.StockId, DbType.Guid);
+                parameters.Add("ID", queryParameters.StockId, DbType.Guid);
 
                 using (var connection = ctx.CreateConnection())
                 {
@@ -37,7 +36,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 
                     if (detail is null)
                     {
-                        string msg = "Verification failed using the provided stock subscription id and investor indentification!";
+                        string msg = "Verification failed using the provided stock subscription id!";
                         return OperationResult<VerificationOfCashDepositStockIssueProceeds>.CreateFailure(msg);
                     }
 

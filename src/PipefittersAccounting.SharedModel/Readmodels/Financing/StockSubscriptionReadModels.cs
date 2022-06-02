@@ -42,5 +42,15 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime DateReceived { get; set; }
         public decimal AmountReceived { get; set; }
     }
+
+    public class VerifyCashDisbursementForDividendPayment
+    {
+        public Guid StockId { get; set; }
+        public Guid DividendId { get; set; }
+        public DateTime DividendDeclarationDate { get; set; }
+        public decimal DividendDeclared { get; set; }
+        public DateTime DatePaid { get; set; }
+        public decimal AmountPaid { get; set; }
+    }
 }
 

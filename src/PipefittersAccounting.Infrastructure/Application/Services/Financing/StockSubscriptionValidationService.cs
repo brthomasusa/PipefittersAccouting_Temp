@@ -20,5 +20,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<ValidationResult> IsValidDeleteStockSubscriptionInfo(StockSubscriptionWriteModel writeModel)
             => await DeleteStockSubscriptionValidation.Validate(writeModel, _qrySvc);
+
+        public async Task<ValidationResult> IsValidCreateDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
+            => await CreateDividendDeclarationValidation.Validate(writeModel, _qrySvc);
+
+        public async Task<ValidationResult> IsValidEditDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
+            => await EditDividendDeclarationValidation.Validate(writeModel, _qrySvc);
+        public async Task<ValidationResult> IsValidDeleteDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
+            => await EditDividendDeclarationValidation.Validate(writeModel, _qrySvc);
     }
 }

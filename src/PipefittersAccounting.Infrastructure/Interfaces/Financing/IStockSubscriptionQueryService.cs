@@ -9,8 +9,10 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameters queryParameters);
         Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemParameters queryParameters);
         Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters);
-        Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(VerifyCashDepositOfStockIssueProceedsParameters queryParameters);
+        Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameters queryParameters);
+        Task<OperationResult<VerifyCashDisbursementForDividendPayment>> VerifyCashDisbursementDividendPayment(GetDividendDeclarationParameters queryParameters);
         Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameters queryParameters);
         Task<OperationResult<Guid>> VerifyInvestorIdentification(GetInvestorIdentificationParameters queryParameters);
+        Task<OperationResult<Guid>> VerifyDividendDeclarationIdentification(GetDividendDeclarationParameters queryParameters);
     }
 }

@@ -8,12 +8,12 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
 {
-    public class VerifyStockSubscriptionIdentificationRule : BusinessRule<StockSubscriptionWriteModel>
+    public class VerifyStockSubscriptionStockIdRule : BusinessRule<StockSubscriptionWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyStockSubscriptionIdentificationRule(IStockSubscriptionQueryService cashAcctQrySvc)
-            => _qrySvc = cashAcctQrySvc;
+        public VerifyStockSubscriptionStockIdRule(IStockSubscriptionQueryService qrySvc)
+            => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
         {
