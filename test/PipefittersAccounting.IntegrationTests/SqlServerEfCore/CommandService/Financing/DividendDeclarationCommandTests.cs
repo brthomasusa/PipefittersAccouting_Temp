@@ -88,5 +88,129 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
 
             Assert.False(addResult.Success);
         }
+
+        [Fact]
+        public async Task EditDividendDeclaration_StockSubscription_ShouldSucceed()
+        {
+            Guid stockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770");
+
+            Guid dividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f");
+            DateTime dividendDeclarationDate = new DateTime(2022, 6, 5);
+            decimal dividendPerShare = .01M;
+            Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
+
+            OperationResult<StockSubscription> getResult = await _repository.GetStockSubscriptionByIdAsync(stockId);
+            Assert.True(getResult.Success);
+            StockSubscription subscription = getResult.Result;
+
+            OperationResult<bool> result = subscription.EditDividendDeclaration(dividendId, dividendDeclarationDate, dividendPerShare, userId);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task EditDividendDeclaration_StockSubscription_InvalidDeclarationDate_ShouldFail()
+        {
+            Guid stockId = new Guid("264632b4-20bd-473f-9a9b-dd6f3b6ddbac");
+
+            Guid dividendId = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc");
+            DateTime dividendDeclarationDate = new DateTime(2022, 1, 31);
+            decimal dividendPerShare = .05M;
+            Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
+
+            OperationResult<StockSubscription> getResult = await _repository.GetStockSubscriptionByIdAsync(stockId);
+            Assert.True(getResult.Success);
+            StockSubscription subscription = getResult.Result;
+
+            OperationResult<bool> result = subscription.EditDividendDeclaration(dividendId, dividendDeclarationDate, dividendPerShare, userId);
+
+            Assert.False(result.Success);
+        }
+
+
+
+
+
+
+
+
+
+        [Fact]
+        public async Task Process_DividendDeclarationCreateCommand_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            OperationResult<bool> result = await DividendDeclarationCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationCreateCommand_InvalidStockId_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("1c967462-140a-4e08-9ba2-04ff760bb1d9");
+
+            OperationResult<bool> result = await DividendDeclarationCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationCreateCommand_ProceedsNotRcvd_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForCreate();
+            model.StockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354");
+
+            OperationResult<bool> result = await DividendDeclarationCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationEditCommand_NotPaid_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditNotPaid();
+            OperationResult<bool> result = await DividendDeclarationEditCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationEditCommand_NotPaid__InvalidDeclarationDate_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditNotPaid();
+            model.DividendDeclarationDate = new DateTime(2022, 1, 2);
+
+            OperationResult<bool> result = await DividendDeclarationEditCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationEditCommand_Paid_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditPaid();
+            OperationResult<bool> result = await DividendDeclarationEditCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationDeleteCommand_NotPaid_ShouldSucceed()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditNotPaid();
+            OperationResult<bool> result = await DividendDeclarationDeleteCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async Task Process_DividendDeclarationDeleteCommand_Paid_ShouldFail()
+        {
+            DividendDeclarationWriteModel model = StockSubscriptionTestData.GetDividendDeclarationWriteModelForEditPaid();
+            OperationResult<bool> result = await DividendDeclarationDeleteCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
     }
 }

@@ -108,9 +108,6 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             Guid userId
         )
         {
-            if (dividendId == Guid.Empty)
-                return OperationResult<bool>.CreateFailure("A dividend id is required.");
-
             if (dividendDeclarationDate < StockIssueDate)
                 return OperationResult<bool>.CreateFailure("Dividend declaration date must be greater than stock issue date.");
 

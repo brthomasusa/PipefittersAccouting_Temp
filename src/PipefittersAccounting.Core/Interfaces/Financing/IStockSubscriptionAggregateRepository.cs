@@ -11,5 +11,6 @@ namespace PipefittersAccounting.Core.Interfaces.Financing
         Task<OperationResult<bool>> AddStockSubscriptionAsync(StockSubscription subscription);
         OperationResult<bool> UpdateStockSubscription(StockSubscription subscription);
         Task<OperationResult<bool>> DeleteStockSubscriptionAsync(Guid stockId);
+        Task<OperationResult<bool>> DeleteDividendDeclarationAsync(Guid dividendId);
     }
 }

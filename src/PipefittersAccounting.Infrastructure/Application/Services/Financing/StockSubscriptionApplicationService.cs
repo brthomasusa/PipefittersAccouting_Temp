@@ -28,10 +28,19 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public async Task<OperationResult<bool>> CreateStockSubscription(StockSubscriptionWriteModel writeModel)
             => await StockSubscriptionCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
-        public async Task<OperationResult<bool>> UpdateStockSubscription(StockSubscriptionWriteModel writeModel)
+        public async Task<OperationResult<bool>> EditStockSubscription(StockSubscriptionWriteModel writeModel)
             => await StockSubscriptionEditCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
 
         public async Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel)
             => await StockSubscriptionDeleteCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
+
+        public async Task<OperationResult<bool>> CreateDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await DividendDeclarationCreateCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
+
+        public async Task<OperationResult<bool>> EditDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await DividendDeclarationEditCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
+
+        public async Task<OperationResult<bool>> DeleteDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await DividendDeclarationDeleteCommand.Process(writeModel, _repository, _validationService, _unitOfWork);
     }
 }

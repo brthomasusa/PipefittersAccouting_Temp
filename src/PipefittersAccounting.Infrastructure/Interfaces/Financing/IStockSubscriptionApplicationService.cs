@@ -9,7 +9,10 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     public interface IStockSubscriptionApplicationService
     {
         Task<OperationResult<bool>> CreateStockSubscription(StockSubscriptionWriteModel writeModel);
-        Task<OperationResult<bool>> UpdateStockSubscription(StockSubscriptionWriteModel writeModel);
+        Task<OperationResult<bool>> EditStockSubscription(StockSubscriptionWriteModel writeModel);
         Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel);
+        Task<OperationResult<bool>> CreateDividendDeclaration(DividendDeclarationWriteModel writeModel);
+        Task<OperationResult<bool>> EditDividendDeclaration(DividendDeclarationWriteModel writeModel);
+        Task<OperationResult<bool>> DeleteDividendDeclaration(DividendDeclarationWriteModel writeModel);
     }
 }

@@ -165,6 +165,25 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
+        public async Task<OperationResult<bool>> DeleteDividendDeclarationAsync(Guid dividendId)
+        {
+            OperationResult<DividendDeclaration> getResult = await GetDividendDeclarationByIdAsync(dividendId);
+            if (getResult.Success)
+            {
+                EconomicEvent economicEvent = _dbContext.EconomicEvents.Find(dividendId);
+                if (economicEvent is null)
+                    return OperationResult<bool>.CreateFailure("Delete dividend declaration failed! Unable to locate associated EconomicEvent.");
+
+                _dbContext.DividendDeclarations.Remove(getResult.Result);
+                _dbContext.EconomicEvents.Remove(economicEvent);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            else
+            {
+                return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);
