@@ -49,24 +49,44 @@ namespace Microsoft.Extensions.DependencyInjection
             return services
                 .AddScoped<AuthenticationCommandHandler>()
                 .AddScoped<IUnitOfWork, AppUnitOfWork>()
+                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
+        }
+
+        public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
+        {
+            return services
                 .AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>()
                 .AddScoped<IFinancierAggregateRepository, FinancierAggregateRepository>()
                 .AddScoped<ILoanAgreementAggregateRepository, LoanAgreementAggregateRepository>()
                 .AddScoped<ICashAccountAggregateRepository, CashAccountAggregateRepository>()
-                .AddScoped<IStockSubscriptionAggregateRepository, StockSubscriptionAggregateRepository>()
+                .AddScoped<IStockSubscriptionAggregateRepository, StockSubscriptionAggregateRepository>();
+        }
+
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
+            return services
                 .AddScoped<IEmployeeAggregateCommandService, EmployeeCommandServiceEfCore>()
                 .AddScoped<IFinancierApplicationService, FinancierApplicationService>()
                 .AddScoped<ILoanAgreementApplicationService, LoanAgreementApplicationService>()
                 .AddScoped<ICashAccountApplicationService, CashAccountApplicationService>()
-                .AddScoped<IStockSubscriptionApplicationService, StockSubscriptionApplicationService>()
+                .AddScoped<IStockSubscriptionApplicationService, StockSubscriptionApplicationService>();
+        }
+
+        public static IServiceCollection AddDapperQueryServices(this IServiceCollection services)
+        {
+            return services
                 .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
                 .AddScoped<ICashAccountQueryService, CashAccountQueryService>()
-                .AddScoped<IStockSubscriptionQueryService, StockSubscriptionQueryService>()
+                .AddScoped<IStockSubscriptionQueryService, StockSubscriptionQueryService>();
+        }
+
+        public static IServiceCollection AddDomainServices(this IServiceCollection services)
+        {
+            return services
                 .AddScoped<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>()
-                .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>()
-                .AddScoped<IEmployeeAggregateQueryHandler, EmployeeAggregateQueryHandler>();
+                .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>();
         }
 
         public static IServiceCollection ConfigureCors(this IServiceCollection services) =>

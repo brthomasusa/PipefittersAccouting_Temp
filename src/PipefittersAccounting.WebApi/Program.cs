@@ -24,6 +24,10 @@ try
 
     builder.Services.ConfigureCors();
     builder.Services.AddInfrastructureServices();
+    builder.Services.AddRepositoryServices();
+    builder.Services.AddApplicationServices();
+    builder.Services.AddDapperQueryServices();
+    builder.Services.AddDomainServices();
     builder.Services.AddAuthentication();
     builder.Services.ConfigureIdentity(builder.Configuration);
     builder.Services.ConfigureEfCoreDbContext(builder.Configuration);
