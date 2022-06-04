@@ -4,27 +4,27 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    public class NewCashAccountNumberMustBeUniqueRule : BusinessRule<CashAccountWriteModel>
+    public class NewCashAccountNameMustBeUniqueRule : BusinessRule<CashAccountWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public NewCashAccountNumberMustBeUniqueRule(ICashAccountQueryService cashAcctQrySvc)
+        public NewCashAccountNameMustBeUniqueRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashAccountWriteModel cashAccount)
         {
             ValidationResult validationResult = new();
 
-            GetCashAccountWithAccountNumber queryParams = new() { AccountNumber = cashAccount.CashAccountNumber };
+            GetCashAccountWithAccountName queryParams = new() { AccountName = cashAccount.CashAccountName };
 
             OperationResult<CashAccountReadModel> getResult =
-                await _cashAcctQrySvc.GetCashAccountWithAccountNumber(queryParams);
+                await _cashAcctQrySvc.GetCashAccountWithAccountName(queryParams);
 
             if (getResult.Success)
             {
-                string msg = $"There is an existing cash account with account number '{cashAccount.CashAccountNumber}'";
+                string msg = $"There is an existing cash account with account name '{cashAccount.CashAccountName}'";
                 validationResult.Messages.Add(msg);
             }
             else

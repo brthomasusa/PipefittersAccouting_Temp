@@ -59,7 +59,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 }
                 else
                 {
-                    string errMsg = $"Create deposit failed! Deposit of debt issue proceeds can only be made into a financing account!";
+                    string errMsg = $"Create deposit failed! Deposit of stock issue proceeds can only be made into a financing account!";
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
             }

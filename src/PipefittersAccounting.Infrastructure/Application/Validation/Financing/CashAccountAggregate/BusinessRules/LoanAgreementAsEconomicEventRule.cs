@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
     // A cash transaction must point to the event that cause 
     // the deposit or disbursement of cash. For deposit of debt issue

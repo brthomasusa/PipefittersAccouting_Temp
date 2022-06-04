@@ -3,9 +3,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public abstract class BaseCashAccountTransactionValidation
+    public abstract class CashAccountTransactionValidationBase
     {
-        public BaseCashAccountTransactionValidation
+        public CashAccountTransactionValidationBase
         (
             CashTransactionWriteModel transactionInfo,
             ICashAccountQueryService queryService

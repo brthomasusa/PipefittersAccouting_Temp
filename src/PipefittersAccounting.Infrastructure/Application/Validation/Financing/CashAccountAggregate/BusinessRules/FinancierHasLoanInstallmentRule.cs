@@ -7,32 +7,29 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    // A cash transaction must point to the event that cause 
-    // the deposit or disbursement of cash. For disbursement for
-    // loan payment that event should be a specific loan installment.
-
-    public class LoanInstallmentPaymentAsEconomicEventRule : BusinessRule<CashTransactionWriteModel>
+    public class FinancierHasLoanInstallmentRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public LoanInstallmentPaymentAsEconomicEventRule(ICashAccountQueryService cashAcctQrySvc)
+        public FinancierHasLoanInstallmentRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 
-            EconomicEventIdentificationParameters queryParameters = new() { EventId = transactionInfo.EventId };
-            OperationResult<EconomicEventIdentificationInfo> eventResult =
-                await _cashAcctQrySvc.GetEconomicEventIdentificationInfo(queryParameters);
+            GetLoanInstallmentInfoParameters queryParameters = new() { LoanInstallmentId = transactionInfo.EventId };
+            OperationResult<FinancierToLoanInstallmentValidationInfo> eventResult =
+                await _cashAcctQrySvc.GetFinancierToLoanInstallmentValidationInfo(queryParameters);
 
             // Is the event id known to the system?
             if (eventResult.Success)
             {
-                // Does the event id represent a loan installment?
-                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.LoanPayment)
+                // Is the loan installment associated with the financier? Or, should
+                // a payment be disbursed to this financier for this loan installment?
+                if (eventResult.Result.FinancierId == transactionInfo.AgentId)
                 {
                     validationResult.IsValid = true;
 
@@ -43,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting 'Cash Disbursement for Loan Payment'!";
+                    string msg = $"This financier '{transactionInfo.AgentId}' is not the correct payee for this loan installment!";
                     validationResult.Messages.Add(msg);
                 }
             }

@@ -6,18 +6,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    /*
-        This class arranges a group of validators into a chain.
-        Execution of the chain will completely validate a
-        CreateCashAccountTransactionInfo. The position of each
-        validator within the chain is important. In other words,
-        the sequence in which the validation is performed is
-        important.
-    */
-
-    public class DepositOfDebtIssueProceedsValidation : CashAccountTransactionValidationBase
+    public class DepositOfStockIssueProceedsValidation : CashAccountTransactionValidationBase
     {
-        public DepositOfDebtIssueProceedsValidation
+        public DepositOfStockIssueProceedsValidation
         (
             CashTransactionWriteModel deposit,
             ICashAccountQueryService queryService
@@ -31,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Check that financier is known to the system
             FinancierAsExternalAgentRule agentValidator = new(QueryService);
 
-            // Check that loan agreement is known to the system
+            // Check that stock subscription is known to the system
             LoanAgreementAsEconomicEventRule eventValidator = new(QueryService);
 
             // Ensure that loan agreement belongs to this financier

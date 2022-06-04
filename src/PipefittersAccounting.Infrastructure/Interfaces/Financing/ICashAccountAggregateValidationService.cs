@@ -23,6 +23,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CashTransactionWriteModel transactionInfo);
 
+        Task<ValidationResult> IsValidCashDisbursementForDividendPayment(CashTransactionWriteModel transactionInfo);
+
         Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transactionInfo);
     }
 }
