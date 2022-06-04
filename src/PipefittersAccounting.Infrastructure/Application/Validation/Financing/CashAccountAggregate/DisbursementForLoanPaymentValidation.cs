@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public DisbursementForLoanPaymentValidation
         (
-            CreateCashAccountTransactionInfo deposit,
+            CashTransactionWriteModel deposit,
             ICashAccountQueryService queryService
         ) : base(deposit, queryService)
         {

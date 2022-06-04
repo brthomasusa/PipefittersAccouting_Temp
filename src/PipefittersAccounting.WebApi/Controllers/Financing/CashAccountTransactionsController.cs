@@ -81,7 +81,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("cashtransaction/createdeposit/debtissueproceeds")]
-        public async Task<IActionResult> CreateDepositForDebtIssueProceeds([FromBody] CreateCashAccountTransactionInfo writeModel)
+        public async Task<IActionResult> CreateDepositForDebtIssueProceeds([FromBody] CashTransactionWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashDeposit(writeModel);
 
@@ -115,7 +115,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("cashtransaction/createdisbursement/loaninstallmentpayment")]
-        public async Task<IActionResult> CreateDisbursementForLoanInstallmentPayment([FromBody] CreateCashAccountTransactionInfo writeModel)
+        public async Task<IActionResult> CreateDisbursementForLoanInstallmentPayment([FromBody] CashTransactionWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashDisbursement(writeModel);
 

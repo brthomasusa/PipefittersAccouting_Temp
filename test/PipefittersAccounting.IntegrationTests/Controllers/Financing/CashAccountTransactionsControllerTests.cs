@@ -63,7 +63,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateDepositForDebtIssueProceeds_CashAccountTransactionsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdeposit/debtissueproceeds";
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -93,7 +93,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateDisbursementForLoanInstallmentPayment_CashAccountTransactionsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdisbursement/loaninstallmentpayment";
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

@@ -12,7 +12,7 @@ using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CreateCashDisbursementForLoanPaymentCommand
+    public class CreateCashDepositForStockIssueProceedsCommand
     {
         public static async Task<OperationResult<bool>> Process
         (
@@ -28,9 +28,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             {
                 CashAccount cashAccount = getCashAcct.Result;
 
-                if (cashAccount.CashAccountType == CashAccountTypeEnum.NonPayrollOperations)
+                if (cashAccount.CashAccountType == CashAccountTypeEnum.FinancingOperations)
                 {
-                    ValidationResult validationResult = await validationService.IsValidCashDisbursementForLoanPayment(model);
+                    ValidationResult validationResult = await validationService.IsValidCashDepositOfDebtIssueProceeds(model);
 
                     if (validationResult.IsValid)
                     {
@@ -47,7 +47,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                             EntityGuidID.Create(model.UserId)
                         );
 
-                        cashAccount.DisburseCash(transaction);
+                        cashAccount.DepositCash(transaction);
                         await repository.UpdateCashAccountAsync(cashAccount);
                         await uow.Commit();
                         model.CashTransactionId = transaction.Id;
@@ -59,7 +59,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 }
                 else
                 {
-                    string errMsg = $"Create disbursement failed! Disbursement for a loan payment can only be made from a primary checking account!";
+                    string errMsg = $"Create deposit failed! Deposit of debt issue proceeds can only be made into a financing account!";
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
             }

@@ -178,7 +178,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CreateCashDepositForDebtIssueProceedsCommand_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
 
             OperationResult<bool> result =
                 await CreateCashDepositForDebtIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -189,7 +189,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CreateCashDepositForDebtIssueProceedsCommand_DuplicateLoanProceedsDeposit_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
 
             OperationResult<bool> result =
                 await CreateCashDepositForDebtIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -200,7 +200,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CreateCashDisbursementForLoanPaymentCommand_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
             OperationResult<bool> result =
                 await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -211,7 +211,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CreateCashDisbursementForLoanPaymentCommand_Duplicate_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
 
             OperationResult<bool> result =
                 await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
@@ -222,7 +222,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async void Process_CreateCashDisbursementForLoanPaymentCommand_ProceedsNotReceived_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
 
             OperationResult<bool> result =
                 await CreateCashDisbursementForLoanPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);

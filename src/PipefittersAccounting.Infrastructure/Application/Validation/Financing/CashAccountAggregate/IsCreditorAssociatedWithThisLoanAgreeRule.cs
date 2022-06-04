@@ -11,14 +11,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     // Verify that a financier and a loan agreement are known to the system  
     // and that the financier is associated with this particular loan agreement.
 
-    public class IsCreditorAssociatedWithThisLoanAgreeRule : BusinessRule<CreateCashAccountTransactionInfo>
+    public class IsCreditorAssociatedWithThisLoanAgreeRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public IsCreditorAssociatedWithThisLoanAgreeRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transaction)
+        public override async Task<ValidationResult> Validate(CashTransactionWriteModel transaction)
         {
             ValidationResult validationResult = new();
 

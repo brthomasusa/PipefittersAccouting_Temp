@@ -16,7 +16,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public Guid UserId { get; set; }
     }
 
-    public class CreateCashAccountTransactionInfo : IWriteModel
+    public class CashTransactionWriteModel : IWriteModel
     {
         public int CashTransactionId { get; set; }
         public Guid CashAccountId { get; set; }

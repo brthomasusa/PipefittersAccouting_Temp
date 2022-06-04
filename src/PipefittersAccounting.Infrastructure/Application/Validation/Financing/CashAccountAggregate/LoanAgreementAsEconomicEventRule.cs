@@ -13,14 +13,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     // the deposit or disbursement of cash. For deposit of debt issue
     // proceeds that event should be a specific loan agreement.
 
-    public class LoanAgreementAsEconomicEventRule : BusinessRule<CreateCashAccountTransactionInfo>
+    public class LoanAgreementAsEconomicEventRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public LoanAgreementAsEconomicEventRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
+        public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 

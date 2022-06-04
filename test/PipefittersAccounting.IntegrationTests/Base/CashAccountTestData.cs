@@ -106,7 +106,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionLoanProceedsInfo()
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionLoanProceedsInfo()
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
@@ -120,7 +120,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit()
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit()
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymt()
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoLoanPymt()
             => new()
             {
                 CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
@@ -148,7 +148,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymtDuplicate()
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoLoanPymtDuplicate()
             => new()
             {
                 CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
@@ -162,7 +162,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateCashAccountTransactionInfo GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited()
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited()
             => new()
             {
                 CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),

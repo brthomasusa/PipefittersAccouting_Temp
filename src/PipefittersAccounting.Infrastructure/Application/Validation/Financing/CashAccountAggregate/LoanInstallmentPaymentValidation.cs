@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate
         (
-            CreateCashAccountTransactionInfo transactionInfo,
+            CashTransactionWriteModel transactionInfo,
             ICashAccountQueryService queryService
         )
         {

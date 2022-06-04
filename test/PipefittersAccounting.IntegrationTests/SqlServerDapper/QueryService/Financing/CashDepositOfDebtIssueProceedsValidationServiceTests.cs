@@ -29,7 +29,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_FinancierAsExternalAgentValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             FinancierAsExternalAgentRule agentValidator = new(_queryService);
 
             ValidationResult validationResult = await agentValidator.Validate(model);
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_FinancierAsExternalAgentValidator_ExistingButInvalidAgentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.AgentId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
             FinancierAsExternalAgentRule agentValidator = new(_queryService);
 
@@ -53,7 +53,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_FinancierAsExternalAgentValidator_NonExistingAgentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.AgentId = new Guid("1234b318-649e-470d-9d2b-693bfb0b2744");
             FinancierAsExternalAgentRule agentValidator = new(_queryService);
 
@@ -66,7 +66,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_LoanAgreementAsEconomicEventValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             LoanAgreementAsEconomicEventRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -77,7 +77,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_LoanAgreementAsEconomicEventValidator_StockSubscriptionId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("5997f125-bfca-4540-a144-01e444f6dc25");
 
             LoanAgreementAsEconomicEventRule validator = new(_queryService);
@@ -91,7 +91,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_LoanAgreementAsEconomicEventValidator_NonExistingEventId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("2227f125-bfca-4540-a144-01e444f6dc25");
 
             LoanAgreementAsEconomicEventRule validator = new(_queryService);
@@ -105,7 +105,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_IsCreditorAssociatedWithThisLoanAgreeValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             IsCreditorAssociatedWithThisLoanAgreeRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -116,7 +116,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_IsCreditorAssociatedWithThisLoanAgreeValidator_WrongLoanId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
             IsCreditorAssociatedWithThisLoanAgreeRule validator = new(_queryService);
 
@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -142,7 +142,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_TransactionDateOutOfRange_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionDate = new DateTime(2022, 4, 10);
             VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_queryService);
 
@@ -154,7 +154,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_TransactionAmtNotEqualLoanAmt_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionAmount = 5000M;
             VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_queryService);
 
@@ -166,7 +166,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_DuplicateDeposit_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
             VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -177,7 +177,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
             ValidationResult validationResult = await validation.Validate();
@@ -188,7 +188,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_ExistingButInvalidAgentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.AgentId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -200,7 +200,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_NonExistingdAgentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.AgentId = new Guid("1234b318-649e-470d-9d2b-693bfb0b2744");
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -212,7 +212,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_StockSubscriptionId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("5997f125-bfca-4540-a144-01e444f6dc25");
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -224,7 +224,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_NonExistingEventId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("2227f125-bfca-4540-a144-01e444f6dc25");
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -236,7 +236,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_ExistingButWrongLoanId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -248,7 +248,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_TransactionDateOutOfRange_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionDate = new DateTime(2022, 4, 10);
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -260,7 +260,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_TransactionAmtNotEqualLoanAmt_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionAmount = 5000M;
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
@@ -272,7 +272,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DepositOfDebtIssueProceedsValidation_DuplicateDeposit_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
             DepositOfDebtIssueProceedsValidation validation = new(model, _queryService);
 
             ValidationResult validationResult = await validation.Validate();

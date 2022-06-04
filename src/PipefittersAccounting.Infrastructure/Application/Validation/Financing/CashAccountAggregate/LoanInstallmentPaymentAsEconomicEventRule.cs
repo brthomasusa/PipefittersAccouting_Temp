@@ -13,14 +13,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     // the deposit or disbursement of cash. For disbursement for
     // loan payment that event should be a specific loan installment.
 
-    public class LoanInstallmentPaymentAsEconomicEventRule : BusinessRule<CreateCashAccountTransactionInfo>
+    public class LoanInstallmentPaymentAsEconomicEventRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public LoanInstallmentPaymentAsEconomicEventRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
+        public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 

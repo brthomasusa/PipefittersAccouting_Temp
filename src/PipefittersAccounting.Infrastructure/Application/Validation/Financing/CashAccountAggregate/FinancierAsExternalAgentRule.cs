@@ -11,14 +11,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 {
     // Verify that a financier is known to the system before 
     // receiving funds from or sending funds to.
-    public class FinancierAsExternalAgentRule : BusinessRule<CreateCashAccountTransactionInfo>
+    public class FinancierAsExternalAgentRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public FinancierAsExternalAgentRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
+        public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 

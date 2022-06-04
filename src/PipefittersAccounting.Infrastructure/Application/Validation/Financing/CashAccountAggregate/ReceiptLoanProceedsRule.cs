@@ -8,14 +8,14 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class ReceiptLoanProceedsRule : BusinessRule<CreateCashAccountTransactionInfo>
+    public class ReceiptLoanProceedsRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
         public ReceiptLoanProceedsRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
-        public override async Task<ValidationResult> Validate(CreateCashAccountTransactionInfo transactionInfo)
+        public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 

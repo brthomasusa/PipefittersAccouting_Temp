@@ -29,7 +29,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_LoanInstallmentPaymentAsEconomicEventValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             LoanInstallmentPaymentAsEconomicEventRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_LoanInstallmentPaymentAsEconomicEventValidator_UsingLoanId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
             LoanInstallmentPaymentAsEconomicEventRule validator = new(_queryService);
@@ -56,7 +56,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_FinancierHasLoanInstallmentValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             FinancierHasLoanInstallmentRule validator = new(_queryService);
 
             ValidationResult validationResult = await validator.Validate(model);
@@ -67,7 +67,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_FinancierHasLoanInstallmentValidator_InvalidAgentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.AgentId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
 
             FinancierHasLoanInstallmentRule validator = new(_queryService);
@@ -83,7 +83,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyDebtIssueProceedsHaveBeenReceivedValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
             VerifyDebtIssueProceedsHaveBeenReceivedRule validator = new(_queryService);
 
@@ -95,7 +95,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_VerifyDebtIssueProceedsHaveBeenReceivedValidator_ProceedsNotReceived_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtNoProeedsDeposited();
 
             VerifyDebtIssueProceedsHaveBeenReceivedRule validator = new(_queryService);
 
@@ -107,7 +107,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisburesementForLoanPymtValidator_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
             DisburesementForLoanPymtRule validator = new(_queryService);
 
@@ -119,7 +119,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisburesementForLoanPymtValidator_InvalidTransactionDate_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionDate = new DateTime(2022, 2, 1);
 
             DisburesementForLoanPymtRule validator = new(_queryService);
@@ -132,7 +132,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisburesementForLoanPymtValidator_InvalidTransactionAmount_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionAmount = 1111M;
 
             DisburesementForLoanPymtRule validator = new(_queryService);
@@ -145,7 +145,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisburesementForLoanPymtValidator_DuplicatePymt_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
 
             DisburesementForLoanPymtRule validator = new(_queryService);
 
@@ -157,7 +157,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisbursementForLoanPaymentValidation_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
 
             ValidationResult validationResult = await validation.Validate();
@@ -168,7 +168,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisbursementForLoanPaymentValidation_DuplicatePymt_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
 
             ValidationResult validationResult = await validation.Validate();
@@ -179,7 +179,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisbursementForLoanPaymentValidation_InvalidTransactionAmount_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionAmount = 1111M;
 
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
@@ -192,7 +192,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisbursementForLoanPaymentValidation_TransactionDateOutOfRange_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionDate = new DateTime(2022, 2, 1);
 
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
@@ -205,7 +205,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task Validate_DisbursementForLoanPaymentValidation_InvalidLoanInstallmentId_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
             DisbursementForLoanPaymentValidation validation = new(model, _queryService);
@@ -222,7 +222,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_ShouldSucceed()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
 
             Assert.True(validationResult.IsValid);
@@ -231,7 +231,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidTransactionDate_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionDate = new DateTime(2022, 2, 1);
 
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
@@ -242,7 +242,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidEventType_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
@@ -253,7 +253,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_InvalidPaymentAmount_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionAmount = 1200M;
 
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
@@ -264,7 +264,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task IsValidCashDisbursementForLoanPayment_CashAccountAggregateValidationService_DuplicatePymtAttempt_ShouldFail()
         {
-            CreateCashAccountTransactionInfo model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
 
             ValidationResult validationResult = await _validationService.IsValidCashDisbursementForLoanPayment(model);
 

@@ -15,13 +15,13 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<ValidationResult> IsValidDeleteCashAccountInfo(CashAccountWriteModel writeModel);
 
-        Task<ValidationResult> IsValidCashDepositOfSalesProceeds(CreateCashAccountTransactionInfo transactionInfo);
+        Task<ValidationResult> IsValidCashDepositOfSalesProceeds(CashTransactionWriteModel transactionInfo);
 
-        Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
+        Task<ValidationResult> IsValidCashDepositOfDebtIssueProceeds(CashTransactionWriteModel transactionInfo);
 
-        Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CreateCashAccountTransactionInfo transactionInfo);
+        Task<ValidationResult> IsValidCashDepositOfStockIssueProceeds(CashTransactionWriteModel transactionInfo);
 
-        Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CreateCashAccountTransactionInfo transactionInfo);
+        Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CashTransactionWriteModel transactionInfo);
 
         Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transactionInfo);
     }

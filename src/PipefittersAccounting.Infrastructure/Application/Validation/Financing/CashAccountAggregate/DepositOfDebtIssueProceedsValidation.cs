@@ -19,7 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public DepositOfDebtIssueProceedsValidation
         (
-            CreateCashAccountTransactionInfo deposit,
+            CashTransactionWriteModel deposit,
             ICashAccountQueryService queryService
         ) : base(deposit, queryService)
         {

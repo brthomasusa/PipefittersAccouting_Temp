@@ -7,7 +7,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     {
         public BaseCashAccountTransactionValidation
         (
-            CreateCashAccountTransactionInfo transactionInfo,
+            CashTransactionWriteModel transactionInfo,
             ICashAccountQueryService queryService
         )
         {
@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
             QueryService = queryService;
         }
 
-        protected CreateCashAccountTransactionInfo CashAccountTransactionInfo { get; init; }
+        protected CashTransactionWriteModel CashAccountTransactionInfo { get; init; }
 
         protected ICashAccountQueryService QueryService { get; init; }
 

@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
     {
         public async static Task<OperationResult<bool>> Process
         (
-            CreateCashAccountTransactionInfo model,
+            CashTransactionWriteModel model,
             ICashAccountAggregateRepository repository,
             ICashAccountAggregateValidationService validationService,
             IUnitOfWork unitOfWork
