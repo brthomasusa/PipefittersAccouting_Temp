@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 {
     public class VerifyDividendDeclarationIdentificationQuery
     {
-        public async static Task<OperationResult<Guid>> Query(GetDividendDeclarationParameters queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<Guid>> Query(GetDividendDeclarationParameter queryParameters, DapperContext ctx)
         {
             try
             {

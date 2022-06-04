@@ -127,14 +127,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             Assert.False(result.Success);
         }
 
-
-
-
-
-
-
-
-
         [Fact]
         public async Task Process_DividendDeclarationCreateCommand_ShouldSucceed()
         {

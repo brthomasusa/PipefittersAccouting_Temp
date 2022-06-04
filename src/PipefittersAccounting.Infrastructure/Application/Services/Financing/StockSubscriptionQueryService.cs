@@ -13,7 +13,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public StockSubscriptionQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameters queryParameters)
+        public async Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameter queryParameters)
             => await GetStockSubscriptionDetailsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemParameters queryParameters)
@@ -23,20 +23,26 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
             => await VerifyStockSubscriptionIsUniqueQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>>
-            VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameters queryParameters)
+            VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameter queryParameters)
                 => await VerifyCashDepositOfStockIssueProceedsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<VerifyCashDisbursementForDividendPayment>>
-            VerifyCashDisbursementDividendPayment(GetDividendDeclarationParameters queryParameters)
+            VerifyCashDisbursementDividendPayment(GetDividendDeclarationParameter queryParameters)
                 => await VerifyCashDisbursementDividendPaymentQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameters queryParameters)
+        public async Task<OperationResult<Guid>> VerifyStockSubscriptionIdentification(GetStockSubscriptionParameter queryParameters)
             => await VerifyStockSubscriptionIdentificationQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<Guid>> VerifyInvestorIdentification(GetInvestorIdentificationParameters queryParameters)
+        public async Task<OperationResult<Guid>> VerifyInvestorIdentification(GetInvestorIdentificationParameter queryParameters)
             => await VerifyInvestorIdentificationQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<Guid>> VerifyDividendDeclarationIdentification(GetDividendDeclarationParameters queryParameters)
+        public async Task<OperationResult<Guid>> VerifyDividendDeclarationIdentification(GetDividendDeclarationParameter queryParameters)
             => await VerifyDividendDeclarationIdentificationQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
+            => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters)
+            => await GetDividendDeclarationListItemsQuery.Query(queryParameters, _dapperCtx);
     }
 }

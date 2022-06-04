@@ -1,11 +1,11 @@
 namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 {
-    public class GetStockSubscriptionParameters
+    public class GetStockSubscriptionParameter
     {
         public Guid StockId { get; set; }
     }
 
-    public class GetInvestorIdentificationParameters
+    public class GetInvestorIdentificationParameter
     {
         public Guid FinancierId { get; set; }
     }
@@ -24,7 +24,14 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal PricePerShare { get; set; }
     }
 
-    public class GetDividendDeclarationParameters
+    public class GetDividendDeclarationsParameters
+    {
+        public Guid StockId { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
+
+    public class GetDividendDeclarationParameter
     {
         public Guid DividendId { get; set; }
     }

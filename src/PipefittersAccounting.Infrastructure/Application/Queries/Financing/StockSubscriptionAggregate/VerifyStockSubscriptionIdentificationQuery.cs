@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 {
     public class VerifyStockSubscriptionIdentificationQuery
     {
-        public async static Task<OperationResult<Guid>> Query(GetStockSubscriptionParameters queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<Guid>> Query(GetStockSubscriptionParameter queryParameters, DapperContext ctx)
         {
             try
             {

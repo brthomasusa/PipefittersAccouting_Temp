@@ -20,7 +20,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetStockSubscriptionDetails_StockSubscriptionQueryService_ShouldSucceed()
         {
-            GetStockSubscriptionParameters queryParameters = new() { StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770") };
+            GetStockSubscriptionParameter queryParameters = new() { StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770") };
             OperationResult<StockSubscriptionDetails> result = await _queryService.GetStockSubscriptionDetails(queryParameters);
 
             Assert.True(result.Success);
@@ -93,7 +93,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid stockId = new Guid("5997f125-bfca-4540-a144-01e444f6dc25");
             Guid financierId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
 
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = stockId
@@ -112,7 +112,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid stockId = new Guid("971bb315-9d40-4c87-b43b-359b33c31354");
 
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = stockId
@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid stockId = new Guid("02d6e2e6-215d-4157-b7ec-1ba9b137c770");
 
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = stockId
@@ -148,7 +148,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid stockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770");
 
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = stockId
@@ -166,7 +166,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid stockId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = stockId
@@ -184,7 +184,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid id = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601");
 
-            GetInvestorIdentificationParameters queryParameters =
+            GetInvestorIdentificationParameter queryParameters =
                 new()
                 {
                     FinancierId = id
@@ -202,7 +202,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid id = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e");
 
-            GetInvestorIdentificationParameters queryParameters =
+            GetInvestorIdentificationParameter queryParameters =
                 new()
                 {
                     FinancierId = id
@@ -220,7 +220,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid dividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f");
 
-            GetDividendDeclarationParameters queryParameters =
+            GetDividendDeclarationParameter queryParameters =
                 new()
                 {
                     DividendId = dividendId,
@@ -239,7 +239,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid dividendId = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc");
 
-            GetDividendDeclarationParameters queryParameters =
+            GetDividendDeclarationParameter queryParameters =
                 new()
                 {
                     DividendId = dividendId,
@@ -258,7 +258,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid id = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc");
 
-            GetDividendDeclarationParameters queryParameters =
+            GetDividendDeclarationParameter queryParameters =
                 new()
                 {
                     DividendId = id
@@ -276,7 +276,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             Guid id = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e");
 
-            GetDividendDeclarationParameters queryParameters =
+            GetDividendDeclarationParameter queryParameters =
                 new()
                 {
                     DividendId = id
@@ -287,6 +287,29 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.True(result.Success);
             Assert.Equal(Guid.Empty, result.Result);
+        }
+
+        [Fact]
+        public async Task GetDividendDeclarationDetails_StockSubscriptionQueryService_ShouldSucceed()
+        {
+            GetDividendDeclarationParameter queryParameters = new() { DividendId = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc") };
+            OperationResult<DividendDeclarationDetails> result = await _queryService.GetDividendDeclarationDetails(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(new DateTime(2022, 2, 1), result.Result.StockIssueDate);
+        }
+
+        [Fact]
+        public async Task GetDividendDeclarationListItems_StockSubscriptionQueryService_ShouldSucceed()
+        {
+            GetDividendDeclarationsParameters queryParameters =
+                new() { StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770"), Page = 1, PageSize = 10 };
+            OperationResult<PagedList<DividendDeclarationListItem>> result = await _queryService.GetDividendDeclarationListItems(queryParameters);
+
+            Assert.True(result.Success);
+
+            int records = result.Result.Count;
+            Assert.Equal(5, records);
         }
     }
 }

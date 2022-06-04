@@ -18,7 +18,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public override async Task<ValidationResult> Validate(DividendDeclarationWriteModel dividendInfo)
         {
             ValidationResult validationResult = new();
-            GetStockSubscriptionParameters queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
                     StockId = dividendInfo.StockId

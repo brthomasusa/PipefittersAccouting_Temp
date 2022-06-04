@@ -6,26 +6,28 @@ using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.StockSubscriptionAggregate
 {
-    public class VerifyCashDisbursementDividendPaymentQuery
+    public class GetDividendDeclarationDetailsQuery
     {
-        public async static Task<OperationResult<VerifyCashDisbursementForDividendPayment>> Query(GetDividendDeclarationParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<DividendDeclarationDetails>> Query(GetDividendDeclarationParameter queryParameters, DapperContext ctx)
         {
             try
             {
                 var sql =
                 @"SELECT 
                     sub.StockId, 
+                    sub.StockIssueDate, 
+                    sub.SharesIssured, 
+                    sub.PricePerShare,    
                     dividend.DividendId, 
                     dividend.DividendDeclarationDate,
-                    CASE
-                        WHEN dividend.DividendPerShare IS NULL THEN 0        
-                        ELSE dividend.DividendPerShare
-                    END AS DividendDeclared,     
+                    dividend.DividendPerShare,    
                     cash.CashAcctTransactionDate AS DatePaid, 
                     CASE
                         WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
                         ELSE cash.CashAcctTransactionAmount
-                    END AS AmountPaid
+                    END AS AmountPaid,
+                    dividend.CreatedDate,
+                    dividend.LastModifiedDate
                 FROM Finance.Financiers fin 
                 LEFT JOIN Finance.StockSubscriptions sub ON fin.FinancierID = sub.FinancierId
                 LEFT JOIN Finance.DividendDeclarations dividend ON sub.StockId = dividend.StockId
@@ -37,21 +39,19 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    VerifyCashDisbursementForDividendPayment detail =
-                        await connection.QueryFirstOrDefaultAsync<VerifyCashDisbursementForDividendPayment>(sql, parameters);
-
+                    DividendDeclarationDetails detail = await connection.QueryFirstOrDefaultAsync<DividendDeclarationDetails>(sql, parameters);
                     if (detail is null)
                     {
-                        string msg = "Verification failed using the provided stock subscription id and investor indentification!";
-                        return OperationResult<VerifyCashDisbursementForDividendPayment>.CreateFailure(msg);
+                        string msg = $"Unable to locate a stock subscription with StockId '{queryParameters.DividendId}'!";
+                        return OperationResult<DividendDeclarationDetails>.CreateFailure(msg);
                     }
 
-                    return OperationResult<VerifyCashDisbursementForDividendPayment>.CreateSuccessResult(detail);
+                    return OperationResult<DividendDeclarationDetails>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<VerifyCashDisbursementForDividendPayment>.CreateFailure(ex.Message);
+                return OperationResult<DividendDeclarationDetails>.CreateFailure(ex.Message);
             }
         }
     }

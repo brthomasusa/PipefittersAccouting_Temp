@@ -44,6 +44,17 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
             );
 
+        public static StockSubscriptionWriteModel GetStockSubscriptionWriteModel_Create()
+            => new StockSubscriptionWriteModel
+            {
+                StockId = new Guid("75cece20-ba7c-4475-b211-15e37ac95e5b"),
+                FinancierId = new Guid("01da50f9-021b-4d03-853a-3fd2c95e207d"),
+                StockIssueDate = new DateTime(2022, 6, 3),
+                SharesIssued = 8700,
+                PricePerShare = .95M,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
         public static StockSubscriptionWriteModel GetStockSubscriptionWriteModel_ExistingWithNoDeposit()
             => new StockSubscriptionWriteModel
             {
@@ -92,7 +103,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 DividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f"),
                 StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770"),
                 DividendDeclarationDate = new DateTime(2022, 6, 3),
-                DividendPerShare = 0,
+                DividendPerShare = .01M,
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
