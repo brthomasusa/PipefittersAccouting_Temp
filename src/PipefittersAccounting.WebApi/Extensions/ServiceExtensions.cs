@@ -9,6 +9,7 @@ using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
 using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
@@ -79,7 +80,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
                 .AddScoped<ICashAccountQueryService, CashAccountQueryService>()
-                .AddScoped<IStockSubscriptionQueryService, StockSubscriptionQueryService>();
+                .AddScoped<IStockSubscriptionQueryService, StockSubscriptionQueryService>()
+                .AddScoped<ISharedQueryService, SharedQueryService>();
         }
 
         public static IServiceCollection AddDomainServices(this IServiceCollection services)

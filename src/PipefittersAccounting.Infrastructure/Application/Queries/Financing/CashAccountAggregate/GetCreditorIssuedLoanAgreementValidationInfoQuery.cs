@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
 {
     public class GetCreditorIssuedLoanAgreementValidationInfoQuery
     {
-        public async static Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> Query(CreditorIssuedLoanAgreementValidationParameters queryParameters,
+        public async static Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> Query(CreditorLoanAgreementValidationParameters queryParameters,
                                                                                              DapperContext ctx)
         {
             try

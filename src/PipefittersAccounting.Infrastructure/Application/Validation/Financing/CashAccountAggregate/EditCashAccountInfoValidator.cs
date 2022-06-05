@@ -7,7 +7,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class EditCashAccountInfoValidation
+    public class EditCashAccountInfoValidator
     {
         public static async Task<ValidationResult> Validate(CashAccountWriteModel accountInfo, ICashAccountQueryService queryService)
         {

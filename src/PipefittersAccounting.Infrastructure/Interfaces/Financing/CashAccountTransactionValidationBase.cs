@@ -8,16 +8,20 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         public CashAccountTransactionValidationBase
         (
             CashTransactionWriteModel transactionInfo,
-            ICashAccountQueryService queryService
+            ICashAccountQueryService queryService,
+            ISharedQueryService sharedQueryService
         )
         {
             CashAccountTransactionInfo = transactionInfo;
-            QueryService = queryService;
+            CashAccountQueryService = queryService;
+            SharedQueryService = sharedQueryService;
         }
 
         protected CashTransactionWriteModel CashAccountTransactionInfo { get; init; }
 
-        protected ICashAccountQueryService QueryService { get; init; }
+        protected ICashAccountQueryService CashAccountQueryService { get; init; }
+
+        protected ISharedQueryService SharedQueryService { get; init; }
 
         public abstract Task<ValidationResult> Validate();
     }

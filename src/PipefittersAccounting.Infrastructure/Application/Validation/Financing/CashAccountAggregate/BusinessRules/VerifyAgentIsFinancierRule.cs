@@ -1,9 +1,10 @@
 #pragma warning disable CS8602
 
 using PipefittersAccounting.Core.Shared;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel.Readmodels.Shared;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
@@ -11,20 +12,20 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 {
     // Verify that a financier is known to the system before 
     // receiving funds from or sending funds to.
-    public class FinancierAsExternalAgentRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyAgentIsFinancierRule : BusinessRule<CashTransactionWriteModel>
     {
-        private readonly ICashAccountQueryService _cashAcctQrySvc;
+        private readonly ISharedQueryService _qrySvc;
 
-        public FinancierAsExternalAgentRule(ICashAccountQueryService cashAcctQrySvc)
-            => _cashAcctQrySvc = cashAcctQrySvc;
+        public VerifyAgentIsFinancierRule(ISharedQueryService qrySvc)
+            => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
         {
             ValidationResult validationResult = new();
 
-            ExternalAgentIdentificationParameters queryParameters = new() { AgentId = transactionInfo.AgentId };
-            OperationResult<ExternalAgentIdentificationInfo> agentResult =
-                await _cashAcctQrySvc.GetExternalAgentIdentificationInfo(queryParameters);
+            AgentIdentificationParameter queryParameters = new() { AgentId = transactionInfo.AgentId };
+            OperationResult<AgentIdentificationInfo> agentResult =
+                await _qrySvc.GetExternalAgentIdentificationInfo(queryParameters);
 
             // Is the agent id known to the system?
             if (agentResult.Success)

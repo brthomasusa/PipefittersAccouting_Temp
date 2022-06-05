@@ -5,13 +5,15 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DeleteCashAccountInfoValidation
+    public class CreateCashAccountInfoValidator
     {
         public static async Task<ValidationResult> Validate(CashAccountWriteModel accountInfo, ICashAccountQueryService queryService)
         {
-            CannotDeleteCashAcctIfTransactionsAttachedRule transactionCountValidator = new(queryService);
+            NewCashAccountNameMustBeUniqueRule acctNameValidator = new(queryService);
+            NewCashAccountNumberMustBeUniqueRule acctNumberValidator = new(queryService);
+            acctNameValidator.SetNext(acctNumberValidator);
 
-            return await transactionCountValidator.Validate(accountInfo);
+            return await acctNameValidator.Validate(accountInfo);
         }
     }
 }

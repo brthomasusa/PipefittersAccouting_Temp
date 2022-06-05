@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
             GetFinancierIdValidationModel(FinancierIdValidationParams queryParameters);
 
         Task<OperationResult<CreditorHasLoanAgreeValidationModel>>
-            GetCreditorHasLoanAgreeValidationModel(CreditorHasLoanAgreeValidationParams queryParameters);
+            GetCreditorHasLoanAgreeValidationModel(CreditorLoanAgreementValidationParameters queryParameters);
 
         Task<OperationResult<DepositLoanProceedsValidationModel>>
             GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters);
@@ -27,13 +27,9 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<OperationResult<int>> GetNumberOfCashAccountTransactions(GetCashAccount queryParameters);
 
-        Task<OperationResult<ExternalAgentIdentificationInfo>> GetExternalAgentIdentificationInfo(ExternalAgentIdentificationParameters queryParameters);
+        Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorLoanAgreementValidationParameters queryParameters);
 
-        Task<OperationResult<EconomicEventIdentificationInfo>> GetEconomicEventIdentificationInfo(EconomicEventIdentificationParameters queryParameters);
-
-        Task<OperationResult<CreditorIssuedLoanAgreementValidationInfo>> GetCreditorIssuedLoanAgreementValidationInfo(CreditorIssuedLoanAgreementValidationParameters queryParameters);
-
-        Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CashReceiptOfDebtIssueProceedsParameters queryParameters);
+        Task<OperationResult<CashReceiptOfDebtIssueProceedsInfo>> GetCashReceiptOfDebtIssueProceedsInfo(CreditorLoanAgreementValidationParameters queryParameters);
 
         Task<OperationResult<CashDisbursementForLoanInstallmentPaymentInfo>> GetCashDisbursementForLoanInstallmentPaymentInfo(GetLoanInstallmentInfoParameters queryParameters);
 

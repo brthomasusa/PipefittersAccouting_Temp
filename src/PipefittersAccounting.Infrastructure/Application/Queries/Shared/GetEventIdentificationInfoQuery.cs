@@ -2,13 +2,13 @@ using System.Data;
 using Dapper;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.Shared;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 {
-    public class GetEconomicEventIdentificationInfoQuery
+    public class GetEventIdentificationInfoQuery
     {
-        public async static Task<OperationResult<EconomicEventIdentificationInfo>> Query(EconomicEventIdentificationParameters queryParameters,
+        public async static Task<OperationResult<EventIdentificationInfo>> Query(EventIdentificationParameter queryParameters,
                                                                                          DapperContext ctx)
         {
             try
@@ -25,21 +25,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    EconomicEventIdentificationInfo eventInfo =
-                        await connection.QueryFirstOrDefaultAsync<EconomicEventIdentificationInfo>(sql, parameters);
+                    EventIdentificationInfo eventInfo =
+                        await connection.QueryFirstOrDefaultAsync<EventIdentificationInfo>(sql, parameters);
 
                     if (eventInfo is null)
                     {
                         string msg = $"Unable to locate an economic event with Id '{queryParameters.EventId}'!";
-                        return OperationResult<EconomicEventIdentificationInfo>.CreateFailure(msg);
+                        return OperationResult<EventIdentificationInfo>.CreateFailure(msg);
                     }
 
-                    return OperationResult<EconomicEventIdentificationInfo>.CreateSuccessResult(eventInfo);
+                    return OperationResult<EventIdentificationInfo>.CreateSuccessResult(eventInfo);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<EconomicEventIdentificationInfo>.CreateFailure(ex.Message);
+                return OperationResult<EventIdentificationInfo>.CreateFailure(ex.Message);
             }
         }
     }

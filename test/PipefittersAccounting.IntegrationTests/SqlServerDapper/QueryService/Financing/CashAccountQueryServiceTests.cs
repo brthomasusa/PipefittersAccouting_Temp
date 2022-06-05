@@ -3,42 +3,26 @@ using System.Threading.Tasks;
 using Xunit;
 
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Shared;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.Shared;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
 {
     [Trait("Integration", "DapperQueryService")]
     public class CashAccountQueryServiceTests : TestBaseDapper
     {
-        ICashAccountQueryService _queryService;
+        private readonly ICashAccountQueryService _queryService;
+        private readonly ISharedQueryService _sharedQryService;
+
         public CashAccountQueryServiceTests()
-            => _queryService = new CashAccountQueryService(_dapperCtx);
-
-        [Fact]
-        public async Task GetFinancierIdValidationModel_CashAccountQueryService_WithValidId_ShouldSucceed()
         {
-            Guid financierID = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a");
-
-            FinancierIdValidationParams qryParam = new() { FinancierId = financierID };
-            OperationResult<FinancierIdValidationModel> result = await _queryService.GetFinancierIdValidationModel(qryParam);
-
-            Assert.True(result.Success);
-            Assert.Equal("Bertha Mae Jones Innovative Financing", result.Result.FinancierName);
-        }
-
-        [Fact]
-        public async Task GetFinancierIdValidationModel_CashAccountQueryService_WithInvalidId_ShouldFail()
-        {
-            Guid financierID = new Guid("76e6164a-249d-47a2-b47c-f09a332181b6");
-
-            FinancierIdValidationParams qryParam = new() { FinancierId = financierID };
-            OperationResult<FinancierIdValidationModel> result = await _queryService.GetFinancierIdValidationModel(qryParam);
-
-            Assert.False(result.Success);
-            Assert.Equal($"Unable to locate a financier with FinancierId: {qryParam.FinancierId}.", result.NonSuccessMessage);
+            _queryService = new CashAccountQueryService(_dapperCtx);
+            _sharedQryService = new SharedQueryService(_dapperCtx);
         }
 
         [Fact]
@@ -64,7 +48,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid financierID = new Guid("12998229-7ede-4834-825a-0c55bde75695");
             Guid loanID = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1");
 
-            CreditorHasLoanAgreeValidationParams qryParam = new() { FinancierId = financierID, LoanId = loanID };
+            CreditorLoanAgreementValidationParameters qryParam = new() { FinancierId = financierID, LoanId = loanID };
 
             OperationResult<CreditorHasLoanAgreeValidationModel> result =
                 await _queryService.GetCreditorHasLoanAgreeValidationModel(qryParam);
@@ -80,7 +64,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid financierID = new Guid("12998229-7ede-4834-825a-0c55bde75695");
             Guid loanID = new Guid("1511c20b-6df0-4313-98a5-7c3561757dc2");
 
-            CreditorHasLoanAgreeValidationParams qryParam = new() { FinancierId = financierID, LoanId = loanID };
+            CreditorLoanAgreementValidationParameters qryParam = new() { FinancierId = financierID, LoanId = loanID };
 
             OperationResult<CreditorHasLoanAgreeValidationModel> result =
                 await _queryService.GetCreditorHasLoanAgreeValidationModel(qryParam);
@@ -95,7 +79,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid financierID = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a");
             Guid loanID = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1");
 
-            CreditorHasLoanAgreeValidationParams qryParam = new() { FinancierId = financierID, LoanId = loanID };
+            CreditorLoanAgreementValidationParameters qryParam = new() { FinancierId = financierID, LoanId = loanID };
 
             OperationResult<CreditorHasLoanAgreeValidationModel> result =
                 await _queryService.GetCreditorHasLoanAgreeValidationModel(qryParam);
@@ -193,8 +177,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetExternalAgentIdentificationInfo_CashAccountQueryService_ShouldSucceed()
         {
-            ExternalAgentIdentificationParameters queryParameters = new() { AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601") };
-            OperationResult<ExternalAgentIdentificationInfo> result = await _queryService.GetExternalAgentIdentificationInfo(queryParameters);
+            AgentIdentificationParameter queryParameters = new() { AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601") };
+            OperationResult<AgentIdentificationInfo> result = await _sharedQryService.GetExternalAgentIdentificationInfo(queryParameters);
 
             Assert.True(result.Success);
 
@@ -205,8 +189,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetEconomicEventIdentificationInfo_CashAccountQueryService_ShouldSucceed()
         {
-            EconomicEventIdentificationParameters queryParameters = new() { EventId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1") };
-            OperationResult<EconomicEventIdentificationInfo> result = await _queryService.GetEconomicEventIdentificationInfo(queryParameters);
+            EventIdentificationParameter queryParameters = new() { EventId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1") };
+            OperationResult<EventIdentificationInfo> result = await _sharedQryService.GetEconomicEventIdentificationInfo(queryParameters);
 
             Assert.True(result.Success);
 
@@ -217,7 +201,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetCreditorIssuedLoanAgreementValidationInfo_CashAccountQueryService_ShouldSucceed()
         {
-            CreditorIssuedLoanAgreementValidationParameters queryParameters =
+            CreditorLoanAgreementValidationParameters queryParameters =
                 new() { LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"), FinancierId = new Guid("12998229-7ede-4834-825a-0c55bde75695") };
             OperationResult<CreditorIssuedLoanAgreementValidationInfo> result = await _queryService.GetCreditorIssuedLoanAgreementValidationInfo(queryParameters);
 
@@ -230,7 +214,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetCashReceiptOfDebtIssueProceedsInfo_CashAccountQueryService_ShouldSucceed()
         {
-            CashReceiptOfDebtIssueProceedsParameters queryParameters =
+            CreditorLoanAgreementValidationParameters queryParameters =
                 new() { FinancierId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"), LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f") };
             OperationResult<CashReceiptOfDebtIssueProceedsInfo> result = await _queryService.GetCashReceiptOfDebtIssueProceedsInfo(queryParameters);
 

@@ -7,10 +7,12 @@ using Xunit;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Commands.Financing;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.IntegrationTests.Base;
 
@@ -26,8 +28,9 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         public CashAccountAggregateApplicationServiceTests()
         {
             ICashAccountQueryService queryService = new CashAccountQueryService(_dapperCtx);
+            ISharedQueryService sharedQueryService = new SharedQueryService(_dapperCtx);
             _repository = new CashAccountAggregateRepository(_dbContext);
-            _validationService = new CashAccountAggregateValidationService(queryService);
+            _validationService = new CashAccountAggregateValidationService(queryService, sharedQueryService);
             _unitOfWork = new AppUnitOfWork(_dbContext);
             _appService = new CashAccountApplicationService(_validationService, _repository, _unitOfWork);
         }

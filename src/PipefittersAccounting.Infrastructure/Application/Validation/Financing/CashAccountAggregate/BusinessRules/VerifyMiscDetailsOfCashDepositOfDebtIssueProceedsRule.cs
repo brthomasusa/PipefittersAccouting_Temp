@@ -19,7 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         {
             ValidationResult validationResult = new();
 
-            CashReceiptOfDebtIssueProceedsParameters queryParameters = new() { FinancierId = transaction.AgentId, LoanId = transaction.EventId };
+            CreditorLoanAgreementValidationParameters queryParameters = new() { FinancierId = transaction.AgentId, LoanId = transaction.EventId };
 
             OperationResult<CashReceiptOfDebtIssueProceedsInfo> miscDetailsResult =
                 await _cashAcctQrySvc.GetCashReceiptOfDebtIssueProceedsInfo(queryParameters);

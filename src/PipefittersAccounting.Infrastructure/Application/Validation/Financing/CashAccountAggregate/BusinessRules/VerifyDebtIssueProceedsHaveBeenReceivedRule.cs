@@ -25,7 +25,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
             if (eventResult.Success)
             {
-                CashReceiptOfDebtIssueProceedsParameters queryParameters =
+                CreditorLoanAgreementValidationParameters queryParameters =
                     new() { FinancierId = transaction.AgentId, LoanId = eventResult.Result.LoanId };
 
                 OperationResult<CashReceiptOfDebtIssueProceedsInfo> miscDetailsResult =

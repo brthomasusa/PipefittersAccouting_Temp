@@ -6,23 +6,23 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
     // Verify that a financier and a loan agreement are known to the system  
     // and that the financier is associated with this particular loan agreement.
 
-    public class IsCreditorAssociatedWithThisLoanAgreeRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyCreditorHasLoanAgreementRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public IsCreditorAssociatedWithThisLoanAgreeRule(ICashAccountQueryService cashAcctQrySvc)
+        public VerifyCreditorHasLoanAgreementRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transaction)
         {
             ValidationResult validationResult = new();
 
-            CreditorIssuedLoanAgreementValidationParameters queryParameters = new() { LoanId = transaction.EventId, FinancierId = transaction.AgentId };
+            CreditorLoanAgreementValidationParameters queryParameters = new() { LoanId = transaction.EventId, FinancierId = transaction.AgentId };
 
             OperationResult<CreditorIssuedLoanAgreementValidationInfo> result =
                 await _cashAcctQrySvc.GetCreditorIssuedLoanAgreementValidationInfo(queryParameters);

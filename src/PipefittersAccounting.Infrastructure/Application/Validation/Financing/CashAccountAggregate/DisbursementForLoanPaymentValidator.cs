@@ -1,38 +1,39 @@
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DisbursementForLoanPaymentValidation : CashAccountTransactionValidationBase
+    public class DisbursementForLoanPaymentValidator : CashAccountTransactionValidationBase
     {
-        public DisbursementForLoanPaymentValidation
+        public DisbursementForLoanPaymentValidator
         (
             CashTransactionWriteModel deposit,
-            ICashAccountQueryService queryService
-        ) : base(deposit, queryService)
+            ICashAccountQueryService queryService,
+            ISharedQueryService sharedQueryService
+        ) : base(deposit, queryService, sharedQueryService)
         {
             CashAccountTransactionInfo = deposit;
-            QueryService = queryService;
+            CashAccountQueryService = queryService;
         }
 
         public async override Task<ValidationResult> Validate()
         {
             // Check that loan installment is known to the system
-            LoanInstallmentPaymentAsEconomicEventRule eventValidator = new(QueryService);
+            LoanInstallmentPaymentAsEconomicEventRule eventValidator = new(SharedQueryService);
 
             // Check that the financier is valid payee for this loan installment
-            FinancierHasLoanInstallmentRule payeeValidator = new(QueryService);
+            FinancierHasLoanInstallmentRule payeeValidator = new(CashAccountQueryService);
 
             // Verify that debt issue proceeds have been received.
-            VerifyDebtIssueProceedsHaveBeenReceivedRule verifyProceedsReceivedValidator = new(QueryService);
+            VerifyDebtIssueProceedsHaveBeenReceivedRule verifyProceedsReceivedValidator = new(CashAccountQueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals installment's EMI
             // Verify that this installment has not already been paid
-            DisburesementForLoanPymtRule disburesementValidator = new(QueryService);
+            DisburesementForLoanPymtRule disburesementValidator = new(CashAccountQueryService);
 
             eventValidator.SetNext(payeeValidator);
             payeeValidator.SetNext(verifyProceedsReceivedValidator);

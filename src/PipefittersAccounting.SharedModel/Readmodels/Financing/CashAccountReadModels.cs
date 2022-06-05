@@ -79,20 +79,6 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime LastModifiedDate { get; set; }
     }
 
-    public class ExternalAgentIdentificationInfo
-    {
-        public Guid AgentId { get; set; }
-        public int AgentTypeId { get; set; }
-        public string? AgentTypeName { get; set; }
-    }
-
-    public class EconomicEventIdentificationInfo
-    {
-        public Guid EventId { get; set; }
-        public int EventTypeId { get; set; }
-        public string? EventTypeName { get; set; }
-    }
-
     public class CreditorIssuedLoanAgreementValidationInfo
     {
         public Guid FinancierId { get; set; }

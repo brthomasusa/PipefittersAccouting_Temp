@@ -2,13 +2,13 @@ using System.Data;
 using Dapper;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.Shared;
 
-namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 {
-    public class GetExternalAgentIdentificationInfoQuery
+    public class GetAgentIdentificationInfoQuery
     {
-        public async static Task<OperationResult<ExternalAgentIdentificationInfo>> Query(ExternalAgentIdentificationParameters queryParameters,
+        public async static Task<OperationResult<AgentIdentificationInfo>> Query(AgentIdentificationParameter queryParameters,
                                                                                          DapperContext ctx)
         {
             try
@@ -25,21 +25,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    ExternalAgentIdentificationInfo agentInfo =
-                        await connection.QueryFirstOrDefaultAsync<ExternalAgentIdentificationInfo>(sql, parameters);
+                    AgentIdentificationInfo agentInfo =
+                        await connection.QueryFirstOrDefaultAsync<AgentIdentificationInfo>(sql, parameters);
 
                     if (agentInfo is null)
                     {
                         string msg = $"Unable to locate an external agent with Id '{queryParameters.AgentId}'!";
-                        return OperationResult<ExternalAgentIdentificationInfo>.CreateFailure(msg);
+                        return OperationResult<AgentIdentificationInfo>.CreateFailure(msg);
                     }
 
-                    return OperationResult<ExternalAgentIdentificationInfo>.CreateSuccessResult(agentInfo);
+                    return OperationResult<AgentIdentificationInfo>.CreateSuccessResult(agentInfo);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<ExternalAgentIdentificationInfo>.CreateFailure(ex.Message);
+                return OperationResult<AgentIdentificationInfo>.CreateFailure(ex.Message);
             }
         }
     }

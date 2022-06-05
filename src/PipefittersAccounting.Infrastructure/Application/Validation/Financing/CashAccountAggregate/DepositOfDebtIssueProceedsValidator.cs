@@ -1,18 +1,28 @@
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DepositOfStockIssueProceedsValidation : CashAccountTransactionValidationBase
+    /*
+        This class arranges a group of validators into a chain.
+        Execution of the chain will completely validate a
+        CreateCashAccountTransactionInfo. The position of each
+        validator within the chain is important. In other words,
+        the sequence in which the validation is performed is
+        important.
+    */
+
+    public class DepositOfDebtIssueProceedsValidator : CashAccountTransactionValidationBase
     {
-        public DepositOfStockIssueProceedsValidation
+        public DepositOfDebtIssueProceedsValidator
         (
             CashTransactionWriteModel deposit,
-            ICashAccountQueryService queryService
-        ) : base(deposit, queryService)
+            ICashAccountQueryService queryService,
+            ISharedQueryService sharedQueryService
+        ) : base(deposit, queryService, sharedQueryService)
         {
 
         }
@@ -20,18 +30,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public async override Task<ValidationResult> Validate()
         {
             // Check that financier is known to the system
-            FinancierAsExternalAgentRule agentValidator = new(QueryService);
+            VerifyAgentIsFinancierRule agentValidator = new(SharedQueryService);
 
-            // Check that stock subscription is known to the system
-            LoanAgreementAsEconomicEventRule eventValidator = new(QueryService);
+            // Check that loan agreement is known to the system
+            VerifyEventIsLoanAgreementRule eventValidator = new(SharedQueryService);
 
             // Ensure that loan agreement belongs to this financier
-            IsCreditorAssociatedWithThisLoanAgreeRule loanAgreementIssuedByFinancierValidator = new(QueryService);
+            VerifyCreditorHasLoanAgreementRule loanAgreementIssuedByFinancierValidator = new(CashAccountQueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals loan agreement amount
             // Verify that this deposit has not already been made
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(QueryService);
+            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
 
             agentValidator.SetNext(eventValidator);
             eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);

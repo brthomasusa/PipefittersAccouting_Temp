@@ -12,7 +12,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public Guid LoanId { get; set; }
     }
 
-    public class CreditorHasLoanAgreeValidationParams
+    public class CreditorLoanAgreementValidationParameters
     {
         public Guid FinancierId { get; set; }
         public Guid LoanId { get; set; }
