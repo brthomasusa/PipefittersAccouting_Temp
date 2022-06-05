@@ -6,15 +6,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface ICashAccountQueryService
     {
-        Task<OperationResult<FinancierIdValidationModel>>
-            GetFinancierIdValidationModel(FinancierIdValidationParams queryParameters);
-
-        Task<OperationResult<CreditorHasLoanAgreeValidationModel>>
-            GetCreditorHasLoanAgreeValidationModel(CreditorLoanAgreementValidationParameters queryParameters);
-
-        Task<OperationResult<DepositLoanProceedsValidationModel>>
-            GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters);
-
         Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters);
 
         Task<OperationResult<CashAccountReadModel>> GetCashAccountReadModel(GetCashAccount queryParameters);

@@ -13,17 +13,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public CashAccountQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<FinancierIdValidationModel>>
-            GetFinancierIdValidationModel(FinancierIdValidationParams queryParameters)
-                => await GetFinancierIdValidationModelQuery.Query(queryParameters, _dapperCtx);
-
-        public async Task<OperationResult<CreditorHasLoanAgreeValidationModel>>
-            GetCreditorHasLoanAgreeValidationModel(CreditorLoanAgreementValidationParameters queryParameters)
-                => await GetCreditorHasLoanAgreeValidationModelQuery.Query(queryParameters, _dapperCtx);
-
-        public async Task<OperationResult<DepositLoanProceedsValidationModel>>
-            GetReceiptLoanProceedsValidationModel(ReceiptLoanProceedsValidationParams queryParameters)
-                => await GetReceiptLoanProceedsValidationModelQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<CashAccountDetail>> GetCashAccountDetails(GetCashAccount queryParameters)
             => await GetCashAccountDetailsQuery.Query(queryParameters, _dapperCtx);

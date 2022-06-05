@@ -1,17 +1,7 @@
 
 namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 {
-    public class FinancierIdValidationModel
-    {
-        public Guid FinancierId { get; set; }
-        public string? FinancierName { get; set; }
-    }
 
-    public class CreditorHasLoanAgreeValidationModel
-    {
-        public string? FinancierName { get; set; }
-        public decimal LoanAmount { get; set; }
-    }
 
     public class DepositLoanProceedsValidationModel
     {
