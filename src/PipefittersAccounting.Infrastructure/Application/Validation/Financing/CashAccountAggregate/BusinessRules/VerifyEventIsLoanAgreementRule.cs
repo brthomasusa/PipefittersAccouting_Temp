@@ -2,10 +2,8 @@
 
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.Readmodels.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 

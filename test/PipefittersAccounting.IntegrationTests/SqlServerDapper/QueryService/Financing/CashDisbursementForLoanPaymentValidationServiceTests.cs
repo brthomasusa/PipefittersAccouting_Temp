@@ -35,7 +35,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_LoanInstallmentPaymentAsEconomicEventValidator_ShouldSucceed()
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
-            LoanInstallmentPaymentAsEconomicEventRule validator = new(_sharedQrySvc);
+            VerifyEventIsLoanInstallmentRule validator = new(_sharedQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -48,7 +48,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.EventId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
-            LoanInstallmentPaymentAsEconomicEventRule validator = new(_sharedQrySvc);
+            VerifyEventIsLoanInstallmentRule validator = new(_sharedQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -62,7 +62,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_FinancierHasLoanInstallmentValidator_ShouldSucceed()
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
-            FinancierHasLoanInstallmentRule validator = new(_cashAcctQrySvc);
+            VerifyCreditorIsOwedLoanInstallmentRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -75,7 +75,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.AgentId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
 
-            FinancierHasLoanInstallmentRule validator = new(_cashAcctQrySvc);
+            VerifyCreditorIsOwedLoanInstallmentRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -114,7 +114,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
-            DisburesementForLoanPymtRule validator = new(_cashAcctQrySvc);
+            VerifyLoanPymtDateAmountAndStatusRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -127,7 +127,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionDate = new DateTime(2022, 2, 1);
 
-            DisburesementForLoanPymtRule validator = new(_cashAcctQrySvc);
+            VerifyLoanPymtDateAmountAndStatusRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -140,7 +140,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
             model.TransactionAmount = 1111M;
 
-            DisburesementForLoanPymtRule validator = new(_cashAcctQrySvc);
+            VerifyLoanPymtDateAmountAndStatusRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -152,7 +152,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymtDuplicate();
 
-            DisburesementForLoanPymtRule validator = new(_cashAcctQrySvc);
+            VerifyLoanPymtDateAmountAndStatusRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 

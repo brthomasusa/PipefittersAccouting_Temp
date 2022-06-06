@@ -186,7 +186,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             GetLoanInstallmentInfoParameters queryParameters =
                 new() { LoanInstallmentId = new Guid("8e804651-5021-4577-bbda-e7ee45a74e44") };
-            OperationResult<FinancierToLoanInstallmentValidationInfo> result = await _queryService.GetFinancierToLoanInstallmentValidationInfo(queryParameters);
+            OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo> result = await _queryService.GetCreditorIsOwedThisLoanInstallmentValidationInfo(queryParameters);
 
             Assert.True(result.Success);
 

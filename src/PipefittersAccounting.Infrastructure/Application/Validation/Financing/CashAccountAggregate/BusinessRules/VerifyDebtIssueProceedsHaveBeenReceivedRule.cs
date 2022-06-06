@@ -20,8 +20,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             ValidationResult validationResult = new();
 
             GetLoanInstallmentInfoParameters parameters = new() { LoanInstallmentId = transaction.EventId };
-            OperationResult<FinancierToLoanInstallmentValidationInfo> eventResult =
-                await _cashAcctQrySvc.GetFinancierToLoanInstallmentValidationInfo(parameters);
+            OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo> eventResult =
+                await _cashAcctQrySvc.GetCreditorIsOwedThisLoanInstallmentValidationInfo(parameters);
 
             if (eventResult.Success)
             {

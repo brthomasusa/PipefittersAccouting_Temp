@@ -26,17 +26,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Check that stock subscription is known to the system
             VerifyEventIsStockSubscriptionRule eventValidator = new(SharedQueryService);
 
-            // Ensure that loan agreement belongs to this financier
-            VerifyCreditorHasLoanAgreementRule loanAgreementIssuedByFinancierValidator = new(CashAccountQueryService);
+            // Ensure that stock subscription belongs to this investor
+            VerifyInvestorHasStockSubscriptionRule investorStockSubscriptionValidator = new(CashAccountQueryService);
 
-            // Verify that transaction date is between loan date and maturity
-            // Verify that transaction amount equals loan agreement amount
+            // Verify that transaction date is after dividend declaration date.
+            // Verify that transaction amount equals dividend per shares * shares issued
             // Verify that this deposit has not already been made
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
 
             agentValidator.SetNext(eventValidator);
-            eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);
-            loanAgreementIssuedByFinancierValidator.SetNext(miscDetailsValidator);
+            eventValidator.SetNext(investorStockSubscriptionValidator);
+            investorStockSubscriptionValidator.SetNext(miscDetailsValidator);
 
             return await agentValidator.Validate(CashAccountTransactionInfo);
         }

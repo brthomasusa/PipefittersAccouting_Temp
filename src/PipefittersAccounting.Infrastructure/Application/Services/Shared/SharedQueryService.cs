@@ -1,3 +1,4 @@
+using PipefittersAccounting.Infrastructure.Application.Queries.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
@@ -12,10 +13,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Shared
 
         public SharedQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public Task<OperationResult<AgentIdentificationInfo>> GetExternalAgentIdentificationInfo(AgentIdentificationParameter queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<AgentIdentificationInfo>> GetExternalAgentIdentificationInfo(AgentIdentificationParameter queryParameters)
+            => await GetAgentIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
 
-        public Task<OperationResult<EventIdentificationInfo>> GetEconomicEventIdentificationInfo(EventIdentificationParameter queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<EventIdentificationInfo>> GetEconomicEventIdentificationInfo(EventIdentificationParameter queryParameters)
+            => await GetEventIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
     }
 }

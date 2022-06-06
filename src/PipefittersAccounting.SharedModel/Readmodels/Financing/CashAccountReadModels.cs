@@ -13,18 +13,6 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal AmountReceived { get; set; }
     }
 
-    public class DisburesementLoanPymtValidationModel
-    {
-        public Guid FinancierId { get; set; }
-        public Guid LoanId { get; set; }
-        public Guid LoanInstallmentId { get; set; }
-        public int InstallmentNumber { get; set; }
-        public DateTime PaymentDueDate { get; set; }
-        public decimal EqualMonthlyInstallment { get; set; }
-        public DateTime DatePaid { get; set; }
-        public decimal AmountPaid { get; set; }
-    }
-
     public class CashAccountListItem
     {
         public Guid CashAccountId { get; set; }
@@ -89,7 +77,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal AmountReceived { get; set; }
     }
 
-    public class FinancierToLoanInstallmentValidationInfo
+    public class CreditorIsOwedThisLoanInstallmentValidationInfo
     {
         public Guid FinancierId { get; set; }
         public Guid LoanId { get; set; }

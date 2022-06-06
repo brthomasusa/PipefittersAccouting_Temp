@@ -138,7 +138,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_ShouldSucceed()
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -150,7 +150,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionDate = new DateTime(2022, 4, 10);
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -162,7 +162,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
             model.TransactionAmount = 5000M;
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 
@@ -173,7 +173,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsValidator_DuplicateDeposit_ShouldFail()
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDuplicateLoanProceedsDeposit();
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule validator = new(_cashAcctQrySvc);
 
             ValidationResult validationResult = await validator.Validate(model);
 

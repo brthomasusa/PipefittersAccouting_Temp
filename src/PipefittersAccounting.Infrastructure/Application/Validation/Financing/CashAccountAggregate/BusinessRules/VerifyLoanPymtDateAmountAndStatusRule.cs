@@ -8,11 +8,11 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    public class DisburesementForLoanPymtRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyLoanPymtDateAmountAndStatusRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public DisburesementForLoanPymtRule(ICashAccountQueryService cashAcctQrySvc)
+        public VerifyLoanPymtDateAmountAndStatusRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)

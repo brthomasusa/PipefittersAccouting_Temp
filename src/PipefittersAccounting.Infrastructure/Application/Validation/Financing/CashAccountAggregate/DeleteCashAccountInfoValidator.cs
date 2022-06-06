@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     {
         public static async Task<ValidationResult> Validate(CashAccountWriteModel accountInfo, ICashAccountQueryService queryService)
         {
-            CannotDeleteCashAcctIfTransactionsAttachedRule transactionCountValidator = new(queryService);
+            CannotEditOrDeleteCashAcctWithTransactionsRule transactionCountValidator = new(queryService);
 
             return await transactionCountValidator.Validate(accountInfo);
         }

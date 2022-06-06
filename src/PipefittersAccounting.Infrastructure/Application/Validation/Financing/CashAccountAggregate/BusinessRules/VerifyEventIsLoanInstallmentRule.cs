@@ -4,7 +4,6 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedModel.Readmodels.Shared;
 
@@ -14,11 +13,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     // the deposit or disbursement of cash. For disbursement for
     // loan payment that event should be a specific loan installment.
 
-    public class LoanInstallmentPaymentAsEconomicEventRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyEventIsLoanInstallmentRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ISharedQueryService _qrySvc;
 
-        public LoanInstallmentPaymentAsEconomicEventRule(ISharedQueryService qrySvc)
+        public VerifyEventIsLoanInstallmentRule(ISharedQueryService qrySvc)
             => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)

@@ -12,27 +12,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public static async Task<ValidationResult> Validate(CashAccountWriteModel accountInfo, ICashAccountQueryService queryService)
         {
             EditedCashAccountNameMustBeUniqueRule acctNameValidator = new(queryService);
+            CannotEditOrDeleteCashAcctWithTransactionsRule transactionCountValidator = new(queryService);
 
-            // Check if user is attempting to update CashAccountType,  
-            // which can only be done if cash account has no transactions
-            GetCashAccount queryParams = new() { CashAccountId = accountInfo.CashAccountId };
-            OperationResult<CashAccountReadModel> getResult =
-                await queryService.GetCashAccountReadModel(queryParams);
-
-            if (getResult.Success)
-            {
-                if (getResult.Result.CashAccountTypeId != accountInfo.CashAccountType)
-                {
-                    CannotEditCashAcctAcctTypeIfTransactionsExistRule transactionCountValidator = new(queryService);
-                    acctNameValidator.SetNext(transactionCountValidator);
-                }
-            }
-            else    // Unable to retrieve count of transactions from database
-            {
-                ValidationResult validationResult = new();
-                validationResult.Messages.Add(getResult.NonSuccessMessage);
-                return validationResult;
-            }
+            acctNameValidator.SetNext(transactionCountValidator);
 
             return await acctNameValidator.Validate(accountInfo);
         }

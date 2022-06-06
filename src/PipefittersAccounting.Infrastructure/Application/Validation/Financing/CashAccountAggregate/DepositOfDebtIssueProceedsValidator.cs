@@ -7,11 +7,11 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
     /*
-        This class arranges a group of validators into a chain.
+        This class arranges a group of rules into a chain.
         Execution of the chain will completely validate a
-        CreateCashAccountTransactionInfo. The position of each
-        validator within the chain is important. In other words,
-        the sequence in which the validation is performed is
+        CashTransactionWriteModel. The position of each
+        rule within the chain is important. In other words,
+        the sequence in which rules are validated is
         important.
     */
 
@@ -41,7 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals loan agreement amount
             // Verify that this deposit has not already been made
-            VerifyMiscDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
+            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
 
             agentValidator.SetNext(eventValidator);
             eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);

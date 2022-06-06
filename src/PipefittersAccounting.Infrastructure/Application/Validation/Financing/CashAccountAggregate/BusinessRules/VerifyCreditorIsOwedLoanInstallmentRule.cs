@@ -9,11 +9,11 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    public class FinancierHasLoanInstallmentRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyCreditorIsOwedLoanInstallmentRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public FinancierHasLoanInstallmentRule(ICashAccountQueryService cashAcctQrySvc)
+        public VerifyCreditorIsOwedLoanInstallmentRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
@@ -21,8 +21,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             ValidationResult validationResult = new();
 
             GetLoanInstallmentInfoParameters queryParameters = new() { LoanInstallmentId = transactionInfo.EventId };
-            OperationResult<FinancierToLoanInstallmentValidationInfo> eventResult =
-                await _cashAcctQrySvc.GetFinancierToLoanInstallmentValidationInfo(queryParameters);
+            OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo> eventResult =
+                await _cashAcctQrySvc.GetCreditorIsOwedThisLoanInstallmentValidationInfo(queryParameters);
 
             // Is the event id known to the system?
             if (eventResult.Success)

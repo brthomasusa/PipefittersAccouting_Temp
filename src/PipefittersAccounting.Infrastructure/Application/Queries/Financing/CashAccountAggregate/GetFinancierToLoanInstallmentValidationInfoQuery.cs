@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
 {
     public class GetFinancierToLoanInstallmentValidationInfoQuery
     {
-        public async static Task<OperationResult<FinancierToLoanInstallmentValidationInfo>> Query(GetLoanInstallmentInfoParameters queryParameters,
+        public async static Task<OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo>> Query(GetLoanInstallmentInfoParameters queryParameters,
                                                                                                        DapperContext ctx)
         {
             try
@@ -25,21 +25,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    FinancierToLoanInstallmentValidationInfo installmentInfo =
-                        await connection.QueryFirstOrDefaultAsync<FinancierToLoanInstallmentValidationInfo>(sql, parameters);
+                    CreditorIsOwedThisLoanInstallmentValidationInfo installmentInfo =
+                        await connection.QueryFirstOrDefaultAsync<CreditorIsOwedThisLoanInstallmentValidationInfo>(sql, parameters);
 
                     if (installmentInfo is null)
                     {
                         string msg = $"Unable to locate a loan installment with id '{queryParameters.LoanInstallmentId}'!";
-                        return OperationResult<FinancierToLoanInstallmentValidationInfo>.CreateFailure(msg);
+                        return OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo>.CreateFailure(msg);
                     }
 
-                    return OperationResult<FinancierToLoanInstallmentValidationInfo>.CreateSuccessResult(installmentInfo);
+                    return OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo>.CreateSuccessResult(installmentInfo);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<FinancierToLoanInstallmentValidationInfo>.CreateFailure(ex.Message);
+                return OperationResult<CreditorIsOwedThisLoanInstallmentValidationInfo>.CreateFailure(ex.Message);
             }
         }
     }
