@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             {
                 if (transaction.TransactionDate >= miscDetailsResult.Result.StockIssueDate)
                 {
-                    decimal stockValue = (miscDetailsResult.Result.SharesIssued * miscDetailsResult.Result.PricePerShare);
+                    decimal stockValue = (miscDetailsResult.Result.SharesIssured * miscDetailsResult.Result.PricePerShare);
 
                     if (transaction.TransactionAmount == stockValue)
                     {

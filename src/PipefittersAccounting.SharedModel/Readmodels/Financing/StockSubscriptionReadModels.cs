@@ -36,7 +36,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public Guid StockId { get; set; }
         public string? InvestorName { get; set; }
         public DateTime StockIssueDate { get; set; }
-        public int SharesIssued { get; set; }
+        public int SharesIssured { get; set; }
         public decimal PricePerShare { get; set; }
         public int CashTransactionId { get; set; }
         public DateTime DateReceived { get; set; }
