@@ -116,7 +116,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
 
                     if (entityState == EntityState.Added)
                     {
-                        EconomicEvent economicEvent = new(EntityGuidID.Create(dividend.Id), EventTypeEnum.DividentPayment);
+                        EconomicEvent economicEvent = new(EntityGuidID.Create(dividend.Id), EventTypeEnum.DividentDeclaration);
                         _dbContext.EconomicEvents.Add(economicEvent);
                     }
                 }

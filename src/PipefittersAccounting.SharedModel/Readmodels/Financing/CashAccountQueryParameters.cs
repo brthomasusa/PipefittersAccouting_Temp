@@ -50,4 +50,9 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
+
+    public class GetInvestorIdForStockSubscriptionParameter
+    {
+        public Guid StockId { get; set; }
+    }
 }

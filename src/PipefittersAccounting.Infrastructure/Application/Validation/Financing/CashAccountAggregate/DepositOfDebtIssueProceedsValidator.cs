@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         important.
     */
 
-    public class DepositOfDebtIssueProceedsValidator : CashAccountTransactionValidationBase
+    public class DepositOfDebtIssueProceedsValidator : CashAccountTransactionValidatorBase
     {
         public DepositOfDebtIssueProceedsValidator
         (
@@ -41,7 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals loan agreement amount
             // Verify that this deposit has not already been made
-            VerifyDetailsOfCashDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
+            VerifyDetailsOfDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
 
             agentValidator.SetNext(eventValidator);
             eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);

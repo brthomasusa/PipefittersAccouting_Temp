@@ -219,5 +219,84 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.True(count > 0);
         }
 
+        [Fact]
+        public async Task GetInvestorIdForStockSubscription_CashAccountQueryService_ShouldSucceed()
+        {
+            Guid stockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770");
+            Guid investorId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
+
+            GetInvestorIdForStockSubscriptionParameter queryParameters = new() { StockId = stockId };
+
+            OperationResult<Guid> result = await _queryService.GetInvestorIdForStockSubscription(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(investorId, result.Result);
+        }
+
+        [Fact]
+        public async Task GetInvestorIdForStockSubscription_CashAccountQueryService_ShouldFail()
+        {
+            Guid stockId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e");
+            GetInvestorIdForStockSubscriptionParameter queryParameters = new() { StockId = stockId };
+
+            OperationResult<Guid> result = await _queryService.GetInvestorIdForStockSubscription(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(Guid.Empty, result.Result);
+        }
+
+        [Fact]
+        public async Task VerifyCashDepositOfStockIssueProceeds_CashAccountQueryService_ShouldSucceed()
+        {
+            Guid stockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770");
+
+            GetStockSubscriptionParameter queryParameters = new() { StockId = stockId };
+
+            OperationResult<VerificationOfCashDepositStockIssueProceeds> result = await _queryService.VerifyCashDepositOfStockIssueProceeds(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(10000M, result.Result.AmountReceived);
+        }
+
+        [Fact]
+        public async Task GetInvestorIdForDividendDeclaration_CashAccountQueryService_ShouldSucceed()
+        {
+            Guid dividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f");
+            Guid investorId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
+
+            GetDividendDeclarationParameter queryParameters = new() { DividendId = dividendId };
+
+            OperationResult<Guid> result = await _queryService.GetInvestorIdForDividendDeclaration(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(investorId, result.Result);
+        }
+
+        [Fact]
+        public async Task GetInvestorIdForDividendDeclaration_CashAccountQueryService_ShouldFail()
+        {
+            Guid dividendId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
+
+            GetDividendDeclarationParameter queryParameters = new() { DividendId = dividendId };
+
+            OperationResult<Guid> result = await _queryService.GetInvestorIdForDividendDeclaration(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(Guid.Empty, result.Result);
+        }
+
+        [Fact]
+        public async Task GetDividendDeclarationDetails_CashAccountQueryService_ShouldSucceed()
+        {
+            Guid dividendId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f");
+
+            GetDividendDeclarationParameter queryParameters = new() { DividendId = dividendId };
+
+            OperationResult<DividendDeclarationDetails> result = await _queryService.GetDividendDeclarationDetails(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(.01M, result.Result.DividendPerShare);
+        }
+
     }
 }

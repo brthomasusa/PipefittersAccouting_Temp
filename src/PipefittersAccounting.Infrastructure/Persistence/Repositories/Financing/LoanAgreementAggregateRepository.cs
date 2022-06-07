@@ -78,7 +78,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                 foreach (LoanInstallment installment in entity.LoanAmortizationTable)
                 {
                     await _dbContext.EconomicEvents.AddAsync(new(EntityGuidID.Create(installment.Id),
-                                                                                     EventTypeEnum.LoanPayment));
+                                                                                     EventTypeEnum.LoanInstallment));
                     await _dbContext.LoanInstallments.AddAsync(installment);
                 }
 

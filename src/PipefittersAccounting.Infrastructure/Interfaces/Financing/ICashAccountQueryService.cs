@@ -28,6 +28,14 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<OperationResult<CashAccountTransactionDetail>> GetCashAccountTransactionDetail(GetCashAccountTransactionDetailParameters queryParameters);
 
-        Task<OperationResult<PagedList<CashAccountTransactionListItem>>> GetCashAccountTransactionListItem(GetCashAccountTransactionListItemsParameters queryParameters);
+        Task<OperationResult<PagedList<CashAccountTransactionListItem>>> GetCashAccountTransactionListItem(GetCashAccountTransactionListItemsParameters queryParameters); //GetInvestorIdForDividendDeclaration
+
+        Task<OperationResult<Guid>> GetInvestorIdForStockSubscription(GetInvestorIdForStockSubscriptionParameter queryParameters);
+
+        Task<OperationResult<Guid>> GetInvestorIdForDividendDeclaration(GetDividendDeclarationParameter queryParameters);
+
+        Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameter queryParameters);
+
+        Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters);
     }
 }

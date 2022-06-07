@@ -4,20 +4,16 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedModel.Readmodels.Shared;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    // A cash transaction must point to the event that cause 
-    // the deposit or disbursement of cash. For disbursement for
-    // loan payment that event should be a specific loan installment.
-
-    public class VerifyEventIsLoanInstallmentRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyEventIsDividendDeclarationRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ISharedQueryService _qrySvc;
 
-        public VerifyEventIsLoanInstallmentRule(ISharedQueryService qrySvc)
+        public VerifyEventIsDividendDeclarationRule(ISharedQueryService qrySvc)
             => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transactionInfo)
@@ -31,8 +27,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
             // Is the event id known to the system?
             if (eventResult.Success)
             {
-                // Does the event id represent a loan installment?
-                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.LoanInstallment)
+                // Does the event id represent a dividend declaration?
+                if ((EventTypeEnum)eventResult.Result.EventTypeId == EventTypeEnum.DividentDeclaration)
                 {
                     validationResult.IsValid = true;
 
@@ -43,7 +39,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting 'loan installment'!";
+                    string msg = $"An event of type '{eventResult.Result.EventTypeName}' is not valid for this operation. Expecting a dividend declaration!";
                     validationResult.Messages.Add(msg);
                 }
             }

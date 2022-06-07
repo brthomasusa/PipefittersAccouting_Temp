@@ -49,5 +49,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
 
         public async Task<OperationResult<PagedList<CashAccountTransactionListItem>>> GetCashAccountTransactionListItem(GetCashAccountTransactionListItemsParameters queryParameters)
             => await GetCashAccountTransactionListItemQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> GetInvestorIdForStockSubscription(GetInvestorIdForStockSubscriptionParameter queryParameters)
+            => await GetInvestorIdForStockSubscriptionQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> GetInvestorIdForDividendDeclaration(GetDividendDeclarationParameter queryParameters)
+            => await GetInvestorIdForDividendDeclarationQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameter queryParameters)
+            => await VerifyCashDepositOfStockIssueProceedsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
+            => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
     }
 }

@@ -6,9 +6,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DepositOfStockIssueProceedsValidator : CashAccountTransactionValidatorBase
+    public class DisbursementForDividendPaymentValidator : CashAccountTransactionValidatorBase
     {
-        public DepositOfStockIssueProceedsValidator
+        public DisbursementForDividendPaymentValidator
         (
             CashTransactionWriteModel deposit,
             ICashAccountQueryService queryService,
@@ -21,24 +21,24 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public async override Task<ValidationResult> Validate()
         {
             // Check that financier is known to the system
-            VerifyAgentIsFinancierRule agentValidator = new(SharedQueryService);
+            VerifyAgentIsFinancierRule agentRule = new(SharedQueryService);
 
-            // Check that stock subscription is known to the system
-            VerifyEventIsStockSubscriptionRule eventValidator = new(SharedQueryService);
+            // Check that dividend declaration is known to the system
+            VerifyEventIsDividendDeclarationRule eventRule = new(SharedQueryService);
 
-            // Ensure that stock subscription belongs to this investor
-            VerifyInvestorHasStockSubscriptionRule investorStockSubscriptionValidator = new(CashAccountQueryService);
+            // Ensure that dividend declaration belongs to this investor
+            VerifyInvestorHasDividendDeclarationRule investorDividendRule = new(CashAccountQueryService);
 
             // Verify that transaction date is after dividend declaration date.
             // Verify that transaction amount equals dividend per shares * shares issued
             // Verify that this deposit has not already been made
-            VerifyDetailsOfDepositOfStockIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
+            VerifyDetailsOfDisbursementForDividendPaymentRule miscDetailsRule = new(CashAccountQueryService);
 
-            agentValidator.SetNext(eventValidator);
-            eventValidator.SetNext(investorStockSubscriptionValidator);
-            investorStockSubscriptionValidator.SetNext(miscDetailsValidator);
+            agentRule.SetNext(eventRule);
+            eventRule.SetNext(investorDividendRule);
+            investorDividendRule.SetNext(miscDetailsRule);
 
-            return await agentValidator.Validate(CashAccountTransactionInfo);
+            return await agentRule.Validate(CashAccountTransactionInfo);
         }
     }
 }

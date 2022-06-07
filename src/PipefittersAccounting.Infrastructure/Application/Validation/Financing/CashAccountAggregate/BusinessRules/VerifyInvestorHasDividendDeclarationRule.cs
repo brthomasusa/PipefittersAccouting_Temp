@@ -8,25 +8,26 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules
 {
-    // Verify that a financier and a stock subscription are known to the system  
-    // and that the financier is associated with this particular stock subscription.
+    // Verify that a financier and a dividend declaration are known to the system  
+    // and that the financier is associated with this particular declaration and 
+    // should receive payment for it.
 
-    public class VerifyInvestorHasStockSubscriptionRule : BusinessRule<CashTransactionWriteModel>
+    public class VerifyInvestorHasDividendDeclarationRule : BusinessRule<CashTransactionWriteModel>
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
 
-        public VerifyInvestorHasStockSubscriptionRule(ICashAccountQueryService cashAcctQrySvc)
+        public VerifyInvestorHasDividendDeclarationRule(ICashAccountQueryService cashAcctQrySvc)
             => _cashAcctQrySvc = cashAcctQrySvc;
 
         public override async Task<ValidationResult> Validate(CashTransactionWriteModel transaction)
         {
             ValidationResult validationResult = new();
-
-            GetInvestorIdForStockSubscriptionParameter queryParameters =
-                new() { StockId = transaction.EventId };
+            // Task<OperationResult<Guid>> GetInvestorIdForDividendDeclaration(GetDividendDeclarationParameter queryParameters)
+            GetDividendDeclarationParameter queryParameters =
+                new() { DividendId = transaction.EventId };
 
             OperationResult<Guid> result =
-                await _cashAcctQrySvc.GetInvestorIdForStockSubscription(queryParameters);
+                await _cashAcctQrySvc.GetInvestorIdForDividendDeclaration(queryParameters);
 
             if (result.Success)
             {
@@ -41,10 +42,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    // The stock id and financier id have been validated.
-                    // So, to be here means the stock subscription is known to the
-                    // sytem but was not issued to this financier.
-                    string msg = "Invalid stock subscription <--> investor combo! The stock subscription was not issued to this investor";
+                    // The dividend id and financier id have been validated.
+                    // So, to be here means the dividend declaration is known to the
+                    // sytem but is not owed to this financier.
+                    string msg = "Invalid dividend declaration <--> investor combo! This dividend declaration is not owed to this investor";
                     validationResult.Messages.Add(msg);
                 }
 

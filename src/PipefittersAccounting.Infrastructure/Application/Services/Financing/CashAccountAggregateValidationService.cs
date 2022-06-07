@@ -47,15 +47,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         public virtual async Task<ValidationResult> IsValidCashDisbursementForLoanPayment(CashTransactionWriteModel transactionInfo)
             => await ValidateDisbursementForLoanPayment(transactionInfo);
 
-        public virtual Task<ValidationResult> IsValidCashDisbursementForDividendPayment(CashTransactionWriteModel transactionInfo)
-            => throw new NotImplementedException();
+        public async virtual Task<ValidationResult> IsValidCashDisbursementForDividendPayment(CashTransactionWriteModel transactionInfo)
+            => await ValidateDisbursementForDividendPayment(transactionInfo);
 
         public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transferInfo)
             => await CashAccountTransferValidator.Validate(transferInfo, _cashAcctQrySvc);
-
-
-
-
 
 
         // private stuff
@@ -74,6 +70,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing
         private async Task<ValidationResult> ValidateDisbursementForLoanPayment(CashTransactionWriteModel model)
         {
             DisbursementForLoanPaymentValidator validation = new(model, _cashAcctQrySvc, _sharedQrySvc);
+            return await validation.Validate();
+        }
+
+        private async Task<ValidationResult> ValidateDisbursementForDividendPayment(CashTransactionWriteModel model)
+        {
+            DisbursementForDividendPaymentValidator validation = new(model, _cashAcctQrySvc, _sharedQrySvc);
             return await validation.Validate();
         }
 

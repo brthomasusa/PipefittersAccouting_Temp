@@ -6,7 +6,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
 {
-    public class DisbursementForLoanPaymentValidator : CashAccountTransactionValidationBase
+    public class DisbursementForLoanPaymentValidator : CashAccountTransactionValidatorBase
     {
         public DisbursementForLoanPaymentValidator
         (

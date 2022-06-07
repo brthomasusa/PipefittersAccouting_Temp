@@ -27,7 +27,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         /*********************************************************************/
-        /*                   Cash account validators                      */
+        /*                   Cash account business rules                     */
         /*********************************************************************/
 
         [Fact]
@@ -189,8 +189,11 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(msg, validationResult.Messages[0]);
         }
 
+
+
+
         /*********************************************************************/
-        /*              Validation chains, not individual rules              */
+        /*                       Business rule chains                        */
         /*********************************************************************/
 
         [Fact]

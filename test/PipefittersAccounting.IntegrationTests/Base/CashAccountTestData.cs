@@ -176,6 +176,34 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoDividendPymt()
+            => new()
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                TransactionType = 5,
+                TransactionDate = new DateTime(2022, 6, 5),
+                TransactionAmount = 100.00M,
+                AgentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886"),
+                EventId = new Guid("ff0dc77f-7f80-426a-bc24-09d3c10a957f"),
+                CheckNumber = "22311",
+                RemittanceAdvice = "ABCDE",
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static CashTransactionWriteModel GetCreateCashAccountTransactionInfoDividendPymtPaid()
+            => new()
+            {
+                CashAccountId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589"),
+                TransactionType = 5,
+                TransactionDate = new DateTime(2022, 6, 5),
+                TransactionAmount = 100.00M,
+                AgentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886"),
+                EventId = new Guid("ef21754e-51fb-4721-a04b-281cdfa8e66b"),
+                CheckNumber = "22311",
+                RemittanceAdvice = "ABCDE",
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
         public static CashAccountWriteModel GetCreateCashAccountInfo()
             => new CashAccountWriteModel
             {
