@@ -93,7 +93,6 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public void DepositCash(CashTransaction deposit) => _cashTransactions.Add(deposit);
 
-
         public void DisburseCash(CashTransaction disbursement) => _cashTransactions.Add(disbursement);
 
         public void TransferCashIntoAccount(CashTransfer cashTransfer)

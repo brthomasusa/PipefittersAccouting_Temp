@@ -7,8 +7,12 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
 using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.FinancierAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.LoanAgreementAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.Infrastructure.Identity;
 using PipefittersAccounting.Infrastructure.Interfaces;

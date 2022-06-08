@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Xunit;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;

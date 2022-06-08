@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Xunit;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
 using PipefittersAccounting.Infrastructure.Interfaces;

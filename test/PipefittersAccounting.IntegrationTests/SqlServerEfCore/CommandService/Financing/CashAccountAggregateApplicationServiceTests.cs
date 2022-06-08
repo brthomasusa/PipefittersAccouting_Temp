@@ -5,8 +5,8 @@ using System;
 using Xunit;
 
 using PipefittersAccounting.Core.Interfaces.Financing;
-using PipefittersAccounting.Infrastructure.Application.Commands.Financing;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Commands.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;

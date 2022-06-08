@@ -4,7 +4,7 @@
 using System;
 using System.Threading.Tasks;
 using Xunit;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
