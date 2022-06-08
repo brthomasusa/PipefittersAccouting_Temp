@@ -201,6 +201,171 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         }
 
         [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_ShouldSucceed()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_InvalidInvestorId_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+            model.AgentId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_InvalidEvent_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+            model.EventId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_ExistingButWrongAgentId_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+            model.AgentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_InvalidTransactionDate_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+            model.TransactionDate = new DateTime(2022, 5, 26);
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_InvalidTransactionAmount_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+            model.TransactionAmount = 5700M;
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDepositForStockIssueProceedsCommand_ProceedsAlreadyRcvd_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfo_ProceedsAlreadyRcvd();
+
+            OperationResult<bool> result =
+                await CreateCashDepositForStockIssueProceedsCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_ShouldSucceed()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_InvalidAgentId_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+            model.AgentId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_InvalidEventId_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+            model.EventId = new Guid("12998229-7ede-4834-825a-0c55bde75695");
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_ExistingButWrongInvestor_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+            model.AgentId = new Guid("01da50f9-021b-4d03-853a-3fd2c95e207d");
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_InvalidTransactionDate_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+            model.TransactionDate = new DateTime(2022, 1, 2);
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_InvalidTransactionAmount_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+            model.TransactionAmount = 99.99M;
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async void Process_CreateCashDisbursementForDividendPaymentCommand_AlreadyPaid_ShouldFail()
+        {
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymtPaid();
+            model.TransactionAmount = 99.99M;
+
+            OperationResult<bool> result =
+                await CreateCashDisbursementForDividendPaymentCommand.Process(model, _repository, _validationService, _unitOfWork);
+
+            Assert.False(result.Success);
+        }
+
+        [Fact]
         public async void Process_CreateCashDisbursementForLoanPaymentCommand_ShouldSucceed()
         {
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();

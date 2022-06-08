@@ -18,7 +18,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
         )
             => (CashTransactionTypeEnum)model.TransactionType switch
             {
-                CashTransactionTypeEnum.CashDisbursementDividentPayment => throw new NotImplementedException(),
+                CashTransactionTypeEnum.CashDisbursementDividentPayment
+                    => await CreateCashDisbursementForDividendPaymentCommand.Process(model, repository, validationService, unitOfWork),
 
                 CashTransactionTypeEnum.CashDisbursementLoanPayment
                     => await CreateCashDisbursementForLoanPaymentCommand.Process(model, repository, validationService, unitOfWork),

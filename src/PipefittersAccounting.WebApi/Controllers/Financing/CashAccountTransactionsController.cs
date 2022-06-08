@@ -80,8 +80,8 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, result.Exception.Message);
         }
 
-        [HttpPost("cashtransaction/createdeposit/debtissueproceeds")]
-        public async Task<IActionResult> CreateDepositForDebtIssueProceeds([FromBody] CashTransactionWriteModel writeModel)
+        [HttpPost("cashtransaction/createdeposit")]
+        public async Task<IActionResult> CreateDeposit([FromBody] CashTransactionWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashDeposit(writeModel);
 
@@ -100,7 +100,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
                 }
                 else
                 {
-                    return StatusCode(201, "Create cash deposit for debt issue proceeds succeeded; unable to return newly created cash transaction.");
+                    return StatusCode(201, "Create cash deposit succeeded; unable to return newly created cash transaction.");
                 }
             }
 
@@ -114,8 +114,8 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, writeResult.Exception.Message);
         }
 
-        [HttpPost("cashtransaction/createdisbursement/loaninstallmentpayment")]
-        public async Task<IActionResult> CreateDisbursementForLoanInstallmentPayment([FromBody] CashTransactionWriteModel writeModel)
+        [HttpPost("cashtransaction/createdisbursement")]
+        public async Task<IActionResult> CreateDisbursement([FromBody] CashTransactionWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _appSvc.CreateCashDisbursement(writeModel);
 
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
                 }
                 else
                 {
-                    return StatusCode(201, "Create cash disbursement for loan installment payment succeeded; unable to return newly created cash transaction.");
+                    return StatusCode(201, "Create cash disbursement succeeded; unable to return newly created cash transaction.");
                 }
             }
 
@@ -167,6 +167,5 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             _logger.LogError(writeResult.Exception.Message);
             return StatusCode(500, writeResult.Exception.Message);
         }
-
     }
 }

@@ -125,7 +125,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
-                TransactionType = 2,
+                TransactionType = 3,
                 TransactionDate = new DateTime(2022, 5, 29),
                 TransactionAmount = 5985M,
                 AgentId = new Guid("12998229-7ede-4834-825a-0c55bde75695"),
@@ -139,7 +139,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             => new()
             {
                 CashAccountId = new Guid("6a7ed605-c02c-4ec8-89c4-eac6306c885e"),
-                TransactionType = 2,
+                TransactionType = 3,
                 TransactionDate = new DateTime(2022, 4, 4),
                 TransactionAmount = 15625M,
                 AgentId = new Guid("12998229-7ede-4834-825a-0c55bde75695"),

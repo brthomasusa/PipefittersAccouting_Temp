@@ -12,7 +12,7 @@ using PipefittersAccounting.SharedKernel;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
 {
-    public class CreateCashDepositForStockIssueProceedsCommand
+    public class CreateCashDisbursementForDividendPaymentCommand
     {
         public static async Task<OperationResult<bool>> Process
         (
@@ -28,9 +28,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
             {
                 CashAccount cashAccount = getCashAcct.Result;
 
-                if (cashAccount.CashAccountType == CashAccountTypeEnum.FinancingOperations)
+                if (cashAccount.CashAccountType == CashAccountTypeEnum.NonPayrollOperations)
                 {
-                    ValidationResult validationResult = await validationService.IsValidCashDepositOfStockIssueProceeds(model);
+                    ValidationResult validationResult = await validationService.IsValidCashDisbursementForDividendPayment(model);
 
                     if (validationResult.IsValid)
                     {
@@ -47,7 +47,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                             EntityGuidID.Create(model.UserId)
                         );
 
-                        cashAccount.DepositCash(transaction);
+                        cashAccount.DisburseCash(transaction);
                         await repository.UpdateCashAccountAsync(cashAccount);
                         await uow.Commit();
                         model.CashTransactionId = transaction.Id;
@@ -59,7 +59,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 }
                 else
                 {
-                    string errMsg = $"Create deposit failed! Deposit of stock issue proceeds can only be made into a financing account!";
+                    string errMsg = $"Create disbursement failed! Disbursement for a dividende payment can only be made from a primary checking account!";
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
             }

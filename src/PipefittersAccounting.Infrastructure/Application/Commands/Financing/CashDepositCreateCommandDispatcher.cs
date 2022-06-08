@@ -23,7 +23,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing
                 CashTransactionTypeEnum.CashReceiptDebtIssueProceeds =>
                     await CreateCashDepositForDebtIssueProceedsCommand.Process(model, repository, validationService, unitOfWork),
 
-                CashTransactionTypeEnum.CashReceiptStockIssueProceeds => throw new NotImplementedException(),
+                CashTransactionTypeEnum.CashReceiptStockIssueProceeds =>
+                    await CreateCashDepositForStockIssueProceedsCommand.Process(model, repository, validationService, unitOfWork),
 
                 _ => OperationResult<bool>.CreateFailure($"Unexpected deposit transaction type: {(CashTransactionTypeEnum)model.TransactionType}"),
             };

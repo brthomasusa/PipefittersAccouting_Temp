@@ -62,7 +62,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         [Fact]
         public async Task CreateDepositForDebtIssueProceeds_CashAccountTransactionsController_ShouldSucceed()
         {
-            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdeposit/debtissueproceeds";
+            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdeposit";
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionLoanProceedsInfo();
 
             var memStream = new MemoryStream();
@@ -90,9 +90,39 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         }
 
         [Fact]
+        public async Task CreateDepositForStockIssueProceeds_CashAccountTransactionsController_ShouldSucceed()
+        {
+            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdeposit";
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionStockIssueProceedsInfo();
+
+            var memStream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(memStream, model);
+            memStream.Seek(0, SeekOrigin.Begin);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            using (var requestContent = new StreamContent(memStream))
+            {
+                request.Content = requestContent;
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                using (var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonResponse = await response.Content.ReadAsStreamAsync();
+                    var cashTransaction = await JsonSerializer.DeserializeAsync<CashAccountTransactionDetail>(jsonResponse, _options);
+
+                    Assert.Equal(5985M, cashTransaction.CashAcctTransactionAmount);
+                }
+            }
+        }
+
+        [Fact]
         public async Task CreateDisbursementForLoanInstallmentPayment_CashAccountTransactionsController_ShouldSucceed()
         {
-            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdisbursement/loaninstallmentpayment";
+            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdisbursement";
             CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoLoanPymt();
 
             var memStream = new MemoryStream();
@@ -115,6 +145,36 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                     var cashTransaction = await JsonSerializer.DeserializeAsync<CashAccountTransactionDetail>(jsonResponse, _options);
 
                     Assert.Equal(1370.54M, cashTransaction.CashAcctTransactionAmount);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task CreateDisbursementForDividendPayment_CashAccountTransactionsController_ShouldSucceed()
+        {
+            string uri = $"{_urlRoot}/cashaccounts/cashtransaction/createdisbursement";
+            CashTransactionWriteModel model = CashAccountTestData.GetCreateCashAccountTransactionInfoDividendPymt();
+
+            var memStream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(memStream, model);
+            memStream.Seek(0, SeekOrigin.Begin);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            using (var requestContent = new StreamContent(memStream))
+            {
+                request.Content = requestContent;
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                using (var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    var jsonResponse = await response.Content.ReadAsStreamAsync();
+                    var cashTransaction = await JsonSerializer.DeserializeAsync<CashAccountTransactionDetail>(jsonResponse, _options);
+
+                    Assert.Equal(100.00M, cashTransaction.CashAcctTransactionAmount);
                 }
             }
         }
