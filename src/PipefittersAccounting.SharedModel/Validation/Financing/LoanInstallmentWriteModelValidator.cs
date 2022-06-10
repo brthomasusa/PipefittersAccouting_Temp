@@ -3,7 +3,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.SharedModel.Validation.Financing
 {
-    public class LoanInstallmentWriteModelValidator : AbstractValidator<CreateLoanInstallmentInfo>
+    public class LoanInstallmentWriteModelValidator : AbstractValidator<LoanInstallmentWriteModel>
     {
         public LoanInstallmentWriteModelValidator()
         {
@@ -50,7 +50,7 @@ namespace PipefittersAccounting.SharedModel.Validation.Financing
                                                .WithMessage("Principal + interest must equal EMI.");
         }
 
-        private bool ValidPrincipalInterestEMI(CreateLoanInstallmentInfo installmentInfo)
+        private bool ValidPrincipalInterestEMI(LoanInstallmentWriteModel installmentInfo)
         {
             if (installmentInfo.EqualMonthlyInstallment != (installmentInfo.LoanInterestAmount + installmentInfo.LoanPrincipalAmount))
                 return false;

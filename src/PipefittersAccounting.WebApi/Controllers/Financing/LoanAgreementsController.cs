@@ -74,7 +74,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateLoanAgreement([FromBody] CreateLoanAgreementInfo writeModel)
+        public async Task<IActionResult> CreateLoanAgreement([FromBody] LoanAgreementWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.CreateLoanAgreement(writeModel);
             if (writeResult.Success)

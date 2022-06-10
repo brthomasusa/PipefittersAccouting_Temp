@@ -4,7 +4,7 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 {
-    public class CreateLoanAgreementInfo : IWriteModel
+    public class LoanAgreementWriteModel : IWriteModel
     {
         public Guid LoanId { get; set; }
 
@@ -20,7 +20,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 
         public int NumberOfInstallments { get; set; }
 
-        public List<CreateLoanInstallmentInfo> AmortizationSchedule { get; set; }
+        public List<LoanInstallmentWriteModel> AmortizationSchedule { get; set; }
 
         public Guid UserId { get; set; }
     }
@@ -32,7 +32,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public Guid UserId { get; set; }
     }
 
-    public class CreateLoanInstallmentInfo : IWriteModel
+    public class LoanInstallmentWriteModel : IWriteModel
     {
         public Guid LoanInstallmentId { get; set; }
         public Guid LoanId { get; set; }

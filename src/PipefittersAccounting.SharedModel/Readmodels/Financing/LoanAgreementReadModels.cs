@@ -32,6 +32,19 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal LoanProceedsAmount { get; set; }
     }
 
+    public class LoanInstallmentDetail
+    {
+        public Guid LoanInstallmentId { get; set; }
+        public Guid LoanId { get; set; }
+        public int InstallmentNumber { get; set; }
+        public DateTime PaymentDueDate { get; set; }
+        public decimal EqualMonthlyInstallment { get; set; }
+        public decimal LoanPrincipalAmount { get; set; }
+        public decimal LoanInterestAmount { get; set; }
+        public decimal LoanPrincipalRemaining { get; set; }
+        public Guid UserId { get; set; }
+    }
+
     public class LoanInstallmentListItem
     {
         public Guid LoanInstallmentId { get; set; }

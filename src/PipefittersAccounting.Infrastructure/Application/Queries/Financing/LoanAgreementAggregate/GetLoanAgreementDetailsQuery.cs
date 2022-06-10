@@ -35,12 +35,39 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
                         return OperationResult<LoanAgreementDetail>.CreateFailure(msg);
                     }
 
-                    return OperationResult<LoanAgreementDetail>.CreateSuccessResult(detail);
+                    OperationResult<List<LoanInstallmentListItem>> getInstallmentsResult = await GetLoanInstallments(queryParameters, ctx);
+
+                    if (getInstallmentsResult.Success)
+                    {
+                        detail.LoanInstallmentListItems = getInstallmentsResult.Result;
+                        return OperationResult<LoanAgreementDetail>.CreateSuccessResult(detail);
+                    }
+                    else
+                    {
+                        return OperationResult<LoanAgreementDetail>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 return OperationResult<LoanAgreementDetail>.CreateFailure(ex.Message);
+            }
+        }
+
+        private async static Task<OperationResult<List<LoanInstallmentListItem>>> GetLoanInstallments(GetLoanAgreement queryParameters, DapperContext ctx)
+        {
+            GetLoanAgreementInstallments installmentParams = new() { LoanId = queryParameters.LoanId };
+
+            OperationResult<List<LoanInstallmentListItem>> getInstallmentsResult =
+                await GetLoanInstallmentListItemQuery.Query(installmentParams, ctx);
+
+            if (getInstallmentsResult.Success)
+            {
+                return getInstallmentsResult;
+            }
+            else
+            {
+                return OperationResult<List<LoanInstallmentListItem>>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
             }
         }
     }

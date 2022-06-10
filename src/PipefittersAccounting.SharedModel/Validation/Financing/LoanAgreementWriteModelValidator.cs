@@ -3,7 +3,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.SharedModel.Validation.Financing
 {
-    public class LoanAgreementWriteModelValidator : AbstractValidator<CreateLoanAgreementInfo>
+    public class LoanAgreementWriteModelValidator : AbstractValidator<LoanAgreementWriteModel>
     {
         public LoanAgreementWriteModelValidator()
         {
@@ -52,7 +52,7 @@ namespace PipefittersAccounting.SharedModel.Validation.Financing
                                                                 .WithMessage(errMsg);
         }
 
-        private bool ValidAmortizationSchedule(CreateLoanAgreementInfo agreementInfo, List<CreateLoanInstallmentInfo> schedule)
+        private bool ValidAmortizationSchedule(LoanAgreementWriteModel agreementInfo, List<LoanInstallmentWriteModel> schedule)
         {
             if (agreementInfo.NumberOfInstallments != schedule.Count)
                 return false;

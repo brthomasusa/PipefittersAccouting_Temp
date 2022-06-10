@@ -10,7 +10,7 @@ namespace PipefittersAccounting.UnitTests.Financing
 {
     public class LoanAgreementTestData
     {
-        public static CreateLoanInstallmentInfo GetLoanInstallmentInfo()
+        public static LoanInstallmentWriteModel GetLoanInstallmentInfo()
             => new()
             {
                 LoanInstallmentId = Guid.NewGuid(),
@@ -24,8 +24,8 @@ namespace PipefittersAccounting.UnitTests.Financing
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static CreateLoanAgreementInfo GetCreateLoanAgreementInfo() =>
-            new CreateLoanAgreementInfo
+        public static LoanAgreementWriteModel GetCreateLoanAgreementInfo() =>
+            new LoanAgreementWriteModel
             {
                 LoanId = new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"),
                 FinancierId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
@@ -52,13 +52,13 @@ namespace PipefittersAccounting.UnitTests.Financing
                 GetInstallments12MonthsOfValidInfo()
             );
 
-        public static List<CreateLoanInstallmentInfo> GetCreateLoanInstallmentInfo12MonthsOfValidInfo()
+        public static List<LoanInstallmentWriteModel> GetCreateLoanInstallmentInfo12MonthsOfValidInfo()
         {
-            List<CreateLoanInstallmentInfo> pymtSchedule = new();
+            List<LoanInstallmentWriteModel> pymtSchedule = new();
 
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -73,7 +73,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -88,7 +88,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -103,7 +103,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -118,7 +118,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -133,7 +133,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -148,7 +148,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -163,7 +163,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -178,7 +178,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -193,7 +193,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -208,7 +208,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),
@@ -223,7 +223,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             );
             pymtSchedule.Add
             (
-                new CreateLoanInstallmentInfo
+                new LoanInstallmentWriteModel
                 {
                     LoanInstallmentId = Guid.NewGuid(),
                     LoanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1"),

@@ -31,7 +31,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         [Fact]
         public async Task Create_LoanAgreement_WithValidInfo_ShouldSucceed()
         {
-            CreateLoanAgreementInfo model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
 
             OperationResult<bool> result = await _cmdService.CreateLoanAgreement(model);
             Assert.True(result.Success);

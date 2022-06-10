@@ -14,28 +14,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
         public LoanAgreementQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
         public async Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
-        {
-            OperationResult<LoanAgreementDetail> detail = await GetLoanAgreementDetailsQuery.Query(queryParameters, _dapperCtx);
-
-            if (detail.Success)
-            {
-                GetLoanAgreementInstallments installmentParams = new GetLoanAgreementInstallments { LoanId = queryParameters.LoanId };
-                OperationResult<List<LoanInstallmentListItem>> installments = await GetLoanInstallmentListItemQuery.Query(installmentParams, _dapperCtx);
-
-                if (installments.Success)
-                {
-                    detail.Result.LoanInstallmentListItems = installments.Result;
-                }
-                else
-                {
-                    return OperationResult<LoanAgreementDetail>.CreateFailure(installments.NonSuccessMessage);
-                }
-            }
-
-            return detail;
-        }
+            => await GetLoanAgreementDetailsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters)
             => await GetLoanAgreementListItemQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> GetLoanIdOfDuplicationLoanAgreement(GetDuplicateLoanAgreement queryParameters)
+            => await GetLoanIdOfDuplicationLoanAgreementQuery.Query(queryParameters, _dapperCtx);
     }
 }

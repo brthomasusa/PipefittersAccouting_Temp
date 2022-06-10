@@ -12,7 +12,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
     {
         public static async Task<OperationResult<bool>> Execute
         (
-            CreateLoanAgreementInfo model,
+            LoanAgreementWriteModel model,
             ILoanAgreementAggregateRepository repo,
             IUnitOfWork unitOfWork
         )
@@ -55,7 +55,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
             }
         }
 
-        private static List<LoanInstallment> ConvertToLoanInstallmentList(List<CreateLoanInstallmentInfo> models)
+        private static List<LoanInstallment> ConvertToLoanInstallmentList(List<LoanInstallmentWriteModel> models)
         {
             List<LoanInstallment> installments = new();
 

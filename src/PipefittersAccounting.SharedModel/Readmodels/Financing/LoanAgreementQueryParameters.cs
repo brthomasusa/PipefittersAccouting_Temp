@@ -16,5 +16,18 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public Guid LoanId { get; set; }
     }
 
+    public class GetDuplicateLoanAgreement
+    {
+        public Guid FinancierId { get; set; }
+
+        public decimal LoanAmount { get; set; }
+
+        public decimal InterestRate { get; set; }
+
+        public DateTime LoanDate { get; set; }
+
+        public DateTime MaturityDate { get; set; }
+    }
+
     public class GetLoanAgreementLookup { }
 }

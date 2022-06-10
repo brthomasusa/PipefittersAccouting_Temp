@@ -61,7 +61,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateLoanAgreement_LoanAgreementsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/loanagreements/create";
-            CreateLoanAgreementInfo model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

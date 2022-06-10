@@ -18,7 +18,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult<bool>> CreateLoanAgreement(CreateLoanAgreementInfo writeModel)
+        public async Task<OperationResult<bool>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
             => await LoanAgreementCreateCommand.Execute(writeModel, _repo, _unitOfWork);
 
         public async Task<OperationResult<bool>> DeleteLoanAgreement(DeleteLoanAgreementInfo writeModel)
