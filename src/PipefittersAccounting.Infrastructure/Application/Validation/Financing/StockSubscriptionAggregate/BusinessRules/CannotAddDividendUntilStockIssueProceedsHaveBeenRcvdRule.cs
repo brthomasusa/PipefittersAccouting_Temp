@@ -6,22 +6,22 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate.BusinessRules
 {
-    public class CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule : BusinessRule<StockSubscriptionWriteModel>
+    public class CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule : BusinessRule<DividendDeclarationWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public CannotEditDeleteIfStockIssueProceedsHaveBeenRcvdRule(IStockSubscriptionQueryService cashAcctQrySvc)
-            => _qrySvc = cashAcctQrySvc;
+        public CannotAddDividendUntilStockIssueProceedsHaveBeenRcvdRule(IStockSubscriptionQueryService qrySvc)
+            => _qrySvc = qrySvc;
 
-        public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
+        public override async Task<ValidationResult> Validate(DividendDeclarationWriteModel dividendInfo)
         {
             ValidationResult validationResult = new();
             GetStockSubscriptionParameter queryParameters =
                 new()
                 {
-                    StockId = subscriptionInfo.StockId
+                    StockId = dividendInfo.StockId
                 };
 
             OperationResult<VerificationOfCashDepositStockIssueProceeds> result =
@@ -29,13 +29,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
 
             if (result.Success)
             {
-                if (result.Result.AmountReceived == 0)
+                if (result.Result.AmountReceived > 0)
                 {
                     validationResult.IsValid = true;
 
                     if (Next is not null)
                     {
-                        validationResult = await Next.Validate(subscriptionInfo);
+                        validationResult = await Next.Validate(dividendInfo);
                     }
                 }
                 else

@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using Xunit;
 
 using PipefittersAccounting.Infrastructure.Application.Commands.Financing.StockSubscriptionAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
@@ -24,7 +26,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         {
             IStockSubscriptionQueryService queryService = new StockSubscriptionQueryService(_dapperCtx);
             _repository = new StockSubscriptionAggregateRepository(_dbContext);
-            _validationService = new StockSubscriptionValidationService(queryService);
+            IQueryServicesRegistry registry = new QueryServicesRegistry();
+            _validationService = new StockSubscriptionValidationService(queryService, registry);
             _unitOfWork = new AppUnitOfWork(_dbContext);
         }
 

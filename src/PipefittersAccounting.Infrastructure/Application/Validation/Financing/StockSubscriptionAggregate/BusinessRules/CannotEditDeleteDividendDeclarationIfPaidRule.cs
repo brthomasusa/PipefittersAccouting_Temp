@@ -4,7 +4,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate.BusinessRules
 {
     public class CannotEditDeleteDividendDeclarationIfPaidRule : BusinessRule<DividendDeclarationWriteModel>
     {

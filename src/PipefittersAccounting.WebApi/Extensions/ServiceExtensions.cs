@@ -7,6 +7,7 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Commands.Identity;
 using PipefittersAccounting.Infrastructure.Application.EventHandlers.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.FinancierAggregate;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.LoanAgreementAggregate;
@@ -26,9 +27,6 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.WebApi.Interfaces.HumanResources;
 using PipefittersAccounting.WebApi.Controllers.QueryHandlers;
-
-
-
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -92,7 +90,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services
                 .AddScoped<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>()
-                .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>();
+                .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>()
+                .AddScoped<IQueryServicesRegistry, QueryServicesRegistry>();
         }
 
         public static IServiceCollection ConfigureCors(this IServiceCollection services) =>

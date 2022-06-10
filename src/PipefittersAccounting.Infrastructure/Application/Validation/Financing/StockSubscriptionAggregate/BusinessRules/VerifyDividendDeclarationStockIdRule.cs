@@ -6,26 +6,26 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate.BusinessRules
 {
-    public class VerifyInvestorIdentificationRule : BusinessRule<StockSubscriptionWriteModel>
+    public class VerifyDividendDeclarationStockIdRule : BusinessRule<DividendDeclarationWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyInvestorIdentificationRule(IStockSubscriptionQueryService qrySvc)
+        public VerifyDividendDeclarationStockIdRule(IStockSubscriptionQueryService qrySvc)
             => _qrySvc = qrySvc;
 
-        public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
+        public override async Task<ValidationResult> Validate(DividendDeclarationWriteModel subscriptionInfo)
         {
             ValidationResult validationResult = new();
-            GetInvestorIdentificationParameter queryParameters =
+            GetStockSubscriptionParameter queryParameters =
                 new()
                 {
-                    FinancierId = subscriptionInfo.FinancierId
+                    StockId = subscriptionInfo.StockId
                 };
 
             OperationResult<Guid> result =
-                await _qrySvc.VerifyInvestorIdentification(queryParameters);
+                await _qrySvc.VerifyStockSubscriptionIdentification(queryParameters);
 
             if (result.Success)
             {
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"Validation failed: '{subscriptionInfo.FinancierId}' is not a valid investor identifier.";
+                    string msg = $"Validation failed: '{subscriptionInfo.StockId}' is not a valid stock subscription identifier.";
                     validationResult.Messages.Add(msg);
                 }
             }

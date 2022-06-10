@@ -6,26 +6,26 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate.BusinessRules
 {
-    public class VerifyStockSubscriptionStockIdRule : BusinessRule<StockSubscriptionWriteModel>
+    public class VerifyInvestorIdentificationRule : BusinessRule<StockSubscriptionWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyStockSubscriptionStockIdRule(IStockSubscriptionQueryService qrySvc)
+        public VerifyInvestorIdentificationRule(IStockSubscriptionQueryService qrySvc)
             => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
         {
             ValidationResult validationResult = new();
-            GetStockSubscriptionParameter queryParameters =
+            GetInvestorIdentificationParameter queryParameters =
                 new()
                 {
-                    StockId = subscriptionInfo.StockId
+                    FinancierId = subscriptionInfo.FinancierId
                 };
 
             OperationResult<Guid> result =
-                await _qrySvc.VerifyStockSubscriptionIdentification(queryParameters);
+                await _qrySvc.VerifyInvestorIdentification(queryParameters);
 
             if (result.Success)
             {
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 }
                 else
                 {
-                    string msg = $"Validation failed: '{subscriptionInfo.StockId}' is not a valid stock subscription identifier.";
+                    string msg = $"Validation failed: '{subscriptionInfo.FinancierId}' is not a valid investor identifier.";
                     validationResult.Messages.Add(msg);
                 }
             }

@@ -1,4 +1,5 @@
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -8,25 +9,54 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
     public class StockSubscriptionValidationService : IStockSubscriptionValidationService
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
+        private IQueryServicesRegistry _servicesRegistry;
 
-        public StockSubscriptionValidationService(IStockSubscriptionQueryService qrySvc)
-            => _qrySvc = qrySvc;
+        public StockSubscriptionValidationService
+        (
+            IStockSubscriptionQueryService qrySvc,
+            IQueryServicesRegistry servicesRegistry
+        )
+        {
+            _qrySvc = qrySvc;
+            _servicesRegistry = servicesRegistry;
+
+            _servicesRegistry.RegisterService("StockSubscriptionQueryService", qrySvc);
+        }
 
         public async Task<ValidationResult> IsValidCreateStockSubscriptionInfo(StockSubscriptionWriteModel writeModel)
-            => await CreateStockSubscriptionValidation.Validate(writeModel, _qrySvc);
+        {
+            CreateStockSubscriptionValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
 
         public async Task<ValidationResult> IsValidEditStockSubscriptionInfo(StockSubscriptionWriteModel writeModel)
-            => await EditStockSubscriptionValidation.Validate(writeModel, _qrySvc);
+        {
+            EditStockSubscriptionValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
 
         public async Task<ValidationResult> IsValidDeleteStockSubscriptionInfo(StockSubscriptionWriteModel writeModel)
-            => await DeleteStockSubscriptionValidation.Validate(writeModel, _qrySvc);
+        {
+            DeleteStockSubscriptionValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
 
         public async Task<ValidationResult> IsValidCreateDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
-            => await CreateDividendDeclarationValidation.Validate(writeModel, _qrySvc);
+        {
+            CreateDividendDeclarationValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
 
         public async Task<ValidationResult> IsValidEditDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
-            => await EditDividendDeclarationValidation.Validate(writeModel, _qrySvc);
+        {
+            EditDividendDeclarationValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
+
         public async Task<ValidationResult> IsValidDeleteDividendDeclarationInfo(DividendDeclarationWriteModel writeModel)
-            => await EditDividendDeclarationValidation.Validate(writeModel, _qrySvc);
+        {
+            EditDividendDeclarationValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
     }
 }

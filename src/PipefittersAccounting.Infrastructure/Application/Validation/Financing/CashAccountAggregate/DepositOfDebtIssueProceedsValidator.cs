@@ -30,24 +30,24 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         public async override Task<ValidationResult> Validate()
         {
             // Check that financier is known to the system
-            VerifyAgentIsFinancierRule agentValidator = new(SharedQueryService);
+            VerifyAgentIsFinancierRule agentRule = new(SharedQueryService);
 
             // Check that loan agreement is known to the system
-            VerifyEventIsLoanAgreementRule eventValidator = new(SharedQueryService);
+            VerifyEventIsLoanAgreementRule eventRule = new(SharedQueryService);
 
             // Ensure that loan agreement belongs to this financier
-            VerifyCreditorHasLoanAgreementRule loanAgreementIssuedByFinancierValidator = new(CashAccountQueryService);
+            VerifyCreditorHasLoanAgreementRule loanAgreementIssuedByFinancierRule = new(CashAccountQueryService);
 
             // Verify that transaction date is between loan date and maturity
             // Verify that transaction amount equals loan agreement amount
             // Verify that this deposit has not already been made
-            VerifyDetailsOfDepositOfDebtIssueProceedsRule miscDetailsValidator = new(CashAccountQueryService);
+            VerifyDetailsOfDepositOfDebtIssueProceedsRule miscDetailsRule = new(CashAccountQueryService);
 
-            agentValidator.SetNext(eventValidator);
-            eventValidator.SetNext(loanAgreementIssuedByFinancierValidator);
-            loanAgreementIssuedByFinancierValidator.SetNext(miscDetailsValidator);
+            agentRule.SetNext(eventRule);
+            eventRule.SetNext(loanAgreementIssuedByFinancierRule);
+            loanAgreementIssuedByFinancierRule.SetNext(miscDetailsRule);
 
-            return await agentValidator.Validate(CashAccountTransactionInfo);
+            return await agentRule.Validate(CashAccountTransactionInfo);
         }
     }
 }

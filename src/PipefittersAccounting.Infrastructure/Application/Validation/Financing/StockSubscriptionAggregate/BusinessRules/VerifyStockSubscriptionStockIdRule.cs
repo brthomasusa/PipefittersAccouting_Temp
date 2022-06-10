@@ -6,16 +6,16 @@ using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate
+namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.StockSubscriptionAggregate.BusinessRules
 {
-    public class VerifyDividendDeclarationStockIdRule : BusinessRule<DividendDeclarationWriteModel>
+    public class VerifyStockSubscriptionStockIdRule : BusinessRule<StockSubscriptionWriteModel>
     {
         private readonly IStockSubscriptionQueryService _qrySvc;
 
-        public VerifyDividendDeclarationStockIdRule(IStockSubscriptionQueryService qrySvc)
+        public VerifyStockSubscriptionStockIdRule(IStockSubscriptionQueryService qrySvc)
             => _qrySvc = qrySvc;
 
-        public override async Task<ValidationResult> Validate(DividendDeclarationWriteModel subscriptionInfo)
+        public override async Task<ValidationResult> Validate(StockSubscriptionWriteModel subscriptionInfo)
         {
             ValidationResult validationResult = new();
             GetStockSubscriptionParameter queryParameters =

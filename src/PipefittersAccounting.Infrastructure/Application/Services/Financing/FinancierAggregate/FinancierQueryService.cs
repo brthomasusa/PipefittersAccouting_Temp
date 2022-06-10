@@ -14,7 +14,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Fi
         public FinancierQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
         public async Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
-            => await GetFinancierDetailsQuery.Query(queryParameters, _dapperCtx);
+        {
+            return await GetFinancierDetailsQuery.Query(queryParameters, _dapperCtx);
+        }
 
         public async Task<OperationResult<PagedList<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters)
             => await GetFinancierListItemsQuery.Query(queryParameters, _dapperCtx);
