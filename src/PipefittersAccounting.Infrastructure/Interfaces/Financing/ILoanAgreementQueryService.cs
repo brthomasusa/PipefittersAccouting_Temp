@@ -9,5 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters);
         Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters);
         Task<OperationResult<Guid>> GetLoanIdOfDuplicationLoanAgreement(GetDuplicateLoanAgreement queryParameters);
+        Task<OperationResult<decimal>> VerifyCashDepositForDebtIssueProceeds(ReceiptLoanProceedsValidationParams queryParameters);
+        Task<OperationResult<Guid>> VerifyCreditorIsLinkedToLoanAgreement(ReceiptLoanProceedsValidationParams queryParameters);
     }
 }

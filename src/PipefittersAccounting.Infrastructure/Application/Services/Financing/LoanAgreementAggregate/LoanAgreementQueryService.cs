@@ -21,5 +21,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
 
         public async Task<OperationResult<Guid>> GetLoanIdOfDuplicationLoanAgreement(GetDuplicateLoanAgreement queryParameters)
             => await GetLoanIdOfDuplicationLoanAgreementQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<decimal>> VerifyCashDepositForDebtIssueProceeds(ReceiptLoanProceedsValidationParams queryParameters)
+            => await VerifyCashDepositForDebtIssueProceedsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> VerifyCreditorIsLinkedToLoanAgreement(ReceiptLoanProceedsValidationParams queryParameters)
+            => await VerifyCreditorIsLinkedToLoanAgreementQuery.Query(queryParameters, _dapperCtx);
     }
 }

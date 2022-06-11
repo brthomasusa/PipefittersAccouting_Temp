@@ -7,9 +7,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.LoanAgreementAggregate
 {
-    public class CreateLoanAgreementValidator : ValidatorBase<LoanAgreementWriteModel, IQueryServicesRegistry>
+    public class EditLoanAgreementValidator : ValidatorBase<LoanAgreementWriteModel, IQueryServicesRegistry>
     {
-        public CreateLoanAgreementValidator
+        public EditLoanAgreementValidator
         (
             LoanAgreementWriteModel writeModel,
             IQueryServicesRegistry queryServicesRegistry
@@ -28,9 +28,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
                 = QueryServicesRegistry.GetService<SharedQueryService>("SharedQueryService");
 
             VerifyAgentIsFinancierRule verifyCreditor = new(sharedQueryService);
-            VerifyLoanAgreementIsNotDuplicateRule verifyNotDuplicateRule = new(loanAgreementQueryService);
+            VerifyEventIsLoanAgreementRule verifyEventIsLoanAgreement = new(sharedQueryService);
+            VerifyCreditorIsLinkedToLoanAgreementRule verifyCreditorLinkToAgreement = new(loanAgreementQueryService);
+            VerifyLoanProceedsNotReceivedRule verifyDepositOfLoanProceeds = new(loanAgreementQueryService);
 
-            verifyCreditor.SetNext(verifyNotDuplicateRule);
+            verifyCreditor.SetNext(verifyEventIsLoanAgreement);
+            verifyEventIsLoanAgreement.SetNext(verifyCreditorLinkToAgreement);
+            verifyCreditorLinkToAgreement.SetNext(verifyDepositOfLoanProceeds);
 
             return await verifyCreditor.Validate(WriteModel);
         }

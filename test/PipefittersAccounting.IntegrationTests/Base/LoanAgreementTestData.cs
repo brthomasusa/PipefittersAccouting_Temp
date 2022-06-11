@@ -51,6 +51,32 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 AmortizationSchedule = GetCreateLoanInstallmentInfo12MonthsOfValidInfo()
             };
 
+        public static LoanAgreementWriteModel GetEditLoanAgreementInfoWithOutDeposit() =>
+            new LoanAgreementWriteModel
+            {
+                LoanId = new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867"),
+                FinancierId = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
+                LoanAmount = 4000M,
+                InterestRate = .0250M,
+                LoanDate = new DateTime(2022, 4, 15),
+                MaturityDate = new DateTime(2023, 4, 15),
+                NumberOfInstallments = 4,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+        public static LoanAgreementWriteModel GetEditLoanAgreementInfoWithDeposit() =>
+            new LoanAgreementWriteModel
+            {
+                LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f"),
+                FinancierId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"),
+                LoanAmount = 30000M,
+                InterestRate = .0863M,
+                LoanDate = new DateTime(2022, 2, 2),
+                MaturityDate = new DateTime(2023, 2, 2),
+                NumberOfInstallments = 24,
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
         public static List<LoanInstallment> GetInstallments12MonthsOfValidInfo()
         {
             List<LoanInstallment> pymtSchedule = new();
