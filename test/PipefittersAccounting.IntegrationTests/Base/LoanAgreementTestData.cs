@@ -61,6 +61,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 LoanDate = new DateTime(2022, 4, 15),
                 MaturityDate = new DateTime(2023, 4, 15),
                 NumberOfInstallments = 4,
+                AmortizationSchedule = new List<LoanInstallmentWriteModel>(),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
@@ -74,6 +75,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 LoanDate = new DateTime(2022, 2, 2),
                 MaturityDate = new DateTime(2023, 2, 2),
                 NumberOfInstallments = 24,
+                AmortizationSchedule = new List<LoanInstallmentWriteModel>(),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 

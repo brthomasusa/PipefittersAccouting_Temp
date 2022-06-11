@@ -109,6 +109,8 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                 using (var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
                     response.EnsureSuccessStatusCode();
+
+                    var jsonResponse = await response.Content.ReadAsStreamAsync();
                 }
             }
         }

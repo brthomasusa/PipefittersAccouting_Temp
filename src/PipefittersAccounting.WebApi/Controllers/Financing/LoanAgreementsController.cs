@@ -121,6 +121,5 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             _logger.LogError(writeResult.Exception.Message);
             return StatusCode(500, writeResult.Exception.Message);
         }
-
     }
 }
