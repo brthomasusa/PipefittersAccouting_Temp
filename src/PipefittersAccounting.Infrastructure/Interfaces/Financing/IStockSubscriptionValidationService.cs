@@ -1,5 +1,3 @@
-using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;
-using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 

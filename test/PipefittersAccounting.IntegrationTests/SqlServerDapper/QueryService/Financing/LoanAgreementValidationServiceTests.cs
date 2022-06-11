@@ -181,7 +181,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task Validate_EditLoanAgreementValidator_ShouldSucceed()
         {
             LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
-            EditLoanAgreementValidator validator = new(model, _registry);
+            DeleteLoanAgreementValidator validator = new(model, _registry);
 
             ValidationResult validationResult = await validator.Validate();
 
@@ -194,7 +194,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
             model.FinancierId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
-            EditLoanAgreementValidator validator = new(model, _registry);
+            DeleteLoanAgreementValidator validator = new(model, _registry);
 
             ValidationResult validationResult = await validator.Validate();
 
@@ -207,7 +207,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
             model.LoanId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
-            EditLoanAgreementValidator validator = new(model, _registry);
+            DeleteLoanAgreementValidator validator = new(model, _registry);
 
             ValidationResult validationResult = await validator.Validate();
 
@@ -220,7 +220,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
             model.LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
-            EditLoanAgreementValidator validator = new(model, _registry);
+            DeleteLoanAgreementValidator validator = new(model, _registry);
 
             ValidationResult validationResult = await validator.Validate();
 
@@ -232,7 +232,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         {
             LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithDeposit();
 
-            EditLoanAgreementValidator validator = new(model, _registry);
+            DeleteLoanAgreementValidator validator = new(model, _registry);
 
             ValidationResult validationResult = await validator.Validate();
 

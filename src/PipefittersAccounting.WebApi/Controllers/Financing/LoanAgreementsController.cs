@@ -103,7 +103,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteLoanAgreement([FromBody] DeleteLoanAgreementInfo writeModel)
+        public async Task<IActionResult> DeleteLoanAgreement([FromBody] LoanAgreementWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.DeleteLoanAgreement(writeModel);
 

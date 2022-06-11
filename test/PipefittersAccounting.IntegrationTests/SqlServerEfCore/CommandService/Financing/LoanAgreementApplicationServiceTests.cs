@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Application.Services;
+using PipefittersAccounting.Infrastructure.Application.Services.Shared;
+using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
@@ -18,44 +21,100 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
     [Trait("Integration", "EfCoreCmdSvc")]
     public class LoanAgreementApplicationServiceTests : TestBaseEfCore
     {
-        private readonly AppUnitOfWork _unitOfWork;
-        private readonly ILoanAgreementAggregateRepository _repository;
         private readonly ILoanAgreementApplicationService _cmdService;
+
         public LoanAgreementApplicationServiceTests()
         {
-            _unitOfWork = new AppUnitOfWork(_dbContext);
-            _repository = new LoanAgreementAggregateRepository(_dbContext);
-            _cmdService = new LoanAgreementApplicationService(_repository, _unitOfWork);
+            ILoanAgreementQueryService loanAgreementQrySvc = new LoanAgreementQueryService(_dapperCtx);
+            ISharedQueryService sharedQueryService = new SharedQueryService(_dapperCtx);
+            IQueryServicesRegistry servicesRegistry = new QueryServicesRegistry();
+            ILoanAgreementValidationService validationService =
+                new LoanAgreementValidationService(loanAgreementQrySvc, sharedQueryService, servicesRegistry);
+
+            AppUnitOfWork unitOfWork = new AppUnitOfWork(_dbContext);
+            ILoanAgreementAggregateRepository repository = new LoanAgreementAggregateRepository(_dbContext);
+            _cmdService = new LoanAgreementApplicationService(validationService, repository, unitOfWork);
         }
 
         [Fact]
-        public async Task Create_LoanAgreement_WithValidInfo_ShouldSucceed()
+        public async Task CreateLoanAgreement_LoanAgreementApplicationService_ShouldReturnTrue()
         {
             LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
 
             OperationResult<bool> result = await _cmdService.CreateLoanAgreement(model);
             Assert.True(result.Success);
-
-            var agreement = await _repository.GetByIdAsync(model.LoanId);
-
-            Assert.NotNull(agreement);
         }
 
         [Fact]
-        public async Task Delete_LoanAgreement_WithValidInfo_ShouldSucceed()
+        public async Task CreateLoanAgreement_LoanAgreementApplicationService_InvalidCreditor_ShouldReturnFalse()
         {
-            DeleteLoanAgreementInfo model = new DeleteLoanAgreementInfo
-            {
-                LoanId = new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867"),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
+            model.FinancierId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
+
+            OperationResult<bool> result = await _cmdService.CreateLoanAgreement(model);
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task CreateLoanAgreement_LoanAgreementApplicationService_Duplicate_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
+            model.FinancierId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601");
+            model.LoanAmount = 30000M;
+            model.InterestRate = 0.0863M;
+            model.LoanDate = new DateTime(2022, 2, 2);
+            model.MaturityDate = new DateTime(2024, 2, 2);
+
+            OperationResult<bool> result = await _cmdService.CreateLoanAgreement(model);
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task DeleteLoanAgreement_LoanAgreementApplicationService_ShouldReturnTrue()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
 
             OperationResult<bool> result = await _cmdService.DeleteLoanAgreement(model);
             Assert.True(result.Result);
+        }
 
-            OperationResult<bool> exist = await _repository.Exists(model.LoanId);
+        [Fact]
+        public async Task DeleteLoanAgreement_LoanAgreementApplicationService_InvalidCreditor_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.FinancierId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
-            Assert.False(exist.Result);
+            OperationResult<bool> result = await _cmdService.DeleteLoanAgreement(model);
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task DeleteLoanAgreement_LoanAgreementApplicationService_InvalidLoanAgreement_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.LoanId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
+
+            OperationResult<bool> result = await _cmdService.DeleteLoanAgreement(model);
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task DeleteLoanAgreement_LoanAgreementApplicationService_CreditorNotLinkedToLoanAgreement_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
+
+            OperationResult<bool> result = await _cmdService.DeleteLoanAgreement(model);
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public async Task DeleteLoanAgreement_LoanAgreementApplicationService_LoanProceedsHaveBeenDeposited_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithDeposit();
+
+            OperationResult<bool> result = await _cmdService.DeleteLoanAgreement(model);
+            Assert.False(result.Success);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
 {
     public class StockSubscriptionValidationService : IStockSubscriptionValidationService
     {
-        private readonly IStockSubscriptionQueryService _qrySvc;
         private IQueryServicesRegistry _servicesRegistry;
 
         public StockSubscriptionValidationService
@@ -17,7 +16,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
             IQueryServicesRegistry servicesRegistry
         )
         {
-            _qrySvc = qrySvc;
             _servicesRegistry = servicesRegistry;
 
             _servicesRegistry.RegisterService("StockSubscriptionQueryService", qrySvc);

@@ -25,13 +25,6 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public Guid UserId { get; set; }
     }
 
-    public class DeleteLoanAgreementInfo : IWriteModel
-    {
-        public Guid LoanId { get; set; }
-
-        public Guid UserId { get; set; }
-    }
-
     public class LoanInstallmentWriteModel : IWriteModel
     {
         public Guid LoanInstallmentId { get; set; }

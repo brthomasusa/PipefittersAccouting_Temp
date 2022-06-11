@@ -91,6 +91,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services
                 .AddScoped<ICashAccountAggregateValidationService, CashAccountAggregateValidationService>()
                 .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>()
+                .AddScoped<ILoanAgreementValidationService, LoanAgreementValidationService>()
                 .AddScoped<IQueryServicesRegistry, QueryServicesRegistry>();
         }
 

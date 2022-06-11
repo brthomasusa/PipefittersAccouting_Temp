@@ -9,19 +9,26 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
 {
     public class LoanAgreementApplicationService : ILoanAgreementApplicationService
     {
+        private readonly ILoanAgreementValidationService _validationService;
         private readonly ILoanAgreementAggregateRepository _repo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoanAgreementApplicationService(ILoanAgreementAggregateRepository repo, IUnitOfWork unitOfWork)
+        public LoanAgreementApplicationService
+        (
+            ILoanAgreementValidationService validationService,
+            ILoanAgreementAggregateRepository repo,
+            IUnitOfWork unitOfWork
+        )
         {
+            _validationService = validationService;
             _repo = repo;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<OperationResult<bool>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
-            => await LoanAgreementCreateCommand.Execute(writeModel, _repo, _unitOfWork);
+            => await LoanAgreementCreateCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
 
-        public async Task<OperationResult<bool>> DeleteLoanAgreement(DeleteLoanAgreementInfo writeModel)
-            => await LoanAgreementDeleteCommand.Execute(writeModel, _repo, _unitOfWork);
+        public async Task<OperationResult<bool>> DeleteLoanAgreement(LoanAgreementWriteModel writeModel)
+            => await LoanAgreementDeleteCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
     }
 }

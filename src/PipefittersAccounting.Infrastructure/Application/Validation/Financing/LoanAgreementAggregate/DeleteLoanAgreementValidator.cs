@@ -7,9 +7,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.LoanAgreementAggregate
 {
-    public class EditLoanAgreementValidator : ValidatorBase<LoanAgreementWriteModel, IQueryServicesRegistry>
+    public class DeleteLoanAgreementValidator : ValidatorBase<LoanAgreementWriteModel, IQueryServicesRegistry>
     {
-        public EditLoanAgreementValidator
+        public DeleteLoanAgreementValidator
         (
             LoanAgreementWriteModel writeModel,
             IQueryServicesRegistry queryServicesRegistry

@@ -92,11 +92,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         {
             string uri = $"{_urlRoot}/loanagreements/delete";
 
-            DeleteLoanAgreementInfo model = new DeleteLoanAgreementInfo
-            {
-                LoanId = new Guid("17b447ea-90a7-45c3-9fc2-c4fb2ea71867"),
-                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
-            };
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

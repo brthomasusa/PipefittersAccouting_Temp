@@ -2,18 +2,22 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.LoanAgreementAggregate
 {
     public class LoanAgreementCreateCommand
     {
-        public static async Task<OperationResult<bool>> Execute
+        public static async Task<OperationResult<bool>> Process
         (
             LoanAgreementWriteModel model,
             ILoanAgreementAggregateRepository repo,
+            ILoanAgreementValidationService validationService,
             IUnitOfWork unitOfWork
         )
         {
@@ -26,28 +30,32 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
                     return OperationResult<bool>.CreateFailure(errMsg);
                 }
 
-                LoanAgreement agreement = new
-                (
-                    LoanAgreementEconEvent.Create(EntityGuidID.Create(model.LoanId)),
-                    EntityGuidID.Create(model.FinancierId),
-                    LoanAmount.Create(model.LoanAmount),
-                    InterestRate.Create(model.InterestRate),
-                    LoanDate.Create(model.LoanDate),
-                    MaturityDate.Create(model.MaturityDate),
-                    NumberOfInstallments.Create(model.NumberOfInstallments),
-                    EntityGuidID.Create(model.UserId),
-                    ConvertToLoanInstallmentList(model.AmortizationSchedule)
-                );
+                ValidationResult validationResult = await validationService.IsValidCreateLoanAgreementInfo(model);
 
-                await repo.AddAsync(agreement);
-                await unitOfWork.Commit();
+                if (validationResult.IsValid)
+                {
+                    LoanAgreement agreement = new
+                    (
+                        LoanAgreementEconEvent.Create(EntityGuidID.Create(model.LoanId)),
+                        EntityGuidID.Create(model.FinancierId),
+                        LoanAmount.Create(model.LoanAmount),
+                        InterestRate.Create(model.InterestRate),
+                        LoanDate.Create(model.LoanDate),
+                        MaturityDate.Create(model.MaturityDate),
+                        NumberOfInstallments.Create(model.NumberOfInstallments),
+                        EntityGuidID.Create(model.UserId),
+                        ConvertToLoanInstallmentList(model.AmortizationSchedule)
+                    );
 
-                return OperationResult<bool>.CreateSuccessResult(true);
-            }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
-            {
-                string errMsg = "There is an existing loan agreement that matches this one (except for the loan id). This is considered a duplicate.";
-                return OperationResult<bool>.CreateFailure(errMsg);
+                    await repo.AddAsync(agreement);
+                    await unitOfWork.Commit();
+
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(validationResult.Messages[0]);
+                }
             }
             catch (Exception ex)
             {
