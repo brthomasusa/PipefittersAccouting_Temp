@@ -8,54 +8,52 @@ using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.LoanAgreementAggregate
 {
-    public class LoanAgreementCreateCommand
+    public class LoanAgreementCreateCommand : WriteCommandHandler<LoanAgreementWriteModel,
+                                                                  ILoanAgreementAggregateRepository,
+                                                                  ILoanAgreementValidationService,
+                                                                  LoanAgreement>
     {
-        public static async Task<OperationResult<bool>> Process
+        public LoanAgreementCreateCommand
         (
             LoanAgreementWriteModel model,
             ILoanAgreementAggregateRepository repo,
             ILoanAgreementValidationService validationService,
             IUnitOfWork unitOfWork
-        )
+        ) : base(model, repo, validationService, unitOfWork)
+        {
+
+        }
+
+        protected override async Task<ValidationResult> Validate(LoanAgreementWriteModel writeModel,
+                                                                 ILoanAgreementValidationService validationService)
+        {
+            return await validationService.IsValidCreateLoanAgreementInfo(writeModel);
+        }
+
+        protected override async Task<OperationResult<bool>> ProcessCommand(LoanAgreementWriteModel writeModel,
+                                                                            ILoanAgreementAggregateRepository repository,
+                                                                            IUnitOfWork unitOfWork)
         {
             try
             {
-                OperationResult<bool> exist = await repo.Exists(model.LoanId);
-                if (exist.Result)
-                {
-                    string errMsg = $"Create loan agreement failed! A loan agreement with this Id: {model.LoanId} already exists!";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
+                LoanAgreement agreement = new
+                (
+                    LoanAgreementEconEvent.Create(EntityGuidID.Create(writeModel.LoanId)),
+                    EntityGuidID.Create(writeModel.FinancierId),
+                    LoanAmount.Create(writeModel.LoanAmount),
+                    InterestRate.Create(writeModel.InterestRate),
+                    LoanDate.Create(writeModel.LoanDate),
+                    MaturityDate.Create(writeModel.MaturityDate),
+                    NumberOfInstallments.Create(writeModel.NumberOfInstallments),
+                    EntityGuidID.Create(writeModel.UserId),
+                    ConvertToLoanInstallmentList(writeModel.AmortizationSchedule)
+                );
 
-                ValidationResult validationResult = await validationService.IsValidCreateLoanAgreementInfo(model);
-
-                if (validationResult.IsValid)
-                {
-                    LoanAgreement agreement = new
-                    (
-                        LoanAgreementEconEvent.Create(EntityGuidID.Create(model.LoanId)),
-                        EntityGuidID.Create(model.FinancierId),
-                        LoanAmount.Create(model.LoanAmount),
-                        InterestRate.Create(model.InterestRate),
-                        LoanDate.Create(model.LoanDate),
-                        MaturityDate.Create(model.MaturityDate),
-                        NumberOfInstallments.Create(model.NumberOfInstallments),
-                        EntityGuidID.Create(model.UserId),
-                        ConvertToLoanInstallmentList(model.AmortizationSchedule)
-                    );
-
-                    await repo.AddAsync(agreement);
-                    await unitOfWork.Commit();
-
-                    return OperationResult<bool>.CreateSuccessResult(true);
-                }
-                else
-                {
-                    return OperationResult<bool>.CreateFailure(validationResult.Messages[0]);
-                }
+                await repository.AddAsync(agreement);
+                await unitOfWork.Commit();
+                return OperationResult<bool>.CreateSuccessResult(true);
             }
             catch (Exception ex)
             {
@@ -63,7 +61,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
             }
         }
 
-        private static List<LoanInstallment> ConvertToLoanInstallmentList(List<LoanInstallmentWriteModel> models)
+        private List<LoanInstallment> ConvertToLoanInstallmentList(List<LoanInstallmentWriteModel> models)
         {
             List<LoanInstallment> installments = new();
 

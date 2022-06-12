@@ -43,25 +43,25 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
 
             WriteCommandHandler<LoanAgreementWriteModel, ILoanAgreementAggregateRepository, ILoanAgreementValidationService, LoanAgreement> createCommand
-                = new LoanAgreementCreateCommandv2(model, _repository, _validationService, _unitOfWork);
+                = new LoanAgreementCreateCommand(model, _repository, _validationService, _unitOfWork);
 
-            Assert.IsType<LoanAgreementCreateCommandv2>(createCommand);
+            Assert.IsType<LoanAgreementCreateCommand>(createCommand);
         }
 
         [Fact]
         public void Instantiate_LoanAgreementCreateCommand_FromDerivedClass_ShouldSucceed()
         {
             LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
-            LoanAgreementCreateCommandv2 createCommand = new(model, _repository, _validationService, _unitOfWork);
+            LoanAgreementCreateCommand createCommand = new(model, _repository, _validationService, _unitOfWork);
 
-            Assert.IsType<LoanAgreementCreateCommandv2>(createCommand);
+            Assert.IsType<LoanAgreementCreateCommand>(createCommand);
         }
 
         [Fact]
         public async Task Process_LoanAgreementCreateCommand_WithValidInfo_ShouldSucceed()
         {
             LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
-            LoanAgreementCreateCommandv2 createCommand = new(model, _repository, _validationService, _unitOfWork);
+            LoanAgreementCreateCommand createCommand = new(model, _repository, _validationService, _unitOfWork);
 
             OperationResult<bool> result = await createCommand.Process();
 
@@ -74,7 +74,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             LoanAgreementWriteModel model = LoanAgreementTestData.GetCreateLoanAgreementInfo();
             model.FinancierId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
-            LoanAgreementCreateCommandv2 createCommand = new(model, _repository, _validationService, _unitOfWork);
+            LoanAgreementCreateCommand createCommand = new(model, _repository, _validationService, _unitOfWork);
             OperationResult<bool> result = await createCommand.Process();
 
             Assert.False(result.Success);
@@ -90,45 +90,68 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             model.LoanDate = new DateTime(2022, 2, 2);
             model.MaturityDate = new DateTime(2024, 2, 2);
 
-            LoanAgreementCreateCommandv2 createCommand = new(model, _repository, _validationService, _unitOfWork);
+            LoanAgreementCreateCommand createCommand = new(model, _repository, _validationService, _unitOfWork);
             OperationResult<bool> result = await createCommand.Process();
 
             Assert.False(result.Success);
         }
 
+        [Fact]
+        public async Task Process_LoanAgreementDeleteCommand_ShouldReturnTrue()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
 
+            LoanAgreementDeleteCommand deleteCommand = new(model, _repository, _validationService, _unitOfWork);
+            OperationResult<bool> result = await deleteCommand.Process();
 
+            Assert.True(result.Result);
+        }
 
+        [Fact]
+        public async Task Process_LoanAgreementDeleteCommand_InvalidCreditor_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.FinancierId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
+            LoanAgreementDeleteCommand deleteCommand = new(model, _repository, _validationService, _unitOfWork);
+            OperationResult<bool> result = await deleteCommand.Process();
 
+            Assert.False(result.Success);
+        }
 
+        [Fact]
+        public async Task Process_LoanAgreementDeleteCommand_InvalidLoanAgreement_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.LoanId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
 
+            LoanAgreementDeleteCommand deleteCommand = new(model, _repository, _validationService, _unitOfWork);
+            OperationResult<bool> result = await deleteCommand.Process();
 
+            Assert.False(result.Success);
+        }
 
+        [Fact]
+        public async Task Process_LoanAgreementDeleteCommand_CreditorNotLinkedToLoanAgreement_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithOutDeposit();
+            model.LoanId = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
+            LoanAgreementDeleteCommand deleteCommand = new(model, _repository, _validationService, _unitOfWork);
+            OperationResult<bool> result = await deleteCommand.Process();
 
+            Assert.False(result.Success);
+        }
 
+        [Fact]
+        public async Task Process_LoanAgreementDeleteCommand_LoanProceedsHaveBeenDeposited_ShouldReturnFalse()
+        {
+            LoanAgreementWriteModel model = LoanAgreementTestData.GetEditLoanAgreementInfoWithDeposit();
 
+            LoanAgreementDeleteCommand deleteCommand = new(model, _repository, _validationService, _unitOfWork);
+            OperationResult<bool> result = await deleteCommand.Process();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            Assert.False(result.Success);
+        }
     }
 }
