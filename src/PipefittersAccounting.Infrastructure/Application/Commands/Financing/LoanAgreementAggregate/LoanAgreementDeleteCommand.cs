@@ -24,17 +24,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
 
         }
 
-        protected override async Task<ValidationResult> Validate(LoanAgreementWriteModel writeModel,
-                                                                 ILoanAgreementValidationService validationService)
+        protected override async Task<ValidationResult> Validate()
         {
-            return await validationService.IsValidDeleteLoanAgreementInfo(writeModel);
+            return await ValidationService.IsValidDeleteLoanAgreementInfo(WriteModel);
         }
 
-        protected override async Task<OperationResult<bool>> ProcessCommand(LoanAgreementWriteModel writeModel,
-                                                                            ILoanAgreementAggregateRepository repository,
-                                                                            IUnitOfWork unitOfWork)
+        protected override async Task<OperationResult<bool>> ProcessCommand()
         {
-            OperationResult<LoanAgreement> result = await Repository.GetByIdAsync(writeModel.LoanId);
+            OperationResult<LoanAgreement> result = await Repository.GetByIdAsync(WriteModel.LoanId);
 
             if (!result.Success)
             {
@@ -44,7 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
             try
             {
                 Repository.Delete(result.Result);
-                await unitOfWork.Commit();
+                await UnitOfWork.Commit();
 
                 return OperationResult<bool>.CreateSuccessResult(true);
             }

@@ -34,11 +34,11 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
 
         public async Task<OperationResult<bool>> Process()
         {
-            ValidationResult validationResult = await Validate(WriteModel, ValidationService);
+            ValidationResult validationResult = await Validate();
 
             if (validationResult.IsValid)
             {
-                OperationResult<bool> result = await ProcessCommand(WriteModel, Repository, UnitOfWork);
+                OperationResult<bool> result = await ProcessCommand();
 
                 if (result.Success)
                 {
@@ -55,11 +55,9 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
             }
         }
 
-        protected abstract Task<ValidationResult> Validate(TWriteModel writeModel,
-                                                           TDomainService validationService);
 
-        protected abstract Task<OperationResult<bool>> ProcessCommand(TWriteModel writeModel,
-                                                                      TAggregateReposity repository,
-                                                                      IUnitOfWork UnitOfWork);
+        protected abstract Task<ValidationResult> Validate();
+
+        protected abstract Task<OperationResult<bool>> ProcessCommand();
     }
 }

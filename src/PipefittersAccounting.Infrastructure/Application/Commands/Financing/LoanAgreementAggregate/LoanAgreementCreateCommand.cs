@@ -26,33 +26,30 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
 
         }
 
-        protected override async Task<ValidationResult> Validate(LoanAgreementWriteModel writeModel,
-                                                                 ILoanAgreementValidationService validationService)
+        protected override async Task<ValidationResult> Validate()
         {
-            return await validationService.IsValidCreateLoanAgreementInfo(writeModel);
+            return await ValidationService.IsValidCreateLoanAgreementInfo(WriteModel);
         }
 
-        protected override async Task<OperationResult<bool>> ProcessCommand(LoanAgreementWriteModel writeModel,
-                                                                            ILoanAgreementAggregateRepository repository,
-                                                                            IUnitOfWork unitOfWork)
+        protected override async Task<OperationResult<bool>> ProcessCommand()
         {
             try
             {
                 LoanAgreement agreement = new
                 (
-                    LoanAgreementEconEvent.Create(EntityGuidID.Create(writeModel.LoanId)),
-                    EntityGuidID.Create(writeModel.FinancierId),
-                    LoanAmount.Create(writeModel.LoanAmount),
-                    InterestRate.Create(writeModel.InterestRate),
-                    LoanDate.Create(writeModel.LoanDate),
-                    MaturityDate.Create(writeModel.MaturityDate),
-                    NumberOfInstallments.Create(writeModel.NumberOfInstallments),
-                    EntityGuidID.Create(writeModel.UserId),
-                    ConvertToLoanInstallmentList(writeModel.AmortizationSchedule)
+                    LoanAgreementEconEvent.Create(EntityGuidID.Create(WriteModel.LoanId)),
+                    EntityGuidID.Create(WriteModel.FinancierId),
+                    LoanAmount.Create(WriteModel.LoanAmount),
+                    InterestRate.Create(WriteModel.InterestRate),
+                    LoanDate.Create(WriteModel.LoanDate),
+                    MaturityDate.Create(WriteModel.MaturityDate),
+                    NumberOfInstallments.Create(WriteModel.NumberOfInstallments),
+                    EntityGuidID.Create(WriteModel.UserId),
+                    ConvertToLoanInstallmentList(WriteModel.AmortizationSchedule)
                 );
 
-                await repository.AddAsync(agreement);
-                await unitOfWork.Commit();
+                await Repository.AddAsync(agreement);
+                await UnitOfWork.Commit();
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
             catch (Exception ex)
