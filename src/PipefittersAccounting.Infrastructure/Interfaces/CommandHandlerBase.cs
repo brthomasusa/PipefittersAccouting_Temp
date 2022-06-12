@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
     public abstract class WriteCommandHandler<TWriteModel, TAggregateReposity, TDomainService, TEntity>
         where TWriteModel : IWriteModel
         where TAggregateReposity : IAggregateRootRepository<TEntity>
-        where TDomainService : IDomainService
+        where TDomainService : IValidationService
     {
         public WriteCommandHandler
         (

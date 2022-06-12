@@ -1,6 +1,6 @@
 namespace PipefittersAccounting.Core.Interfaces
 {
-    public interface IDomainService
+    public interface IValidationService
     {
 
     }

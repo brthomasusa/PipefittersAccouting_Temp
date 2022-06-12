@@ -5,7 +5,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public interface ICashAccountAggregateValidationService : IDomainService
+    public interface ICashAccountAggregateValidationService : IValidationService
     {
         Task<ValidationResult> IsValidCashAccount(CashAccount cashAccount);
 

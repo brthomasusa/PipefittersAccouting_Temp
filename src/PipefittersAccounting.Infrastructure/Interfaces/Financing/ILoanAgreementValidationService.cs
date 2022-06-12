@@ -4,7 +4,7 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
-    public interface ILoanAgreementValidationService : IDomainService
+    public interface ILoanAgreementValidationService : IValidationService
     {
         Task<ValidationResult> IsValidCreateLoanAgreementInfo(LoanAgreementWriteModel writeModel);
 
