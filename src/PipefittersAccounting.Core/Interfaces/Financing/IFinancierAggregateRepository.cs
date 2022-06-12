@@ -4,7 +4,7 @@ using PipefittersAccounting.Core.Financing.FinancierAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {
-    public interface IFinancierAggregateRepository : IAggregateRootRepository, IRepository<Financier>
+    public interface IFinancierAggregateRepository : IAggregateRootRepository<Financier>
     {
         Task<OperationResult<Guid>> CheckForDuplicateFinancierName(string name);
     }

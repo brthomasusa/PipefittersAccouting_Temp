@@ -4,7 +4,7 @@ using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {
-    public interface ILoanAgreementAggregateRepository : IAggregateRootRepository, IRepository<LoanAgreement>
+    public interface ILoanAgreementAggregateRepository : IAggregateRootRepository<LoanAgreement>
     {
 
     }

@@ -38,7 +38,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<CashAccount>> GetCashAccountByIdAsync(Guid cashAccountId)
+        public async Task<OperationResult<CashAccount>> GetByIdAsync(Guid cashAccountId)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<bool>> DoesCashAccountExist(Guid cashAccountId)
+        public async Task<OperationResult<bool>> Exists(Guid cashAccountId)
         {
             try
             {
@@ -81,11 +81,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
-        public async Task<OperationResult<bool>> AddCashAccountAsync(CashAccount cashAccount)
+        public async Task<OperationResult<bool>> AddAsync(CashAccount cashAccount)
         {
             try
             {
-                OperationResult<bool> searchResult = await DoesCashAccountExist(cashAccount.Id);
+                OperationResult<bool> searchResult = await Exists(cashAccount.Id);
 
                 if (searchResult.Result)
                 {
@@ -136,11 +136,15 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
             }
         }
 
+        // This is just to satisfy interface requirements, update is actually done by UpdateCashAccountAsync()
+        public OperationResult<bool> Update(CashAccount entity) => OperationResult<bool>.CreateSuccessResult(true);
+
+
         public async Task<OperationResult<bool>> UpdateCashAccountAsync(CashAccount cashAccount)
         {
             try
             {
-                OperationResult<bool> searchResult = await DoesCashAccountExist(cashAccount.Id);
+                OperationResult<bool> searchResult = await Exists(cashAccount.Id);
 
                 if (!searchResult.Result)
                 {
@@ -172,6 +176,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
                 return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
+
+        // This is just to satisfy interface requirements, delete is actually done by DeleteCashAccountAsync()
+        public OperationResult<bool> Delete(CashAccount entity) => OperationResult<bool>.CreateSuccessResult(true);
 
         public async Task<OperationResult<bool>> DeleteCashAccountAsync(Guid cashAccountId)
         {

@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
             IUnitOfWork _unitOfWork
         )
         {
-            OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
+            OperationResult<bool> result = await repository.Exists(model.CashAccountId);
 
             if (result.Success)
             {
@@ -48,7 +48,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
                         EntityGuidID.Create(model.UserId)
                     );
 
-                    await repository.AddCashAccountAsync(cashAccount);
+                    await repository.AddAsync(cashAccount);
                     await _unitOfWork.Commit();
 
                     // CashAccountCreatedEvent createCashAcct = new(cashAccount);

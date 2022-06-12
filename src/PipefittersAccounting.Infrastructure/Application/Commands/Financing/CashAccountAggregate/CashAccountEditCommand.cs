@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
             IUnitOfWork uow
         )
         {
-            OperationResult<bool> result = await repository.DoesCashAccountExist(model.CashAccountId);
+            OperationResult<bool> result = await repository.Exists(model.CashAccountId);
 
             if (!result.Success)
             {
@@ -34,7 +34,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
 
             if (validationResult.IsValid)
             {
-                OperationResult<CashAccount> getResult = await repository.GetCashAccountByIdAsync(model.CashAccountId);
+                OperationResult<CashAccount> getResult = await repository.GetByIdAsync(model.CashAccountId);
 
                 if (getResult.Success)
                 {

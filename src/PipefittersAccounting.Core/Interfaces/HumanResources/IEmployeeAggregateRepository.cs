@@ -4,7 +4,7 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.HumanResources
 {
-    public interface IEmployeeAggregateRepository : IAggregateRootRepository, IRepository<Employee>
+    public interface IEmployeeAggregateRepository : IAggregateRootRepository<Employee>
     {
         Task<OperationResult<Guid>> CheckForDuplicateEmployeeName(string lname, string fname, string mi);
         Task<OperationResult<Guid>> CheckForDuplicateSSN(string ssn);

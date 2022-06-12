@@ -7,7 +7,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
         where TWriteModel : IWriteModel
         where TQueryServicesRegistry : IQueryServicesRegistry
     {
-        public ValidatorBase
+        protected ValidatorBase
         (
             TWriteModel writeModel,
             TQueryServicesRegistry queryServicesRegistry

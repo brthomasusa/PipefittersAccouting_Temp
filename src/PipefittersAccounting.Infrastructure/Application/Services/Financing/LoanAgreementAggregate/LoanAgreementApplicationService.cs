@@ -26,9 +26,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
         }
 
         public async Task<OperationResult<bool>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
-            => await LoanAgreementCreateCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
+        {
+            return await LoanAgreementCreateCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
+        }
 
         public async Task<OperationResult<bool>> DeleteLoanAgreement(LoanAgreementWriteModel writeModel)
-            => await LoanAgreementDeleteCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
+        {
+            return await LoanAgreementDeleteCommand.Process(writeModel, _repo, _validationService, _unitOfWork);
+        }
     }
 }

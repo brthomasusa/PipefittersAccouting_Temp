@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
             IUnitOfWork uow
         )
         {
-            OperationResult<CashAccount> getCashAcct = await repository.GetCashAccountByIdAsync(model.CashAccountId);
+            OperationResult<CashAccount> getCashAcct = await repository.GetByIdAsync(model.CashAccountId);
 
             if (getCashAcct.Success)
             {

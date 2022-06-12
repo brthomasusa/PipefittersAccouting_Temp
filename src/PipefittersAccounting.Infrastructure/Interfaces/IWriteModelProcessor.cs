@@ -4,9 +4,9 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces
 {
-    public interface IWriteModelProcessor<TWriteModel, TAggregateReposity, TDomainService>
+    public interface IWriteModelProcessor<TWriteModel, TAggregateReposity, TDomainService, TEntity>
         where TWriteModel : IWriteModel
-        where TAggregateReposity : IAggregateRootRepository
+        where TAggregateReposity : IAggregateRootRepository<TEntity>
         where TDomainService : IDomainService
     {
         Task<OperationResult<bool>> Process(TWriteModel writeModel,

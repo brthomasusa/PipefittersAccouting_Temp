@@ -42,11 +42,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Ca
                 if (addTranferResult.Success)
                 {
                     // Retrieve source cash account and call its TransferCashOutOfAccount method
-                    OperationResult<CashAccount> sourceAcctResult = await repository.GetCashAccountByIdAsync(model.SourceCashAccountId);
+                    OperationResult<CashAccount> sourceAcctResult = await repository.GetByIdAsync(model.SourceCashAccountId);
                     if (sourceAcctResult.Success)
                     {
                         // Retrieve destination cash account and call its TransferCashIntoAccount method
-                        OperationResult<CashAccount> destinationAcctResult = await repository.GetCashAccountByIdAsync(model.DestinationCashAccountId);
+                        OperationResult<CashAccount> destinationAcctResult = await repository.GetByIdAsync(model.DestinationCashAccountId);
                         if (destinationAcctResult.Success)
                         {
                             // Four database operations need to be performed

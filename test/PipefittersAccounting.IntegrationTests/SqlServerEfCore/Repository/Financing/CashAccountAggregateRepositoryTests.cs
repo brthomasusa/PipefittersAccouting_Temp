@@ -49,7 +49,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         public async Task DoesCashAccountExist_CashAccountAggregateRepository_ShouldReturnTrue()
         {
             Guid acctId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589");
-            OperationResult<bool> result = await _repository.DoesCashAccountExist(acctId);
+            OperationResult<bool> result = await _repository.Exists(acctId);
 
             Assert.True(result.Result);
         }
@@ -58,7 +58,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         public async Task DoesCashAccountExist_CashAccountAggregateRepository_ShouldReturnFalse()
         {
             Guid acctId = new Guid("123f8a5f-60e7-411a-8e87-dfab0ae62589");
-            OperationResult<bool> result = await _repository.DoesCashAccountExist(acctId);
+            OperationResult<bool> result = await _repository.Exists(acctId);
 
             Assert.False(result.Result);
         }
@@ -71,7 +71,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
                 var repository = serviceProvider.GetRequiredService<ICashAccountAggregateRepository>();
 
                 Guid acctId = new Guid("417f8a5f-60e7-411a-8e87-dfab0ae62589");
-                OperationResult<CashAccount> result = await repository.GetCashAccountByIdAsync(acctId);
+                OperationResult<CashAccount> result = await repository.GetByIdAsync(acctId);
 
                 Assert.True(result.Success);
                 Assert.Equal(acctId, result.Result.Id);
@@ -85,11 +85,11 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
-            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+            OperationResult<bool> result = await _repository.AddAsync(cashAccount);
 
             Assert.True(result.Success);
 
-            OperationResult<bool> searchResult = await _repository.DoesCashAccountExist(cashAccount.Id);
+            OperationResult<bool> searchResult = await _repository.Exists(cashAccount.Id);
             Assert.True(searchResult.Result);
         }
 
@@ -100,7 +100,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccountWithDuplicateCashAccountId(validationService);
-            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+            OperationResult<bool> result = await _repository.AddAsync(cashAccount);
 
             Assert.False(result.Success);
 
@@ -115,7 +115,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
             ICashAccountAggregateValidationService validationService = mock.Object;
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccountWithDupeAcctNumber(validationService);
-            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+            OperationResult<bool> result = await _repository.AddAsync(cashAccount);
 
             Assert.False(result.Success);
 
@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
 
             CashAccount cashAccount = CashAccountTestData.GetCashAccount(validationService);
             cashAccount.UpdateCashAccountName(CashAccountName.Create("Slush Fund"));
-            OperationResult<bool> result = await _repository.AddCashAccountAsync(cashAccount);
+            OperationResult<bool> result = await _repository.AddAsync(cashAccount);
 
             Assert.False(result.Success);
 
@@ -143,7 +143,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         public async Task UpdateCashAccountAsync_CashAccountAggregateRepository_ShouldSucceed()
         {
             Guid acctId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76");
-            OperationResult<CashAccount> result = await _repository.GetCashAccountByIdAsync(acctId);
+            OperationResult<CashAccount> result = await _repository.GetByIdAsync(acctId);
             CashAccount cashAccount = result.Result;
 
             cashAccount.UpdateCashAccountType(CashAccountTypeEnum.NonPayrollOperations);
@@ -159,7 +159,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         public async Task DeleteCashAccountAsync_CashAccountAggregateRepository_ShouldSucceed()
         {
             Guid acctId = new Guid("765ec2b0-406a-4e42-b831-c9aa63800e76");
-            OperationResult<CashAccount> result = await _repository.GetCashAccountByIdAsync(acctId);
+            OperationResult<CashAccount> result = await _repository.GetByIdAsync(acctId);
             CashAccount cashAccount = result.Result;
 
             OperationResult<bool> deleteResult = await _repository.DeleteCashAccountAsync(cashAccount.Id);

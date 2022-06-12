@@ -6,7 +6,7 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
 {
-    public interface IEmployeeAggregateCommandHandler : ICommandHandler
+    public interface IEmployeeAggregateCommandHandler
     {
 
     }

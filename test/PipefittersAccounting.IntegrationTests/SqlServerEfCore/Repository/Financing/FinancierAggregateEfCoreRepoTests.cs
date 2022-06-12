@@ -19,52 +19,52 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
     [Trait("Integration", "EfCoreRepo")]
     public class FinancierAggregateEfCoreRepoTests : TestBaseEfCore
     {
-        // [Fact]
-        // public async Task AddAsync_NewFinancierWithValidInfo_ShouldSucceed()
-        // {
-        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-        //     IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
+        [Fact]
+        public async Task AddAsync_NewFinancierWithValidInfo_ShouldSucceed()
+        {
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
-        //     Financier financier = TestUtilities.GetFinancierForCreating();
-        //     Guid agentId = financier.Id;
+            Financier financier = TestUtilities.GetFinancierForCreating();
+            Guid agentId = financier.Id;
 
-        //     await repo.AddAsync(financier);
-        //     await uow.Commit();
+            await repo.AddAsync(financier);
+            await uow.Commit();
 
-        //     var result = await repo.GetByIdAsync(financier.Id);
-        //     Assert.NotNull(result);
-        //     Assert.Equal(financier.FinancierName, result.FinancierName);
-        // }
+            var result = await repo.GetByIdAsync(financier.Id);
+            Assert.NotNull(result);
+            Assert.Equal(financier.FinancierName, result.Result.FinancierName);
+        }
 
-        // [Fact]
-        // public async Task Exists_DoesFinancierExist_ReturnTrue()
-        // {
-        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-        //     IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
+        [Fact]
+        public async Task Exists_DoesFinancierExist_ReturnTrue()
+        {
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
-        //     Guid agentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
+            Guid agentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
 
-        //     bool result = await repo.Exists(agentId);
-        //     Assert.True(result);
+            OperationResult<bool> result = await repo.Exists(agentId);
+            Assert.True(result.Success);
 
-        //     Financier financier = await _dbContext.Financiers.FindAsync(agentId);
-        //     Assert.NotNull(financier);
-        // }
+            Financier financier = await _dbContext.Financiers.FindAsync(agentId);
+            Assert.NotNull(financier);
+        }
 
-        // [Fact]
-        // public async Task Exists_DoesFinancierExist_ReturnFalse()
-        // {
-        //     AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
-        //     IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
+        [Fact]
+        public async Task Exists_DoesFinancierExist_ReturnFalse()
+        {
+            AppUnitOfWork uow = new AppUnitOfWork(_dbContext);
+            IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
-        //     Guid agentId = new Guid("0000cf34-1234-4fb2-b70e-ab19d3371886");
+            Guid agentId = new Guid("0000cf34-1234-4fb2-b70e-ab19d3371886");
 
-        //     bool result = await repo.Exists(agentId);
-        //     Assert.False(result);
+            OperationResult<bool> result = await repo.Exists(agentId);
+            Assert.False(result.Success);
 
-        //     Financier financier = await _dbContext.Financiers.FindAsync(agentId);
-        //     Assert.Null(financier);
-        // }
+            Financier financier = await _dbContext.Financiers.FindAsync(agentId);
+            Assert.Null(financier);
+        }
 
         // [Fact]
         // public async Task Update_EditFinancierInfo_ShouldSucceed()
@@ -72,19 +72,19 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.Repository.Fina
         //     IFinancierAggregateRepository repo = new FinancierAggregateRepository(_dbContext);
 
         //     Guid agentId = new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886");
-        //     Financier financier = await repo.GetByIdAsync(agentId);
+        //     OperationResult<Financier> financier = await repo.GetByIdAsync(agentId);
 
-        //     Assert.Equal("New World Tatoo Parlor", financier.FinancierName);
-        //     Assert.Equal("630-321-9875", financier.FinancierTelephone);
-        //     Assert.Equal("1690 S. El Camino Real", financier.FinancierAddress.AddressLine1);
-        //     Assert.Equal("Jozef Jr.", financier.PointOfContact.LastName);
+        //     Assert.Equal("New World Tatoo Parlor", financier.Result.FinancierName);
+        //     Assert.Equal("630-321-9875", financier.Result.FinancierTelephone);
+        //     Assert.Equal("1690 S. El Camino Real", financier.Result.FinancierAddress.AddressLine1);
+        //     Assert.Equal("Jozef Jr.", financier.Result.PointOfContact.LastName);
 
-        //     financier.UpdateFinancierName(OrganizationName.Create("Money Laundering, Inc."));
-        //     financier.UpdateFinancierTelephone(PhoneNumber.Create("630-321-0000"));
-        //     financier.UpdateFinancierAddress(Address.Create("123 Main", "2T", "Jacksonville", "MS", "39023"));
-        //     financier.UpdatePointOfContact(PointOfContact.Create("Slim", "Shady", "S", "555-211-9874"));
+        //     financier.Result.UpdateFinancierName(OrganizationName.Create("Money Laundering, Inc."));
+        //     financier.Result.UpdateFinancierTelephone(PhoneNumber.Create("630-321-0000"));
+        //     financier.Result.UpdateFinancierAddress(Address.Create("123 Main", "2T", "Jacksonville", "MS", "39023"));
+        //     financier.Result.UpdatePointOfContact(PointOfContact.Create("Slim", "Shady", "S", "555-211-9874"));
 
-        //     repo.Update(financier);
+        //     repo.Update(financier.Result);
 
         //     Financier result = await repo.GetByIdAsync(agentId);
 
