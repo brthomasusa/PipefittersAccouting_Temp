@@ -31,7 +31,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployees getEmployeesParams)
+        public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployeesParameters getEmployeesParams)
         {
             OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.GetEmployeeListItems(getEmployeesParams);
 
@@ -48,7 +48,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         [HttpGet("managers")]
         public async Task<ActionResult<List<EmployeeManager>>> GetEmployeeManagers()
         {
-            GetEmployeeManagers managersParams = new GetEmployeeManagers() { };
+            GetEmployeeManagersParameters managersParams = new GetEmployeeManagersParameters() { };
 
             OperationResult<List<EmployeeManager>> result = await _qrySvc.GetEmployeeManagers(managersParams);
 
@@ -64,8 +64,8 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         [HttpGet("detail/{employeeId:Guid}", Name = "Details")]
         public async Task<ActionResult<EmployeeDetail>> Details(Guid employeeId)
         {
-            GetEmployee queryParams =
-            new GetEmployee
+            GetEmployeeParameter queryParams =
+            new GetEmployeeParameter
             {
                 EmployeeID = employeeId
             };
@@ -93,7 +93,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             OperationResult<bool> writeResult = await _cmdSvc.CreateEmployeeInfo(writeModel);
             if (writeResult.Success)
             {
-                GetEmployee queryParams = new() { EmployeeID = writeModel.Id };
+                GetEmployeeParameter queryParams = new() { EmployeeID = writeModel.Id };
                 OperationResult<EmployeeDetail> queryResult = await _qrySvc.GetEmployeeDetails(queryParams);
 
                 if (queryResult.Success)

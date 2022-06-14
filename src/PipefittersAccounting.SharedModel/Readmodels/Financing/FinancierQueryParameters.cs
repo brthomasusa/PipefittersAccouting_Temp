@@ -14,8 +14,4 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 
     public class GetFinanciersLookup { }
 
-    public class DoFinancierDependencyCheck
-    {
-        public Guid FinancierId { get; set; }
-    }
 }

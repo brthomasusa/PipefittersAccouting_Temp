@@ -26,7 +26,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
 
         protected override async Task<ValidationResult> Validate()
         {
-            return await ValidationService.IsValidDeleteLoanAgreementInfo(WriteModel);
+            return await ValidationService.IsValidDeleteLoanAgreement(WriteModel);
         }
 
         protected override async Task<OperationResult<bool>> ProcessCommand()

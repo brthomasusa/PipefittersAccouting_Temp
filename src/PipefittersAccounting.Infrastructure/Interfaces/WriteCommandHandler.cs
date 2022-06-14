@@ -55,7 +55,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
             }
         }
 
-
         protected abstract Task<ValidationResult> Validate();
 
         protected abstract Task<OperationResult<bool>> ProcessCommand();

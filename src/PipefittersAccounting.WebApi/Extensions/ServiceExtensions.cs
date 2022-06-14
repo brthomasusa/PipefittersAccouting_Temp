@@ -68,7 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             return services
-                .AddScoped<IEmployeeAggregateCommandService, EmployeeCommandServiceEfCore>()
+                .AddScoped<IEmployeeAggregateCommandService, EmployeeAggregateApplicationService>()
                 .AddScoped<IFinancierApplicationService, FinancierApplicationService>()
                 .AddScoped<ILoanAgreementApplicationService, LoanAgreementApplicationService>()
                 .AddScoped<ICashAccountApplicationService, CashAccountApplicationService>()
@@ -78,7 +78,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddDapperQueryServices(this IServiceCollection services)
         {
             return services
-                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryServiceDapper>()
+                .AddScoped<IEmployeeAggregateQueryService, EmployeeAggregateQueryService>()
                 .AddScoped<IFinancierQueryService, FinancierQueryService>()
                 .AddScoped<ILoanAgreementQueryService, LoanAgreementQueryService>()
                 .AddScoped<ICashAccountQueryService, CashAccountQueryService>()

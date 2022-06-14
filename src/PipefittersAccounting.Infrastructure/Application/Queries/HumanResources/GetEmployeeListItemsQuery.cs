@@ -9,11 +9,11 @@ using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResources
 {
-    public class GetEmployeeListItemsQueryDapper
+    public class GetEmployeeListItemsQuery
     {
         private static int Offset(int page, int pageSize) => (page - 1) * pageSize;
 
-        public async static Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployees queryParams, DapperContext ctx)
+        public async static Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployeesParameters queryParams, DapperContext ctx)
         {
             try
             {

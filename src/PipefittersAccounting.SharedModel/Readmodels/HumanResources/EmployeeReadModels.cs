@@ -2,13 +2,6 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
 {
-    public class EmployeeDependencyCheckResult : IReadModel
-    {
-        public Guid EmployeeId { get; set; }
-        public int Addresses { get; set; }
-        public int Contacts { get; set; }
-    }
-
     public class SupervisorLookup : IReadModel
     {
         public Guid ManagerId { get; set; }

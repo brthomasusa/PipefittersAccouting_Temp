@@ -1,6 +1,4 @@
 #pragma warning disable CS8600
-#pragma warning disable CS8603
-#pragma warning disable CS8604
 
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.SharedKernel.Utilities;

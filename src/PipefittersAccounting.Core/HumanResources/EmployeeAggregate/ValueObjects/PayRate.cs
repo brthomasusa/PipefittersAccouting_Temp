@@ -20,9 +20,9 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjec
 
         private static void CheckValidity(decimal value)
         {
-            if (value == 0M)
+            if (value % 0.01M != 0)
             {
-                throw new ArgumentException("Invalid pay rate; pay rate can not be zero!", nameof(value));
+                throw new ArgumentException("The pay rate can not have more than two decimal places");
             }
 
             if (value < 7.50M || value > 40.00M)

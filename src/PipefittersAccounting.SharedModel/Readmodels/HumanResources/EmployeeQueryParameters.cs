@@ -1,27 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
 {
-    public class DoEmployeeDependencyCheck
+    public class GetEmployeeParameter
     {
         public Guid EmployeeID { get; set; }
     }
 
-    public class GetEmployee
-    {
-        public Guid EmployeeID { get; set; }
-    }
-
-    public class GetEmployees
+    public class GetEmployeesParameters
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
 
-    public class GetEmployeeManagers
+    public class UniqueEmployeeNameParameters
+    {
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleInitial { get; set; }
+    }
+
+    public class UniqueEmployeSSNParameter
+    {
+        public string? SSN { get; set; }
+    }
+
+    public class GetEmployeeManagersParameters
     {
 
     }

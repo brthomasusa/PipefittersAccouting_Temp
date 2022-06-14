@@ -12,7 +12,8 @@ BEGIN
             Delete from Finance.DividendDeclarations;
             Delete from Finance.StockSubscriptions;
             Delete from Finance.Financiers;
-            Delete from Shared.DomainUsers;
+            Delete from HumanResources.TimeCards;
+            Delete from Shared.DomainUsers;            
             Delete from HumanResources.Employees;
             Delete from Shared.ExternalAgents; 
             Delete from Shared.EconomicEvents;
@@ -32,6 +33,10 @@ BEGIN
                 ('e716ac28-e354-4d8d-94e4-ec51f08b1af8', 5),
                 ('604536a1-e734-49c4-96b3-9dfef7417f9a', 5),
                 ('e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', 5),
+                ('c40888a1-c182-437e-9c1d-e9227bca7f52', 5),
+                ('8b140613-5df8-4f57-beb4-e3f5cd45ad3c', 5),
+                ('9d3a25dc-3861-4f78-92b0-92294b808ebf', 5),
+                ('6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', 5),
                 ('12998229-7ede-4834-825a-0c55bde75695', 6),
                 ('94b1d516-a1c3-4df8-ae85-be1f34966601', 6),
                 ('bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 6),
@@ -39,34 +44,6 @@ BEGIN
                 ('01da50f9-021b-4d03-853a-3fd2c95e207d', 6),
                 ('84164388-28ff-4b47-bd63-dd9326d32236', 6) 
             
-            INSERT INTO HumanResources.Employees
-                (EmployeeId, SupervisorID, LastName, FirstName, MiddleInitial, SSN, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, MaritalStatus, Exemptions, PayRate, StartDate, IsActive, IsSupervisor)
-            VALUES
-                ('4B900A74-E2D9-4837-B9A4-9E828752716E', '4B900A74-E2D9-4837-B9A4-9E828752716E','Sanchez', 'Ken', 'J', '123789999', '817-987-1234', '321 Tarrant Pl', null, 'Fort Worth', 'TX', '78965', 'M', 5, 40.00, '1998-12-02', 1, 1),
-                ('5C60F693-BEF5-E011-A485-80EE7300C695', 'e716ac28-e354-4d8d-94e4-ec51f08b1af8','Carter', 'Wayne', 'L', '423789999', '972-523-1234', '321 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 3, 40.00, '1998-12-02', 1, 0),
-                ('660bb318-649e-470d-9d2b-693bfb0b2744', '4B900A74-E2D9-4837-B9A4-9E828752716E','Phide', 'Terri', 'M', '638912345', '214-987-1234', '3455 South Corinth Circle', null, 'Dallas', 'TX', '75224', 'M', 1, 28.00, '2014-09-22', 1, 1),
-                ('9f7b902d-566c-4db6-b07b-716dd4e04340', '4B900A74-E2D9-4837-B9A4-9E828752716E','Duffy', 'Terri', 'L', '699912345', '214-987-1234', '98 Reiger Ave', null, 'Dallas', 'TX', '75214', 'M', 2, 30.00, '2018-10-22', 1, 0),
-                ('AEDC617C-D035-4213-B55A-DAE5CDFCA366', '4B900A74-E2D9-4837-B9A4-9E828752716E','Goldberg', 'Jozef', 'P', '036889999', '469-321-1234', '6667 Melody Lane', 'Apt 2', 'Dallas', 'TX', '75231', 'S', 1, 29.00, '2013-02-28', 1, 0),
-                ('0cf9de54-c2ca-417e-827c-a5b87be2d788', '4B900A74-E2D9-4837-B9A4-9E828752716E','Brown', 'Jamie', 'J', '123700009', '817-555-5555', '98777 Nigeria Town Rd', null, 'Arlington', 'TX', '78658', 'M', 2, 29.00, '2017-12-22', 1, 0),
-                ('e716ac28-e354-4d8d-94e4-ec51f08b1af8', '4B900A74-E2D9-4837-B9A4-9E828752716E','Bush', 'George', 'W', '325559874', '214-555-5555', '777 Ervay Street', null, 'Dallas', 'TX', '75208', 'M', 5, 30.00, '2016-10-19', 1, 1),
-                ('604536a1-e734-49c4-96b3-9dfef7417f9a', '660bb318-649e-470d-9d2b-693bfb0b2744','Rainey', 'Ma', 'A', '775559874', '903-555-5555', '1233 Back Alley Rd', null, 'Corsicana', 'TX', '75110', 'M', 2, 27.25, '2018-01-05', 1, 0),
-                ('e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', '4B900A74-E2D9-4837-B9A4-9E828752716E','Beck', 'Jeffery', 'W', '825559874', '214-555-5555', '321 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 5, 30.00, '2016-10-19', 1, 0);
-            
-            INSERT INTO Shared.DomainUsers
-                (UserId, UserName, Email)
-            VALUES
-                ('660bb318-649e-470d-9d2b-693bfb0b2744', 'tphide', 'terri.phide@pipefitterssupplycompany.com') 
-
-            INSERT INTO Finance.Financiers
-                (FinancierID, FinancierName, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, ContactLastName, ContactFirstName, ContactMiddleInitial, ContactTelephone, IsActive, UserId)
-            VALUES
-                ('12998229-7ede-4834-825a-0c55bde75695', 'Arturo Sandoval', '888-719-8128', '5232 Outriggers Way', 'Ste 401', 'Oxnard', 'CA', '93035', 'Sandoval', 'Arturo', 'T', '888-719-8128', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('94b1d516-a1c3-4df8-ae85-be1f34966601', 'Paul Van Horn Enterprises', '415-328-9870', '825 Mandalay Beach Rd', 'Level 2', 'Oxnard', 'CA', '94402', 'Crocker', 'Patrick', 'T', '415-328-9870', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 'New World Tatoo Parlor', '630-321-9875', '1690 S. El Camino Real', 'Room 2C', 'San Mateo', 'CA', '75224', 'Jozef Jr.', 'JoJo', 'D', '630-321-9875', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'Bertha Mae Jones Innovative Financing', '886-587-0001', '12333 Menard Heights Blvd', 'Ste 1001', 'Palo Alto', 'CA', '94901', 'Sinosky', 'Betty', 'L', '886-587-0001', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('01da50f9-021b-4d03-853a-3fd2c95e207d', 'Pimps-R-US Financial Management, Inc.', '415-912-5570', '96541 Sunset Rise Plaza', 'Ste 2', 'Oxnard', 'CA', '93035', 'Daniels', 'Javier', 'A', '888-719-8100', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                ('84164388-28ff-4b47-bd63-dd9326d32236', 'I Exist-Only-To-Be-Deleted', '415-912-5570', '985211 Highway 78 East', null, 'Oxnard', 'CA', '93035', 'Gutierrez', 'Monica', 'T', '415-912-5570', 1, '660bb318-649e-470d-9d2b-693bfb0b2744')                                              
-
             INSERT INTO Shared.EconomicEvents
                 (EventId, EventTypeId)
             VALUES
@@ -147,7 +124,7 @@ BEGIN
                 ('6f0c811c-b948-4c03-a6df-49c768dadc49' ,5),
                 ('aeac44d8-feb3-4823-8b0a-ca79da5bb089' ,5),
                 ('6f09cd69-4a95-42c7-bcc2-acacbb92270c' ,5),
-                ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5),
+                ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5), 
                 ('41158939-bdbd-47b4-a096-397232a2bc7e' ,10),
                 ('9bdac186-d1f1-4279-a807-a03c12a637ab' ,10),
                 ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2' ,10),
@@ -155,7 +132,7 @@ BEGIN
                 ('984039cb-34ab-4796-b305-b6aceda47211' ,10),
                 ('34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e' ,10),
                 ('49667ed8-558f-4fe1-8adb-14af6d06db38' ,10),
-                ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d' ,10),
+                ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d' ,10),        
                 ('31a1ed0e-b962-4db2-8cbb-fc964163798f', 5),
                 ('b6c6e60a-c810-428c-aaf1-abceb820538c', 5),
                 ('4a6a8082-643d-4fb6-9df8-1eecd20215db', 5),
@@ -175,8 +152,109 @@ BEGIN
                 ('f6d18883-9f06-4209-9314-6511ed71408e', 5), 
                 ('84a6be5d-10b7-48d5-8084-5a7bd22bae6b', 5),
                 ('baa4ef8e-565d-494b-a4cf-87901a6b131f', 5),
-                ('ff0dc77f-7f80-426a-bc24-09d3c10a957f', 5)                                                      
+                ('ff0dc77f-7f80-426a-bc24-09d3c10a957f', 5),
+                ('40cdffa1-965e-4e3a-8a47-8cb542c2ef64', 6),
+                ('3a386b77-361b-49e0-89aa-b806b24bf333', 6),
+                ('29dc4ad2-5e5a-4f08-bb3d-468abf57a10e', 6),
+                ('bda7e369-c21f-4b99-a492-08c7a30d0a4b', 6),
+                ('a1e05c99-fa99-485d-b4ca-719a55e01482', 6),
+                ('1626daa5-5acb-40e9-8907-eb25db991583', 6),
+                ('2d325646-0d70-4e2e-b458-0ca43a916fab', 6),
+                ('63e13c5d-4586-461f-be78-3e240d625bbf', 6),
+                ('175a1bc8-dbba-41bb-98af-7377f1f64d07', 6),
+                ('11b9d933-3007-4759-9110-f3e1a20ac71f', 6),
+                ('0e104001-ed28-40d7-92f3-462f93d45b4a', 6),
+                ('4383b5fc-d6fc-4475-a22d-b7b2e17f75bb', 6),
+                ('748fcab5-9464-4d5f-937f-d61ffe811e6f', 6),	
+                ('5e7d00e1-8aad-43ce-a5e6-690341bef644', 6),
+                ('a093b4a9-0d38-4a1c-b8e4-375416ebae14', 6),
+                ('a7501599-71ea-4164-818c-c2478fdf7872', 6),
+                ('5c90925f-ec82-43f4-b8f0-9c058a7e1664', 6),
+                ('f7f54340-4838-4709-9c5f-8737164aa727', 6),
+                ('00bc7e3c-a5cb-46ec-8a19-6966b769e8e0', 6),
+                ('3ae463a6-7437-41a9-9e99-ec4d7f29fc89', 6),
+                ('c1221fe9-f04f-4d10-a6cf-802359a26a84', 6),
+                ('8df9c13f-3d60-4bc4-ba3e-5bc2ceadf2c9', 6),
+                ('d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1', 6),
+                ('0aa0d9dc-572f-4ae9-bb07-0cdab0a8f06d', 6),
+                ('061ba320-1572-4889-aea0-7c97d0e1f1a8', 6),
+                ('e2b5406c-dbd5-405a-8f38-f23943f2e32f', 6)	
 
+            INSERT INTO HumanResources.Employees
+                (EmployeeId, EmployeeTypeId, SupervisorID, LastName, FirstName, MiddleInitial, SSN, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, MaritalStatus, Exemptions, PayRate, StartDate, IsActive, IsSupervisor)
+            VALUES
+                ('4B900A74-E2D9-4837-B9A4-9E828752716E', 2, '4B900A74-E2D9-4837-B9A4-9E828752716E','Sanchez', 'Ken', 'J', '123789999', '817-987-1234', '321 Tarrant Pl', null, 'Fort Worth', 'TX', '78965', 'M', 5, 40.00, '1998-12-02', 1, 1),
+                ('5C60F693-BEF5-E011-A485-80EE7300C695', 3, 'e716ac28-e354-4d8d-94e4-ec51f08b1af8','Carter', 'Wayne', 'L', '423789999', '972-523-1234', '321 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 3, 40.00, '1998-12-02', 1, 1),
+                ('660bb318-649e-470d-9d2b-693bfb0b2744', 1, '4B900A74-E2D9-4837-B9A4-9E828752716E','Phide', 'Terri', 'M', '638912345', '214-987-1234', '3455 South Corinth Circle', null, 'Dallas', 'TX', '75224', 'M', 1, 28.00, '2014-09-22', 1, 1),
+                ('9f7b902d-566c-4db6-b07b-716dd4e04340', 4, '4B900A74-E2D9-4837-B9A4-9E828752716E','Duffy', 'Terri', 'L', '699912345', '214-987-1234', '98 Reiger Ave', null, 'Dallas', 'TX', '75214', 'M', 2, 30.00, '2018-10-22', 1, 1),
+                ('AEDC617C-D035-4213-B55A-DAE5CDFCA366', 5, '4B900A74-E2D9-4837-B9A4-9E828752716E','Goldberg', 'Jozef', 'P', '036889999', '469-321-1234', '6667 Melody Lane', 'Apt 2', 'Dallas', 'TX', '75231', 'S', 1, 29.00, '2013-02-28', 1, 1),
+                ('0cf9de54-c2ca-417e-827c-a5b87be2d788', 6, '4B900A74-E2D9-4837-B9A4-9E828752716E','Brown', 'Jamie', 'J', '123700009', '817-555-5555', '98777 Nigeria Town Rd', null, 'Arlington', 'TX', '78658', 'M', 2, 29.00, '2017-12-22', 1, 1),       
+                ('e716ac28-e354-4d8d-94e4-ec51f08b1af8', 1, '660bb318-649e-470d-9d2b-693bfb0b2744','Bush', 'George', 'W', '325559874', '214-555-5555', '777 Ervay Street', null, 'Dallas', 'TX', '75208', 'M', 5, 30.00, '2016-10-19', 1, 0),
+                ('604536a1-e734-49c4-96b3-9dfef7417f9a', 3, '5C60F693-BEF5-E011-A485-80EE7300C695','Rainey', 'Ma', 'A', '775559874', '903-555-5555', '1233 Back Alley Rd', null, 'Corsicana', 'TX', '75110', 'M', 2, 27.25, '2018-01-05', 1, 0),
+                ('e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', 4, '9f7b902d-566c-4db6-b07b-716dd4e04340','Beck', 'Jeffery', 'W', '825559874', '214-555-5555', '321 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 5, 30.00, '2016-10-19', 1, 0),      
+                ('c40888a1-c182-437e-9c1d-e9227bca7f52', 5, 'AEDC617C-D035-4213-B55A-DAE5CDFCA366','Tamburello', 'Roberto', 'W', '315559874', '214-555-5555', '3654 Henderson Road', null, 'Dallas', 'TX', '75208', 'M', 8, 21.50, '2018-10-19', 1, 0),
+                ('8b140613-5df8-4f57-beb4-e3f5cd45ad3c', 6, '0cf9de54-c2ca-417e-827c-a5b87be2d788','Erickson', 'Gail', 'A', '755559874', '903-555-5555', '12 Corsicana Freeway', 'Unit 6', 'Corsicana', 'TX', '75110', 'S', 2, 20.25, '2018-01-05', 1, 0),
+                ('9d3a25dc-3861-4f78-92b0-92294b808ebf', 4, '9f7b902d-566c-4db6-b07b-716dd4e04340','Margheim', 'Diane', 'W', '815559874', '214-555-5555', '3677 Irving Blvd', null, 'Dallas', 'TX', '75211', 'S', 1, 18.00, '2021-12-19', 1, 0),
+                ('6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', 6, '0cf9de54-c2ca-417e-827c-a5b87be2d788','Salavaria', 'Sharon', 'C', '865559874', '214-555-5555', '999 9th Street', 'Apt 9', 'Dallas', 'TX', '75211', 'S', 1, 18.00, '2022-05-19', 1, 0)
+            
+            INSERT INTO Shared.DomainUsers
+                (UserId, UserName, Email)
+            VALUES
+                ('4B900A74-E2D9-4837-B9A4-9E828752716E', 'ksanchez', 'ken.sanchez@pipefitterssupplycompany.com'),
+                ('5C60F693-BEF5-E011-A485-80EE7300C695', 'wcarter', 'wayne.carter@pipefitterssupplycompany.com'),
+                ('660bb318-649e-470d-9d2b-693bfb0b2744', 'tphide', 'terri.phide@pipefitterssupplycompany.com'),
+                ('9f7b902d-566c-4db6-b07b-716dd4e04340', 'tduffy', 'terri.duffy@pipefitterssupplycompany.com'),
+                ('AEDC617C-D035-4213-B55A-DAE5CDFCA366', 'jgoldberg', 'jozef.goldberg@pipefitterssupplycompany.com'),
+                ('0cf9de54-c2ca-417e-827c-a5b87be2d788', 'jbrown', 'jamie.brown@pipefitterssupplycompany.com'),
+                ('e716ac28-e354-4d8d-94e4-ec51f08b1af8', 'gbush', 'george.bush@pipefitterssupplycompany.com'),
+                ('604536a1-e734-49c4-96b3-9dfef7417f9a', 'mrainey', 'ma.rainey@pipefitterssupplycompany.com'),
+                ('e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', 'jbeck', 'jeffery.beck@pipefitterssupplycompany.com'),
+                ('c40888a1-c182-437e-9c1d-e9227bca7f52', 'rtamburello', 'roberto.tamburello@pipefitterssupplycompany.com'),
+                ('8b140613-5df8-4f57-beb4-e3f5cd45ad3c', 'gerickson', 'gail.erickson@pipefitterssupplycompany.com'),
+                ('9d3a25dc-3861-4f78-92b0-92294b808ebf', 'dmargheim', 'diane.margheim@pipefitterssupplycompany.com'),
+                ('6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', 'ssalavaria', 'sharon.salavaria@pipefitterssupplycompany.com')
+
+            INSERT INTO HumanResources.TimeCards
+                (TimeCardId, EmployeeId, SupervisorId, PayPeriodEnded, RegularHours, OverTimeHours, UserId)
+            VALUES
+                ('40cdffa1-965e-4e3a-8a47-8cb542c2ef64', '4B900A74-E2D9-4837-B9A4-9E828752716E', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('3a386b77-361b-49e0-89aa-b806b24bf333', '5C60F693-BEF5-E011-A485-80EE7300C695', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 165, 2, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('29dc4ad2-5e5a-4f08-bb3d-468abf57a10e', '660bb318-649e-470d-9d2b-693bfb0b2744', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 3, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('bda7e369-c21f-4b99-a492-08c7a30d0a4b', '9f7b902d-566c-4db6-b07b-716dd4e04340', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 160, 1, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('a1e05c99-fa99-485d-b4ca-719a55e01482', 'AEDC617C-D035-4213-B55A-DAE5CDFCA366', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 5, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('1626daa5-5acb-40e9-8907-eb25db991583', '0cf9de54-c2ca-417e-827c-a5b87be2d788', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 159, 2, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('2d325646-0d70-4e2e-b458-0ca43a916fab', 'e716ac28-e354-4d8d-94e4-ec51f08b1af8', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('63e13c5d-4586-461f-be78-3e240d625bbf', '604536a1-e734-49c4-96b3-9dfef7417f9a', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('175a1bc8-dbba-41bb-98af-7377f1f64d07', 'e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 2, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('11b9d933-3007-4759-9110-f3e1a20ac71f', 'c40888a1-c182-437e-9c1d-e9227bca7f52', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 1, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('0e104001-ed28-40d7-92f3-462f93d45b4a', '8b140613-5df8-4f57-beb4-e3f5cd45ad3c', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 166, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('4383b5fc-d6fc-4475-a22d-b7b2e17f75bb', '9d3a25dc-3861-4f78-92b0-92294b808ebf', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('748fcab5-9464-4d5f-937f-d61ffe811e6f', '6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-01-31', 168, 4, '4B900A74-E2D9-4837-B9A4-9E828752716E'),	
+                ('5e7d00e1-8aad-43ce-a5e6-690341bef644', '4B900A74-E2D9-4837-B9A4-9E828752716E', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('a093b4a9-0d38-4a1c-b8e4-375416ebae14', '5C60F693-BEF5-E011-A485-80EE7300C695', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('a7501599-71ea-4164-818c-c2478fdf7872', '660bb318-649e-470d-9d2b-693bfb0b2744', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('5c90925f-ec82-43f4-b8f0-9c058a7e1664', '9f7b902d-566c-4db6-b07b-716dd4e04340', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('f7f54340-4838-4709-9c5f-8737164aa727', 'AEDC617C-D035-4213-B55A-DAE5CDFCA366', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 167, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('00bc7e3c-a5cb-46ec-8a19-6966b769e8e0', '0cf9de54-c2ca-417e-827c-a5b87be2d788', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 159, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('3ae463a6-7437-41a9-9e99-ec4d7f29fc89', 'e716ac28-e354-4d8d-94e4-ec51f08b1af8', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('c1221fe9-f04f-4d10-a6cf-802359a26a84', '604536a1-e734-49c4-96b3-9dfef7417f9a', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('8df9c13f-3d60-4bc4-ba3e-5bc2ceadf2c9', 'e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 1, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1', 'c40888a1-c182-437e-9c1d-e9227bca7f52', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 1, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('0aa0d9dc-572f-4ae9-bb07-0cdab0a8f06d', '8b140613-5df8-4f57-beb4-e3f5cd45ad3c', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('061ba320-1572-4889-aea0-7c97d0e1f1a8', '9d3a25dc-3861-4f78-92b0-92294b808ebf', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E'),
+                ('e2b5406c-dbd5-405a-8f38-f23943f2e32f', '6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', '4B900A74-E2D9-4837-B9A4-9E828752716E', '2022-02-28', 168, 0, '4B900A74-E2D9-4837-B9A4-9E828752716E')
+
+            INSERT INTO Finance.Financiers
+                (FinancierID, FinancierName, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, ContactLastName, ContactFirstName, ContactMiddleInitial, ContactTelephone, IsActive, UserId)
+            VALUES
+                ('12998229-7ede-4834-825a-0c55bde75695', 'Arturo Sandoval', '888-719-8128', '5232 Outriggers Way', 'Ste 401', 'Oxnard', 'CA', '93035', 'Sandoval', 'Arturo', 'T', '888-719-8128', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('94b1d516-a1c3-4df8-ae85-be1f34966601', 'Paul Van Horn Enterprises', '415-328-9870', '825 Mandalay Beach Rd', 'Level 2', 'Oxnard', 'CA', '94402', 'Crocker', 'Patrick', 'T', '415-328-9870', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 'New World Tatoo Parlor', '630-321-9875', '1690 S. El Camino Real', 'Room 2C', 'San Mateo', 'CA', '75224', 'Jozef Jr.', 'JoJo', 'D', '630-321-9875', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'Bertha Mae Jones Innovative Financing', '886-587-0001', '12333 Menard Heights Blvd', 'Ste 1001', 'Palo Alto', 'CA', '94901', 'Sinosky', 'Betty', 'L', '886-587-0001', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('01da50f9-021b-4d03-853a-3fd2c95e207d', 'Pimps-R-US Financial Management, Inc.', '415-912-5570', '96541 Sunset Rise Plaza', 'Ste 2', 'Oxnard', 'CA', '93035', 'Daniels', 'Javier', 'A', '888-719-8100', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('84164388-28ff-4b47-bd63-dd9326d32236', 'I Exist-Only-To-Be-Deleted', '415-912-5570', '985211 Highway 78 East', null, 'Oxnard', 'CA', '93035', 'Gutierrez', 'Monica', 'T', '415-912-5570', 1, '660bb318-649e-470d-9d2b-693bfb0b2744')                                              
+
+                                                       
             INSERT INTO Finance.LoanAgreements
                 (LoanId, FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate, NumberOfInstallments, UserId)
             VALUES

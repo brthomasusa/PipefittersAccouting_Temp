@@ -6,9 +6,9 @@ using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResources
 {
-    public class GetEmployeeDetailQueryDapper
+    public class GetEmployeeDetailQuery
     {
-        public async static Task<OperationResult<EmployeeDetail>> Query(GetEmployee queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<EmployeeDetail>> Query(GetEmployeeParameter queryParameters, DapperContext ctx)
         {
             try
             {

@@ -6,8 +6,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface ILoanAgreementValidationService : IValidationService
     {
-        Task<ValidationResult> IsValidCreateLoanAgreementInfo(LoanAgreementWriteModel writeModel);
+        Task<ValidationResult> IsValidCreateLoanAgreement(LoanAgreementWriteModel writeModel);
 
-        Task<ValidationResult> IsValidDeleteLoanAgreementInfo(LoanAgreementWriteModel writeModel);
+        Task<ValidationResult> IsValidDeleteLoanAgreement(LoanAgreementWriteModel writeModel);
     }
 }

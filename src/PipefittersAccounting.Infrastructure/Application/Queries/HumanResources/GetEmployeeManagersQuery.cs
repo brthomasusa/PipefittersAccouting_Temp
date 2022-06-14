@@ -11,9 +11,9 @@ using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResources
 {
-    public class GetEmployeeManagersQueryDapper
+    public class GetEmployeeManagersQuery
     {
-        public async static Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagers queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<List<EmployeeManager>>> Query(GetEmployeeManagersParameters queryParameters, DapperContext ctx)
         {
             try
             {

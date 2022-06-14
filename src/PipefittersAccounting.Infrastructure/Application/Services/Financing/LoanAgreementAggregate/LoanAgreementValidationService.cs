@@ -23,13 +23,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
             _servicesRegistry.RegisterService("SharedQueryService", sharedQueryService);
         }
 
-        public async Task<ValidationResult> IsValidCreateLoanAgreementInfo(LoanAgreementWriteModel writeModel)
+        public async Task<ValidationResult> IsValidCreateLoanAgreement(LoanAgreementWriteModel writeModel)
         {
             CreateLoanAgreementValidator validator = new(writeModel, _servicesRegistry);
             return await validator.Validate();
         }
 
-        public async Task<ValidationResult> IsValidDeleteLoanAgreementInfo(LoanAgreementWriteModel writeModel)
+        public async Task<ValidationResult> IsValidDeleteLoanAgreement(LoanAgreementWriteModel writeModel)
         {
             DeleteLoanAgreementValidator validator = new(writeModel, _servicesRegistry);
             return await validator.Validate();

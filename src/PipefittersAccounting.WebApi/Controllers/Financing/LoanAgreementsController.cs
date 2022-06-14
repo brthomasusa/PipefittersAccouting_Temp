@@ -14,13 +14,13 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
     [Route("api/{v:apiVersion}/[controller]")]
     public class LoanAgreementsController : ControllerBase
     {
-        private readonly ILogger<FinanciersController> _logger;
+        private readonly ILogger<LoanAgreementsController> _logger;
         private readonly ILoanAgreementQueryService _qrySvc;
         private readonly ILoanAgreementApplicationService _cmdSvc;
 
         public LoanAgreementsController
         (
-            ILogger<FinanciersController> logger,
+            ILogger<LoanAgreementsController> logger,
             ILoanAgreementQueryService queryService,
             ILoanAgreementApplicationService commandService
         )
