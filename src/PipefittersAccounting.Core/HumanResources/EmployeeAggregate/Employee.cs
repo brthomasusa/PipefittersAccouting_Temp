@@ -14,6 +14,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         public Employee
         (
             EntityGuidID employeeId,
+            EmployeeTypeEnum employeeType,
             EntityGuidID supervisorId,
             PersonName employeeName,
             SocialSecurityNumber ssn,
@@ -29,6 +30,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             : this()
         {
             Id = employeeId ?? throw new ArgumentNullException("The employee id is required.");
+            EmployeeType = employeeType;
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             EmployeeName = employeeName ?? throw new ArgumentNullException("An employee name is required.");
             SSN = ssn ?? throw new ArgumentNullException("A social security number is required.");
@@ -40,6 +42,15 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             EmploymentDate = startDate ?? throw new ArgumentNullException("A hire date is required.");
             IsActive = isActive;
             IsSupervisor = isSupervisor;
+        }
+
+        public EmployeeTypeEnum EmployeeType { get; private set; }
+        public void UpdateEmployeeType(EmployeeTypeEnum employeeType)
+        {
+            //TODO Don't allow editing if the account has transactions not compatible with desired new type
+            EmployeeType = employeeType;
+            UpdateLastModifiedDate();
+            CheckValidity();
         }
 
         public Guid SupervisorId { get; private set; }

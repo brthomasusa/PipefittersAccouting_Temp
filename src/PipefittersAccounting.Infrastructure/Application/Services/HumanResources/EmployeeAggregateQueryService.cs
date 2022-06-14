@@ -28,5 +28,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 
         public async Task<OperationResult<Guid>> VerifyEmployeeNameIsUnique(UniqueEmployeeNameParameters queryParameters)
             => await VerifyEmployeeNameIsUniqueQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<int>> GetCountOfEmployeeTimeCards(GetEmployeeParameter queryParameters)
+            => await GetCountOfEmployeeTimeCardsQuery.Query(queryParameters, _dapperCtx);
     }
 }

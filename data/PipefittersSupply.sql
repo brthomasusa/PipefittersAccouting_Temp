@@ -49,9 +49,8 @@ GO
 
 CREATE TABLE HumanResources.EmployeeTypes
 (
-  EmployeeTypeID int IDENTITY NOT NULL,
-  EmployeeTypeName nvarchar(25) NOT NULL,
-  PRIMARY KEY CLUSTERED (EmployeeTypeID)
+  EmployeeTypeID int PRIMARY KEY NOT NULL,
+  EmployeeTypeName nvarchar(25) NOT NULL
 )
 GO
 

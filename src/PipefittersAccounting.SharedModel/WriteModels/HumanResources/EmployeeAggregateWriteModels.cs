@@ -10,6 +10,7 @@ namespace PipefittersAccounting.SharedModel.WriteModels.HumanResources
     public class EmployeeWriteModel : IWriteModel
     {
         public Guid EmployeeId { get; set; }
+        public int EmployeeType { get; set; }
         public Guid SupervisorId { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }

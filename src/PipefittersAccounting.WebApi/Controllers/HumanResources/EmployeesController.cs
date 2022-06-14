@@ -16,13 +16,13 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly IEmployeeAggregateQueryService _qrySvc;
-        private readonly IEmployeeAggregateCommandService _cmdSvc;
+        private readonly IEmployeeAggregateApplicationService _cmdSvc;
 
         public EmployeesController
         (
             ILogger<EmployeesController> logger,
             IEmployeeAggregateQueryService queryService,
-            IEmployeeAggregateCommandService commandService
+            IEmployeeAggregateApplicationService commandService
         )
         {
             _logger = logger;
@@ -88,17 +88,17 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateEmployeeInfo([FromBody] CreateEmployeeInfo writeModel)
+        public async Task<IActionResult> CreateEmployeeInfo([FromBody] EmployeeWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.CreateEmployeeInfo(writeModel);
             if (writeResult.Success)
             {
-                GetEmployeeParameter queryParams = new() { EmployeeID = writeModel.Id };
+                GetEmployeeParameter queryParams = new() { EmployeeID = writeModel.EmployeeId };
                 OperationResult<EmployeeDetail> queryResult = await _qrySvc.GetEmployeeDetails(queryParams);
 
                 if (queryResult.Success)
                 {
-                    return CreatedAtAction(nameof(Details), new { employeeId = writeModel.Id }, queryResult.Result);
+                    return CreatedAtAction(nameof(Details), new { employeeId = writeModel.EmployeeId }, queryResult.Result);
                 }
                 else
                 {

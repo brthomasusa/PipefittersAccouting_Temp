@@ -15,10 +15,59 @@ namespace PipefittersAccounting.IntegrationTests.Base
 {
     public static class TestUtilities
     {
+        public static EmployeeWriteModel GetEmployeeWriteModelCreate() =>
+            new EmployeeWriteModel()
+            {
+                EmployeeId = Guid.NewGuid(),
+                EmployeeType = 1,
+                SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
+                LastName = "Trump",
+                FirstName = "Ivanka",
+                MiddleInitial = "I",
+                SSN = "434679876",
+                Telephone = "555-555-5555",
+                AddressLine1 = "139th Street NW",
+                AddressLine2 = "B1",
+                City = "Edison",
+                StateCode = "NJ",
+                Zipcode = "08837",
+                MaritalStatus = "M",
+                Exemptions = 3,
+                PayRate = 25.00M,
+                StartDate = new DateTime(2022, 2, 13),
+                IsActive = true,
+                IsSupervisor = false
+            };
+
+        public static EmployeeWriteModel GetEmployeeWriteModelEdit() =>
+            new EmployeeWriteModel()
+            {
+                EmployeeId = new Guid("aedc617c-d035-4213-b55a-dae5cdfca366"),
+                EmployeeType = 5,
+                SupervisorId = new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e"),
+                LastName = "Goldberg",
+                FirstName = "Jozef",
+                MiddleInitial = "P",
+                SSN = "036889999",
+                Telephone = "469-321-1234",
+                AddressLine1 = "6667 Melody Lane",
+                AddressLine2 = "Apt 2",
+                City = "Dallas",
+                StateCode = "TX",
+                Zipcode = "75231",
+                MaritalStatus = "S",
+                Exemptions = 1,
+                PayRate = 29.00M,
+                StartDate = new DateTime(2013, 2, 28),
+                IsActive = true,
+                IsSupervisor = true
+            };
+
         public static Employee GetNewEmployee() =>
             new Employee
             (
                 EntityGuidID.Create(Guid.NewGuid()),
+                EmployeeTypeEnum.PurchasingAgent,
                 EntityGuidID.Create(new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E")),
                 PersonName.Create("Dough", "Jonnie", "J"),
                 SocialSecurityNumber.Create("123789901"),
@@ -245,35 +294,6 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 Id = new Guid("84164388-28ff-4b47-bd63-dd9326d32236"),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
-
-
-        // public static LoanAgreement GetLoanAgreementForCreating() =>
-        //     new LoanAgreement
-        //     (
-        //         LoanAgreementEconEvent.Create(EntityGuidID.Create(Guid.NewGuid())),
-        //         EntityGuidID.Create(new Guid("bf19cf34-f6ba-4fb2-b70e-ab19d3371886")),
-        //         LoanAmount.Create(33000),
-        //         InterestRate.Create(.0725M),
-        //         LoanDate.Create(new DateTime(2021, 11, 15)),
-        //         MaturityDate.Create(new DateTime(2022, 11, 15)),
-        //         NumberOfInstallments.Create(12),
-        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-        //         LoanAgreementTestData.GetInstallmentsLoanRepymtScheduleUpdate()
-        //     );
-
-        // public static LoanAgreement GetLoanAgreementForEditing() =>
-        //     new LoanAgreement
-        //     (
-        //         LoanAgreementEconEvent.Create(EntityGuidID.Create(new Guid("0a7181c0-3ce9-4981-9559-157fd8e09cfb"))),
-        //         EntityGuidID.Create(new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a")),
-        //         LoanAmount.Create(33000),
-        //         InterestRate.Create(.0725M),
-        //         LoanDate.Create(new DateTime(2021, 11, 15)),
-        //         MaturityDate.Create(new DateTime(2022, 10, 15)),
-        //         NumberOfInstallments.Create(12),
-        //         EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-        //         GetInstallmentsValidInfo()
-        //     );
 
         public static List<InstallmentRecord> GetInstallmentsValidInfo()
         {

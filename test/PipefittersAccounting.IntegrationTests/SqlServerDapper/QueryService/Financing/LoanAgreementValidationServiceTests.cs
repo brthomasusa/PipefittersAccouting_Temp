@@ -12,8 +12,6 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.IntegrationTests.Base;
 using PipefittersAccounting.Infrastructure.Interfaces;
 
-
-
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
 {
     public class LoanAgreementValidationServiceTests : TestBaseDapper

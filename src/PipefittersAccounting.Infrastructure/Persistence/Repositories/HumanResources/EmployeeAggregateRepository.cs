@@ -62,8 +62,17 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
         {
             try
             {
-                await _dbContext.Employees.AddAsync(entity);
-                return OperationResult<bool>.CreateSuccessResult(true);
+                OperationResult<bool> result = await Exists(entity.Id);
+                if (result.Success)
+                {
+                    string errMsg = $"Create employee failed! There is already an employee in the database with employee id '{entity.Id}'.";
+                    return OperationResult<bool>.CreateFailure(errMsg);
+                }
+                else
+                {
+                    await _dbContext.Employees.AddAsync(entity);
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
             }
             catch (Exception ex)
             {

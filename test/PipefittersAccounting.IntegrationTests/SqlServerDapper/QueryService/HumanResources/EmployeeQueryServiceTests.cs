@@ -129,5 +129,17 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.True(result.Success);
             Assert.Equal(new Guid("9f7b902d-566c-4db6-b07b-716dd4e04340"), result.Result);
         }
+
+        [Fact]
+        public async Task GetCountOfEmployeeTimeCards_EmployeeAggregateQueryService_ShouldReturn2()
+        {
+            GetEmployeeParameter qryParam =
+                new() { EmployeeID = new Guid("6d7f6605-567d-4b2a-9ae7-3736dc6c4f53") };
+
+            OperationResult<int> result = await _queryService.GetCountOfEmployeeTimeCards(qryParam);
+
+            Assert.True(result.Success);
+            Assert.Equal(2, result.Result);
+        }
     }
 }

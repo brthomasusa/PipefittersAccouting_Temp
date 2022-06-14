@@ -68,7 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             return services
-                .AddScoped<IEmployeeAggregateCommandService, EmployeeAggregateApplicationService>()
+                .AddScoped<IEmployeeAggregateApplicationService, EmployeeAggregateApplicationService>()
                 .AddScoped<IFinancierApplicationService, FinancierApplicationService>()
                 .AddScoped<ILoanAgreementApplicationService, LoanAgreementApplicationService>()
                 .AddScoped<ICashAccountApplicationService, CashAccountApplicationService>()

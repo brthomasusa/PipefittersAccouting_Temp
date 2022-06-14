@@ -18,6 +18,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
             Employee employee = new Employee
             (
                 EntityGuidID.Create(Guid.NewGuid()),
+                EmployeeTypeEnum.Maintenance,
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
@@ -43,6 +44,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
             Employee employee = new Employee
             (
                 EntityGuidID.Create(Guid.NewGuid()),
+                EmployeeTypeEnum.Administrator,
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
@@ -353,6 +355,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
             new Employee
             (
                 EntityGuidID.Create(Guid.NewGuid()),
+                EmployeeTypeEnum.Salesperson,
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),

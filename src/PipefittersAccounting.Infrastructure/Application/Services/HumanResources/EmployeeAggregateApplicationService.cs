@@ -9,7 +9,7 @@ using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResources
 {
-    public class EmployeeAggregateApplicationService : IEmployeeAggregateCommandService
+    public class EmployeeAggregateApplicationService : IEmployeeAggregateApplicationService
     {
         private readonly IEmployeeAggregateRepository _employeeRepo;
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult<bool>> CreateEmployeeInfo(CreateEmployeeInfo writeModel) =>
+        public async Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel) =>
             await EmployeeCreateCommand.Execute(writeModel, _employeeRepo, _unitOfWork);
 
         public async Task<OperationResult<bool>> EditEmployeeInfo(EditEmployeeInfo writeModel) =>

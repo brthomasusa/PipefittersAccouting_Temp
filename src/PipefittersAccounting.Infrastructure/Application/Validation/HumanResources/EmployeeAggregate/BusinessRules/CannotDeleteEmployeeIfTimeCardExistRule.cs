@@ -8,27 +8,26 @@ using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResources.EmployeeAggregate.BusinessRules
 {
-    public class VerifyEmployeeNameIsUniqueRule : BusinessRule<EmployeeWriteModel>
+    public class CannotDeleteEmployeeIfTimeCardExistRule : BusinessRule<EmployeeWriteModel>
     {
         private readonly IEmployeeAggregateQueryService _qrySvc;
 
-        public VerifyEmployeeNameIsUniqueRule(IEmployeeAggregateQueryService qrySvc)
+        public CannotDeleteEmployeeIfTimeCardExistRule(IEmployeeAggregateQueryService qrySvc)
             => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(EmployeeWriteModel employee)
         {
             ValidationResult validationResult = new();
 
-            UniqueEmployeeNameParameters queryParameters =
-                new() { LastName = employee.LastName, FirstName = employee.FirstName, MiddleInitial = employee.MiddleInitial };
+            GetEmployeeParameter queryParameters =
+                new() { EmployeeID = employee.EmployeeId };
 
-            OperationResult<Guid> result =
-                await _qrySvc.VerifyEmployeeNameIsUnique(queryParameters);
+            OperationResult<int> result =
+                await _qrySvc.GetCountOfEmployeeTimeCards(queryParameters);
 
             if (result.Success)
             {
-                // An empty guid indicates that the name is unique
-                if (result.Result == Guid.Empty || result.Result == employee.EmployeeId)
+                if (result.Result == 0)
                 {
                     validationResult.IsValid = true;
 
@@ -39,10 +38,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResou
                 }
                 else
                 {
-                    string msg = @"An employee with the same last name, first name, 
-                                   and middle intial is alread in the database.";
-
-
+                    string msg = "Delete employee failed! Can not delete an employee with time cards.";
                     validationResult.Messages.Add(msg);
                 }
             }

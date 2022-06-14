@@ -12,16 +12,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
     {
         public static async Task<OperationResult<bool>> Execute
         (
-            CreateEmployeeInfo model,
+            EmployeeWriteModel model,
             IEmployeeAggregateRepository repo,
             IUnitOfWork unitOfWork
         )
         {
-            OperationResult<bool> result = await repo.Exists(model.Id);
+            OperationResult<bool> result = await repo.Exists(model.EmployeeId);
 
             if (result.Success)
             {
-                string errMsg = $"Can not create this employee, an employee with id '{model.Id}' already exists!";
+                string errMsg = $"Can not create this employee, an employee with id '{model.EmployeeId}' already exists!";
                 return OperationResult<bool>.CreateFailure(errMsg);
             }
 
@@ -43,7 +43,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
             {
                 Employee employee = new Employee
                 (
-                    EntityGuidID.Create(model.Id),
+                    EntityGuidID.Create(model.EmployeeId),
+                    (EmployeeTypeEnum)Enum.ToObject(typeof(EmployeeTypeEnum), model.EmployeeType),
                     EntityGuidID.Create(model.SupervisorId),
                     PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial),
                     SocialSecurityNumber.Create(model.SSN),
