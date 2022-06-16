@@ -24,7 +24,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     ee.Telephone, ee.IsActive, ee.IsSupervisor,
                     CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName               
                 FROM HumanResources.Employees ee
-                INNER JOIN
+                LEFT JOIN
                 (
                     SELECT 
                         EmployeeId, LastName, FirstName, MiddleInitial 

@@ -52,7 +52,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             CheckValidity();
         }
 
-        public Guid FinancierId { get; private set; }
+        public Guid FinancierId { get; init; }
 
         public virtual LoanAmount LoanAmount { get; private set; }
 

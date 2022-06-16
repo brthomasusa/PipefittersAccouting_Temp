@@ -1,68 +1,62 @@
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Core.Interfaces.HumanResources;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResources
 {
-    public class EmployeeCreateCommand
+    public class EmployeeCreateCommand : WriteCommandHandler<EmployeeWriteModel,
+                                                            IEmployeeAggregateRepository,
+                                                            IEmployeeAggregateValidationService,
+                                                            Employee>
     {
-        public static async Task<OperationResult<bool>> Execute
+        public EmployeeCreateCommand
         (
             EmployeeWriteModel model,
             IEmployeeAggregateRepository repo,
+            IEmployeeAggregateValidationService validationService,
             IUnitOfWork unitOfWork
-        )
+        ) : base(model, repo, validationService, unitOfWork)
         {
-            OperationResult<bool> result = await repo.Exists(model.EmployeeId);
 
-            if (result.Success)
-            {
-                string errMsg = $"Can not create this employee, an employee with id '{model.EmployeeId}' already exists!";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
+        }
 
-            OperationResult<Guid> dupeAddressResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
-            if (dupeAddressResult.Result != Guid.Empty)
-            {
-                string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
+        protected override async Task<ValidationResult> Validate()
+        {
+            return await ValidationService.IsValidCreateEmployeeInfo(WriteModel);
+        }
 
-            OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
-            if (dupeSSN.Result != Guid.Empty)
-            {
-                string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
-                return OperationResult<bool>.CreateFailure(errMsg);
-            }
-
+        protected override async Task<OperationResult<bool>> ProcessCommand()
+        {
             try
             {
                 Employee employee = new Employee
                 (
-                    EntityGuidID.Create(model.EmployeeId),
-                    (EmployeeTypeEnum)Enum.ToObject(typeof(EmployeeTypeEnum), model.EmployeeType),
-                    EntityGuidID.Create(model.SupervisorId),
-                    PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial),
-                    SocialSecurityNumber.Create(model.SSN),
-                    PhoneNumber.Create(model.Telephone),
-                    Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode),
-                    MaritalStatus.Create(model.MaritalStatus),
-                    TaxExemption.Create(model.Exemptions),
-                    PayRate.Create(model.PayRate),
-                    StartDate.Create(model.StartDate),
-                    model.IsActive,
-                    model.IsSupervisor
+                    EntityGuidID.Create(WriteModel.EmployeeId),
+                    (EmployeeTypeEnum)Enum.ToObject(typeof(EmployeeTypeEnum), WriteModel.EmployeeType),
+                    EntityGuidID.Create(WriteModel.SupervisorId),
+                    PersonName.Create(WriteModel.LastName, WriteModel.FirstName, WriteModel.MiddleInitial),
+                    SocialSecurityNumber.Create(WriteModel.SSN),
+                    PhoneNumber.Create(WriteModel.Telephone),
+                    Address.Create(WriteModel.AddressLine1, WriteModel.AddressLine2, WriteModel.City, WriteModel.StateCode, WriteModel.Zipcode),
+                    MaritalStatus.Create(WriteModel.MaritalStatus),
+                    TaxExemption.Create(WriteModel.Exemptions),
+                    PayRate.Create(WriteModel.PayRate),
+                    StartDate.Create(WriteModel.StartDate),
+                    WriteModel.IsActive,
+                    WriteModel.IsSupervisor
                 );
 
-                OperationResult<bool> addResult = await repo.AddAsync(employee);
+                OperationResult<bool> addResult = await Repository.AddAsync(employee);
 
                 if (addResult.Success)
                 {
-                    await unitOfWork.Commit();
+                    await UnitOfWork.Commit();
                     return OperationResult<bool>.CreateSuccessResult(true);
                 }
                 else

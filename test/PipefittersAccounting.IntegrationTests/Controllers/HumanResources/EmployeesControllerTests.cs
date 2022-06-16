@@ -29,7 +29,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         [Fact]
         public async Task List_ShouldReturnAllEmployees_ShouldSucceed()
         {
-            var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 15 };
 
             var queryParams = new Dictionary<string, string?>
             {
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             List<EmployeeListItem> response = await _client
                 .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams));
 
-            Assert.Equal(9, response.Count);
+            Assert.Equal(13, response.Count);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             var queryParams = new Dictionary<string, string?>
             {
                 ["page"] = "1",
-                ["pageSize"] = "10"
+                ["pageSize"] = "15"
             };
 
             using var response = await _client.GetAsync(QueryHelpers.AddQueryString($"{_urlRoot}/employees/list", queryParams),
@@ -59,7 +59,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             var jsonResponse = await response.Content.ReadAsStreamAsync();
             var employeeListItems = await JsonSerializer.DeserializeAsync<List<EmployeeListItem>>(jsonResponse, _options);
 
-            Assert.Equal(9, employeeListItems.Count);
+            Assert.Equal(13, employeeListItems.Count);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             var jsonResponse = await response.Content.ReadAsStreamAsync();
             var employeeManagers = await JsonSerializer.DeserializeAsync<List<EmployeeManager>>(jsonResponse, _options);
 
-            Assert.Equal(3, employeeManagers.Count);
+            Assert.Equal(6, employeeManagers.Count);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/create";
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -122,7 +122,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         [Fact]
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromString()
         {
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
             var createEmployee = JsonSerializer.Serialize(model);
             var requestContent = new StringContent(createEmployee, Encoding.UTF8, "application/json");
 
@@ -141,7 +141,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromRequestMsg()
         {
             string uri = $"{_urlRoot}/employees/create";
-            CreateEmployeeInfo model = TestUtilities.GetCreateEmployeeInfo();
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
             var createEmployee = JsonSerializer.Serialize(model);
 
             var request = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -163,7 +163,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldEdit_Employee_EditEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/edit";
-            EditEmployeeInfo model = TestUtilities.GetEditEmployeeInfo();
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
             model.LastName = "Banski";
             model.FirstName = "Rhys";
 
@@ -186,12 +186,11 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             }
         }
 
-        [Fact]
+        [Fact(Skip = "No deletable employees")]
         public async Task ShouldDelete_Employee_DeleteEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/delete";
             DeleteEmployeeInfo model = TestUtilities.GetDeleteEmployeeInfo();
-
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

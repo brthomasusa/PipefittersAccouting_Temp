@@ -1,6 +1,7 @@
 #pragma warning disable CS8600
 
 using Microsoft.EntityFrameworkCore;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
@@ -70,6 +71,8 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
                 }
                 else
                 {
+                    ExternalAgent agent = new(EntityGuidID.Create(entity.Id), AgentTypeEnum.Employee);
+                    await _dbContext.ExternalAgents.AddAsync(agent);
                     await _dbContext.Employees.AddAsync(entity);
                     return OperationResult<bool>.CreateSuccessResult(true);
                 }

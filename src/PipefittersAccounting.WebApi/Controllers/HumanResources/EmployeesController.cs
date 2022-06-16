@@ -117,7 +117,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         }
 
         [HttpPut("edit")]
-        public async Task<IActionResult> EditEmployeeInfo([FromBody] EditEmployeeInfo writeModel)
+        public async Task<IActionResult> EditEmployeeInfo([FromBody] EmployeeWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.EditEmployeeInfo(writeModel);
 
@@ -138,7 +138,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
 
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteEmployeeInfo([FromBody] DeleteEmployeeInfo writeModel)
+        public async Task<IActionResult> DeleteEmployeeInfo([FromBody] EmployeeWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.DeleteEmployeeInfo(writeModel);
 

@@ -2,68 +2,59 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResources
 {
-    public class EmployeeEditCommand
+    public class EmployeeEditCommand : WriteCommandHandler<EmployeeWriteModel,
+                                                           IEmployeeAggregateRepository,
+                                                           IEmployeeAggregateValidationService,
+                                                           Employee>
     {
-        public static async Task<OperationResult<bool>> Execute
+        public EmployeeEditCommand
         (
-            EditEmployeeInfo model,
+            EmployeeWriteModel model,
             IEmployeeAggregateRepository repo,
+            IEmployeeAggregateValidationService validationService,
             IUnitOfWork unitOfWork
-        )
+        ) : base(model, repo, validationService, unitOfWork)
+        {
+
+        }
+
+        protected override async Task<ValidationResult> Validate()
+        {
+            return await ValidationService.IsValidEditEmployeeInfo(WriteModel);
+        }
+
+        protected override async Task<OperationResult<bool>> ProcessCommand()
         {
             try
             {
-                OperationResult<bool> result = await repo.Exists(model.Id);
-
-                if (!result.Success)
-                {
-                    string errMsg = $"Update failed, an employee with id: {model.Id} could not be found!";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                OperationResult<Guid> dupeNameResult = await repo.CheckForDuplicateEmployeeName(model.LastName, model.FirstName, model.MiddleInitial);
-
-                if (dupeNameResult.Result != Guid.Empty && dupeNameResult.Result != model.Id)
-                {
-
-                    string errMsg = $"An employee name {model.FirstName} {model.MiddleInitial} {model.LastName} is already in the database.";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                OperationResult<Guid> dupeSSN = await repo.CheckForDuplicateSSN(model.SSN);
-
-                if (dupeSSN.Result != Guid.Empty && dupeSSN.Result != model.Id)
-                {
-                    string errMsg = $"An employee with social security number: {model.SSN} is already in the database.";
-                    return OperationResult<bool>.CreateFailure(errMsg);
-                }
-
-                OperationResult<Employee> getResult = await repo.GetByIdAsync(model.Id);
+                OperationResult<Employee> getResult = await Repository.GetByIdAsync(WriteModel.EmployeeId);
 
                 if (getResult.Success)
                 {
                     Employee employee = getResult.Result;
 
-                    employee.UpdateSupervisorId(EntityGuidID.Create(model.SupervisorId));
-                    employee.UpdateEmployeeName(PersonName.Create(model.LastName, model.FirstName, model.MiddleInitial));
-                    employee.UpdateSSN(SocialSecurityNumber.Create(model.SSN));
-                    employee.UpdateEmployeePhoneNumber(PhoneNumber.Create(model.Telephone));
-                    employee.UpdateEmployeeAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
-                    employee.UpdateMaritalStatus(MaritalStatus.Create(model.MaritalStatus));
-                    employee.UpdateTaxExemptions(TaxExemption.Create(model.Exemptions));
-                    employee.UpdateEmployeePayRate(PayRate.Create(model.PayRate));
-                    employee.UpdateEmploymentDate(StartDate.Create(model.StartDate));
-                    employee.UpdateEmployeeStatus(model.IsActive);
-                    employee.UpdateIsSupervisor(model.IsSupervisor);
+                    employee.UpdateSupervisorId(EntityGuidID.Create(WriteModel.SupervisorId));
+                    employee.UpdateEmployeeName(PersonName.Create(WriteModel.LastName, WriteModel.FirstName, WriteModel.MiddleInitial));
+                    employee.UpdateSSN(SocialSecurityNumber.Create(WriteModel.SSN));
+                    employee.UpdateEmployeePhoneNumber(PhoneNumber.Create(WriteModel.Telephone));
+                    employee.UpdateEmployeeAddress(Address.Create(WriteModel.AddressLine1, WriteModel.AddressLine2, WriteModel.City, WriteModel.StateCode, WriteModel.Zipcode));
+                    employee.UpdateMaritalStatus(MaritalStatus.Create(WriteModel.MaritalStatus));
+                    employee.UpdateTaxExemptions(TaxExemption.Create(WriteModel.Exemptions));
+                    employee.UpdateEmployeePayRate(PayRate.Create(WriteModel.PayRate));
+                    employee.UpdateEmploymentDate(StartDate.Create(WriteModel.StartDate));
+                    employee.UpdateEmployeeStatus(WriteModel.IsActive);
+                    employee.UpdateIsSupervisor(WriteModel.IsSupervisor);
 
-                    repo.Update(employee);
-                    await unitOfWork.Commit();
+                    Repository.Update(employee);
+                    await UnitOfWork.Commit();
 
                     return OperationResult<bool>.CreateSuccessResult(true);
                 }

@@ -32,7 +32,7 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             UserId = userId ?? throw new ArgumentNullException("The user id is required.");
         }
 
-        public virtual EntityGuidID FinancierId { get; private set; }
+        public virtual EntityGuidID FinancierId { get; init; }
 
         public virtual SharesIssured SharesIssured { get; private set; }
         public void UpdateSharesIssured(SharesIssured value)

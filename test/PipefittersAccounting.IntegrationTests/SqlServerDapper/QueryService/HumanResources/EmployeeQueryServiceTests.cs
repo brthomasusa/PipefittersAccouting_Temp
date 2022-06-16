@@ -59,11 +59,11 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         [Fact]
         public async Task GetEmployeeListItem_EmployeeAggregateQueryService_EmployeeListItems_ReadModel()
         {
-            GetEmployeesParameters queryParameters = new GetEmployeesParameters() { Page = 1, PageSize = 10 };
+            GetEmployeesParameters queryParameters = new GetEmployeesParameters() { Page = 1, PageSize = 15 };
             OperationResult<PagedList<EmployeeListItem>> result = await _queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(9, result.Result.Count);
+            Assert.Equal(13, result.Result.Count);
         }
 
         [Fact]

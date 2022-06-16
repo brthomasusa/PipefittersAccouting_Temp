@@ -43,7 +43,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             CheckValidity();
         }
 
-        public Guid LoanId { get; private set; }
+        public Guid LoanId { get; init; }
 
         public virtual InstallmentNumber InstallmentNumber { get; private set; }
         public void UpdateInstallmentNumber(InstallmentNumber value)

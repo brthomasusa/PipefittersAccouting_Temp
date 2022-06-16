@@ -46,7 +46,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
             CheckValidity();
         }
 
-        public Guid CashAccountId { get; private set; }
+        public Guid CashAccountId { get; init; }
 
         public virtual CashTransactionDate CashTransactionDate { get; private set; }
         public void UpdateCashTransactionDate(CashTransactionDate transactionDate)

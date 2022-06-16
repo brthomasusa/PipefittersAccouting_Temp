@@ -27,7 +27,7 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
             UserId = userId;
         }
 
-        public virtual Guid StockId { get; private set; }
+        public virtual Guid StockId { get; init; }
 
         public virtual DividendDeclarationDate DividendDeclarationDate { get; private set; }
         public void UpdateDividendDeclarationDate(DividendDeclarationDate value)

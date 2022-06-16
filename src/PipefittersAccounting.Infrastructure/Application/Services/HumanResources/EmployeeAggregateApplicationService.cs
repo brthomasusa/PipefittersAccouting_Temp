@@ -11,22 +11,38 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 {
     public class EmployeeAggregateApplicationService : IEmployeeAggregateApplicationService
     {
+        private readonly IEmployeeAggregateValidationService _validationService;
         private readonly IEmployeeAggregateRepository _employeeRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeAggregateApplicationService(IEmployeeAggregateRepository repo, IUnitOfWork unitOfWork)
+        public EmployeeAggregateApplicationService
+        (
+            IEmployeeAggregateValidationService validationService,
+            IEmployeeAggregateRepository repo,
+            IUnitOfWork unitOfWork
+        )
         {
+            _validationService = validationService;
             _employeeRepo = repo;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel) =>
-            await EmployeeCreateCommand.Execute(writeModel, _employeeRepo, _unitOfWork);
+        public async Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
+        {
+            EmployeeCreateCommand createCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await createCommand.Process();
+        }
 
-        public async Task<OperationResult<bool>> EditEmployeeInfo(EditEmployeeInfo writeModel) =>
-            await EmployeeEditCommand.Execute(writeModel, _employeeRepo, _unitOfWork);
+        public async Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel)
+        {
+            EmployeeEditCommand editCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await editCommand.Process();
+        }
 
-        public async Task<OperationResult<bool>> DeleteEmployeeInfo(DeleteEmployeeInfo writeModel) =>
-            await EmployeeDeleteCommand.Execute(writeModel, _employeeRepo, _unitOfWork);
+        public async Task<OperationResult<bool>> DeleteEmployeeInfo(EmployeeWriteModel writeModel)
+        {
+            EmployeeDeleteCommand deleteCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await deleteCommand.Process();
+        }
     }
 }

@@ -12,10 +12,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
         {
             entity.ToTable("Employees", schema: "HumanResources");
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.SSN, "idx_Employees$SSN").IsUnique().IsUnique();
-            entity.HasIndex(e => e.SupervisorId, "idx_Employees$SupervisorId");
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("EmployeeId").ValueGeneratedNever();
+            entity.Property(p => p.EmployeeType).HasColumnType("INT").HasColumnName("EmployeeTypeId").IsRequired();
             entity.Property(p => p.SupervisorId)
                 .HasColumnType("UNIQUEIDENTIFIER")
                 .HasColumnName("SupervisorId")

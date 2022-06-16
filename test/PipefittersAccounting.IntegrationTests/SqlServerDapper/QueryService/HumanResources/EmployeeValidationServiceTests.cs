@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Infrastructure.Application.Services;
@@ -6,7 +5,6 @@ using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.Infrastructure.Application.Validation.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.HumanResources.EmployeeAggregate.BusinessRules;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
@@ -121,29 +119,80 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
 
         /*                               Validators                                     */
 
+        [Fact]
+        public async Task Validate_CreateEmployeeValidator_ShouldSucceed()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
+            CreateEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
+            Assert.True(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_CreateEmployeeValidator_ShouldReturnFalse()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
+            model.LastName = "Erickson";
+            model.FirstName = "Gail";
+            model.MiddleInitial = "A";
+            CreateEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate(); ;
 
+            Assert.False(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_EditEmployeeValidator_ShouldSucceed()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
+            EditEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
+            Assert.True(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_EditEmployeeValidator_InvalidEmployeeID_ShouldReturnFalse()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
+            model.EmployeeId = System.Guid.NewGuid();
 
+            EditEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
+            Assert.False(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_EditEmployeeValidator_DuplicateName_ShouldReturnFalse()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
+            model.LastName = "Erickson";
+            model.FirstName = "Gail";
+            model.MiddleInitial = "A";
 
+            EditEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
+            Assert.False(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_DeleteEmployeeValidator_HasTimeCards_ShouldReturnFalse()
+        {
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
 
+            DeleteEmployeeValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
-
-
-
-
+            Assert.False(validationResult.IsValid);
+        }
     }
 }
