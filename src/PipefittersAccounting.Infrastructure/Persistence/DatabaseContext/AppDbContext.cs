@@ -23,6 +23,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.DatabaseContext
         public DbSet<EconomicResource> EconomicResources { get; set; }
         public DbSet<DomainUser> DomainUsers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<TimeCard> TimeCards { get; set; }
         public DbSet<Financier> Financiers { get; set; }
         public DbSet<LoanAgreement> LoanAgreements { get; set; }
         public DbSet<LoanInstallment> LoanInstallments { get; set; }

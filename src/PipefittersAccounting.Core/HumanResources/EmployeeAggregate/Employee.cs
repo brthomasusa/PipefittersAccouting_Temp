@@ -3,12 +3,14 @@
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-using PipefittersAccounting.SharedKernel.Interfaces;
+using PipefittersAccounting.SharedKernel.Utilities;
 
 namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
 {
     public class Employee : AggregateRoot<Guid>
     {
+        private List<TimeCard> _timeCards = new();
+
         protected Employee() { }
 
         public Employee
@@ -139,6 +141,89 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         {
             IsSupervisor = value;
             UpdateLastModifiedDate();
+        }
+
+        public virtual IReadOnlyCollection<TimeCard> TimeCards => _timeCards.ToList();
+
+        public OperationResult<bool> AddTimeCard
+        (
+            EntityGuidID timeCardId,
+            EntityGuidID supervisorId,
+            EntityDate payPeriodEnded,
+            DecimalNotNegative regularHours,
+            DecimalNotNegative overtimeHours,
+            EntityGuidID userId
+        )
+        {
+            try
+            {
+                _timeCards.Add(new TimeCard
+                (
+                    timeCardId,
+                    EntityGuidID.Create(this.Id),
+                    supervisorId,
+                    payPeriodEnded,
+                    regularHours,
+                    overtimeHours,
+                    userId
+                ));
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> EditTimeCard
+        (
+            EntityGuidID timeCardId,
+            EntityGuidID supervisorId,
+            EntityDate payPeriodEnded,
+            DecimalNotNegative regularHours,
+            DecimalNotNegative overtimeHours,
+            EntityGuidID userId
+        )
+        {
+            try
+            {
+                TimeCard? timeCard = _timeCards.Find(x => x.Id == timeCardId);
+
+                if (timeCard is null)
+                    return OperationResult<bool>.CreateFailure($"Edit failed! Unable to locate a time card with id '{timeCardId}'");
+
+                timeCard.UpdateSupervisorId(supervisorId);
+                timeCard.UpdatePayPeriodEnded(payPeriodEnded);
+                timeCard.UpdateRegularHours(regularHours);
+                timeCard.UpdateOvertimeHours(overtimeHours);
+                timeCard.UpdateUserId(userId);
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> DeleteTimeCard(EntityGuidID timeCardId)
+        {
+            try
+            {
+                TimeCard? timeCard = _timeCards.Find(x => x.Id == timeCardId);
+
+                if (timeCard is null)
+                    return OperationResult<bool>.CreateFailure($"Delete failed! Unable to locate a time card with id '{timeCardId}'");
+
+                _timeCards.Remove(timeCard);
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
         }
     }
 }

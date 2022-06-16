@@ -12,6 +12,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
         {
             entity.ToTable("Employees", schema: "HumanResources");
             entity.HasKey(e => e.Id);
+            entity.HasMany<TimeCard>(p => p.TimeCards).WithOne().HasForeignKey(p => p.EmployeeId);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("EmployeeId").ValueGeneratedNever();
             entity.Property(p => p.EmployeeType).HasColumnType("INT").HasColumnName("EmployeeTypeId").IsRequired();

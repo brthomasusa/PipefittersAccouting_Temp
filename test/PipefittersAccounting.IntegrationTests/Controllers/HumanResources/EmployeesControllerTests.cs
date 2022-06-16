@@ -190,7 +190,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldDelete_Employee_DeleteEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/delete";
-            DeleteEmployeeInfo model = TestUtilities.GetDeleteEmployeeInfo();
+            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

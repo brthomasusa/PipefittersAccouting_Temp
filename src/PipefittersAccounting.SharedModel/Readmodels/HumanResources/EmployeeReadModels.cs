@@ -52,4 +52,20 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid ManagerId { get; set; }
         public string? ManagerFullName { get; set; }
     }
+
+    public class ExemptionLookUp
+    {
+        public int NumberOfExemptions { get; set; }
+        public decimal ExemptionAmount { get; set; }
+    }
+
+    public class FedWithHolding
+    {
+        public string? MaritalStatus { get; set; }
+        public int FederalTaxBracket { get; set; }
+        public decimal LowerLimit { get; set; }
+        public decimal UpperLimit { get; set; }
+        public decimal TaxRate { get; set; }
+        public decimal BracketBaseAmount { get; set; }
+    }
 }

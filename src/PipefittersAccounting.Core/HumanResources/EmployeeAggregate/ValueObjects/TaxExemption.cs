@@ -20,9 +20,9 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjec
 
         private static void CheckValidity(int value)
         {
-            if (value < 0)
+            if (value < 0 || value > 11)
             {
-                throw new ArgumentException("Number of exemptions must be greater than or equal to zero.", nameof(value));
+                throw new ArgumentException("Number of exemptions must be between zero and eleven.", nameof(value));
             }
         }
     }
