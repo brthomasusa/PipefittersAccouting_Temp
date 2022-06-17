@@ -49,7 +49,6 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         public EmployeeTypeEnum EmployeeType { get; private set; }
         public void UpdateEmployeeType(EmployeeTypeEnum employeeType)
         {
-            //TODO Don't allow editing if the account has transactions not compatible with desired new type
             EmployeeType = employeeType;
             UpdateLastModifiedDate();
             CheckValidity();

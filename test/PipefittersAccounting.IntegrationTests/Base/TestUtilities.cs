@@ -63,53 +63,6 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 IsSupervisor = true
             };
 
-        public static Employee GetNewEmployee() =>
-            new Employee
-            (
-                EntityGuidID.Create(Guid.NewGuid()),
-                EmployeeTypeEnum.PurchasingAgent,
-                EntityGuidID.Create(new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E")),
-                PersonName.Create("Dough", "Jonnie", "J"),
-                SocialSecurityNumber.Create("123789901"),
-                PhoneNumber.Create("817-987-1234"),
-                Address.Create("123 Main Plaza", "Unit 54", "Fort Worth", "TX", "78965"),
-                MaritalStatus.Create("M"),
-                TaxExemption.Create(5),
-                PayRate.Create(40M),
-                StartDate.Create(new DateTime(1998, 12, 2)),
-                true,
-                true
-            );
-
-
-        public static EmployeeDetail GetEmployeeDetail() =>
-            new()
-            {
-                EmployeeId = new Guid("aedc617c-d035-4213-b55a-dae5cdfca366"),
-                SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
-                ManagerLastName = "Sanchez",
-                ManagerFirstName = "Ken",
-                ManagerMiddleInitial = "J",
-                ManagerFullName = "Ken J Sanchez",
-                LastName = "Goldberg",
-                FirstName = "Jozef",
-                MiddleInitial = "P",
-                EmployeeFullName = "Jozef P Goldberg",
-                SSN = "036889999",
-                Telephone = "469-321-1234",
-                AddressLine1 = "6667 Melody Lane",
-                AddressLine2 = "Apt 2",
-                City = "Dallas",
-                StateCode = "TX",
-                Zipcode = "75231",
-                MaritalStatus = "S",
-                Exemptions = 1,
-                PayRate = 29M,
-                StartDate = new DateTime(2013, 2, 28),
-                IsActive = true,
-                IsSupervisor = false
-            };
-
         public static Financier GetFinancierForCreating() =>
             new Financier
             (
@@ -122,17 +75,30 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 true
             );
 
-        public static Financier GetFinancierForEditing() =>
-            new Financier
-            (
-                    EntityGuidID.Create(new Guid("12998229-7ede-4834-825a-0c55bde75695")),
-                    OrganizationName.Create("Arturo Sandoval"),
-                    PhoneNumber.Create("888-719-8128"),
-                    Address.Create("5232 Outriggers Way", "Ste 401", "Oxnard", "CA", "93035"),
-                    PointOfContact.Create("Arturo", "Sandoval", "T", "888-719-8128"),
-                    EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
-                    true
-            );
+        public static TimeCardWriteModel GetTimeCardForCreate() =>
+            new TimeCardWriteModel()
+            {
+                TimeCardId = EntityGuidID.Create(new Guid("f9fedab5-668d-4f08-b4d2-7fb4d464f252")),
+                EmployeeId = EntityGuidID.Create(new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52")),
+                SupervisorId = EntityGuidID.Create(new Guid("aedc617c-d035-4213-b55a-dae5cdfca366")),
+                PayPeriodEnded = new DateTime(2022, 3, 31),
+                RegularHours = 184,
+                OvertimeHours = 40,
+                UserId = EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+            };
+
+
+        public static TimeCardWriteModel GetTimeCardForEdit() =>
+            new TimeCardWriteModel()
+            {
+                TimeCardId = EntityGuidID.Create(new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1")),
+                EmployeeId = EntityGuidID.Create(new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52")),
+                SupervisorId = EntityGuidID.Create(new Guid("aedc617c-d035-4213-b55a-dae5cdfca366")),
+                PayPeriodEnded = new DateTime(2022, 2, 28),
+                RegularHours = 180,
+                OvertimeHours = 0,
+                UserId = EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
+            };
 
         public static List<Financier> GetFinanciers() =>
             new List<Financier>()
@@ -290,14 +256,5 @@ namespace PipefittersAccounting.IntegrationTests.Base
 
             return pymtSchedule;
         }
-
-
-
-
-
-
-
-
-
     }
 }

@@ -5,8 +5,20 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid EmployeeID { get; set; }
     }
 
+    public class GetTimeCardParameter
+    {
+        public Guid TimeCardId { get; set; }
+    }
+
     public class GetEmployeesParameters
     {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
+
+    public class GetTimeCardsWithPagingInfoParameter
+    {
+        public Guid EmployeeId { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
     }

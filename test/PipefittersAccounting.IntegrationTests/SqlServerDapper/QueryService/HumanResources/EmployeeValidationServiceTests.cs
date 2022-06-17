@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Infrastructure.Application.Services;
@@ -116,6 +117,71 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.False(validationResult.IsValid);
         }
 
+        [Fact]
+        public async Task Validate_VerifyPayPeriodEndedDateIsMostRecentRule_Has2TimeCards_ShouldReturnTrue()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            VerifyPayPeriodEndedDateIsMostRecentRule rule = new(_employeeQueryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyPayPeriodEndedDateIsMostRecentRule_Has2TimeCards_DuplicateDate_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.PayPeriodEnded = new System.DateTime(2022, 2, 28);    // Invalid; date from previous pay period
+
+            VerifyPayPeriodEndedDateIsMostRecentRule rule = new(_employeeQueryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyPayPeriodEndedDateIsMostRecentRule_Has2TimeCards_NotEndOfMonth_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.PayPeriodEnded = new System.DateTime(2022, 3, 28);    // Invalid; date from previous pay period
+
+            VerifyPayPeriodEndedDateIsMostRecentRule rule = new(_employeeQueryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyEmployeeSupervisorLinkRule_ShouldReturnTrue()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+
+            VerifyEmployeeSupervisorLinkRule rule = new(_employeeQueryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_VerifyEmployeeSupervisorLinkRule_InvaldiSupvID_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.SupervisorId = new Guid("5c60f693-bef5-e011-a485-80ee7300c695");
+
+            VerifyEmployeeSupervisorLinkRule rule = new(_employeeQueryService);
+
+            ValidationResult validationResult = await rule.Validate(model);
+
+            Assert.False(validationResult.IsValid);
+        }
+
+
+
+
 
         /*                               Validators                                     */
 
@@ -194,5 +260,68 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
 
             Assert.False(validationResult.IsValid);
         }
+
+        [Fact]
+        public async Task Validate_CreateTimeCardValidator_ShouldSucceed()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            CreateTimeCardValidator validator = new(model, _registry);
+
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.True(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateTimeCardValidator_InvaldiEmpoyeeID_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.EmployeeId = new Guid("6d7f6605-567d-4b2a-9ae7-3736dc6c4f53");
+
+            CreateTimeCardValidator validator = new(model, _registry);
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateTimeCardValidator_InvaldiSupvID_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.SupervisorId = new Guid("5c60f693-bef5-e011-a485-80ee7300c695");
+
+            CreateTimeCardValidator validator = new(model, _registry);
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateTimeCardValidator_DuplicateDate_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.PayPeriodEnded = new System.DateTime(2022, 2, 28);    // Invalid; date from previous pay period
+
+            CreateTimeCardValidator validator = new(model, _registry);
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_CreateTimeCardValidator_NotEndOfMonth_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            model.PayPeriodEnded = new System.DateTime(2022, 3, 28);    // Invalid; date from previous pay period
+
+            CreateTimeCardValidator validator = new(model, _registry);
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.False(validationResult.IsValid);
+        }
+
+
+
+
     }
 }

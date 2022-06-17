@@ -53,6 +53,41 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public string? ManagerFullName { get; set; }
     }
 
+    public class TimeCardDetail
+    {
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string? EmployeeFullName { get; set; }
+        public Guid SupervisorId { get; set; }
+        public string? ManagerFullName { get; set; }
+        public string? MaritalStatus { get; set; }
+        public int Exemptions { get; set; }
+        public decimal PayRate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime PayPeriodEnded { get; set; }
+        public int RegularHours { get; set; }
+        public int OvertimeHours { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+    }
+
+    public class TimeCardListItem
+    {
+        public Guid TimeCardId { get; set; }
+        public string? ManagerFullName { get; set; }
+        public DateTime PayPeriodEnded { get; set; }
+        public int RegularHours { get; set; }
+        public int OvertimeHours { get; set; }
+    }
+
+    public class TimeCardVerification
+    {
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public Guid SupervisorId { get; set; }
+    }
+
     public class ExemptionLookUp
     {
         public int NumberOfExemptions { get; set; }

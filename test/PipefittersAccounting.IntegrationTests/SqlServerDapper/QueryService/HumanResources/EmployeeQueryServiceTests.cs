@@ -141,5 +141,73 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.True(result.Success);
             Assert.Equal(2, result.Result);
         }
+
+        [Fact]
+        public async Task GetEmployeeTimeCardDetails_EmployeeAggregateQueryService_ShouldReturnTrue()
+        {
+            GetTimeCardParameter qryParam =
+                new() { TimeCardId = new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1") };
+
+            OperationResult<TimeCardDetail> result = await _queryService.GetEmployeeTimeCardDetails(qryParam);
+
+            Assert.True(result.Success);
+            Assert.Equal("Roberto W Tamburello", result.Result.EmployeeFullName);
+        }
+
+        [Fact]
+        public async Task GetEmployeeTimeCardListItems_EmployeeAggregateQueryService_ShouldReturnTrue()
+        {
+            GetEmployeeParameter queryParameters = new() { EmployeeID = new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52") };
+            OperationResult<List<TimeCardListItem>> result = await _queryService.GetEmployeeTimeCardListItems(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(2, result.Result.Count);
+        }
+
+        [Fact]
+        public async Task VerifyEmployeeSupervisorLink_EmployeeAggregateQueryService_ShouldReturnTrue()
+        {
+            GetEmployeeParameter queryParameters = new() { EmployeeID = new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52") };
+            OperationResult<Guid> result = await _queryService.VerifyEmployeeSupervisorLink(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(new Guid("aedc617c-d035-4213-b55a-dae5cdfca366"), result.Result);
+        }
+
+        [Fact]
+        public async Task VerifyEmployeeSupervisorLink_EmployeeAggregateQueryService_InvalidEmployeeID_ShouldReturnFalse()
+        {
+            GetEmployeeParameter queryParameters = new() { EmployeeID = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f") };
+            OperationResult<Guid> result = await _queryService.VerifyEmployeeSupervisorLink(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(Guid.Empty, result.Result);
+        }
+
+        [Fact]
+        public async Task GetMostRecentPayPeriodEndedDate_EmployeeAggregateQueryService_ShouldReturn20220228()
+        {
+            GetEmployeeParameter queryParameters = new() { EmployeeID = new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52") };
+            OperationResult<DateTime> result = await _queryService.GetMostRecentPayPeriodEndedDate(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(new DateTime(2022, 2, 28), result.Result);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

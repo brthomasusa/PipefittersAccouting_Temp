@@ -31,5 +31,20 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 
         public async Task<OperationResult<int>> GetCountOfEmployeeTimeCards(GetEmployeeParameter queryParameters)
             => await GetCountOfEmployeeTimeCardsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
+            => await GetEmployeeTimeCardDetailQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<List<TimeCardListItem>>> GetEmployeeTimeCardListItems(GetEmployeeParameter queryParameters)
+            => await GetEmployeeTimeCardListItemsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<Guid>> VerifyEmployeeSupervisorLink(GetEmployeeParameter queryParameters)
+            => await VerifyEmployeeSupervisorLinkQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetEmployeeParameter queryParameters)
+            => await GetMostRecentPayPeriodEndedDateQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<TimeCardVerification>> VerifyTimeCardEvent(GetTimeCardParameter queryParameters)
+            => await VerifyTimeCardEventQuery.Query(queryParameters, _dapperCtx);
     }
 }
