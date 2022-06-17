@@ -194,7 +194,16 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.Equal(new DateTime(2022, 2, 28), result.Result);
         }
 
+        [Fact]
+        public async Task GetTimeCardPaymentVerification_EmployeeAggregateQueryService_ShouldReturnTrue()
+        {
+            GetTimeCardParameter queryParameters = new() { TimeCardId = new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1") };
+            OperationResult<TimeCardPaymentVerification> result = await _queryService.GetTimeCardPaymentVerification(queryParameters);
 
+            Assert.True(result.Success);
+            Assert.Equal(168, result.Result.RegularHours);
+            Assert.Equal(new DateTime(), result.Result.DatePaid);
+        }
 
 
 

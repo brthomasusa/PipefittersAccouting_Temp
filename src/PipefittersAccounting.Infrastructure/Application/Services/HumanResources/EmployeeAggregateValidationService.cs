@@ -42,8 +42,22 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
             return await validator.Validate();
         }
 
-        // Task<ValidationResult> IsValidCreateTimeCardInfo(TimeCardWriteModel writeModel);
-        // Task<ValidationResult> IsValidEditTimeCardInfo(TimeCardWriteModel writeModel);
-        // Task<ValidationResult> IsValidDeleteTimeCardInfo(TimeCardWriteModel writeModel);
+        public async Task<ValidationResult> IsValidCreateTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            CreateTimeCardValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
+
+        public async Task<ValidationResult> IsValidEditTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            EditTimeCardValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
+
+        public async Task<ValidationResult> IsValidDeleteTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            DeleteTimeCardValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
     }
 }

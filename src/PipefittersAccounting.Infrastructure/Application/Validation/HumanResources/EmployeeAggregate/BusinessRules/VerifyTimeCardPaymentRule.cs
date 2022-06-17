@@ -8,11 +8,11 @@ using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResources.EmployeeAggregate.BusinessRules
 {
-    public class VerifyTimeCardEventRule : BusinessRule<TimeCardWriteModel>
+    public class VerifyTimeCardPaymentRule : BusinessRule<TimeCardWriteModel>
     {
         private readonly IEmployeeAggregateQueryService _qrySvc;
 
-        public VerifyTimeCardEventRule(IEmployeeAggregateQueryService qrySvc)
+        public VerifyTimeCardPaymentRule(IEmployeeAggregateQueryService qrySvc)
             => _qrySvc = qrySvc;
 
         public override async Task<ValidationResult> Validate(TimeCardWriteModel timeCard)
@@ -22,12 +22,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResou
             GetTimeCardParameter queryParameters =
                 new() { TimeCardId = timeCard.TimeCardId };
 
-            OperationResult<TimeCardVerification> result =
-                await _qrySvc.VerifyTimeCardEvent(queryParameters);
+            OperationResult<TimeCardPaymentVerification> result =
+                await _qrySvc.GetTimeCardPaymentVerification(queryParameters);
 
             if (result.Success)
             {
-                if (timeCard.EmployeeId == result.Result.EmployeeId)
+                if (result.Result.AmountPaid == 0)
                 {
                     validationResult.IsValid = true;
 
@@ -38,7 +38,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResou
                 }
                 else
                 {
-                    string msg = $"Check the employee id provided, it does not match the employee id on saved time card '{result.Result.EmployeeId}'.";
+                    string msg = $"This time card cannot be edited or deleted? The employee was paid ${result.Result.AmountPaid} on {result.Result.DatePaid}";
                     validationResult.Messages.Add(msg);
                 }
             }

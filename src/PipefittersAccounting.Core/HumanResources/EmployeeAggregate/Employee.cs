@@ -193,7 +193,6 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
                     return OperationResult<bool>.CreateFailure($"Edit failed! Unable to locate a time card with id '{timeCardId}'");
 
                 timeCard.UpdateSupervisorId(supervisorId);
-                timeCard.UpdatePayPeriodEnded(payPeriodEnded);
                 timeCard.UpdateRegularHours(regularHours);
                 timeCard.UpdateOvertimeHours(overtimeHours);
                 timeCard.UpdateUserId(userId);

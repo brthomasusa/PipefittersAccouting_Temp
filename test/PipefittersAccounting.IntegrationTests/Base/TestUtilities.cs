@@ -93,7 +93,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
             {
                 TimeCardId = EntityGuidID.Create(new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1")),
                 EmployeeId = EntityGuidID.Create(new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52")),
-                SupervisorId = EntityGuidID.Create(new Guid("aedc617c-d035-4213-b55a-dae5cdfca366")),
+                SupervisorId = EntityGuidID.Create(new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e")),
                 PayPeriodEnded = new DateTime(2022, 2, 28),
                 RegularHours = 180,
                 OvertimeHours = 0,

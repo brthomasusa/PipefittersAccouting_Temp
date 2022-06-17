@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                 @"SELECT 
                     TimeCardId, EmployeeId, SupervisorId
                 FROM HumanResources.TimeCards      
-                WHERE cards.TimeCardId = @ID";
+                WHERE TimeCardId = @ID";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("ID", queryParameters.TimeCardId, DbType.Guid);

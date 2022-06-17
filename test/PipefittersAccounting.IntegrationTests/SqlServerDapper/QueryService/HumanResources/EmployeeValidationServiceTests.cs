@@ -179,9 +179,17 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.False(validationResult.IsValid);
         }
 
+        [Fact]
+        public async Task Validate_VerifyTimeCardPaymentRule_NotPaid_ShouldReturnTrue()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
 
+            VerifyTimeCardPaymentRule rule = new(_employeeQueryService);
 
+            ValidationResult validationResult = await rule.Validate(model);
 
+            Assert.True(validationResult.IsValid);
+        }
 
         /*                               Validators                                     */
 
@@ -320,8 +328,39 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.False(validationResult.IsValid);
         }
 
+        [Fact]
+        public async Task Validate_EditTimeCardValidator_ShouldSucceed()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
+            EditTimeCardValidator validator = new(model, _registry);
 
+            ValidationResult validationResult = await validator.Validate();
 
+            Assert.True(validationResult.IsValid);
+        }
 
+        [Fact]
+        public async Task Validate_EditTimeCardValidator_InvalidEmployeeId_ShouldReturnFalse()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
+            model.EmployeeId = new Guid("6d7f6605-567d-4b2a-9ae7-3736dc6c4f53");
+
+            EditTimeCardValidator validator = new(model, _registry);
+
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.False(validationResult.IsValid);
+        }
+
+        [Fact]
+        public async Task Validate_DeleteTimeCardValidator_ShouldSucceed()
+        {
+            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
+            DeleteTimeCardValidator validator = new(model, _registry);
+
+            ValidationResult validationResult = await validator.Validate();
+
+            Assert.True(validationResult.IsValid);
+        }
     }
 }

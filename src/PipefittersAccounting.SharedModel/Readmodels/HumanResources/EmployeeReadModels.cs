@@ -88,6 +88,15 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid SupervisorId { get; set; }
     }
 
+    public class TimeCardPaymentVerification
+    {
+        public DateTime PayPeriodEnded { get; set; }
+        public int RegularHours { get; set; }
+        public int OverTimeHours { get; set; }
+        public DateTime DatePaid { get; set; }
+        public decimal AmountPaid { get; set; }
+    }
+
     public class ExemptionLookUp
     {
         public int NumberOfExemptions { get; set; }

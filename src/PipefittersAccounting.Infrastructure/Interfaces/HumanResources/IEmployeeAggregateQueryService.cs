@@ -18,5 +18,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<OperationResult<Guid>> VerifyEmployeeSupervisorLink(GetEmployeeParameter queryParameters);
         Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetEmployeeParameter queryParameters);
         Task<OperationResult<TimeCardVerification>> VerifyTimeCardEvent(GetTimeCardParameter queryParameters);
+        Task<OperationResult<TimeCardPaymentVerification>> GetTimeCardPaymentVerification(GetTimeCardParameter queryParameters);
     }
 }

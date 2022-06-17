@@ -42,12 +42,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             UpdateLastModifiedDate();
         }
 
-        public EntityDate PayPeriodEnded { get; private set; }
-        public void UpdatePayPeriodEnded(EntityDate value)
-        {
-            PayPeriodEnded = value ?? throw new ArgumentNullException("The pay period ending date is required.");
-            UpdateLastModifiedDate();
-        }
+        public EntityDate PayPeriodEnded { get; init; }
 
         public DecimalNotNegative RegularHours { get; private set; }
         public void UpdateRegularHours(DecimalNotNegative value)
