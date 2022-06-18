@@ -23,7 +23,9 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
         {
             try
             {
-                Employee employee = await _dbContext.Employees.FindAsync(id);
+                Employee employee = await _dbContext.Employees.Where(ee => ee.Id == id)
+                                                              .Include(emp => emp.TimeCards.Where(card => card.EmployeeId == id))
+                                                              .FirstOrDefaultAsync();
 
                 if (employee is null)
                 {
@@ -87,6 +89,17 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
         {
             try
             {
+                foreach (TimeCard timeCard in entity.TimeCards)
+                {
+                    EntityState entityState = _dbContext.Entry(timeCard).State;
+
+                    if (entityState == EntityState.Added)
+                    {
+                        EconomicEvent economicEvent = new(EntityGuidID.Create(timeCard.Id), EventTypeEnum.TimeCard);
+                        _dbContext.EconomicEvents.Add(economicEvent);
+                    }
+                }
+
                 _dbContext.Employees.Update(entity);
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
@@ -114,51 +127,23 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
             }
         }
 
-        public async Task<OperationResult<Guid>> CheckForDuplicateEmployeeName(string lname, string fname, string mi)
+        public async Task<OperationResult<bool>> DeleteTimeCardAsync(Guid timeCardId)
         {
-            try
+            TimeCard timeCard = await _dbContext.TimeCards.FindAsync(timeCardId);
+
+            if (timeCard is not null)
             {
-                Guid returnValue = Guid.Empty;
+                EconomicEvent economicEvent = _dbContext.EconomicEvents.Find(timeCardId);
+                if (economicEvent is null)
+                    return OperationResult<bool>.CreateFailure("Delete employee timecard failed! Unable to locate associated EconomicEvent.");
 
-                var details = await (from emp in _dbContext.Employees.Where(e =>
-                                        e.EmployeeName.LastName.ToUpper().Equals(lname.ToUpper()) &&
-                                        e.EmployeeName.FirstName.ToUpper().Equals(fname.ToUpper()) &&
-                                        e.EmployeeName.MiddleInitial.ToUpper().Equals(mi.ToUpper()))
-                                    .AsNoTracking()
-                                     select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
-
-                if (details is not null)
-                {
-                    returnValue = details.EmployeeId;
-                }
-
-                return OperationResult<Guid>.CreateSuccessResult(returnValue);
+                _dbContext.TimeCards.Remove(timeCard);
+                _dbContext.EconomicEvents.Remove(economicEvent);
+                return OperationResult<bool>.CreateSuccessResult(true);
             }
-            catch (Exception ex)
+            else
             {
-                return OperationResult<Guid>.CreateFailure(ex);
-            }
-        }
-
-        public async Task<OperationResult<Guid>> CheckForDuplicateSSN(string ssn)
-        {
-            try
-            {
-                Guid returnValue = Guid.Empty;
-
-                var details = await (from emp in _dbContext.Employees.Where(e => e.SSN == ssn).AsNoTracking()
-                                     select new { EmployeeId = emp.Id }).FirstOrDefaultAsync();
-
-                if (details is not null)
-                {
-                    returnValue = details.EmployeeId;
-                }
-
-                return OperationResult<Guid>.CreateSuccessResult(returnValue);
-            }
-            catch (Exception ex)
-            {
-                return OperationResult<Guid>.CreateFailure(ex);
+                return OperationResult<bool>.CreateFailure("Delete employee timecard failed! Unable to timecard.");
             }
         }
 

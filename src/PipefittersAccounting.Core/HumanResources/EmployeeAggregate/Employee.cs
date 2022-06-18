@@ -204,24 +204,5 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
                 return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
-
-        public OperationResult<bool> DeleteTimeCard(EntityGuidID timeCardId)
-        {
-            try
-            {
-                TimeCard? timeCard = _timeCards.Find(x => x.Id == timeCardId);
-
-                if (timeCard is null)
-                    return OperationResult<bool>.CreateFailure($"Delete failed! Unable to locate a time card with id '{timeCardId}'");
-
-                _timeCards.Remove(timeCard);
-
-                return OperationResult<bool>.CreateSuccessResult(true);
-            }
-            catch (Exception ex)
-            {
-                return OperationResult<bool>.CreateFailure(ex.Message);
-            }
-        }
     }
 }

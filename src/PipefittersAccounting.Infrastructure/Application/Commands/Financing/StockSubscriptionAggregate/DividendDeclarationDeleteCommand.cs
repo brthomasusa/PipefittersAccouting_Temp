@@ -26,27 +26,16 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.St
             {
                 try
                 {
-                    OperationResult<StockSubscription> getResult = await repository.GetStockSubscriptionByIdAsync(model.StockId);
-                    if (getResult.Success)
+                    OperationResult<bool> result = await repository.DeleteDividendDeclarationAsync(model.DividendId);
+
+                    if (result.Success)
                     {
-                        StockSubscription subscription = getResult.Result;
-                        OperationResult<bool> result = subscription.DeleteDividendDeclaration(model.DividendId);
-
-                        if (result.Success)
-                        {
-                            await repository.DeleteDividendDeclarationAsync(model.DividendId);
-                            await uow.Commit();
-
-                            return OperationResult<bool>.CreateSuccessResult(true);
-                        }
-                        else
-                        {
-                            return OperationResult<bool>.CreateFailure(result.NonSuccessMessage);
-                        }
+                        await uow.Commit();
+                        return OperationResult<bool>.CreateSuccessResult(true);
                     }
                     else
                     {
-                        return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                        return OperationResult<bool>.CreateFailure(result.NonSuccessMessage);
                     }
                 }
                 catch (Exception ex)

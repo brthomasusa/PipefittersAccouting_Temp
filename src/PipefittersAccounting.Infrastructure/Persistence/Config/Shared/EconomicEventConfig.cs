@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;
-
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
 {
@@ -19,6 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
             entity.HasOne<LoanInstallment>().WithOne().HasForeignKey<LoanInstallment>("Id");
             entity.HasOne<StockSubscription>().WithOne().HasForeignKey<StockSubscription>("Id");
             entity.HasOne<DividendDeclaration>().WithOne().HasForeignKey<DividendDeclaration>("Id");
+            entity.HasOne<TimeCard>().WithOne().HasForeignKey<TimeCard>("Id");
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("EventId").ValueGeneratedNever();
             entity.Property(p => p.EventType).HasColumnType("int").HasColumnName("EventTypeId").IsRequired();

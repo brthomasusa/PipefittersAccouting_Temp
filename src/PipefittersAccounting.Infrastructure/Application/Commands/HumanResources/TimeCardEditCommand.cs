@@ -1,0 +1,75 @@
+using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
+using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Core.Interfaces.HumanResources;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
+using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedKernel.CommonValueObjects;
+using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+
+namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResources
+{
+    public class TimeCardEditCommand : WriteCommandHandler<TimeCardWriteModel,
+                                                           IEmployeeAggregateRepository,
+                                                           IEmployeeAggregateValidationService,
+                                                           Employee>
+    {
+        public TimeCardEditCommand
+        (
+            TimeCardWriteModel model,
+            IEmployeeAggregateRepository repo,
+            IEmployeeAggregateValidationService validationService,
+            IUnitOfWork unitOfWork
+        ) : base(model, repo, validationService, unitOfWork)
+        {
+
+        }
+
+        protected override async Task<ValidationResult> Validate()
+        {
+            return await ValidationService.IsValidEditTimeCardInfo(WriteModel);
+        }
+
+        protected override async Task<OperationResult<bool>> ProcessCommand()
+        {
+            try
+            {
+                OperationResult<Employee> getResult = await Repository.GetByIdAsync(WriteModel.EmployeeId);
+
+                if (getResult.Success)
+                {
+                    Employee employee = getResult.Result;
+                    employee.EditTimeCard
+                    (
+                        EntityGuidID.Create(WriteModel.TimeCardId),
+                        EntityGuidID.Create(WriteModel.SupervisorId),
+                        EntityDate.Create(WriteModel.PayPeriodEnded),
+                        DecimalNotNegative.Create(WriteModel.RegularHours),
+                        DecimalNotNegative.Create(WriteModel.OvertimeHours),
+                        EntityGuidID.Create(WriteModel.UserId)
+                    );
+
+                    OperationResult<bool> updateResult = Repository.Update(employee);
+
+                    if (updateResult.Success)
+                    {
+                        await UnitOfWork.Commit();
+                        return OperationResult<bool>.CreateSuccessResult(true);
+                    }
+                    else
+                    {
+                        return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
+                    }
+                }
+                else
+                {
+                    return OperationResult<bool>.CreateFailure(getResult.NonSuccessMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure(ex.Message);
+            }
+        }
+    }
+}

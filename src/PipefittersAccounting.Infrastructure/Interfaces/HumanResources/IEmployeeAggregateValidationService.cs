@@ -9,9 +9,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<ValidationResult> IsValidCreateEmployeeInfo(EmployeeWriteModel writeModel);
         Task<ValidationResult> IsValidEditEmployeeInfo(EmployeeWriteModel writeModel);
         Task<ValidationResult> IsValidDeleteTimeCardInfo(EmployeeWriteModel writeModel);
-
-        // Task<ValidationResult> IsValidCreateTimeCardInfo(TimeCardWriteModel writeModel);
-        // Task<ValidationResult> IsValidEditTimeCardInfo(TimeCardWriteModel writeModel);
-        // Task<ValidationResult> IsValidDeleteTimeCardInfo(TimeCardWriteModel writeModel);
+        Task<ValidationResult> IsValidCreateTimeCardInfo(TimeCardWriteModel writeModel);
+        Task<ValidationResult> IsValidEditTimeCardInfo(TimeCardWriteModel writeModel);
+        Task<ValidationResult> IsValidDeleteTimeCardInfo(TimeCardWriteModel writeModel);
     }
 }

@@ -4,6 +4,7 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
+
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
 {
     internal class TimeCardConfig : IEntityTypeConfiguration<TimeCard>
@@ -13,6 +14,10 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
             entity.ToTable("TimeCards", schema: "HumanResources");
             entity.HasKey(e => e.Id);
 
+            entity.Property(p => p.Id)
+                .HasColumnType("UNIQUEIDENTIFIER")
+                .HasColumnName("TimeCardId")
+                .ValueGeneratedNever();
             entity.Property(p => p.EmployeeId)
                 .HasColumnType("UNIQUEIDENTIFIER")
                 .HasColumnName("EmployeeId").IsRequired();

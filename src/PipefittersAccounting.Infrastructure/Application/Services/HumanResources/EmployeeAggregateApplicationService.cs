@@ -44,5 +44,23 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
             EmployeeDeleteCommand deleteCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
             return await deleteCommand.Process();
         }
+
+        public async Task<OperationResult<bool>> CreateTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            TimeCardCreateCommand createCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await createCommand.Process();
+        }
+
+        public async Task<OperationResult<bool>> EditTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            TimeCardEditCommand editCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await editCommand.Process();
+        }
+
+        public async Task<OperationResult<bool>> DeleteTimeCardInfo(TimeCardWriteModel writeModel)
+        {
+            TimeCardDeleteCommand deleteCommand = new(writeModel, _employeeRepo, _validationService, _unitOfWork);
+            return await deleteCommand.Process();
+        }
     }
 }

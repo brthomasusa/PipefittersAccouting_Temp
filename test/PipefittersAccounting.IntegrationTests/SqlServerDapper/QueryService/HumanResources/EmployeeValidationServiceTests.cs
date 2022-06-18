@@ -320,7 +320,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         public async Task Validate_CreateTimeCardValidator_NotEndOfMonth_ShouldReturnFalse()
         {
             TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
-            model.PayPeriodEnded = new System.DateTime(2022, 3, 28);    // Invalid; date from previous pay period
+            model.PayPeriodEnded = new System.DateTime(2022, 3, 28);    // Invalid; should be 2022-03-31
 
             CreateTimeCardValidator validator = new(model, _registry);
             ValidationResult validationResult = await validator.Validate();

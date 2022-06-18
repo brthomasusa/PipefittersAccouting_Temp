@@ -8,5 +8,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel);
         Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel);
         Task<OperationResult<bool>> DeleteEmployeeInfo(EmployeeWriteModel writeModel);
+        Task<OperationResult<bool>> CreateTimeCardInfo(TimeCardWriteModel writeModel);
+        Task<OperationResult<bool>> EditTimeCardInfo(TimeCardWriteModel writeModel);
+        Task<OperationResult<bool>> DeleteTimeCardInfo(TimeCardWriteModel writeModel);
     }
 }

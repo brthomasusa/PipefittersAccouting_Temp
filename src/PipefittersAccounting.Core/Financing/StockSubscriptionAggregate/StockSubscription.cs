@@ -130,24 +130,5 @@ namespace PipefittersAccounting.Core.Financing.StockSubscriptionAggregate
                 return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
-
-        public OperationResult<bool> DeleteDividendDeclaration(Guid dividendId)
-        {
-            DividendDeclaration? dividend
-                = _dividendDeclarations.Find(x => x.Id == dividendId);
-
-            if (dividend is null)
-                return OperationResult<bool>.CreateFailure($"Delete failed! Unable to locate a dividend declaration with id '{dividendId}'");
-
-            try
-            {
-                _dividendDeclarations.Remove(dividend);
-                return OperationResult<bool>.CreateSuccessResult(true);
-            }
-            catch (Exception ex)
-            {
-                return OperationResult<bool>.CreateFailure(ex.Message);
-            }
-        }
     }
 }
