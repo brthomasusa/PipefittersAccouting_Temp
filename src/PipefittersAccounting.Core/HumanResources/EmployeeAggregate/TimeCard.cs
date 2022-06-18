@@ -21,7 +21,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             EntityGuidID userId
         ) : this()
         {
-            Id = employeeId ?? throw new ArgumentNullException("The time card id is required.");
+            Id = timeCardId ?? throw new ArgumentNullException("The time card id is required.");
             EmployeeId = employeeId ?? throw new ArgumentNullException("An employee id is required.");
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             PayPeriodEnded = payPeriodEnded ?? throw new ArgumentNullException("The pay period ending date is required.");

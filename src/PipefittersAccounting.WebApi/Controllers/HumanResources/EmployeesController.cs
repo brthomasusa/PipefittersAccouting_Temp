@@ -136,7 +136,6 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, writeResult.Exception.Message);
         }
 
-
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteEmployeeInfo([FromBody] EmployeeWriteModel writeModel)
         {
