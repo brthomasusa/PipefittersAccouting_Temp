@@ -49,5 +49,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 
         public async Task<OperationResult<TimeCardPaymentVerification>> GetTimeCardPaymentVerification(GetTimeCardParameter queryParameters)
             => await GetTimeCardPaymentVerificationQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<List<PayrollRegister>>> GetPayrollRegister(GetPayrollRegisterParameter queryParameters)
+            => await GetPayrollRegisterQuery.Query(queryParameters, _dapperCtx);
     }
 }

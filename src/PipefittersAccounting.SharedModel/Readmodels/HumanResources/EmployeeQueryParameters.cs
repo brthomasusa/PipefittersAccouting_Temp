@@ -39,4 +39,9 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
     {
 
     }
+
+    public class GetPayrollRegisterParameter
+    {
+        public DateTime PayPeriodEnded { get; set; }
+    }
 }

@@ -205,18 +205,14 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Assert.Equal(new DateTime(), result.Result.DatePaid);
         }
 
+        [Fact]
+        public async Task GetPayrollRegister_EmployeeAggregateQueryService_ShouldReturnTrue()
+        {
+            GetPayrollRegisterParameter queryParameters = new() { PayPeriodEnded = new DateTime(2022, 2, 28) };
+            OperationResult<List<PayrollRegister>> result = await _queryService.GetPayrollRegister(queryParameters);
 
-
-
-
-
-
-
-
-
-
-
-
-
+            Assert.True(result.Success);
+            Assert.Equal(13, result.Result.Count);
+        }
     }
 }

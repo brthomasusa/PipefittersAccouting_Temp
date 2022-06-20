@@ -11,8 +11,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 {
     public class GetEmployeeTimeCardListItemsQuery
     {
-        private static int Offset(int page, int pageSize) => (page - 1) * pageSize;
-
         public async static Task<OperationResult<List<TimeCardListItem>>> Query(GetEmployeeParameter queryParams, DapperContext ctx)
         {
             try

@@ -124,7 +124,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.Financin
         {
             try
             {
-                EconomicEvent evt = new(EntityGuidID.Create(cashTransfer.Id), EventTypeEnum.CashTransfer);
+                EconomicEvent evt = new(EntityGuidID.Create(cashTransfer.Id), EventTypeEnum.CashTransfered);
                 await _dbContext.EconomicEvents.AddAsync(evt);
                 await _dbContext.CashAccountTransfers.AddAsync(cashTransfer);
 

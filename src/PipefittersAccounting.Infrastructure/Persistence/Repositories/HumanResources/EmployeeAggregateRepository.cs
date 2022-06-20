@@ -95,7 +95,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Repositories.HumanRes
 
                     if (entityState == EntityState.Added)
                     {
-                        EconomicEvent economicEvent = new(EntityGuidID.Create(timeCard.Id), EventTypeEnum.TimeCard);
+                        EconomicEvent economicEvent = new(EntityGuidID.Create(timeCard.Id), EventTypeEnum.LaborAcquisition);
                         _dbContext.EconomicEvents.Add(economicEvent);
                     }
                 }

@@ -239,7 +239,7 @@ CREATE TABLE HumanResources.TimeCards
   EmployeeId UNIQUEIDENTIFIER NOT NULL REFERENCES HumanResources.Employees (EmployeeId),
   SupervisorId UNIQUEIDENTIFIER NOT NULL REFERENCES HumanResources.Employees (EmployeeId),
   PayPeriodEnded DATETIME2(0) NOT NULL,
-  RegularHours int CHECK (RegularHours >= 0 AND RegularHours <= 185) NOT NULL,
+  RegularHours int DEFAULT 0 CHECK (RegularHours >= 0 AND RegularHours <= 185) NOT NULL,
   OverTimeHours int DEFAULT 0 CHECK (OverTimeHours >= 0 AND OverTimeHours <= 200) NOT NULL,
   UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
   CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,

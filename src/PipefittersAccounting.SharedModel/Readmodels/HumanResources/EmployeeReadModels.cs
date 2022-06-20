@@ -97,19 +97,17 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public decimal AmountPaid { get; set; }
     }
 
-    public class ExemptionLookUp
+    public class PayrollRegister
     {
-        public int NumberOfExemptions { get; set; }
-        public decimal ExemptionAmount { get; set; }
-    }
-
-    public class FedWithHolding
-    {
-        public string? MaritalStatus { get; set; }
-        public int FederalTaxBracket { get; set; }
-        public decimal LowerLimit { get; set; }
-        public decimal UpperLimit { get; set; }
-        public decimal TaxRate { get; set; }
-        public decimal BracketBaseAmount { get; set; }
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public decimal RegularPay { get; set; }
+        public decimal OvertimePay { get; set; }
+        public decimal GrossPay { get; set; }
+        public decimal FICA { get; set; }
+        public decimal Medicare { get; set; }
+        public decimal FederalWithholding { get; set; }
+        public decimal NetPay { get; set; }
     }
 }

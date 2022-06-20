@@ -26,8 +26,8 @@ namespace PipefittersAccounting.Core.Shared
         StockSubscription = 3,
         LoanInstallment = 4,
         DividentDeclaration = 5,
-        TimeCard = 6,
-        InventoryReceipt = 7,
-        CashTransfer = 8
+        LaborAcquisition = 6,
+        InventoryReceived = 7,
+        CashTransfered = 8
     }
 }

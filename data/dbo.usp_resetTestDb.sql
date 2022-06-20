@@ -1,4 +1,71 @@
 -- select NEWID()
+
+-- Calculate federal withholding tax
+CREATE OR ALTER FUNCTION HumanResources.CalcFedWithholding
+(
+    @adjusted_gross DEC(10,2), 
+    @marital_status NCHAR(1)
+)
+RETURNS DECIMAL(10,2) 
+AS
+BEGIN
+    DECLARE @fed_withhold DECIMAL(10,2);
+
+    SELECT 
+        @fed_withhold = ((@adjusted_gross - LowerLimit) * TaxRate) + BracketBaseAmount
+    FROM HumanResources.FedWithHolding
+    WHERE MaritalStatus = @marital_status AND @adjusted_gross BETWEEN LowerLimit AND UpperLimit;
+    
+    RETURN @fed_withhold
+END
+GO
+
+-- Calculate employee net pay
+CREATE OR ALTER Proc HumanResources.GetPayrollRegister
+    @periodEndDate datetime2(7)
+as
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Calculate net pay
+    SELECT          
+        cards.TimeCardId,
+        ee.EmployeeId,
+        ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName, 
+        cards.RegularHours * ee.PayRate AS RegularPay,
+        ROUND((cards.OverTimeHours * ee.PayRate) * 1.5, 2)  AS OvertimePay,
+        (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) AS GrossPay,
+        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062, 2) AS FICA,
+        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) AS Medicare,
+        HumanResources.CalcFedWithholding
+        (
+            CASE
+                WHEN  (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount <= 0 THEN 0        
+                ELSE (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount
+            END, 
+            ee.MaritalStatus
+        ) AS FederalWithholding,
+        ROUND((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - 
+        ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062 -
+        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) -
+                HumanResources.CalcFedWithholding
+        (
+            CASE
+                WHEN  (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount <= 0 THEN 0        
+                ELSE (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount
+            END, 
+            ee.MaritalStatus
+        ), 2)
+        AS NetPay         
+    FROM HumanResources.Employees ee
+    LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
+    LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
+    WHERE cards.PayPeriodEnded = @periodEndDate
+    ORDER BY ee.LastName, ee.FirstName
+END
+
+
+-- Used to reset the database before each test run
 CREATE OR ALTER Proc dbo.usp_resetTestDb
 as
 BEGIN
