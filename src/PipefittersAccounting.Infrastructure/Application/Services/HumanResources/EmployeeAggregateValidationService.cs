@@ -4,7 +4,6 @@ using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
-
 namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResources
 {
     public class EmployeeAggregateValidationService : IEmployeeAggregateValidationService

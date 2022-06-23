@@ -95,7 +95,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/create";
-            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
+            EmployeeWriteModel model = EmployeeAggregateTestData.GetEmployeeWriteModelCreate();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -122,7 +122,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         [Fact]
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromString()
         {
-            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
+            EmployeeWriteModel model = EmployeeAggregateTestData.GetEmployeeWriteModelCreate();
             var createEmployee = JsonSerializer.Serialize(model);
             var requestContent = new StringContent(createEmployee, Encoding.UTF8, "application/json");
 
@@ -141,7 +141,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldCreate_Employee_CreateEmployeeInfo_FromRequestMsg()
         {
             string uri = $"{_urlRoot}/employees/create";
-            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelCreate();
+            EmployeeWriteModel model = EmployeeAggregateTestData.GetEmployeeWriteModelCreate();
             var createEmployee = JsonSerializer.Serialize(model);
 
             var request = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -163,7 +163,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldEdit_Employee_EditEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/edit";
-            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
+            EmployeeWriteModel model = EmployeeAggregateTestData.GetEmployeeWriteModelEdit();
             model.LastName = "Banski";
             model.FirstName = "Rhys";
 
@@ -190,7 +190,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task ShouldDelete_Employee_DeleteEmployeeInfo_FromStream()
         {
             string uri = $"{_urlRoot}/employees/delete";
-            EmployeeWriteModel model = TestUtilities.GetEmployeeWriteModelEdit();
+            EmployeeWriteModel model = EmployeeAggregateTestData.GetEmployeeWriteModelEdit();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -247,7 +247,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task CreateTimeCard_TimeCardsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/employees/timecard/create";
-            TimeCardWriteModel model = TestUtilities.GetTimeCardForCreate();
+            TimeCardWriteModel model = EmployeeAggregateTestData.GetTimeCardForCreate();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -277,7 +277,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task EditTimeCard_TimeCardsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/employees/timecard/edit";
-            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
+            TimeCardWriteModel model = EmployeeAggregateTestData.GetTimeCardForEdit();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -304,7 +304,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         public async Task DeleteTimeCard_TimeCardsController_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/employees/timecard/delete";
-            TimeCardWriteModel model = TestUtilities.GetTimeCardForEdit();
+            TimeCardWriteModel model = EmployeeAggregateTestData.GetTimeCardForEdit();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

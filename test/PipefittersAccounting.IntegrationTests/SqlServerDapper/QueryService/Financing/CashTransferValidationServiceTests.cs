@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using PipefittersAccounting.Infrastructure.Application.Services;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
@@ -19,12 +20,17 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         private readonly ICashAccountQueryService _queryService;
         private readonly ISharedQueryService _sharedQryService;
         private readonly ICashAccountAggregateValidationService _validationService;
+        private IQueryServicesRegistry _registry;
 
         public CashTransferValidationServiceTests()
         {
             _queryService = new CashAccountQueryService(_dapperCtx);
             _sharedQryService = new SharedQueryService(_dapperCtx);
-            _validationService = new CashAccountAggregateValidationService(_queryService, _sharedQryService);
+
+            _registry = new QueryServicesRegistry();
+            _registry.RegisterService("CashAccountQueryService", _queryService);
+            _registry.RegisterService("SharedQueryService", _sharedQryService);
+            _validationService = new CashAccountAggregateValidationService(_queryService, _sharedQryService, _registry);
         }
 
         [Fact]

@@ -4,6 +4,7 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate
 {
@@ -11,15 +12,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
     {
         private readonly ICashAccountQueryService _cashAcctQrySvc;
         private readonly ISharedQueryService _sharedQrySvc;
+        private IQueryServicesRegistry _servicesRegistry;
 
         public CashAccountAggregateValidationService
         (
             ICashAccountQueryService cashAcctQrySvc,
-            ISharedQueryService sharedQueryService
+            ISharedQueryService sharedQueryService,
+            IQueryServicesRegistry servicesRegistry
         )
         {
             _cashAcctQrySvc = cashAcctQrySvc;
             _sharedQrySvc = sharedQueryService;
+            _servicesRegistry = servicesRegistry;
+
+            _servicesRegistry.RegisterService("CashAccountQueryService", _cashAcctQrySvc);
+            _servicesRegistry.RegisterService("SharedQueryService", _sharedQrySvc);
         }
 
 
@@ -53,6 +60,17 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
         public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transferInfo)
             => await CashAccountTransferValidator.Validate(transferInfo, _cashAcctQrySvc);
 
+        public async Task<ValidationResult> IsValidPayrollRegister(List<PayrollRegisterWriteModel> writeModelCollection)
+        {
+            DisbursementForMultiplePayrollPymtValidator validator = new(writeModelCollection, _servicesRegistry);
+            return await validator.Validate();
+        }
+
+        public async Task<ValidationResult> IsValidPayrollRegister(PayrollRegisterWriteModel writeModel)
+        {
+            DisbursementForSinglePayrollPymtValidator validator = new(writeModel, _servicesRegistry);
+            return await validator.Validate();
+        }
 
         // private stuff
         private async Task<ValidationResult> ValidateDepositOfDebtIssueProceeds(CashTransactionWriteModel model)
@@ -78,6 +96,5 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
             DisbursementForDividendPaymentValidator validation = new(model, _cashAcctQrySvc, _sharedQrySvc);
             return await validation.Validate();
         }
-
     }
 }

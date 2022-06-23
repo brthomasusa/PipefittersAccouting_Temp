@@ -2,6 +2,7 @@ using PipefittersAccounting.Core.Financing.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
@@ -26,5 +27,9 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
         Task<ValidationResult> IsValidCashDisbursementForDividendPayment(CashTransactionWriteModel transactionInfo);
 
         Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transactionInfo);
+
+        Task<ValidationResult> IsValidPayrollRegister(List<PayrollRegisterWriteModel> writeModelCollection);
+
+        Task<ValidationResult> IsValidPayrollRegister(PayrollRegisterWriteModel writeModel);
     }
 }

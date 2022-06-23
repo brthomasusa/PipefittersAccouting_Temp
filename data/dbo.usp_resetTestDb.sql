@@ -1,68 +1,68 @@
 -- select NEWID()
 
 -- Calculate federal withholding tax
-CREATE OR ALTER FUNCTION HumanResources.CalcFedWithholding
-(
-    @adjusted_gross DEC(10,2), 
-    @marital_status NCHAR(1)
-)
-RETURNS DECIMAL(10,2) 
-AS
-BEGIN
-    DECLARE @fed_withhold DECIMAL(10,2);
+-- CREATE OR ALTER FUNCTION HumanResources.CalcFedWithholding
+-- (
+--     @adjusted_gross DEC(10,2), 
+--     @marital_status NCHAR(1)
+-- )
+-- RETURNS DECIMAL(10,2) 
+-- AS
+-- BEGIN
+--     DECLARE @fed_withhold DECIMAL(10,2);
 
-    SELECT 
-        @fed_withhold = ((@adjusted_gross - LowerLimit) * TaxRate) + BracketBaseAmount
-    FROM HumanResources.FedWithHolding
-    WHERE MaritalStatus = @marital_status AND @adjusted_gross BETWEEN LowerLimit AND UpperLimit;
+--     SELECT 
+--         @fed_withhold = ((@adjusted_gross - LowerLimit) * TaxRate) + BracketBaseAmount
+--     FROM HumanResources.FedWithHolding
+--     WHERE MaritalStatus = @marital_status AND @adjusted_gross BETWEEN LowerLimit AND UpperLimit;
     
-    RETURN @fed_withhold
-END
-GO
+--     RETURN @fed_withhold
+-- END
+-- GO
 
 -- Calculate employee net pay
-CREATE OR ALTER Proc HumanResources.GetPayrollRegister
-    @periodEndDate datetime2(7)
-as
-BEGIN
-    SET NOCOUNT ON;
+-- CREATE OR ALTER Proc HumanResources.GetPayrollRegister
+--     @periodEndDate datetime2(7)
+-- as
+-- BEGIN
+--     SET NOCOUNT ON;
 
-    -- Calculate net pay
-    SELECT          
-        cards.TimeCardId,
-        ee.EmployeeId,
-        ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName, 
-        cards.RegularHours * ee.PayRate AS RegularPay,
-        ROUND((cards.OverTimeHours * ee.PayRate) * 1.5, 2)  AS OvertimePay,
-        (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) AS GrossPay,
-        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062, 2) AS FICA,
-        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) AS Medicare,
-        HumanResources.CalcFedWithholding
-        (
-            CASE
-                WHEN  (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount <= 0 THEN 0        
-                ELSE (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount
-            END, 
-            ee.MaritalStatus
-        ) AS FederalWithholding,
-        ROUND((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - 
-        ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062 -
-        ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) -
-                HumanResources.CalcFedWithholding
-        (
-            CASE
-                WHEN  (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount <= 0 THEN 0        
-                ELSE (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount
-            END, 
-            ee.MaritalStatus
-        ), 2)
-        AS NetPay         
-    FROM HumanResources.Employees ee
-    LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
-    LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
-    WHERE cards.PayPeriodEnded = @periodEndDate
-    ORDER BY ee.LastName, ee.FirstName
-END
+--     -- Calculate net pay
+--     SELECT          
+--         cards.TimeCardId,
+--         ee.EmployeeId,
+--         ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName, 
+--         cards.RegularHours * ee.PayRate AS RegularPay,
+--         ROUND((cards.OverTimeHours * ee.PayRate) * 1.5, 2)  AS OvertimePay,
+--         (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) AS GrossPay,
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062, 2) AS FICA,
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) AS Medicare,
+--         HumanResources.CalcFedWithholding
+--         (
+--             CASE
+--                 WHEN  (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount <= 0 THEN 0        
+--                 ELSE (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount
+--             END, 
+--             ee.MaritalStatus
+--         ) AS FederalWithholding,
+--         ROUND((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - 
+--         ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062 -
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) -
+--                 HumanResources.CalcFedWithholding
+--         (
+--             CASE
+--                 WHEN  (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount <= 0 THEN 0        
+--                 ELSE (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount
+--             END, 
+--             ee.MaritalStatus
+--         ), 2)
+--         AS NetPay         
+--     FROM HumanResources.Employees ee
+--     LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
+--     LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
+--     WHERE cards.PayPeriodEnded = @periodEndDate
+--     ORDER BY ee.LastName, ee.FirstName
+-- END
 
 
 -- Used to reset the database before each test run
@@ -197,6 +197,7 @@ BEGIN
                 ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2' ,10),
                 ('d0648a1a-55dd-4062-a175-3a92b34f327c' ,10),
                 ('984039cb-34ab-4796-b305-b6aceda47211' ,10),
+                ('7db61200-ad68-42f1-824d-146a664bf5de' ,10),
                 ('34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e' ,10),
                 ('49667ed8-558f-4fe1-8adb-14af6d06db38' ,10),
                 ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d' ,10),        
@@ -448,6 +449,7 @@ BEGIN
                 ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),     
                 ('d0648a1a-55dd-4062-a175-3a92b34f327c', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-15', 20000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('984039cb-34ab-4796-b305-b6aceda47211', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-18', 10000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                ('7db61200-ad68-42f1-824d-146a664bf5de', '417f8a5f-60e7-411a-8e87-dfab0ae62589', 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 52000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('34e9d2ae-f99e-4cb8-9dc5-fdcf94cce48e', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-10', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('49667ed8-558f-4fe1-8adb-14af6d06db38', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-28', 12000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 ('a6bc2d9e-1b3b-4110-8361-9266ea1a0f9d', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-03-19', 28000, '660bb318-649e-470d-9d2b-693bfb0b2744')  
@@ -467,8 +469,23 @@ BEGIN
                 (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '5e3a91f6-74a4-45cc-ab04-5b071459ccb2', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
                 (2, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-15', 25000.00, '12998229-7ede-4834-825a-0c55bde75695', '41ca2b0a-0ed5-478b-9109-5dfda5b2eba1', '65874', '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-15', 20000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'd0648a1a-55dd-4062-a175-3a92b34f327c', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-15', 20000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'd0648a1a-55dd-4062-a175-3a92b34f327c', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
-                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 12000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'fb39b013-1633-4479-8186-9f9b240b5727', '68001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-15', 20000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', 'd0648a1a-55dd-4062-a175-3a92b34f327c', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),       
+                (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 12000.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 'fb39b013-1633-4479-8186-9f9b240b5727', '68001', '660bb318-649e-470d-9d2b-693bfb0b2744'),  
+                (10, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-31', 52000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '7db61200-ad68-42f1-824d-146a664bf5de', 'Xfer to Payroll', '660bb318-649e-470d-9d2b-693bfb0b2744'),  
+                (11, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 52000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '7db61200-ad68-42f1-824d-146a664bf5de', 'Xfer from Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),  
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 4429.38, 'e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5', '175a1bc8-dbba-41bb-98af-7377f1f64d07', '5001', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 3958.35, '0cf9de54-c2ca-417e-827c-a5b87be2d788', '1626daa5-5acb-40e9-8907-eb25db991583', '5002', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 4359.77, 'e716ac28-e354-4d8d-94e4-ec51f08b1af8', '2d325646-0d70-4e2e-b458-0ca43a916fab', '5003', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 5567.98, '5c60f693-bef5-e011-a485-80ee7300c695', '3a386b77-361b-49e0-89aa-b806b24bf333', '5004', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 4072.06, '9f7b902d-566c-4db6-b07b-716dd4e04340', 'bda7e369-c21f-4b99-a492-08c7a30d0a4b', '5005', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 2794.53, '8b140613-5df8-4f57-beb4-e3f5cd45ad3c', '0e104001-ed28-40d7-92f3-462f93d45b4a', '5006', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 3908.67, 'aedc617c-d035-4213-b55a-dae5cdfca366', 'a1e05c99-fa99-485d-b4ca-719a55e01482', '5007', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 2487.84, '9d3a25dc-3861-4f78-92b0-92294b808ebf', '4383b5fc-d6fc-4475-a22d-b7b2e17f75bb', '5008', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 4014.83, '660bb318-649e-470d-9d2b-693bfb0b2744', '29dc4ad2-5e5a-4f08-bb3d-468abf57a10e', '5009', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 3865.53, '604536a1-e734-49c4-96b3-9dfef7417f9a', '63e13c5d-4586-461f-be78-3e240d625bbf', '5010', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 2571.39, '6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', '748fcab5-9464-4d5f-937f-d61ffe811e6f', '5011', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 5659.25, '4b900a74-e2d9-4837-b9a4-9e828752716e', '40cdffa1-965e-4e3a-8a47-8cb542c2ef64', '5012', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
+                (6, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-31', 3365.47, 'c40888a1-c182-437e-9c1d-e9227bca7f52', '11b9d933-3007-4759-9110-f3e1a20ac71f', '5013', '660bb318-649e-470d-9d2b-693bfb0b2744'),    
                 (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-18', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '984039cb-34ab-4796-b305-b6aceda47211', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-18', 10000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '984039cb-34ab-4796-b305-b6aceda47211', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),     
                 (4, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-02-05', 2186.28, '12998229-7ede-4834-825a-0c55bde75695', '93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e', '2301', '660bb318-649e-470d-9d2b-693bfb0b2744'),
@@ -503,7 +520,7 @@ BEGIN
                 (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-05-07', 150.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'df33c148-a0ab-4ea3-b60f-394749c08294', '4016', '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-05-07', 100.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 'ef21754e-51fb-4721-a04b-281cdfa8e66b', '4017', '660bb318-649e-470d-9d2b-693bfb0b2744'),
                 (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-05-14', 120.00, 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', '86625460-52aa-4c50-a06a-607b76882181', '4018', '660bb318-649e-470d-9d2b-693bfb0b2744'),
-                (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-05-17', 100.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'f6d18883-9f06-4209-9314-6511ed71408e', '4019', '660bb318-649e-470d-9d2b-693bfb0b2744')                          
+                (5, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-05-17', 100.00, '01da50f9-021b-4d03-853a-3fd2c95e207d', 'f6d18883-9f06-4209-9314-6511ed71408e', '4019', '660bb318-649e-470d-9d2b-693bfb0b2744')                            
 
             COMMIT TRANSACTION
         END TRY

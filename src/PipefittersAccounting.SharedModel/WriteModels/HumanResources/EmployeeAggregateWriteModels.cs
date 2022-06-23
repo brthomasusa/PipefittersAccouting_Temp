@@ -40,4 +40,19 @@ namespace PipefittersAccounting.SharedModel.WriteModels.HumanResources
         public int OvertimeHours { get; set; }
         public Guid UserId { get; set; }
     }
+
+    public class PayrollRegisterWriteModel : IWriteModel
+    {
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public decimal RegularPay { get; set; }
+        public decimal OvertimePay { get; set; }
+        public decimal GrossPay { get; set; }
+        public decimal FICA { get; set; }
+        public decimal Medicare { get; set; }
+        public decimal FederalWithholding { get; set; }
+        public decimal NetPay { get; set; }
+        public Guid CashAccountId { get; set; }
+    }
 }

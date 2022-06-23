@@ -75,7 +75,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateFinancierInfo_CreateFinancierWithValidInfo_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/create";
-            CreateFinancierInfo model = TestUtilities.GetCreateFinancierInfo();
+            CreateFinancierInfo model = FinancierTestData.GetCreateFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -105,7 +105,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task EditFinancierInfo_EditFinancierWithValidInfo_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/edit";
-            EditFinancierInfo model = TestUtilities.GetEditFinancierInfo();
+            EditFinancierInfo model = FinancierTestData.GetEditFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -132,7 +132,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task DeleteFinancierInfo_DeleteFinancierWithValidId_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/delete";
-            DeleteFinancierInfo model = TestUtilities.GetDeleteFinancierInfo();
+            DeleteFinancierInfo model = FinancierTestData.GetDeleteFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

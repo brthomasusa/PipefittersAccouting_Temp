@@ -3,66 +3,13 @@
 using System;
 using System.Collections.Generic;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
-using PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components;
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
-using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.IntegrationTests.Base
 {
-    public static class TestUtilities
+    public static class FinancierTestData
     {
-        public static EmployeeWriteModel GetEmployeeWriteModelCreate() =>
-            new EmployeeWriteModel()
-            {
-                EmployeeId = Guid.NewGuid(),
-                EmployeeType = 1,
-                SupervisorId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E"),
-                LastName = "Trump",
-                FirstName = "Ivanka",
-                MiddleInitial = "I",
-                SSN = "434679876",
-                Telephone = "555-555-5555",
-                AddressLine1 = "139th Street NW",
-                AddressLine2 = "B1",
-                City = "Edison",
-                StateCode = "NJ",
-                Zipcode = "08837",
-                MaritalStatus = "M",
-                Exemptions = 3,
-                PayRate = 25.00M,
-                StartDate = new DateTime(2022, 2, 13),
-                IsActive = true,
-                IsSupervisor = false
-            };
-
-        public static EmployeeWriteModel GetEmployeeWriteModelEdit() =>
-            new EmployeeWriteModel()
-            {
-                EmployeeId = new Guid("aedc617c-d035-4213-b55a-dae5cdfca366"),
-                EmployeeType = 5,
-                SupervisorId = new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e"),
-                LastName = "Goldberg",
-                FirstName = "Jozef",
-                MiddleInitial = "P",
-                SSN = "036889999",
-                Telephone = "469-321-1234",
-                AddressLine1 = "6667 Melody Lane",
-                AddressLine2 = "Apt 2",
-                City = "Dallas",
-                StateCode = "TX",
-                Zipcode = "75231",
-                MaritalStatus = "S",
-                Exemptions = 1,
-                PayRate = 29.00M,
-                StartDate = new DateTime(2013, 2, 28),
-                IsActive = true,
-                IsSupervisor = true
-            };
-
         public static Financier GetFinancierForCreating() =>
             new Financier
             (
@@ -74,31 +21,6 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")),
                 true
             );
-
-        public static TimeCardWriteModel GetTimeCardForCreate() =>
-            new TimeCardWriteModel()
-            {
-                TimeCardId = EntityGuidID.Create(new Guid("f9fedab5-668d-4f08-b4d2-7fb4d464f252")),
-                EmployeeId = EntityGuidID.Create(new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52")),
-                SupervisorId = EntityGuidID.Create(new Guid("aedc617c-d035-4213-b55a-dae5cdfca366")),
-                PayPeriodEnded = new DateTime(2022, 3, 31),
-                RegularHours = 184,
-                OvertimeHours = 40,
-                UserId = EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-            };
-
-
-        public static TimeCardWriteModel GetTimeCardForEdit() =>
-            new TimeCardWriteModel()
-            {
-                TimeCardId = EntityGuidID.Create(new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1")),
-                EmployeeId = EntityGuidID.Create(new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52")),
-                SupervisorId = EntityGuidID.Create(new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e")),
-                PayPeriodEnded = new DateTime(2022, 2, 28),
-                RegularHours = 180,
-                OvertimeHours = 0,
-                UserId = EntityGuidID.Create(new Guid("660bb318-649e-470d-9d2b-693bfb0b2744"))
-            };
 
         public static List<Financier> GetFinanciers() =>
             new List<Financier>()
@@ -208,53 +130,5 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 Id = new Guid("84164388-28ff-4b47-bd63-dd9326d32236"),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
-
-        public static List<InstallmentRecord> GetInstallmentsValidInfo()
-        {
-            List<InstallmentRecord> pymtSchedule = new();
-
-            pymtSchedule.Add
-            (
-                new InstallmentRecord(InstallmentNumber: 1,
-                                PaymentDueDate: new DateTime(2022, 4, 15),
-                                Payment: 455.65M,
-                                Principal: 447.00M,
-                                Interest: 8.65M,
-                                TotalInterestPaid: 8.65M,
-                                RemainingBalance: 1353.00M)
-            );
-            pymtSchedule.Add
-            (
-                new InstallmentRecord(InstallmentNumber: 2,
-                                PaymentDueDate: new DateTime(2022, 5, 15),
-                                Payment: 455.65M,
-                                Principal: 449.00M,
-                                Interest: 6.65M,
-                                TotalInterestPaid: 15.30M,
-                                RemainingBalance: 904.00M)
-            );
-            pymtSchedule.Add
-            (
-                new InstallmentRecord(InstallmentNumber: 3,
-                                PaymentDueDate: new DateTime(2022, 6, 15),
-                                Payment: 455.65M,
-                                Principal: 451.00M,
-                                Interest: 4.65M,
-                                TotalInterestPaid: 19.95M,
-                                RemainingBalance: 453.00M)
-            );
-            pymtSchedule.Add
-            (
-                new InstallmentRecord(InstallmentNumber: 4,
-                                PaymentDueDate: new DateTime(2022, 7, 15),
-                                Payment: 455.65M,
-                                Principal: 453.00M,
-                                Interest: 2.65M,
-                                TotalInterestPaid: 22.60M,
-                                RemainingBalance: 0M)
-            );
-
-            return pymtSchedule;
-        }
     }
 }
