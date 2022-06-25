@@ -20,8 +20,9 @@
 -- END
 -- GO
 
--- Calculate employee net pay
--- CREATE OR ALTER Proc HumanResources.GetPayrollRegister
+-- Calculate employee regular pay, overtime pay, FICA, medicare, FWT, and net pay
+-- CREATE OR ALTER Proc Finance.GetTimeCardPaymentInfo
+--     @periodStartDate datetime2(7),
 --     @periodEndDate datetime2(7)
 -- as
 -- BEGIN
@@ -31,7 +32,8 @@
 --     SELECT          
 --         cards.TimeCardId,
 --         ee.EmployeeId,
---         ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName, 
+--         ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName,
+--         cards.PayPeriodEnded, 
 --         cards.RegularHours * ee.PayRate AS RegularPay,
 --         ROUND((cards.OverTimeHours * ee.PayRate) * 1.5, 2)  AS OvertimePay,
 --         (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) AS GrossPay,
@@ -60,10 +62,59 @@
 --     FROM HumanResources.Employees ee
 --     LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
 --     LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
---     WHERE cards.PayPeriodEnded = @periodEndDate
+--     WHERE cards.PayPeriodEnded BETWEEN @periodStartDate AND @periodEndDate
 --     ORDER BY ee.LastName, ee.FirstName
 -- END
 
+-- Calculate employee net pay, used to create CashTransaction for payroll disbursement
+-- CREATE OR ALTER Proc Finance.GetTimeCardPaymentInfo
+--     @periodStartDate datetime2(7),
+--     @periodEndDate datetime2(7)
+-- as
+-- BEGIN
+--     SET NOCOUNT ON;
+
+--     -- Calculate net pay
+--     SELECT 
+--         TimeCardId,
+--         EmployeeId,
+--         EmployeeName,
+--         PayPeriodEnded,
+--         NetPay
+--     FROM 
+--     (
+--         SELECT          
+--             cards.TimeCardId,
+--             ee.EmployeeId,
+--             ee.FirstName,
+--             ee.LastName,
+--             ee.MiddleInitial,
+--             ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName,
+--             cards.PayPeriodEnded, 
+--             ROUND((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - 
+--             ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062 -
+--             ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145 -
+--                     HumanResources.CalcFedWithholding
+--             (
+--                 CASE
+--                     WHEN  (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount <= 0 THEN 0        
+--                     ELSE (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount
+--                 END, 
+--                 ee.MaritalStatus
+--             ), 2)
+--             AS NetPay,
+--             CASE
+--                 WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
+--                 ELSE cash.CashAcctTransactionAmount
+--             END AS AmountPaid                     
+--         FROM HumanResources.Employees ee
+--         LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
+--         LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
+--         LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID          
+--     ) AS BaseQuery
+--     WHERE BaseQuery.PayPeriodEnded BETWEEN @periodStartDate AND @periodEndDate AND BaseQuery.AmountPaid = 0
+--     ORDER BY BaseQuery.LastName, BaseQuery.FirstName, BaseQuery.MiddleInitial
+-- END
 
 -- Used to reset the database before each test run
 CREATE OR ALTER Proc dbo.usp_resetTestDb

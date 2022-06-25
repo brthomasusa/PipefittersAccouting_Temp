@@ -1,6 +1,8 @@
 #pragma warning disable CS8618
+#pragma warning disable CS8625
 
 using PipefittersAccounting.SharedModel.Interfaces;
+using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.SharedModel.WriteModels.Financing
 {
@@ -39,11 +41,5 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public decimal CashTransferAmount { get; set; }
         public Guid UserId { get; set; }
     }
-
-    public class PrintPaycheckRequest : IWriteModel
-    {
-        public Guid CashAccountId { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public Guid UserId { get; set; }
-    }
 }
+

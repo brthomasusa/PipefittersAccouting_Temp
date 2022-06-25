@@ -55,4 +55,10 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     {
         public Guid StockId { get; set; }
     }
+
+    public class GetTimeCardPaymentInfoParameter
+    {
+        public DateTime PayPeriodBegin { get; set; }
+        public DateTime PayPeriodEnd { get; set; }
+    }
 }

@@ -95,6 +95,8 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
 
         public void DisburseCash(CashTransaction disbursement) => _cashTransactions.Add(disbursement);
 
+        public void DisburseCash(List<CashTransaction> disbursements) => _cashTransactions.AddRange(disbursements);
+
         public void TransferCashIntoAccount(CashTransfer cashTransfer)
         {
             CashTransaction transaction = new

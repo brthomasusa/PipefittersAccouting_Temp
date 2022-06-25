@@ -1,24 +1,22 @@
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
-using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.SharedModel
 {
     public static class ModelExtensions
     {
-        public static PayrollRegisterWriteModel Map(this PayrollRegister input)
+        public static CashTransactionWriteModel Map(this TimeCardPaymentInfo input, Guid cashAcctId, Guid userId)
         {
-            return new PayrollRegisterWriteModel()
+            return new CashTransactionWriteModel()
             {
-                TimeCardId = input.TimeCardId,
-                EmployeeId = input.EmployeeId,
-                EmployeeName = input.EmployeeName,
-                RegularPay = input.RegularPay,
-                OvertimePay = input.OvertimePay,
-                GrossPay = input.GrossPay,
-                FICA = input.FICA,
-                Medicare = input.Medicare,
-                FederalWithholding = input.FederalWithholding,
-                NetPay = input.NetPay
+                CashAccountId = cashAcctId,
+                TransactionType = 6,
+                TransactionDate = input.PayPeriodEnded,
+                TransactionAmount = input.NetPay,
+                AgentId = input.EmployeeId,
+                EventId = input.TimeCardId,
+                RemittanceAdvice = $"Payroll: {input.EmployeeName}, period ended: {input.PayPeriodEnded}",
+                UserId = userId
             };
         }
     }

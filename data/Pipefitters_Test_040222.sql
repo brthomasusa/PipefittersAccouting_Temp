@@ -480,7 +480,7 @@ CREATE TABLE Finance.CashAccountTransactions
 	AgentId uniqueidentifier NOT NULL REFERENCES Shared.ExternalAgents (AgentId),
 	EventId uniqueidentifier NOT NULL REFERENCES Shared.EconomicEvents (EventId),
 	CheckNumber NVARCHAR(25) NOT NULL,
-	RemittanceAdvice NVARCHAR(50) NULL,
+	RemittanceAdvice NVARCHAR(70) NULL,
 	UserId UNIQUEIDENTIFIER not null REFERENCES Shared.DomainUsers (UserId),
 	CreatedDate datetime2(7) DEFAULT sysdatetime() NOT NULL,
 	LastModifiedDate datetime2(7) NULL
@@ -502,7 +502,11 @@ GO
 CREATE INDEX idx_CashAcctTransactions$UserId
   ON Finance.CashAccountTransactions (UserId)
 GO
+CREATE INDEX idx_CashAcctTransactions$TransactionAmount
+  ON Finance.CashAccountTransactions (CashAcctTransactionAmount)
+GO
 
+-- CashAcctTransactionAmount
 CREATE TABLE Finance.CashAccountTransfers
 (
     CashTransferId uniqueidentifier NOT NULL PRIMARY KEY default NEWID() REFERENCES Shared.EconomicEvents (EventId),

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -298,5 +300,20 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.Equal(.01M, result.Result.DividendPerShare);
         }
 
+        [Fact]
+        public async Task GetTimeCardPaymentInfo_CashAccountQueryService_ShouldSucceed()
+        {
+            DateTime startDate = new DateTime(2022, 2, 1);
+            DateTime endDate = new DateTime(2022, 2, 28);
+
+            GetTimeCardPaymentInfoParameter queryParameters =
+                new() { PayPeriodBegin = startDate, PayPeriodEnd = endDate };
+
+            OperationResult<List<TimeCardPaymentInfo>> result = await _queryService.GetTimeCardPaymentInfo(queryParameters);
+
+            Assert.True(result.Success);
+
+            Assert.Equal(13, result.Result.Count);
+        }
     }
 }

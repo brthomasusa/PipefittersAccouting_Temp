@@ -102,6 +102,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid TimeCardId { get; set; }
         public Guid EmployeeId { get; set; }
         public string? EmployeeName { get; set; }
+        public DateTime PayPeriodEnded { get; set; }
         public decimal RegularPay { get; set; }
         public decimal OvertimePay { get; set; }
         public decimal GrossPay { get; set; }

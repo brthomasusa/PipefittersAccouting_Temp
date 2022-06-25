@@ -123,4 +123,13 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public string? AgentTypeName { get; set; }
         public string? CashTransactionTypeName { get; set; }
     }
+
+    public class TimeCardPaymentInfo
+    {
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
+        public DateTime PayPeriodEnded { get; set; }
+        public decimal NetPay { get; set; }
+    }
 }

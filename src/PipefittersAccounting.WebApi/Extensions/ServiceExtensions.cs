@@ -93,6 +93,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IStockSubscriptionValidationService, StockSubscriptionValidationService>()
                 .AddScoped<ILoanAgreementValidationService, LoanAgreementValidationService>()
                 .AddScoped<IEmployeeAggregateValidationService, EmployeeAggregateValidationService>()
+                .AddScoped<EmployeePayrollService>()
                 .AddScoped<IQueryServicesRegistry, QueryServicesRegistry>();
         }
 

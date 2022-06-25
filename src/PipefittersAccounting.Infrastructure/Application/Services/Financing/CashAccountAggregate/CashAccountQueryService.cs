@@ -61,5 +61,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
 
         public async Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
             => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<List<TimeCardPaymentInfo>>> GetTimeCardPaymentInfo(GetTimeCardPaymentInfoParameter queryParameters)
+            => await GetTimeCardPaymentInfoQuery.Query(queryParameters, _dapperCtx);
     }
 }
