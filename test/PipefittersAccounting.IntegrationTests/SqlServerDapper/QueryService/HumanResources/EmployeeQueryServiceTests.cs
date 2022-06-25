@@ -187,7 +187,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         [Fact]
         public async Task GetMostRecentPayPeriodEndedDate_EmployeeAggregateQueryService_ShouldReturn20220228()
         {
-            GetEmployeeParameter queryParameters = new() { EmployeeID = new Guid("c40888a1-c182-437e-9c1d-e9227bca7f52") };
+            GetMostRecentPayPeriodParameter queryParameters = new() { };
             OperationResult<DateTime> result = await _queryService.GetMostRecentPayPeriodEndedDate(queryParameters);
 
             Assert.True(result.Success);

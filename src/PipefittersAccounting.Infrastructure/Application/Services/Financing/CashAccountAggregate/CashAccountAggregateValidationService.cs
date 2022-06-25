@@ -60,17 +60,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
         public async Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transferInfo)
             => await CashAccountTransferValidator.Validate(transferInfo, _cashAcctQrySvc);
 
-        public async Task<ValidationResult> IsValidPayrollRegister(List<PayrollRegisterWriteModel> writeModelCollection)
+        public async Task<ValidationResult> IsValidTimeCardPaymentInfo(List<CashTransactionWriteModel> writeModelCollection)
         {
             DisbursementForMultiplePayrollPymtValidator validator = new(writeModelCollection, _servicesRegistry);
             return await validator.Validate();
         }
 
-        public async Task<ValidationResult> IsValidPayrollRegister(PayrollRegisterWriteModel writeModel)
-        {
-            DisbursementForSinglePayrollPymtValidator validator = new(writeModel, _servicesRegistry);
-            return await validator.Validate();
-        }
 
         // private stuff
         private async Task<ValidationResult> ValidateDepositOfDebtIssueProceeds(CashTransactionWriteModel model)

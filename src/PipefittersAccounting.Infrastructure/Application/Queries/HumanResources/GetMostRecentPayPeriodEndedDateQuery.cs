@@ -7,22 +7,18 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 {
     public class GetMostRecentPayPeriodEndedDateQuery
     {
-        public async static Task<OperationResult<DateTime>> Query(GetEmployeeParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<DateTime>> Query(GetMostRecentPayPeriodParameter queryParameters, DapperContext ctx)
         {
             try
             {
                 var sql =
-                @"SELECT 
-                    MAX (PayPeriodEnded) 
-                FROM HumanResources.TimeCards       
-                WHERE EmployeeId = @ID";
+                @"SELECT MAX (PayPeriodEnded) FROM HumanResources.TimeCards";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("ID", queryParameters.EmployeeID, DbType.Guid);
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    DateTime lastDate = await connection.QueryFirstOrDefaultAsync<DateTime>(sql, parameters);
+                    DateTime lastDate = await connection.QueryFirstOrDefaultAsync<DateTime>(sql);
                     return OperationResult<DateTime>.CreateSuccessResult(lastDate);
                 }
             }

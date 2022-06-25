@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters);
         Task<OperationResult<List<TimeCardListItem>>> GetEmployeeTimeCardListItems(GetEmployeeParameter queryParameters);
         Task<OperationResult<Guid>> VerifyEmployeeSupervisorLink(GetEmployeeParameter queryParameters);
-        Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetEmployeeParameter queryParameters);
+        Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetMostRecentPayPeriodParameter queryParameters);
         Task<OperationResult<TimeCardVerification>> VerifyTimeCardEvent(GetTimeCardParameter queryParameters);
         Task<OperationResult<TimeCardPaymentVerification>> GetTimeCardPaymentVerification(GetTimeCardParameter queryParameters);
         Task<OperationResult<List<PayrollRegister>>> GetPayrollRegister(GetPayrollRegisterParameter queryParameters);

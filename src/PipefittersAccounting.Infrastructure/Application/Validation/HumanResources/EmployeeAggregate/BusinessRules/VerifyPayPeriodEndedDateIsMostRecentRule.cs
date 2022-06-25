@@ -19,8 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResou
         {
             ValidationResult validationResult = new();
 
-            GetEmployeeParameter queryParameters =
-                new() { EmployeeID = timeCard.EmployeeId };
+            GetMostRecentPayPeriodParameter queryParameters = new() { };
 
             OperationResult<DateTime> result =
                 await _qrySvc.GetMostRecentPayPeriodEndedDate(queryParameters);

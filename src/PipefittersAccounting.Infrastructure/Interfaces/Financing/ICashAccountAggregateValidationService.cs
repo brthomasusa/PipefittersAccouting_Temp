@@ -28,8 +28,6 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 
         Task<ValidationResult> IsValidCreateCashAccountTransferInfo(CashAccountTransferWriteModel transactionInfo);
 
-        Task<ValidationResult> IsValidPayrollRegister(List<PayrollRegisterWriteModel> writeModelCollection);
-
-        Task<ValidationResult> IsValidPayrollRegister(PayrollRegisterWriteModel writeModel);
+        Task<ValidationResult> IsValidTimeCardPaymentInfo(List<CashTransactionWriteModel> writeModelCollection);
     }
 }

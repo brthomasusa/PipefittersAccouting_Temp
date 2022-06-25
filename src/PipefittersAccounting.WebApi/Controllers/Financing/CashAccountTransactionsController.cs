@@ -17,17 +17,20 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         private readonly ILogger<CashAccountTransactionsController> _logger;
         private readonly ICashAccountQueryService _qrySvc;
         private readonly ICashAccountApplicationService _appSvc;
+        private readonly IEmployeePayrollService _payrollService;
 
         public CashAccountTransactionsController
         (
             ILogger<CashAccountTransactionsController> logger,
             ICashAccountQueryService queryService,
-            ICashAccountApplicationService applicationService
+            ICashAccountApplicationService applicationService,
+            IEmployeePayrollService payrollService
         )
         {
             _logger = logger;
             _qrySvc = queryService;
             _appSvc = applicationService;
+            _payrollService = payrollService;
         }
 
         [HttpGet]

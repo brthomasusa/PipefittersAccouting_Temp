@@ -8,8 +8,10 @@ using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Commands.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Services;
 using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
@@ -24,12 +26,14 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
         private readonly ICashAccountApplicationService _appService;
         private readonly ICashAccountAggregateValidationService _validationService;
         private readonly ICashAccountAggregateRepository _repository;
+        private readonly IEmployeePayrollService _payrollService;
         private readonly AppUnitOfWork _unitOfWork;
         private IQueryServicesRegistry _registry;
 
         public CashAccountAggregateApplicationServiceTests()
         {
             ICashAccountQueryService queryService = new CashAccountQueryService(_dapperCtx);
+            IEmployeeAggregateQueryService employeeQrySvc = new EmployeeAggregateQueryService(_dapperCtx);
             ISharedQueryService sharedQueryService = new SharedQueryService(_dapperCtx);
             _repository = new CashAccountAggregateRepository(_dbContext);
 
@@ -39,7 +43,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
 
             _validationService = new CashAccountAggregateValidationService(queryService, sharedQueryService, _registry);
             _unitOfWork = new AppUnitOfWork(_dbContext);
-            _appService = new CashAccountApplicationService(_validationService, _repository, _unitOfWork);
+            _payrollService = new EmployeePayrollService(queryService, employeeQrySvc, _validationService, _repository, _unitOfWork);
+            _appService = new CashAccountApplicationService(_validationService, _repository, _payrollService, _unitOfWork);
         }
 
         [Fact]

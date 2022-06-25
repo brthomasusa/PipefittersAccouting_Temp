@@ -41,7 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
         public async Task<OperationResult<Guid>> VerifyEmployeeSupervisorLink(GetEmployeeParameter queryParameters)
             => await VerifyEmployeeSupervisorLinkQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetEmployeeParameter queryParameters)
+        public async Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetMostRecentPayPeriodParameter queryParameters)
             => await GetMostRecentPayPeriodEndedDateQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<TimeCardVerification>> VerifyTimeCardEvent(GetTimeCardParameter queryParameters)

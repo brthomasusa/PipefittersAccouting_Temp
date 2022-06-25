@@ -5,6 +5,11 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid EmployeeID { get; set; }
     }
 
+    public class GetMostRecentPayPeriodParameter
+    {
+
+    }
+
     public class GetTimeCardParameter
     {
         public Guid TimeCardId { get; set; }

@@ -26,7 +26,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Ca
 
         public Guid CashAccountId { get; init; }
         public Guid UserId { get; init; }
-        public virtual IReadOnlyCollection<CashTransactionWriteModel> CashTransactions => _cashTransactions.ToList();
+        public virtual List<CashTransactionWriteModel> CashTransactions => _cashTransactions.ToList();
 
         private void CreateCashDisbursements()
         {

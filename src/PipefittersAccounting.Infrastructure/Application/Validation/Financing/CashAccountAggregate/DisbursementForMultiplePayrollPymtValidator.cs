@@ -2,6 +2,7 @@ using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAc
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate
@@ -9,11 +10,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
     public class DisbursementForMultiplePayrollPymtValidator
     {
         private IQueryServicesRegistry _queryServicesRegistry;
-        private List<PayrollRegisterWriteModel> _writeModels;
+        private List<CashTransactionWriteModel> _writeModels;
 
         public DisbursementForMultiplePayrollPymtValidator
         (
-            List<PayrollRegisterWriteModel> writeModels,
+            List<CashTransactionWriteModel> writeModels,
             IQueryServicesRegistry queryServicesRegistry
 
         )
