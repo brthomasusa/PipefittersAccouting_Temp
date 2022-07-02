@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazorise;
 using Blazorise.Bootstrap5;
+using Blazorise.DataGrid;
 using Blazorise.Icons.FontAwesome;
 using PipefittersAccounting.UI;
 
@@ -10,7 +11,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services
   .AddBlazorise(options =>
  {
-     options.ChangeTextOnKeyPress = true;
+     options.Immediate = true;
  })
   .AddBootstrap5Providers()
   .AddFontAwesomeIcons();

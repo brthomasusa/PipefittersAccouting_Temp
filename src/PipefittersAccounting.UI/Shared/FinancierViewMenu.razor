@@ -1,0 +1,56 @@
+@inject NavigationManager NavManager
+
+<Bar Breakpoint="Breakpoint.Desktop" Background="Background.Dark" ThemeContrast="ThemeContrast.Dark">
+    <BarToggler />
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="">Financiers</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Loan Agreements</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Stock Subscriptions</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle Color="Color.Info" Outline>Cash Management</BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownToggle>Cash Management</BarDropdownToggle>
+                        <BarDropdownItem Clicked="@( () => OnMenuItemClicked("CashAccount") )">Cash Accounts
+                        </BarDropdownItem>
+                        <BarDropdownDivider />
+                        <BarDropdownItem Clicked="@( () => OnMenuItemClicked("Deposit") )">Deposits</BarDropdownItem>
+                        <BarDropdownDivider />
+                        <BarDropdownItem>Disburements</BarDropdownItem>
+                        <BarDropdownDivider />
+                        <BarDropdownItem>Adjustments</BarDropdownItem>
+                        <BarDropdownDivider />
+                        <BarDropdownItem>Transfers</BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+        </BarStart>
+        <BarEnd>
+            <BarItem class="mr-4">
+                <Button Margin="Margin.Is3.FromEnd" Color="Color.Secondary" Size="Size.Small">Log in</Button>
+            </BarItem>
+        </BarEnd>
+    </BarMenu>
+</Bar>
+
+@code {
+    private void OnMenuItemClicked(string itemName)
+    {
+        NavManager.NavigateTo
+        (
+        itemName switch
+        {
+            "CashAccount" => "Finance/Pages/CashAccountListItems",
+            "Deposit" => "Finance/Pages/CashDepositListItems",
+            _ => throw new ArgumentOutOfRangeException(nameof(itemName), $"Not expected direction value: {itemName}"),
+        }
+        );
+    }
+}

@@ -4,7 +4,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     {
         public Guid FinancierId { get; set; }
         public Guid LoanId { get; set; }
-        public string? FinancierName { get; set; }
+        public string FinancierName { get; set; } = default!;
         public decimal LoanAmount { get; set; }
         public DateTime DateReceived { get; set; }
         public decimal AmountReceived { get; set; }
@@ -13,11 +13,11 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     public class CashAccountListItem
     {
         public Guid CashAccountId { get; set; }
-        public string? AccountType { get; set; }
-        public string? BankName { get; set; }
-        public string? AccountName { get; set; }
-        public string? AccountNumber { get; set; }
-        public string? RoutingTransitNumber { get; set; }
+        public string AccountType { get; set; } = default!;
+        public string BankName { get; set; } = default!;
+        public string AccountName { get; set; } = default!;
+        public string AccountNumber { get; set; } = default!;
+        public string RoutingTransitNumber { get; set; } = default!;
         public DateTime DateOpened { get; set; }
         public Guid UserId { get; set; }
         public decimal Inflow { get; set; }
