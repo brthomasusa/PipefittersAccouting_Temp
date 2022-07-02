@@ -5,13 +5,13 @@
     <BarMenu>
         <BarStart>
             <BarItem>
-                <BarLink To="">Financiers</BarLink>
+                <BarLink To="Finance/Pages/FinancierListItems">Financiers</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Loan Agreements</BarLink>
+                <BarLink To="Finance/Pages/LoanAgreementListItems">Loan Agreements</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Stock Subscriptions</BarLink>
+                <BarLink To="Finance/Pages/StockSubscriptionListItems">Stock Subscriptions</BarLink>
             </BarItem>
             <BarItem>
                 <BarDropdown>
@@ -39,6 +39,7 @@
         </BarEnd>
     </BarMenu>
 </Bar>
+
 
 @code {
     private void OnMenuItemClicked(string itemName)

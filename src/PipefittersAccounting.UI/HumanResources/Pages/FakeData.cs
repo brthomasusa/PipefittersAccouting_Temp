@@ -16,7 +16,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
                 OvertimePay = 45.00M,
                 GrossPay = 5085.00M,
                 FICA = 315.27M,
-                Medicare = 7373M,
+                Medicare = 73.00M,
                 FederalWithholding = 301.42M,
                 NetPay = 4394.58M
                 },
