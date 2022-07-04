@@ -116,6 +116,54 @@
 --     ORDER BY BaseQuery.LastName, BaseQuery.FirstName, BaseQuery.MiddleInitial
 -- END
 
+
+-- HumanResources.GetPayrollRegister
+-- CREATE   Proc HumanResources.GetPayrollRegister
+--     @periodStartDate datetime2(7),
+--     @periodEndDate datetime2(7)
+-- as
+-- BEGIN
+--     SET NOCOUNT ON;
+
+--     -- Calculate net pay
+--     SELECT          
+--         cards.TimeCardId,
+--         ee.EmployeeId,
+--         ee.FirstName + ' ' + ISNULL(ee.MiddleInitial, '') + ' ' + ee.LastName AS EmployeeName,
+--         cards.PayPeriodEnded, 
+--         cards.RegularHours * ee.PayRate AS RegularPay,
+--         ROUND((cards.OverTimeHours * ee.PayRate) * 1.5, 2)  AS OvertimePay,
+--         (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) AS GrossPay,
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062, 2) AS FICA,
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) AS Medicare,
+--         HumanResources.CalcFedWithholding
+--         (
+--             CASE
+--                 WHEN  (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount <= 0 THEN 0        
+--                 ELSE (cards.RegularHours * ee.PayRate) + ROUND(((cards.OverTimeHours * ee.PayRate) * 1.5), 2) - exempt.ExemptionAmount
+--             END, 
+--             ee.MaritalStatus
+--         ) AS FederalWithholding,
+--         ROUND((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - 
+--         ((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .062 -
+--         ROUND(((cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5)) * .0145, 2) -
+--                 HumanResources.CalcFedWithholding
+--         (
+--             CASE
+--                 WHEN  (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount <= 0 THEN 0        
+--                 ELSE (cards.RegularHours * ee.PayRate) + ((cards.OverTimeHours * ee.PayRate) * 1.5) - exempt.ExemptionAmount
+--             END, 
+--             ee.MaritalStatus
+--         ), 2)
+--         AS NetPay         
+--     FROM HumanResources.Employees ee
+--     LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
+--     LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
+--     WHERE cards.PayPeriodEnded BETWEEN @periodStartDate AND @periodEndDate
+--     ORDER BY ee.LastName, ee.FirstName
+-- END
+-- GO
+
 -- Used to reset the database before each test run
 CREATE OR ALTER Proc dbo.usp_resetTestDb
 as

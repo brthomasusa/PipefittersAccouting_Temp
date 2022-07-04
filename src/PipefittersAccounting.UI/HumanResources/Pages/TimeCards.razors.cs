@@ -9,8 +9,11 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 
         protected override void OnInitialized()
         {
-            inMemoryData = FakeData.GetPayrollRegister_02282022();
+            inMemoryData = FakeData.GetPayrollRegisterAsync().Result;
             base.OnInitialized();
+
+            logger!.LogWarning("warning");
+            // logger!.LogError("error");
         }
     }
 }

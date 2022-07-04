@@ -12,11 +12,11 @@
 -- DROP DATABASE Pipefitters_v3
 -- GO
 
-CREATE DATABASE Pipefitters_Test
+CREATE DATABASE Pipefitters_v3
 GO
 
 
-USE Pipefitters_Test
+USE Pipefitters_v3
 GO
 
 CREATE SCHEMA Sales

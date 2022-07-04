@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
         {
             try
             {
-                var sql = "EXECUTE HumanResources.GetPayrollRegister @PERIODENDED";
+                var sql = "EXECUTE HumanResources.GetPayrollRegister @PERIODENDED, @PERIODENDED";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("PERIODENDED", queryParams.PayPeriodEnded, DbType.DateTime2);

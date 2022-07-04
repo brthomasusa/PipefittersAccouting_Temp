@@ -44,6 +44,20 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("timecards/payrollregister")]
+        public async Task<ActionResult<List<PayrollRegister>>> GetPayrollRegister([FromQuery] GetPayrollRegisterParameter queryParameters)
+        {
+            OperationResult<List<PayrollRegister>> result = await _qrySvc.GetPayrollRegister(queryParameters);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.NonSuccessMessage);
+            return StatusCode(500, result.NonSuccessMessage);
+        }
+
         [HttpGet("timecard/{timeCardId:Guid}")]
         public async Task<ActionResult<TimeCardDetail>> GetTimeCard(Guid timeCardId)
         {

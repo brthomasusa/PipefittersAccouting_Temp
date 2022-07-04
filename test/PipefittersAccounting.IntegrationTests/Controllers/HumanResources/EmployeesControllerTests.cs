@@ -228,6 +228,22 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
+        public async Task GetPayrollRegister_TimeCardsController_ShouldSucceed()
+        {
+            DateTime payPeriodDate = new(2022, 2, 28);
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["payPeriodEnded"] = payPeriodDate.ToShortDateString()
+            };
+
+            List<PayrollRegister> response = await _client
+                .GetFromJsonAsync<List<PayrollRegister>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/timecards/payrollregister", queryParams));
+
+            Assert.Equal(13, response.Count);
+        }
+
+        [Fact]
         public async Task detail_TimeCardsController_ShouldSucceed()
         {
             Guid timeCardId = new Guid("748fcab5-9464-4d5f-937f-d61ffe811e6f");
