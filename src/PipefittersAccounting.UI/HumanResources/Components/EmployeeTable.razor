@@ -1,0 +1,38 @@
+<Row>
+    <!-- Search component here -->
+</Row>
+<Row>
+    @if (Employees is not null && Employees.Any())
+    {
+        <Table>
+            <TableHeader ThemeContrast="ThemeContrast.Dark">
+                <TableRow>
+                    <TableHeaderCell>Name</TableHeaderCell>
+                    <TableHeaderCell>Telephone Name</TableHeaderCell>
+                    <TableHeaderCell>Active?</TableHeaderCell>
+                    <TableHeaderCell>Manager?</TableHeaderCell>
+                    <TableHeaderCell>Manager Name</TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                @foreach (var listItem in Employees)
+                {
+                    <TableRow>
+                        <TableRowCell>@listItem.EmployeeFullName</TableRowCell>
+                        <TableRowCell>@listItem.Telephone</TableRowCell>
+                        <TableRowCell>@listItem.IsActive</TableRowCell>
+                        <TableRowCell>@listItem.IsSupervisor</TableRowCell>
+                        <TableRowCell>@listItem.ManagerFullName</TableRowCell>
+                    </TableRow>
+                }
+            </TableBody>
+        </Table>
+    }
+    else
+    {
+        <span>Loading employee list</span>
+    }
+</Row>
+<Row>
+    <!-- Pager component here -->
+</Row>

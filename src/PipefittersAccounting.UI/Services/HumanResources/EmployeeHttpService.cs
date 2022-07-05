@@ -20,7 +20,6 @@ namespace PipefittersAccounting.UI.Services.HumanResources
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-
         // Alter system state with WriteModels
         public Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
             => throw new NotImplementedException();
@@ -44,8 +43,8 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         public Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters)
             => throw new NotImplementedException();
 
-        public Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters)
+            => await GetEmployeeListItemsHttpClient.Query(queryParameters, _client, _options);
         public Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters)
             => throw new NotImplementedException();
         public Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
@@ -55,6 +54,6 @@ namespace PipefittersAccounting.UI.Services.HumanResources
             => throw new NotImplementedException();
 
         public async Task<OperationResult<List<PayrollRegister>>> GetPayrollRegister(GetPayrollRegisterParameter queryParameters)
-            => await GetPayrollRegisterQuery.Query(queryParameters, _client, _options);
+            => await GetPayrollRegisterHttpClient.Query(queryParameters, _client, _options);
     }
 }

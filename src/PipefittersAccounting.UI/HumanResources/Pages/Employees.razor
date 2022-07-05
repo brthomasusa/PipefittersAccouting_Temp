@@ -1,4 +1,14 @@
 ﻿@page "/HumanResouces/Pages/Employees"
+@inject ILogger<Employees> logger
+@using PipefittersAccounting.UI.HumanResources.Components
 
 <PageTitle>Employees</PageTitle>
-<Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromStart">Employees</Heading>
+<Heading Size="HeadingSize.Is3" Margin="Margin.Is3.FromStart">Employees</Heading>
+
+<ErrorBoundary>
+    <Row Margin="Margin.Is4.FromTop">
+        <Column Margin="Margin.Is4.FromStart">
+            <EmployeeTable Employees=@EmployeeList />
+        </Column>
+    </Row>
+</ErrorBoundary>

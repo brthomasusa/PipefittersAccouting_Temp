@@ -6,7 +6,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.HumanResources
 {
-    public class GetPayrollRegisterQuery
+    public class GetPayrollRegisterHttpClient
     {
         public static async Task<OperationResult<List<PayrollRegister>>> Query
         (
