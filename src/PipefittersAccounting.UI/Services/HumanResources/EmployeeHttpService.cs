@@ -1,6 +1,4 @@
 using System.Text.Json;
-
-using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.UI.Interfaces;

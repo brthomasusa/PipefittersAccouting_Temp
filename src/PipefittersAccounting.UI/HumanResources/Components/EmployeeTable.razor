@@ -1,14 +1,16 @@
+@inject ILogger<EmployeeTable> logger
+
 <Row>
     <!-- Search component here -->
 </Row>
 <Row>
     @if (Employees is not null && Employees.Any())
     {
-        <Table>
-            <TableHeader ThemeContrast="ThemeContrast.Dark">
+        <Table Bordered Striped Hoverable Narrow Responsive>
+            <TableHeader ThemeContrast="ThemeContrast.Light">
                 <TableRow>
                     <TableHeaderCell>Name</TableHeaderCell>
-                    <TableHeaderCell>Telephone Name</TableHeaderCell>
+                    <TableHeaderCell>Telephone</TableHeaderCell>
                     <TableHeaderCell>Active?</TableHeaderCell>
                     <TableHeaderCell>Manager?</TableHeaderCell>
                     <TableHeaderCell>Manager Name</TableHeaderCell>
@@ -20,13 +22,15 @@
                     <TableRow>
                         <TableRowCell>@listItem.EmployeeFullName</TableRowCell>
                         <TableRowCell>@listItem.Telephone</TableRowCell>
-                        <TableRowCell>@listItem.IsActive</TableRowCell>
-                        <TableRowCell>@listItem.IsSupervisor</TableRowCell>
+                        <TableRowCell>@(listItem.IsActive ? "Yes" : "No")</TableRowCell>
+                        <TableRowCell>@(listItem.IsSupervisor ? "Yes" : "No")</TableRowCell>
                         <TableRowCell>@listItem.ManagerFullName</TableRowCell>
                     </TableRow>
                 }
             </TableBody>
         </Table>
+
+        <DynamicPager PageChangedCallback=@HandleCurrentPageChanged MetaData=@MetaData />
     }
     else
     {

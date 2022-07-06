@@ -1,0 +1,29 @@
+<ErrorBoundary>
+    <Pagination>
+        <PaginationItem Disabled="@isActive.First()" @onclick="Previous">
+            <PaginationLink>
+                <span aria-hidden="true">«</span>
+            </PaginationLink>
+        </PaginationItem>
+        <PaginationItem Active="@isActive[0]">
+            <PaginationLink Page="1" Clicked="SetActive">
+                1
+            </PaginationLink>
+        </PaginationItem>
+        <PaginationItem Active="@isActive[1]">
+            <PaginationLink Page="2" Clicked="SetActive">
+                2
+            </PaginationLink>
+        </PaginationItem>
+        <PaginationItem Active="@isActive[2]">
+            <PaginationLink Page="3" Clicked="SetActive">
+                3
+            </PaginationLink>
+        </PaginationItem>
+        <PaginationItem Disabled="@isActive.Last()" @onclick="Next">
+            <PaginationLink>
+                <span aria-hidden="true">»</span>
+            </PaginationLink>
+        </PaginationItem>
+    </Pagination>
+</ErrorBoundary>

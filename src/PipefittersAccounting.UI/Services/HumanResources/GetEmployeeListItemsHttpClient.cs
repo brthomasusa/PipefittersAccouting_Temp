@@ -35,7 +35,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
                         Items = JsonSerializer.Deserialize<List<EmployeeListItem>>(content, options),
                         MetaData = JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), options)
                     };
-
+                    Console.WriteLine($"MetaData.CurrentPage: {pagingResponse.MetaData!.CurrentPage}, MetaData.PageSize: {pagingResponse.MetaData!.PageSize}");
                     return OperationResult<PagingResponse<EmployeeListItem>>.CreateSuccessResult(pagingResponse);
                 }
                 else

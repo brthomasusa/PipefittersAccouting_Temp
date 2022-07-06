@@ -8,18 +8,35 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 {
     public partial class Employees
     {
-        public List<EmployeeListItem>? EmployeeList { get; set; } = new();
+        private GetEmployeesParameters? GetEmployeesParameters { get; set; }
 
+        public List<EmployeeListItem>? EmployeeList { get; set; } = new();
+        public MetaData? MetaData { get; set; }
         [Inject] public IEmployeeHttpService? employeeService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            GetEmployeesParameters parameters = new() { Page = 1, PageSize = 13 };
-            OperationResult<PagingResponse<EmployeeListItem>> result = await employeeService!.GetEmployeeListItems(parameters);
+            await GetEmployees(1, 5);
+        }
+
+        public async Task CurrentPageChangedHandler(int currentPage)
+        {
+            logger!.LogInformation($"Employees page has received new current page: {currentPage}");
+            await GetEmployees(currentPage, 5);
+        }
+
+        private async Task GetEmployees(int page, int pageSize)
+        {
+            GetEmployeesParameters = new() { Page = page, PageSize = pageSize };
+
+            OperationResult<PagingResponse<EmployeeListItem>> result =
+                await employeeService!.GetEmployeeListItems(GetEmployeesParameters);
 
             if (result.Success)
             {
                 EmployeeList = result.Result.Items;
+                MetaData = result.Result.MetaData;
+                StateHasChanged();
             }
             else
             {

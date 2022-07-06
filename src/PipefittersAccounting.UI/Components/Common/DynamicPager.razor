@@ -1,0 +1,27 @@
+@inject ILogger<DynamicPager> logger
+
+<ErrorBoundary>
+    <Pagination>
+        <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
+            <PaginationLink>
+                <span aria-hidden="true">«</span>
+            </PaginationLink>
+        </PaginationItem>
+        @{
+            for (var i = 1; i <= pageItems; i++)
+            {
+                var pageNumberAsString = i.ToString();
+                <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
+                    <PaginationLink Page="@pageNumberAsString" Clicked="SetActive">
+                        @pageNumberAsString
+                    </PaginationLink>
+                </PaginationItem>
+            }
+        }
+        <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)" @onclick="Next">
+            <PaginationLink>
+                <span aria-hidden="true">»</span>
+            </PaginationLink>
+        </PaginationItem>
+    </Pagination>
+</ErrorBoundary>
