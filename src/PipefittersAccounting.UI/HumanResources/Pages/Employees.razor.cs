@@ -21,12 +21,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             await _pagerChangedEventHandler.Invoke(1, 5);
         }
 
-        public async Task CurrentPageChangedHandler(int currentPage)
-        {
-            logger!.LogInformation($"Employees page has received new current page: {currentPage}");
-            await GetEmployees(currentPage, 5);
-        }
-
         private async Task GetEmployees(int pageNumber, int pageSize)
         {
             _getEmployeesParameters = new() { Page = pageNumber, PageSize = pageSize };

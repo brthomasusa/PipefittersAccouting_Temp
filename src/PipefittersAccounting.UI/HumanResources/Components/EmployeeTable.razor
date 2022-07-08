@@ -14,6 +14,7 @@
                     <TableHeaderCell>Active?</TableHeaderCell>
                     <TableHeaderCell>Manager?</TableHeaderCell>
                     <TableHeaderCell>Manager Name</TableHeaderCell>
+                    <TableHeaderCell>Actions</TableHeaderCell>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -25,6 +26,18 @@
                         <TableRowCell>@(listItem.IsActive ? "Yes" : "No")</TableRowCell>
                         <TableRowCell>@(listItem.IsSupervisor ? "Yes" : "No")</TableRowCell>
                         <TableRowCell>@listItem.ManagerFullName</TableRowCell>
+                        <TableRowCell>
+                            <Dropdown>
+                                <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
+                                    ...
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("ShowDetails") )">Details</DropdownItem>
+                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("EditEmployee") )">Edit</DropdownItem>
+                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("DeleteEmployee") )">Delete</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </TableRowCell>
                     </TableRow>
                 }
             </TableBody>
