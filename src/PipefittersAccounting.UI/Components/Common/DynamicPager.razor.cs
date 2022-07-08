@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Components;
 using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Components.Common
 {
@@ -11,17 +12,29 @@ namespace PipefittersAccounting.UI.Components.Common
         private const string PREVIOUS = "previous";
         private const string NEXT = "next";
         private string? currentPage = "1";
-        private int pageItems;
+        private int totalPages;
         private int totalCount;
+        private int pageSize = 15;
 
-        [Parameter] public MetaData? MetaData { get; set; }
-        [Parameter] public Func<int, Task>? PageChangedCallback { get; set; }
+        [CascadingParameter(Name = "MetaData")]
+        public MetaData? MetaData { get; set; }
 
-        protected override void OnInitialized()
+        [CascadingParameter(Name = "PagerChangedEventHandler")]
+        public Func<int, int, Task>? PageChangedCallback { get; set; }
+
+        protected override void OnParametersSet()
         {
-            currentPage = MetaData.CurrentPage.ToString();
-            pageItems = MetaData.TotalPages;
-            totalCount = MetaData.TotalCount;
+            if (MetaData is not null)
+            {
+                currentPage = MetaData.CurrentPage.ToString();
+                totalPages = MetaData.TotalPages;
+                totalCount = MetaData.TotalCount;
+                pageSize = MetaData.PageSize;
+            }
+            else
+            {
+                logger.LogWarning($"DynamicPager.MetaData is null: {MetaData!.ToJson()}");
+            }
         }
 
         private bool IsActive(string page)
@@ -35,7 +48,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else if (navigation.Equals(NEXT))
             {
-                return currentPage.Equals(pageItems.ToString());
+                return currentPage.Equals(totalPages.ToString());
             }
             return false;
         }
@@ -49,7 +62,7 @@ namespace PipefittersAccounting.UI.Components.Common
                 if (currentPageAsInt > 1)
                 {
                     currentPage = (currentPageAsInt - 1).ToString();
-                    await PageChangedCallback!.Invoke(currentPageAsInt - 1);
+                    await PageChangedCallback!.Invoke(currentPageAsInt - 1, pageSize);
                 }
             }
             else
@@ -65,10 +78,10 @@ namespace PipefittersAccounting.UI.Components.Common
             {
                 var currentPageAsInt = int.Parse(currentPage);
 
-                if (currentPageAsInt < pageItems)
+                if (currentPageAsInt < totalPages)
                 {
                     currentPage = (currentPageAsInt + 1).ToString();
-                    await PageChangedCallback!.Invoke(currentPageAsInt + 1);
+                    await PageChangedCallback!.Invoke(currentPageAsInt + 1, pageSize);
                 }
             }
             else
@@ -84,11 +97,24 @@ namespace PipefittersAccounting.UI.Components.Common
                 currentPage = page;
 
                 if (PageChangedCallback is not null)
-                    await PageChangedCallback!.Invoke(int.Parse(currentPage));
+                    await PageChangedCallback!.Invoke(int.Parse(currentPage), pageSize);
             }
             else
             {
                 logger!.LogWarning($"DynamicPager.SetActive(string page) called with null parameter!");
+            }
+        }
+
+        private async Task OnSelectedValueChanged(int value)
+        {
+            pageSize = value;
+            if (currentPage is not null)
+            {
+                await PageChangedCallback!.Invoke(int.Parse(currentPage), pageSize);
+            }
+            else
+            {
+                logger!.LogWarning($"DynamicPager.OnSelectedValueChanged(); property currentPage is null!");
             }
         }
 

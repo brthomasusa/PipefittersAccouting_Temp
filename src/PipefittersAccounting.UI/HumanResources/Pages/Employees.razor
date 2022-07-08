@@ -9,8 +9,11 @@
 <ErrorBoundary>
     <Row Margin="Margin.Is2.FromTop">
         <Column Margin="Margin.Is4.FromStart.Is4.FromEnd">
-            <EmployeeTable Employees=@EmployeeList PageNumberChangedCallback="@CurrentPageChangedHandler"
-                MetaData=@MetaData />
+            <CascadingValue Name="MetaData" Value=@_metaData>
+                <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
+                    <EmployeeTable Employees=@_employeeList />
+                </CascadingValue>
+            </CascadingValue>
         </Column>
     </Row>
 </ErrorBoundary>

@@ -8,15 +8,17 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 {
     public partial class Employees
     {
-        private GetEmployeesParameters? GetEmployeesParameters { get; set; }
+        private GetEmployeesParameters? _getEmployeesParameters;
+        private List<EmployeeListItem>? _employeeList;
+        private MetaData? _metaData;
+        private Func<int, int, Task>? _pagerChangedEventHandler;
 
-        public List<EmployeeListItem>? EmployeeList { get; set; } = new();
-        public MetaData? MetaData { get; set; }
         [Inject] public IEmployeeHttpService? employeeService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            await GetEmployees(1, 5);
+            _pagerChangedEventHandler = GetEmployees;
+            await _pagerChangedEventHandler.Invoke(1, 5);
         }
 
         public async Task CurrentPageChangedHandler(int currentPage)
@@ -25,17 +27,17 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             await GetEmployees(currentPage, 5);
         }
 
-        private async Task GetEmployees(int page, int pageSize)
+        private async Task GetEmployees(int pageNumber, int pageSize)
         {
-            GetEmployeesParameters = new() { Page = page, PageSize = pageSize };
+            _getEmployeesParameters = new() { Page = pageNumber, PageSize = pageSize };
 
             OperationResult<PagingResponse<EmployeeListItem>> result =
-                await employeeService!.GetEmployeeListItems(GetEmployeesParameters);
+                await employeeService!.GetEmployeeListItems(_getEmployeesParameters);
 
             if (result.Success)
             {
-                EmployeeList = result.Result.Items;
-                MetaData = result.Result.MetaData;
+                _employeeList = result.Result.Items;
+                _metaData = result.Result.MetaData;
                 StateHasChanged();
             }
             else

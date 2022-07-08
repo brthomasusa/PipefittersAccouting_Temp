@@ -29,14 +29,14 @@
                 }
             </TableBody>
         </Table>
-
-        <DynamicPager PageChangedCallback=@HandleCurrentPageChanged MetaData=@MetaData />
     }
     else
     {
-        <span>Loading employee list</span>
+        <span>Loading employee list...</span>
     }
 </Row>
 <Row>
-    <!-- Pager component here -->
+    <Column>
+        <DynamicPager />
+    </Column>
 </Row>
