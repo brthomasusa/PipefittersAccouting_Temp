@@ -44,6 +44,24 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
+        public async Task ListByName_ShouldReturnAllEmployees_ShouldSucceed()
+        {
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 15 };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["LastName"] = "Sanchez",
+                ["page"] = pagingParams.Page.ToString(),
+                ["pageSize"] = pagingParams.PageSize.ToString()
+            };
+
+            List<EmployeeListItem> response = await _client
+                .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/search", queryParams));
+
+            Assert.Equal(1, response.Count);
+        }
+
+        [Fact]
         public async Task ShouldReturn_AllEmployees_JsonSerializer_DeserializeAsync()
         {
             var queryParams = new Dictionary<string, string?>

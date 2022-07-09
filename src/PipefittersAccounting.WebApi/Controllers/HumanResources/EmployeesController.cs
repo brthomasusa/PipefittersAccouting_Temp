@@ -45,7 +45,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
-        [HttpGet("list")]
+        [HttpGet("search")]
         public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployeesByLastNameParameters getEmployeesParams)
         {
             OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.GetEmployeeListItems(getEmployeesParams);
