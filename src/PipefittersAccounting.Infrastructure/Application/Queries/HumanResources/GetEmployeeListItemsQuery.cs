@@ -81,7 +81,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                 parameters.Add("Offset", Offset(queryParams.Page, queryParams.PageSize), DbType.Int32);
                 parameters.Add("PageSize", queryParams.PageSize, DbType.Int32);
 
-                var totalRecordsSql = "SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE ee.LastName LIKE @LastName";
+                var totalRecordsSql = "SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE LastName LIKE @LastName";
 
                 using var connection = ctx.CreateConnection();
 

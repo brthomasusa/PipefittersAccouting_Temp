@@ -67,6 +67,16 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
+        public async Task GetEmployeeListItem_EmployeeAggregateQueryService_EmployeeListItemsByName_ReadModel()
+        {
+            GetEmployeesByLastNameParameters queryParameters = new() { LastName = "Sanchez", Page = 1, PageSize = 5 };
+            OperationResult<PagedList<EmployeeListItem>> result = await _queryService.GetEmployeeListItems(queryParameters);
+
+            Assert.True(result.Success);
+            Assert.Equal(1, result.Result.Count);
+        }
+
+        [Fact]
         public async Task GetEmployees_EmployeeAggregateQueryService_WithPagination_ShouldSucceed()
         {
             // Get page 1 of 2
