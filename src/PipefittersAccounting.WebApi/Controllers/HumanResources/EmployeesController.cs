@@ -45,6 +45,21 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("list")]
+        public async Task<ActionResult<PagedList<EmployeeListItem>>> GetEmployees([FromQuery] GetEmployeesByLastNameParameters getEmployeesParams)
+        {
+            OperationResult<PagedList<EmployeeListItem>> result = await _qrySvc.GetEmployeeListItems(getEmployeesParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
         [HttpGet("managers")]
         public async Task<ActionResult<List<EmployeeManager>>> GetEmployeeManagers()
         {

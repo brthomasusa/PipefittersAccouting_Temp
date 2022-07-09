@@ -14,13 +14,13 @@ namespace PipefittersAccounting.UI.Components.Common
         private string? currentPage = "1";
         private int totalPages;
         private int totalCount;
-        private int pageSize = 15;
+        private int pageSize;
 
         [CascadingParameter(Name = "MetaData")]
         public MetaData? MetaData { get; set; }
 
         [CascadingParameter(Name = "PagerChangedEventHandler")]
-        public Func<int, int, Task>? PageChangedCallback { get; set; }
+        public Func<int, int, Task>? PagerChangedEventHandler { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -62,7 +62,7 @@ namespace PipefittersAccounting.UI.Components.Common
                 if (currentPageAsInt > 1)
                 {
                     currentPage = (currentPageAsInt - 1).ToString();
-                    await PageChangedCallback!.Invoke(currentPageAsInt - 1, pageSize);
+                    await PagerChangedEventHandler!.Invoke(currentPageAsInt - 1, pageSize);
                 }
             }
             else
@@ -81,7 +81,7 @@ namespace PipefittersAccounting.UI.Components.Common
                 if (currentPageAsInt < totalPages)
                 {
                     currentPage = (currentPageAsInt + 1).ToString();
-                    await PageChangedCallback!.Invoke(currentPageAsInt + 1, pageSize);
+                    await PagerChangedEventHandler!.Invoke(currentPageAsInt + 1, pageSize);
                 }
             }
             else
@@ -96,8 +96,8 @@ namespace PipefittersAccounting.UI.Components.Common
             {
                 currentPage = page;
 
-                if (PageChangedCallback is not null)
-                    await PageChangedCallback!.Invoke(int.Parse(currentPage), pageSize);
+                if (PagerChangedEventHandler is not null)
+                    await PagerChangedEventHandler!.Invoke(int.Parse(currentPage), pageSize);
             }
             else
             {
@@ -110,7 +110,7 @@ namespace PipefittersAccounting.UI.Components.Common
             pageSize = value;
             if (currentPage is not null)
             {
-                await PageChangedCallback!.Invoke(int.Parse(currentPage), pageSize);
+                await PagerChangedEventHandler!.Invoke(int.Parse(currentPage), pageSize);
             }
             else
             {

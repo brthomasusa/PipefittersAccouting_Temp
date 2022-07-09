@@ -43,8 +43,13 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 
         public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters)
             => await GetEmployeeListItemsHttpClient.Query(queryParameters, _client, _options);
+
+        public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesByLastNameParameters queryParameters)
+            => await GetEmployeeListItemsHttpClient.Query(queryParameters, _client, _options);
+
         public Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters)
             => throw new NotImplementedException();
+
         public Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
             => throw new NotImplementedException();
 

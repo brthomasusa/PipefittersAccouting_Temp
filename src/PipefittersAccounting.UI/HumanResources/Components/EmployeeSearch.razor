@@ -1,0 +1,8 @@
+@inject ILogger<EmployeeSearch> logger
+
+<ErrorBoundary>
+    <section style="margin-bottom: 10px">
+        <input type="text" class="form-control" placeholder="Last name" @bind-value="@SearchTerm"
+            @bind-value:event="oninput" @onkeyup="SearchChanged" />
+    </section>
+</ErrorBoundary>

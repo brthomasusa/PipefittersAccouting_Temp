@@ -1,55 +1,70 @@
 @inject ILogger<EmployeeTable> logger
 
 <Row>
-    <!-- Search component here -->
-</Row>
-<Row>
-    @if (Employees is not null && Employees.Any())
-    {
-        <Table Bordered Striped Hoverable Narrow Responsive>
-            <TableHeader ThemeContrast="ThemeContrast.Light">
-                <TableRow>
-                    <TableHeaderCell>Name</TableHeaderCell>
-                    <TableHeaderCell>Telephone</TableHeaderCell>
-                    <TableHeaderCell>Active?</TableHeaderCell>
-                    <TableHeaderCell>Manager?</TableHeaderCell>
-                    <TableHeaderCell>Manager Name</TableHeaderCell>
-                    <TableHeaderCell>Actions</TableHeaderCell>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                @foreach (var listItem in Employees)
-                {
-                    <TableRow>
-                        <TableRowCell>@listItem.EmployeeFullName</TableRowCell>
-                        <TableRowCell>@listItem.Telephone</TableRowCell>
-                        <TableRowCell>@(listItem.IsActive ? "Yes" : "No")</TableRowCell>
-                        <TableRowCell>@(listItem.IsSupervisor ? "Yes" : "No")</TableRowCell>
-                        <TableRowCell>@listItem.ManagerFullName</TableRowCell>
-                        <TableRowCell>
-                            <Dropdown>
-                                <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
-                                    ...
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("ShowDetails") )">Details</DropdownItem>
-                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("EditEmployee") )">Edit</DropdownItem>
-                                    <DropdownItem Clicked="@( () => OnMenuItemClicked("DeleteEmployee") )">Delete</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </TableRowCell>
-                    </TableRow>
-                }
-            </TableBody>
-        </Table>
-    }
-    else
-    {
-        <span>Loading employee list...</span>
-    }
-</Row>
-<Row>
     <Column>
-        <DynamicPager />
+        <Card Margin="Margin.Is4.OnY">
+            <CardHeader>
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is3">
+                        <Button Color="Color.Primary" Size="Size.ExtraLarge" Type="ButtonType.Link"
+                            To="HumanResouces/Pages/EmployeeCreate" Outline>+</Button>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is9">
+                        <EmployeeSearch />
+                    </Column>
+                </Row>
+            </CardHeader>
+            <CardBody>
+                @if (Employees is not null && Employees.Any())
+                {
+                    <Table Bordered Striped Hoverable Narrow Responsive>
+                        <TableHeader ThemeContrast="ThemeContrast.Light">
+                            <TableRow>
+                                <TableHeaderCell>Name</TableHeaderCell>
+                                <TableHeaderCell>Telephone</TableHeaderCell>
+                                <TableHeaderCell>Active?</TableHeaderCell>
+                                <TableHeaderCell>Manager?</TableHeaderCell>
+                                <TableHeaderCell>Manager Name</TableHeaderCell>
+                                <TableHeaderCell>Actions</TableHeaderCell>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            @foreach (var listItem in Employees)
+                            {
+                                <TableRow>
+                                    <TableRowCell>@listItem.EmployeeFullName</TableRowCell>
+                                    <TableRowCell>@listItem.Telephone</TableRowCell>
+                                    <TableRowCell>@(listItem.IsActive ? "Yes" : "No")</TableRowCell>
+                                    <TableRowCell>@(listItem.IsSupervisor ? "Yes" : "No")</TableRowCell>
+                                    <TableRowCell>@listItem.ManagerFullName</TableRowCell>
+                                    <TableRowCell>
+                                        <Dropdown>
+                                            <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
+                                                ...
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("ShowDetails") )">Details
+                                                </DropdownItem>
+                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("EditEmployee") )">Edit
+                                                </DropdownItem>
+                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("DeleteEmployee") )">Delete
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </TableRowCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                }
+                else
+                {
+                    <span>Loading employee list...</span>
+                }
+            </CardBody>
+            <CardFooter>
+                <DynamicPager />
+            </CardFooter>
+        </Card>
     </Column>
 </Row>

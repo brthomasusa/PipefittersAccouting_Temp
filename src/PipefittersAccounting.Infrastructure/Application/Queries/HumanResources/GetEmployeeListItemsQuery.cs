@@ -31,7 +31,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     FROM HumanResources.Employees supv
                     WHERE IsSupervisor = 1
                 ) supv ON ee.SupervisorId = supv.EmployeeId
-                ORDER BY ee.LastName
+                ORDER BY ee.LastName, ee.FirstName, ee.MiddleInitial
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
                 var parameters = new DynamicParameters();
@@ -43,6 +43,49 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                 using var connection = ctx.CreateConnection();
 
                 var count = await connection.ExecuteScalarAsync<int>(totalRecordsSql);
+                var items = await connection.QueryAsync<EmployeeListItem>(sql, parameters);
+                var pagedList = PagedList<EmployeeListItem>.CreatePagedList(items.ToList(), count, queryParams.Page, queryParams.PageSize);
+
+                return OperationResult<PagedList<EmployeeListItem>>.CreateSuccessResult(pagedList);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<PagedList<EmployeeListItem>>.CreateFailure(ex.Message);
+            }
+        }
+
+        public async static Task<OperationResult<PagedList<EmployeeListItem>>> Query(GetEmployeesByLastNameParameters queryParams, DapperContext ctx)
+        {
+            try
+            {
+                var sql =
+                @"SELECT 
+                    ee.EmployeeId,
+                    CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName,
+                    ee.Telephone, ee.IsActive, ee.IsSupervisor,
+                    CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName               
+                FROM HumanResources.Employees ee
+                LEFT JOIN
+                (
+                    SELECT 
+                        EmployeeId, LastName, FirstName, MiddleInitial 
+                    FROM HumanResources.Employees supv
+                    WHERE IsSupervisor = 1
+                ) supv ON ee.SupervisorId = supv.EmployeeId
+                WHERE ee.LastName LIKE @LastName
+                ORDER BY ee.LastName, ee.FirstName, ee.MiddleInitial
+                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("LastName", queryParams.LastName, DbType.String);
+                parameters.Add("Offset", Offset(queryParams.Page, queryParams.PageSize), DbType.Int32);
+                parameters.Add("PageSize", queryParams.PageSize, DbType.Int32);
+
+                var totalRecordsSql = "SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE ee.LastName LIKE @LastName";
+
+                using var connection = ctx.CreateConnection();
+
+                int count = await connection.ExecuteScalarAsync<int>(totalRecordsSql, parameters);
                 var items = await connection.QueryAsync<EmployeeListItem>(sql, parameters);
                 var pagedList = PagedList<EmployeeListItem>.CreatePagedList(items.ToList(), count, queryParams.Page, queryParams.PageSize);
 

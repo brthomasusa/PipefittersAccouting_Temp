@@ -20,6 +20,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
         public async Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters) =>
             await GetEmployeeListItemsQuery.Query(queryParameters, _dapperCtx);
 
+        public async Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesByLastNameParameters queryParameters) =>
+            await GetEmployeeListItemsQuery.Query(queryParameters, _dapperCtx);
+
         public async Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters) =>
             await GetEmployeeManagersQuery.Query(queryParameters, _dapperCtx);
 
