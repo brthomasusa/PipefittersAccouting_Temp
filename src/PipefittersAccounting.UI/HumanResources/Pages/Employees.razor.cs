@@ -53,6 +53,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
                 _employeeList = result.Result.Items;
                 _metaData = result.Result.MetaData;
                 StateHasChanged();
+                logger!.LogInformation($"Employees.GetEmployees called with parameter: {lastName}.");
             }
             else
             {
@@ -63,7 +64,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private async Task SearchChanged(string searchTerm)
         {
             await GetEmployees(searchTerm, 1, 5);
-            logger!.LogInformation($"Employees.SearchChanged called with parameter: {searchTerm}.");
         }
     }
 }

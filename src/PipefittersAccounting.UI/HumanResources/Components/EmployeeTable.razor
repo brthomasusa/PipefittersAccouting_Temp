@@ -10,7 +10,7 @@
                             To="HumanResouces/Pages/EmployeeCreate" Outline>+</Button>
                     </Column>
                     <Column ColumnSize="ColumnSize.Is9">
-                        <EmployeeSearch />
+                        <EmployeeSearch OnSearchChanged=@SearchChanged />
                     </Column>
                 </Row>
             </CardHeader>
@@ -38,16 +38,22 @@
                                     <TableRowCell>@(listItem.IsSupervisor ? "Yes" : "No")</TableRowCell>
                                     <TableRowCell>@listItem.ManagerFullName</TableRowCell>
                                     <TableRowCell>
-                                        <Dropdown>
+                                        <Dropdown Direction="Direction.Up">
                                             <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
                                                 ...
                                             </DropdownToggle>
                                             <DropdownMenu>
-                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("ShowDetails") )">Details
+                                                <DropdownItem
+                                            Clicked="@( () => OnMenuItemClicked("ShowDetails", @listItem.EmployeeId) )">
+                                                    Details
                                                 </DropdownItem>
-                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("EditEmployee") )">Edit
+                                                <DropdownItem
+                                            Clicked="@( () => OnMenuItemClicked("EditEmployee", @listItem.EmployeeId) )">
+                                                    Edit
                                                 </DropdownItem>
-                                                <DropdownItem Clicked="@( () => OnMenuItemClicked("DeleteEmployee") )">Delete
+                                                <DropdownItem
+                                            Clicked="@( () => OnMenuItemClicked("DeleteEmployee", @listItem.EmployeeId) )">
+                                                    Delete
                                                 </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>

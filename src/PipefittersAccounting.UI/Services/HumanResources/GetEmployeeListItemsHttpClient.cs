@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.WebUtilities;
-using System.Net.Http.Json;
 using System.Text.Json;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
@@ -35,7 +34,6 @@ namespace PipefittersAccounting.UI.Services.HumanResources
                         Items = JsonSerializer.Deserialize<List<EmployeeListItem>>(content, options),
                         MetaData = JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), options)
                     };
-                    Console.WriteLine($"MetaData.CurrentPage: {pagingResponse.MetaData!.CurrentPage}, MetaData.PageSize: {pagingResponse.MetaData!.PageSize}");
                     return OperationResult<PagingResponse<EmployeeListItem>>.CreateSuccessResult(pagingResponse);
                 }
                 else
@@ -65,7 +63,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
                     ["PageSize"] = queryParameters.PageSize.ToString()
                 };
 
-                var uri = $"1.0/employees/list";
+                var uri = $"1.0/employees/search";
                 var response = await client.GetAsync(QueryHelpers.AddQueryString(uri, queryParams));
                 var content = await response.Content.ReadAsStringAsync();
 
@@ -76,7 +74,6 @@ namespace PipefittersAccounting.UI.Services.HumanResources
                         Items = JsonSerializer.Deserialize<List<EmployeeListItem>>(content, options),
                         MetaData = JsonSerializer.Deserialize<MetaData>(response.Headers.GetValues("X-Pagination").First(), options)
                     };
-                    Console.WriteLine($"MetaData.CurrentPage: {pagingResponse.MetaData!.CurrentPage}, MetaData.PageSize: {pagingResponse.MetaData!.PageSize}");
                     return OperationResult<PagingResponse<EmployeeListItem>>.CreateSuccessResult(pagingResponse);
                 }
                 else

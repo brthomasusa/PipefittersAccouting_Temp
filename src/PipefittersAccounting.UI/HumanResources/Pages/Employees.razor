@@ -11,9 +11,7 @@
         <Column Margin="Margin.Is4.FromStart.Is4.FromEnd">
             <CascadingValue Name="MetaData" Value=@_metaData>
                 <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
-                    <CascadingValue Name="SearchChangedEventHandler" Value=@SearchChanged>
-                        <EmployeeTable Employees=@_employeeList />
-                    </CascadingValue>
+                    <EmployeeTable Employees=@_employeeList OnSearchChanged=@SearchChanged />
                 </CascadingValue>
             </CascadingValue>
         </Column>

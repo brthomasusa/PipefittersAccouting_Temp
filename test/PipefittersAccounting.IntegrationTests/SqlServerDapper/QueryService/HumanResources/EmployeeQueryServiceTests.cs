@@ -53,7 +53,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<List<EmployeeManager>> result = await _queryService.GetEmployeeManagers(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(3, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(6, count);
         }
 
         [Fact]
@@ -63,7 +64,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<PagedList<EmployeeListItem>> result = await _queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(13, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(13, count);
         }
 
         [Fact]
@@ -73,7 +75,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<PagedList<EmployeeListItem>> result = await _queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(1, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(1, count);
         }
 
         [Fact]
@@ -91,7 +94,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             result = await _queryService.GetEmployeeListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(4, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(5, count);
         }
 
         [Fact]
@@ -171,7 +175,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<List<TimeCardListItem>> result = await _queryService.GetEmployeeTimeCardListItems(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(2, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(2, count);
         }
 
         [Fact]
@@ -211,7 +216,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<TimeCardPaymentVerification> result = await _queryService.GetTimeCardPaymentVerification(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(168, result.Result.RegularHours);
+            Assert.Equal(160, result.Result.RegularHours);
             Assert.Equal(new DateTime(), result.Result.DatePaid);
         }
 
@@ -222,7 +227,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             OperationResult<List<PayrollRegister>> result = await _queryService.GetPayrollRegister(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(13, result.Result.Count);
+            int count = result.Result.Count;
+            Assert.Equal(13, count);
         }
     }
 }

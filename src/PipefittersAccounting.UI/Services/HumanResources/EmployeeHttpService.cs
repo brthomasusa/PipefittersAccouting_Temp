@@ -38,8 +38,8 @@ namespace PipefittersAccounting.UI.Services.HumanResources
             => throw new NotImplementedException();
 
         // Query system state with ReadModels        
-        public Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters)
+            => await GetEmployeeDetailHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters)
             => await GetEmployeeListItemsHttpClient.Query(queryParameters, _client, _options);

@@ -58,7 +58,8 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             List<EmployeeListItem> response = await _client
                 .GetFromJsonAsync<List<EmployeeListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/search", queryParams));
 
-            Assert.Equal(1, response.Count);
+            int count = response.Count;
+            Assert.Equal(1, count);
         }
 
         [Fact]
@@ -77,7 +78,8 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             var jsonResponse = await response.Content.ReadAsStreamAsync();
             var employeeListItems = await JsonSerializer.DeserializeAsync<List<EmployeeListItem>>(jsonResponse, _options);
 
-            Assert.Equal(13, employeeListItems.Count);
+            int count = employeeListItems.Count;
+            Assert.Equal(13, count);
         }
 
         [Fact]

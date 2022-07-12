@@ -10,8 +10,8 @@ namespace PipefittersAccounting.UI.HumanResources.Components
 
         public string? SearchTerm { get; set; }
 
-        [CascadingParameter(Name = "SearchChangedEventHandler")]
-        public EventCallback<string> OnSearchChanged { get; set; }
+        // [CascadingParameter(Name = "SearchChangedEventHandler")]
+        [Parameter] public EventCallback<string> OnSearchChanged { get; set; }
 
         private void SearchChanged()
         {

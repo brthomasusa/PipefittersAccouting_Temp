@@ -72,7 +72,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     FROM HumanResources.Employees supv
                     WHERE IsSupervisor = 1
                 ) supv ON ee.SupervisorId = supv.EmployeeId
-                WHERE ee.LastName LIKE @LastName
+                WHERE ee.LastName LIKE CONCAT('%',@LastName,'%')
                 ORDER BY ee.LastName, ee.FirstName, ee.MiddleInitial
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
@@ -81,7 +81,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                 parameters.Add("Offset", Offset(queryParams.Page, queryParams.PageSize), DbType.Int32);
                 parameters.Add("PageSize", queryParams.PageSize, DbType.Int32);
 
-                var totalRecordsSql = "SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE LastName LIKE @LastName";
+                var totalRecordsSql = "SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE LastName LIKE CONCAT('%',@LastName,'%')";
 
                 using var connection = ctx.CreateConnection();
 
