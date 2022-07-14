@@ -6,6 +6,7 @@ using Blazorise.DataGrid;
 using Blazorise.Icons.FontAwesome;
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Services.Finance;
 using PipefittersAccounting.UI.Services.HumanResources;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -27,5 +28,6 @@ builder.Services.AddScoped(sp => new HttpClient
 });
 
 builder.Services.AddScoped<IEmployeeHttpService, EmployeeHttpService>();
+builder.Services.AddScoped<IFinanciersHttpService, FinanciersHttpService>();
 
 await builder.Build().RunAsync();

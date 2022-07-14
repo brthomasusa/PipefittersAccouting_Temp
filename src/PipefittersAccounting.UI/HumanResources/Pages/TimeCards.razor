@@ -1,55 +1,6 @@
 ﻿@page "/HumanResources/Pages/TimeCards"
 @using PipefittersAccounting.SharedModel.Readmodels.HumanResources
-@using System.Globalization
 @inject ILogger<TimeCards> logger
 
 <PageTitle>TimeCards</PageTitle>
 <Heading Size="HeadingSize.Is3" Margin="Margin.Is3.FromStart">TimeCards</Heading>
-
-<Row>
-    <Column>
-        <Card Margin="Margin.Is4.OnY">
-            <CardHeader>
-                <CardTitle>TimeCard Payment Information</CardTitle>
-            </CardHeader>
-            <CardBody>
-                <DataGrid TItem="PayrollRegister" Data="inMemoryData" ShowPager ShowPageSizes>
-                    <DataGridColumns>
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.EmployeeName )"
-                            Caption="Name" />
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.RegularPay )"
-                            Caption="Regular" DisplayFormat="{0:C}"
-                            DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.OvertimePay )"
-                            Caption="Overtime" DisplayFormat="{0:C}"
-                            DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.GrossPay )"
-                            Caption="Gross" DisplayFormat="{0:C}"
-                            DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.FICA )" Caption="FICA"
-                            DisplayFormat="{0:C}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridDateColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.Medicare )"
-                            Caption="Medicare" DisplayFormat="{0:C}"
-                            DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridNumericColumn TItem="PayrollRegister"
-                            Field="@nameof( PayrollRegister.FederalWithholding )" Caption="FWT" DisplayFormat="{0:C}"
-                            DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
-
-                        <DataGridColumn TItem="PayrollRegister" Field="@nameof( PayrollRegister.NetPay )" Caption="Net"
-                            DisplayFormat="{0:C}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")"
-                            TextAlignment="TextAlignment.End">
-                        </DataGridColumn>
-
-                    </DataGridColumns>
-                </DataGrid>
-            </CardBody>
-        </Card>
-    </Column>
-</Row>
