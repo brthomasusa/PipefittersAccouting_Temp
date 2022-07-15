@@ -53,7 +53,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
                 _employeeList = result.Result.Items;
                 _metaData = result.Result.MetaData;
                 StateHasChanged();
-                logger!.LogInformation($"Employees.GetEmployees called with parameter: {lastName}.");
             }
             else
             {

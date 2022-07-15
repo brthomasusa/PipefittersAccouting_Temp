@@ -9,6 +9,7 @@ namespace PipefittersAccounting.UI.Interfaces
     {
         Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters);
         Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters);
+        Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters);
         Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters);
     }
 }

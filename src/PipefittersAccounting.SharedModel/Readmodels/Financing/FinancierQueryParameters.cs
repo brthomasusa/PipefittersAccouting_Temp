@@ -12,6 +12,13 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int PageSize { get; set; }
     }
 
+    public class GetFinanciersByName
+    {
+        public string? Name { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
+
     public class GetFinanciersLookup { }
 
 }

@@ -18,8 +18,8 @@ namespace PipefittersAccounting.UI.HumanResources.Components
             itemName switch
             {
                 "ShowDetails" => $"HumanResouces/Pages/EmployeeDetails/{employeeId}",
-                "EditEmployee" => $"HumanResouces/Pages/EmployeeEdit/{employeeId}",
-                "DeleteEmployee" => $"HumanResouces/Pages/EmployeeDetails/{employeeId}",
+                "Edit" => $"HumanResouces/Pages/EmployeeEdit/{employeeId}",
+                "Delete" => $"HumanResouces/Pages/EmployeeDetails/{employeeId}",
                 _ => throw new ArgumentOutOfRangeException(nameof(itemName), $"Unexpected menu item: {itemName}"),
             }
             );
@@ -27,7 +27,6 @@ namespace PipefittersAccounting.UI.HumanResources.Components
 
         private async Task SearchChanged(string searchTerm)
         {
-            logger!.LogInformation($"EmployeeTable.SearchChanged called with parameter: {searchTerm}.");
             await OnSearchChanged.InvokeAsync(searchTerm);
         }
     }

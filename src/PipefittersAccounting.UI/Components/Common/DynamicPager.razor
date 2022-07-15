@@ -29,7 +29,7 @@
         </Column>
         <Column ColumnSize="ColumnSize.Is5">
             <Field Horizontal>
-                <FieldBody ColumnSize="ColumnSize.Is3" Margin="Margin.IsAuto">
+                <FieldBody ColumnSize="ColumnSize.Is3" Padding="Padding.Is1.FromEnd" Margin="Margin.Is0.FromEnd">
                     <Select TValue="int" SelectedValue="@pageSize" SelectedValueChanged="@OnSelectedValueChanged">
                         <SelectItem Value="5">5</SelectItem>
                         <SelectItem Value="10">10</SelectItem>
@@ -37,7 +37,8 @@
                         <SelectItem Value="20">20</SelectItem>
                     </Select>
                 </FieldBody>
-                <FieldLabel Margin="Margin.Is1.OnX" ColumnSize="ColumnSize.Is4">Items per page</FieldLabel>
+                <FieldLabel Padding="Padding.Is1.FromStart" Margin="Margin.Is0.FromStart" ColumnSize="ColumnSize.Is4">
+                    Items per page</FieldLabel>
             </Field>
         </Column>
         <Column>

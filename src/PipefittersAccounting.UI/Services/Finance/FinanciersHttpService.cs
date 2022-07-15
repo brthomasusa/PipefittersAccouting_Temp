@@ -25,6 +25,9 @@ namespace PipefittersAccounting.UI.Services.Finance
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters)
             => await GetFinancierListItemsHttpClient.Query(queryParameters, _client, _options);
 
+        public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters)
+            => await GetFinancierListItemsHttpClient.Query(queryParameters, _client, _options);
+
         public Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters)
             => throw new NotImplementedException();
     }

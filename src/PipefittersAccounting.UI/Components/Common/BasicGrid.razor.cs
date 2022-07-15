@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Components.Library.Components
+namespace PipefittersAccounting.UI.Components.Common
 {
     public partial class BasicGrid<TItem>
     {

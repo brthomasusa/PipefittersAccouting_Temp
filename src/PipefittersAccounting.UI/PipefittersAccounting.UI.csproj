@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PipefittersAccounting.SharedModel\PipefittersAccounting.SharedModel.csproj" />
-    <ProjectReference Include="..\Components.Library\Components.Library.csproj" />
   </ItemGroup>
 
 </Project>

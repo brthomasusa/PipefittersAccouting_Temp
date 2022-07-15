@@ -44,6 +44,32 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         }
 
         [Fact]
+        public async Task GetFinanciers_Search_ReturnOneFinancier_ShouldSucceed()
+        {
+            GetFinanciersByName queryParameters =
+                new GetFinanciersByName()
+                {
+                    Name = "Bertha Mae Jones Innovative Financing",
+                    Page = 1,
+                    PageSize = 10
+                };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["Name"] = queryParameters.Name,
+                ["page"] = queryParameters.Page.ToString(),
+                ["pageSize"] = queryParameters.PageSize.ToString()
+            };
+
+            List<FinancierListItems> response = await _client
+
+                .GetFromJsonAsync<List<FinancierListItems>>(QueryHelpers.AddQueryString($"{_urlRoot}/financiers/search", queryParams));
+
+            int count = response.Count;
+            Assert.Equal(1, count);
+        }
+
+        [Fact]
         public async Task GetFinanciersLookup_ReturnAllFinanciersLookupsForDropDown_ShouldSucceed()
         {
             using var response = await _client.GetAsync($"{_urlRoot}/financiers/financierslookup",
