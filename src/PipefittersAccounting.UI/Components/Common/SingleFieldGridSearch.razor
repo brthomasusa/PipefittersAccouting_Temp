@@ -1,0 +1,4 @@
+<ErrorBoundary>
+    <input type="text" class="form-control border border-primary" placeholder=@PlaceHolderText aria-label="Search"
+        @bind-value=SearchTerm @bind-value:event="oninput" @onkeyup="OnSearchTermChanged" />
+</ErrorBoundary>

@@ -1,0 +1,32 @@
+@page "/Finance/Pages/Financiers/FinancierDetails/{FinancierId:guid}"
+@inject ILogger<FinancierDetails> logger
+
+<PageTitle>Financier Details</PageTitle>
+
+<ErrorBoundary>
+    <Row>
+        <Column>
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Muted" Size="HeadingSize.Is4"
+                        Margin="Margin.Is3.FromStart.Is2.FromTop">
+                        Financier Details
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    @if (FinancierDetailModel is not null)
+                    {
+
+                    }
+                    else
+                    {
+                        <span>Loading financier details...</span>
+                    }
+                </CardBody>
+                <CardFooter>
+
+                </CardFooter>
+            </Card>
+        </Column>
+    </Row>
+</ErrorBoundary>

@@ -67,7 +67,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger.LogWarning("DynamicPager.currentPage property is null!");
+                logger.LogWarning("DynamicPager.Previous: currentPage property is null!");
             }
 
         }
@@ -86,7 +86,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger.LogWarning("DynamicPager.currentPage property is null!");
+                logger.LogWarning("DynamicPager.Next: currentPage property is null!");
             }
         }
 

@@ -1,0 +1,32 @@
+@page "/Finance/Pages/Financiers/FinancierCreate"
+@inject ILogger<FinancierCreate> logger
+
+<PageTitle>Financier Create</PageTitle>
+
+<ErrorBoundary>
+    <Row>
+        <Column>
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Muted" Size="HeadingSize.Is4"
+                        Margin="Margin.Is3.FromStart.Is2.FromTop">
+                        Financier Create
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    @if (FinancierWriteModel is not null)
+                    {
+
+                    }
+                    else
+                    {
+                        <span>Loading financier details...</span>
+                    }
+                </CardBody>
+                <CardFooter>
+
+                </CardFooter>
+            </Card>
+        </Column>
+    </Row>
+</ErrorBoundary>

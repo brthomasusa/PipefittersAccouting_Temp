@@ -12,15 +12,16 @@
     <Column>
         <Card Margin="Margin.Is4.OnY">
             <CardHeader>
-                <Row>
-                    <Column ColumnSize="ColumnSize.Is3">
-                        <Button Color="Color.Primary" Size="Size.ExtraLarge" Type="ButtonType.Link"
-                            To="HumanResouces/Pages/EmployeeCreate" Outline>+</Button>
-                    </Column>
-                    <Column ColumnSize="ColumnSize.Is9">
-                        @* <EmployeeSearch OnSearchChanged=@SearchChanged /> *@
-                    </Column>
-                </Row>
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <Button class="rounded-pill" Color="Color.Primary" Size="Size.ExtraLarge" Type="ButtonType.Link"
+                            To="Finance/Pages/Financiers/FinancierCreate" Outline>+</Button>
+                    </div>
+                    <div class="col-md-5">
+                        <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
+                            OnSearchTermChangedEventHandler=@SearchChanged />
+                    </div>
+                </div>
             </CardHeader>
             <CardBody>
                 @if (_financierList is not null && _financierList.Any())
@@ -45,9 +46,9 @@
                                     <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
                                         ...
                                     </DropdownToggle>
-                                    <DropdownMenu>
+                                    <DropdownMenu class="border border-primary rounded-3 shadow-lg">
                                         <DropdownItem
-                                        Clicked="@( () => OnMenuItemClicked("ShowDetails", @financier.FinancierId) )">
+                                        Clicked="@( () => OnMenuItemClicked("Details", @financier.FinancierId) )">
                                             Details
                                         </DropdownItem>
                                         <DropdownItem
