@@ -77,11 +77,11 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpGet("detail/{financierId:Guid}")]
-        public async Task<ActionResult<FinancierDetail>> GetFinancierDetail(Guid financierId)
+        public async Task<ActionResult<FinancierReadModel>> GetFinancierDetail(Guid financierId)
         {
             GetFinancier queryParams = new() { FinancierId = financierId };
 
-            OperationResult<FinancierDetail> result = await _qrySvc.GetFinancierDetails(queryParams);
+            OperationResult<FinancierReadModel> result = await _qrySvc.GetFinancierDetails(queryParams);
 
             if (result.Success)
             {
@@ -99,13 +99,13 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateFinancierInfo([FromBody] CreateFinancierInfo writeModel)
+        public async Task<IActionResult> CreateFinancierInfo([FromBody] FinancierWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.CreateFinancierInfo(writeModel);
             if (writeResult.Success)
             {
                 GetFinancier queryParams = new() { FinancierId = writeModel.Id };
-                OperationResult<FinancierDetail> queryResult = await _qrySvc.GetFinancierDetails(queryParams);
+                OperationResult<FinancierReadModel> queryResult = await _qrySvc.GetFinancierDetails(queryParams);
 
                 if (queryResult.Success)
                 {
@@ -128,7 +128,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpPut("edit")]
-        public async Task<IActionResult> EditFinancierInfo([FromBody] EditFinancierInfo writeModel)
+        public async Task<IActionResult> EditFinancierInfo([FromBody] FinancierWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.EditFinancierInfo(writeModel);
 
@@ -148,7 +148,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteFinancierInfo([FromBody] DeleteFinancierInfo writeModel)
+        public async Task<IActionResult> DeleteFinancierInfo([FromBody] FinancierWriteModel writeModel)
         {
             OperationResult<bool> writeResult = await _cmdSvc.DeleteFinancierInfo(writeModel);
 

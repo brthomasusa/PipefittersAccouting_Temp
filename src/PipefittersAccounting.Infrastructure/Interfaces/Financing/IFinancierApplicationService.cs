@@ -5,8 +5,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface IFinancierApplicationService
     {
-        Task<OperationResult<bool>> CreateFinancierInfo(CreateFinancierInfo writeModel);
-        Task<OperationResult<bool>> EditFinancierInfo(EditFinancierInfo writeModel);
-        Task<OperationResult<bool>> DeleteFinancierInfo(DeleteFinancierInfo writeModel);
+        Task<OperationResult<bool>> CreateFinancierInfo(FinancierWriteModel writeModel);
+        Task<OperationResult<bool>> EditFinancierInfo(FinancierWriteModel writeModel);
+        Task<OperationResult<bool>> DeleteFinancierInfo(FinancierWriteModel writeModel);
     }
 }

@@ -24,7 +24,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid agentID = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a");
 
             GetFinancier qryParam = new GetFinancier() { FinancierId = agentID };
-            OperationResult<FinancierDetail> result = await queryService.GetFinancierDetails(qryParam);
+            OperationResult<FinancierReadModel> result = await queryService.GetFinancierDetails(qryParam);
 
             Assert.True(result.Success);
             Assert.Equal(agentID, result.Result.FinancierId);
@@ -37,7 +37,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid agentID = new Guid("aaa471a0-5c1e-4a4d-97e7-288fb0f6338a");
 
             GetFinancier qryParam = new GetFinancier() { FinancierId = agentID };
-            OperationResult<FinancierDetail> result = await queryService.GetFinancierDetails(qryParam);
+            OperationResult<FinancierReadModel> result = await queryService.GetFinancierDetails(qryParam);
 
             Assert.False(result.Success);
             Assert.Equal($"No financier record found where FinancierId equals {qryParam.FinancierId}.", result.NonSuccessMessage);

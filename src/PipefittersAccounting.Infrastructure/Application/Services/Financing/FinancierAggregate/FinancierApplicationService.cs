@@ -18,13 +18,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Fi
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OperationResult<bool>> CreateFinancierInfo(CreateFinancierInfo writeModel)
+        public async Task<OperationResult<bool>> CreateFinancierInfo(FinancierWriteModel writeModel)
             => await FinancierCreateCommand.Execute(writeModel, _financierRepo, _unitOfWork);
 
-        public async Task<OperationResult<bool>> EditFinancierInfo(EditFinancierInfo writeModel)
+        public async Task<OperationResult<bool>> EditFinancierInfo(FinancierWriteModel writeModel)
             => await FinancierEditCommand.Execute(writeModel, _financierRepo, _unitOfWork);
 
-        public async Task<OperationResult<bool>> DeleteFinancierInfo(DeleteFinancierInfo writeModel)
+        public async Task<OperationResult<bool>> DeleteFinancierInfo(FinancierWriteModel writeModel)
             => await FinancierDeleteCommand.Execute(writeModel, _financierRepo, _unitOfWork);
     }
 }

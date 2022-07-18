@@ -9,7 +9,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int StockSubscriptions { get; set; }
     }
 
-    public class FinancierDetail : IReadModel
+    public class FinancierReadModel : IReadModel
     {
         public Guid FinancierId { get; set; }
         public string? FinancierName { get; set; }

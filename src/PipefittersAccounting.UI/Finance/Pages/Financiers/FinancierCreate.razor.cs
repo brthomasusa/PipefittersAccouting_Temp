@@ -10,7 +10,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
     public partial class FinancierCreate
     {
-        [Parameter] public CreateFinancierInfo? FinancierWriteModel { get; set; }
+        [Parameter] public FinancierWriteModel? FinancierWriteModel { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
     }
 }

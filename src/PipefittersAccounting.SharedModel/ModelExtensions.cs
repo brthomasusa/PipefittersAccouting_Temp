@@ -19,5 +19,26 @@ namespace PipefittersAccounting.SharedModel
                 UserId = userId
             };
         }
+
+        public static FinancierWriteModel Map(this FinancierReadModel input)
+        {
+            return new FinancierWriteModel()
+            {
+                Id = input.FinancierId,
+                FinancierName = input.FinancierName!,
+                Telephone = input.Telephone!,
+                AddressLine1 = input.AddressLine1!,
+                AddressLine2 = input.AddressLine2!,
+                City = input.City!,
+                StateCode = input.StateCode!,
+                Zipcode = input.Zipcode!,
+                ContactFirstName = input.ContactFirstName!,
+                ContactLastName = input.ContactLastName!,
+                ContactMiddleInitial = input.ContactMiddleInitial!,
+                ContactTelephone = input.ContactTelephone!,
+                IsActive = input.IsActive,
+                UserId = input.UserId
+            };
+        }
     }
 }

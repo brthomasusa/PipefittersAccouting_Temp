@@ -13,7 +13,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Fi
 
         public FinancierQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
+        public async Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters)
         {
             return await GetFinancierDetailsQuery.Query(queryParameters, _dapperCtx);
         }

@@ -86,8 +86,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                     true
                 )
             };
-        public static CreateFinancierInfo GetCreateFinancierInfo() =>
-            new CreateFinancierInfo()
+        public static FinancierWriteModel GetCreateFinancierInfo() =>
+            new FinancierWriteModel()
             {
                 Id = Guid.NewGuid(),
                 FinancierName = "The Deep Pockets Group",
@@ -105,8 +105,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static EditFinancierInfo GetEditFinancierInfo() =>
-            new EditFinancierInfo()
+        public static FinancierWriteModel GetEditFinancierInfo() =>
+            new FinancierWriteModel()
             {
                 Id = new Guid("b49471a0-5c1e-4a4d-97e7-288fb0f6338a"),
                 FinancierName = "Bertha Mae Jones Down Home Cooking",
@@ -124,8 +124,8 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
 
-        public static DeleteFinancierInfo GetDeleteFinancierInfo() =>
-            new DeleteFinancierInfo()
+        public static FinancierWriteModel GetDeleteFinancierInfo() =>
+            new FinancierWriteModel()
             {
                 Id = new Guid("84164388-28ff-4b47-bd63-dd9326d32236"),
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")

@@ -7,7 +7,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
     public partial class FinancierDetails
     {
-        private FinancierDetail? _financierDetailModel;
+        private FinancierReadModel? _financierDetailModel;
         private string _pageTitle = "Financier Details";
         private string? _formTitle;
 
@@ -24,7 +24,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         {
             GetFinancier getFinancierParameters = new() { FinancierId = FinancierId };
 
-            OperationResult<FinancierDetail> result =
+            OperationResult<FinancierReadModel> result =
                 await FinanciersService!.GetFinancierDetails(getFinancierParameters);
 
             if (result.Success)

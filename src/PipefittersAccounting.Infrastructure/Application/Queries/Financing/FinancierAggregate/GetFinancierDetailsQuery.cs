@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
 {
     public class GetFinancierDetailsQuery
     {
-        public async static Task<OperationResult<FinancierDetail>> Query(GetFinancier queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<FinancierReadModel>> Query(GetFinancier queryParameters, DapperContext ctx)
         {
             try
             {
@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
                 if (await IsValidFinancierID(queryParameters.FinancierId, ctx) == false)
                 {
                     string errMsg = $"No financier record found where FinancierId equals {queryParameters.FinancierId}.";
-                    return OperationResult<FinancierDetail>.CreateFailure(errMsg);
+                    return OperationResult<FinancierReadModel>.CreateFailure(errMsg);
                 }
 
                 var sql =
@@ -36,13 +36,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    FinancierDetail detail = await connection.QueryFirstOrDefaultAsync<FinancierDetail>(sql, parameters);
-                    return OperationResult<FinancierDetail>.CreateSuccessResult(detail);
+                    FinancierReadModel detail = await connection.QueryFirstOrDefaultAsync<FinancierReadModel>(sql, parameters);
+                    return OperationResult<FinancierReadModel>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<FinancierDetail>.CreateFailure(ex.Message);
+                return OperationResult<FinancierReadModel>.CreateFailure(ex.Message);
             }
 
         }

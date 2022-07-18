@@ -92,7 +92,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var financierDetail = await JsonSerializer.DeserializeAsync<FinancierDetail>(jsonResponse, _options);
+            var financierDetail = await JsonSerializer.DeserializeAsync<FinancierReadModel>(jsonResponse, _options);
 
             Assert.Equal("Arturo Sandoval", financierDetail.FinancierName);
         }
@@ -101,7 +101,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task CreateFinancierInfo_CreateFinancierWithValidInfo_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/create";
-            CreateFinancierInfo model = FinancierTestData.GetCreateFinancierInfo();
+            FinancierWriteModel model = FinancierTestData.GetCreateFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -120,7 +120,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var financierDetails = await JsonSerializer.DeserializeAsync<FinancierDetail>(jsonResponse, _options);
+                    var financierDetails = await JsonSerializer.DeserializeAsync<FinancierReadModel>(jsonResponse, _options);
 
                     Assert.Equal(model.FinancierName, financierDetails.FinancierName);
                 }
@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task EditFinancierInfo_EditFinancierWithValidInfo_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/edit";
-            EditFinancierInfo model = FinancierTestData.GetEditFinancierInfo();
+            FinancierWriteModel model = FinancierTestData.GetEditFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);
@@ -158,7 +158,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         public async Task DeleteFinancierInfo_DeleteFinancierWithValidId_ShouldSucceed()
         {
             string uri = $"{_urlRoot}/financiers/delete";
-            DeleteFinancierInfo model = FinancierTestData.GetDeleteFinancierInfo();
+            FinancierWriteModel model = FinancierTestData.GetDeleteFinancierInfo();
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

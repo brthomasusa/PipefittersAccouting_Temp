@@ -6,7 +6,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface IFinancierQueryService
     {
-        Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters);
+        Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters);
         Task<OperationResult<PagedList<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters);
         Task<OperationResult<PagedList<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters);
         Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters);

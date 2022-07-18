@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
     {
         public static async Task<OperationResult<bool>> Execute
         (
-            CreateFinancierInfo model,
+            FinancierWriteModel model,
             IFinancierAggregateRepository repo,
             IUnitOfWork unitOfWork
         )

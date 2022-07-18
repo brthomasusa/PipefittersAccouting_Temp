@@ -19,7 +19,7 @@ namespace PipefittersAccounting.UI.Services.Finance
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
+        public async Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters)
             => await GetFinancierDetailHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters)

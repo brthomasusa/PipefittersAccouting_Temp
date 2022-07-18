@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
     {
         public static async Task<OperationResult<bool>> Execute
         (
-            DeleteFinancierInfo model,
+            FinancierWriteModel model,
             IFinancierAggregateRepository repo,
             IUnitOfWork unitOfWork
         )

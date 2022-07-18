@@ -6,7 +6,7 @@ namespace PipefittersAccounting.UI.Services.Finance
 {
     public class GetFinancierDetailHttpClient
     {
-        public static async Task<OperationResult<FinancierDetail>> Query
+        public static async Task<OperationResult<FinancierReadModel>> Query
         (
             GetFinancier queryParameters,
             HttpClient client,
@@ -21,24 +21,24 @@ namespace PipefittersAccounting.UI.Services.Finance
 
                 if (response.IsSuccessStatusCode)
                 {
-                    FinancierDetail? financierDetail = JsonSerializer.Deserialize<FinancierDetail>(content, options);
+                    FinancierReadModel? financierDetail = JsonSerializer.Deserialize<FinancierReadModel>(content, options);
                     if (financierDetail is not null)
                     {
-                        return OperationResult<FinancierDetail>.CreateSuccessResult(financierDetail);
+                        return OperationResult<FinancierReadModel>.CreateSuccessResult(financierDetail);
                     }
                     else
                     {
-                        return OperationResult<FinancierDetail>.CreateFailure($"A financier with Id: '{queryParameters.FinancierId}' was not found.");
+                        return OperationResult<FinancierReadModel>.CreateFailure($"A financier with Id: '{queryParameters.FinancierId}' was not found.");
                     }
                 }
                 else
                 {
-                    return OperationResult<FinancierDetail>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
+                    return OperationResult<FinancierReadModel>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<FinancierDetail>.CreateFailure(ex.Message);
+                return OperationResult<FinancierReadModel>.CreateFailure(ex.Message);
             }
         }
     }
