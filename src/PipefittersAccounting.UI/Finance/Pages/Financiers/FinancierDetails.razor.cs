@@ -10,9 +10,11 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private FinancierReadModel? _financierDetailModel;
         private string _pageTitle = "Financier Details";
         private string? _formTitle;
+        private string? _backButtonHref = "Finance/Pages/Financiers/Financiers";
 
         [Parameter] public Guid FinancierId { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+
 
         protected async override Task OnInitializedAsync()
         {

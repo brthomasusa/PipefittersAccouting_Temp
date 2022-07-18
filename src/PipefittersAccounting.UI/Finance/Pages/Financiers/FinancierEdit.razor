@@ -14,9 +14,67 @@
                     </Heading>
                 </CardHeader>
                 <CardBody>
-                    @if (FinancierDetailModel is not null)
+                    @if (_financierDetailModel is not null)
                     {
+                        <EditForm Model=@_financierDetailModel>
+                            <DataAnnotationsValidator />
 
+                            <Field>
+                                <FieldLabel>Financier Name</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.FinancierName />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Telephone</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.Telephone />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Address Line1</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.AddressLine1 />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Address Line2</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.AddressLine2 />
+                            </Field>
+                            <Field>
+                                <FieldLabel>City</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.City />
+                            </Field>
+                            <Field>
+                                <FieldLabel>State</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.StateCode />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Zipcode</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.Zipcode />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Contact First Name</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.ContactFirstName />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Contact Last Name</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.ContactLastName />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Contact Middle Initial</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.ContactMiddleInitial />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Contact Telephone</FieldLabel>
+                                <TextEdit Text=@_financierDetailModel!.ContactTelephone />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Status</FieldLabel>
+                                <RadioGroup TValue="bool" Name="Status" @bind-CheckedValue=@_financierDetailModel!.IsActive>
+                                    <Radio Value="@(true)">Active</Radio>
+                                    <Radio Value="@(false)">Inactive</Radio>
+                                </RadioGroup>
+                            </Field>
+                            <Field Margin="Margin.Is4.FromTop">
+                                <Button Color="Color.Success">Save changes</Button>
+                                <Button Color="Color.Secondary">Cancel editing</Button>
+                            </Field>
+                        </EditForm>
                     }
                     else
                     {
@@ -28,7 +86,10 @@
                     }
                 </CardBody>
                 <CardFooter>
-
+                    <Button Color="Color.Primary" Outline Type="ButtonType.Link"
+                        To="Finance/Pages/Financiers/Financiers">
+                        <span class="btn-label"><i class="fas fa-angle-double-left"></i></span>
+                    </Button>
                 </CardFooter>
             </Card>
         </Column>

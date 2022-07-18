@@ -4,7 +4,8 @@
 
 @if (_financierDetailModel is not null)
 {
-    <ReadOnlyDetailsForm PageTitle=@_pageTitle FormTitle=@_formTitle ViewModel=@_financierDetailModel>
+    <ReadOnlyDetailsForm PageTitle=@_pageTitle FormTitle=@_formTitle BackButtonHref=@_backButtonHref
+    ViewModel=@_financierDetailModel>
     <FormFields>
         <Field>
             <FieldLabel>Telephone</FieldLabel>

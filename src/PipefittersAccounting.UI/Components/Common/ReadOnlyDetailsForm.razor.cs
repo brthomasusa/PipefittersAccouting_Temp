@@ -6,6 +6,7 @@ namespace PipefittersAccounting.UI.Components.Common
     {
         [Parameter] public string? PageTitle { get; set; }
         [Parameter] public string? FormTitle { get; set; }
+        [Parameter] public string? BackButtonHref { get; set; }
         [Parameter] public RenderFragment? FormFields { get; set; }
         [Parameter] public TItem? ViewModel { get; set; }
     }
