@@ -19,8 +19,8 @@ namespace PipefittersAccounting.UI.Services.Finance
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<FinancierDetail>> GetFinancierDetails(GetFinancier queryParameters)
+            => await GetFinancierDetailHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters)
             => await GetFinancierListItemsHttpClient.Query(queryParameters, _client, _options);

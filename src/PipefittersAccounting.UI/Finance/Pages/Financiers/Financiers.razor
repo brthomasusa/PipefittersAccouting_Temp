@@ -14,8 +14,10 @@
             <CardHeader>
                 <div class="row align-items-center">
                     <div class="col-md-2">
-                        <Button class="rounded-pill" Color="Color.Primary" Size="Size.ExtraLarge" Type="ButtonType.Link"
-                            To="Finance/Pages/Financiers/FinancierCreate" Outline>+</Button>
+                        <a href="Finance/Pages/Financiers/FinancierCreate"
+                            class="btn btn-labeled btn-lg btn-outline-primary rounded-pill" role="button">
+                            <span class="btn-label"><i class="fas fa-plus"></i></span>
+                        </a>
                     </div>
                     <div class="col-md-5">
                         <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
@@ -44,19 +46,19 @@
                             <td>
                                 <Dropdown Direction="Direction.Up">
                                     <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
-                                        ...
+                                        <span class="btn-label"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></span>
                                     </DropdownToggle>
                                     <DropdownMenu class="border border-primary rounded-3 shadow-lg">
                                         <DropdownItem
-                                        Clicked="@( () => OnMenuItemClicked("Details", @financier.FinancierId) )">
+                                        Clicked="@( () => OnActionItemClicked("Details", @financier.FinancierId) )">
                                             Details
                                         </DropdownItem>
                                         <DropdownItem
-                                        Clicked="@( () => OnMenuItemClicked("Edit", @financier.FinancierId) )">
+                                        Clicked="@( () => OnActionItemClicked("Edit", @financier.FinancierId) )">
                                             Edit
                                         </DropdownItem>
                                         <DropdownItem
-                                        Clicked="@( () => OnMenuItemClicked("Delete", @financier.FinancierId) )">
+                                        Clicked="@( () => OnActionItemClicked("Delete", @financier.FinancierId) )">
                                             Delete
                                         </DropdownItem>
                                     </DropdownMenu>
@@ -67,7 +69,11 @@
                 }
                 else
                 {
-                    <span>Loading financier list...</span>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
                 }
             </CardBody>
             <CardFooter>

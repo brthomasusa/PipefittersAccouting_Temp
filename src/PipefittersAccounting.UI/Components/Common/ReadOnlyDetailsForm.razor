@@ -1,0 +1,23 @@
+@typeparam TItem
+
+<PageTitle>@PageTitle</PageTitle>
+
+<ErrorBoundary>
+    <div class="d-flex justify-content-center">
+        <div class="col">
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is4"
+                        Margin="Margin.Is1.FromStart.Is1.FromTop">
+                        @FormTitle
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    <form>
+                        @FormFields
+                    </form>
+                </CardBody>
+            </Card>
+        </div>
+    </div>
+</ErrorBoundary>

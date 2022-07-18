@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Interfaces;
@@ -16,7 +15,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private MetaData? _metaData;
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
-        public string? SearchTerm { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
         [Inject] public NavigationManager? NavManager { get; set; }
 
@@ -64,7 +62,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
         }
 
-        private void OnMenuItemClicked(string action, Guid financierId)
+        private void OnActionItemClicked(string action, Guid financierId)
         {
             NavManager!.NavigateTo
             (
