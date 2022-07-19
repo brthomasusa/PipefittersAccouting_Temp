@@ -1,6 +1,5 @@
 @page "/Finance/Pages/Financiers/FinancierEdit/{FinancierId:guid}"
 @inject ILogger<FinancierEdit> logger
-@inject PipefittersAccounting.UI.Validators.Financing.FinancierWriteModelValidator _validator
 
 <PageTitle>Financier Edit</PageTitle>
 
@@ -9,8 +8,8 @@
         <Column>
             <Card Margin="Margin.Is4.OnY">
                 <CardHeader>
-                    <Heading TextColor="TextColor.Muted" Size="HeadingSize.Is4"
-                        Margin="Margin.Is3.FromStart.Is2.FromTop">
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is4"
+                        Margin="Margin.Is1.FromStart.Is1.FromTop">
                         Financier Edit
                     </Heading>
                 </CardHeader>
@@ -162,7 +161,7 @@
 
                 </CardBody>
                 <CardFooter>
-                    <Button Color="Color.Primary" Outline Type="ButtonType.Link"
+                    <Button Color="Color.Primary" Outline Type="ButtonType.Link" Border="Border.Is1.Rounded"
                         To="Finance/Pages/Financiers/Financiers">
                         <span class="btn-label"><i class="fas fa-angle-double-left"></i></span>
                     </Button>
