@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Blazorise;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.UI.Validators;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
@@ -10,6 +12,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
     public partial class FinancierEdit
     {
         private FinancierWriteModel? _financierDetailModel;
+        private Validations? _validations;
 
         [Parameter] public Guid FinancierId { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
@@ -36,6 +39,18 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             {
                 logger!.LogError(result.NonSuccessMessage);
             }
+        }
+
+        protected async Task Save()
+        {
+            var result = await _validator.ValidateAsync(_financierDetailModel!, CancellationToken.None);
+
+            Console.WriteLine("Validated: " + result.IsValid);
+
+            if (!await _validations!.ValidateAll())
+                return;
+
+            //call a service ....
         }
     }
 }

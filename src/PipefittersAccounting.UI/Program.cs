@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Blazorise;
 using Blazorise.Bootstrap5;
-using Blazorise.DataGrid;
 using Blazorise.Icons.FontAwesome;
+using FluentValidation;
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Services.Finance;
@@ -17,8 +18,10 @@ builder.Services
      options.Immediate = true;
  })
   .AddBootstrap5Providers()
-  .AddFontAwesomeIcons();
+  .AddFontAwesomeIcons()
+  .AddFluentValidationHandler();
 
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
