@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Blazorise;
+using Blazorise.Snackbar;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Finance.Validators;
@@ -11,12 +12,15 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
     public partial class FinancierEditPage
     {
+        private bool _isLoading;
+        private Snackbar? _snackbar;
         private FinancierWriteModel? _financierDetailModel;
         private Validations? _validations;
         private FinancierWriteModelValidator _modelValidator = new();
 
         [Parameter] public Guid FinancierId { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -51,7 +55,20 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             if (!await _validations!.ValidateAll())
                 return;
 
-            //call a service ....
+            _financierDetailModel!.StateCode = _financierDetailModel!.StateCode.ToUpper();
+
+            _isLoading = true;
+            OperationResult<bool> editResult = await FinanciersService!.EditFinancier(_financierDetailModel!);
+            _isLoading = false;
+
+            if (editResult.Success)
+            {
+                await _snackbar!.Show();
+            }
+            else
+            {
+                await MessageService!.Error($"Error while updating: {editResult.NonSuccessMessage}", "Error");
+            }
         }
     }
 }

@@ -1,14 +1,13 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.Finance
 {
-    public class CreateFinancierHttpClient
+    public class EditFinancierHttpClient
     {
-        public static async Task<OperationResult<FinancierReadModel>> Execute
+        public static async Task<OperationResult<bool>> Execute
         (
             FinancierWriteModel model,
             HttpClient client,
@@ -17,13 +16,13 @@ namespace PipefittersAccounting.UI.Services.Finance
         {
             try
             {
-                string uri = "1.0/financiers/create";
+                string uri = "1.0/financiers/edit";
 
                 var memStream = new MemoryStream();
                 await JsonSerializer.SerializeAsync(memStream, model);
                 memStream.Seek(0, SeekOrigin.Begin);
 
-                var request = new HttpRequestMessage(HttpMethod.Post, uri);
+                var request = new HttpRequestMessage(HttpMethod.Put, uri);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 using (var requestContent = new StreamContent(memStream))
@@ -36,14 +35,13 @@ namespace PipefittersAccounting.UI.Services.Finance
                         response.EnsureSuccessStatusCode();
 
                         var jsonResponse = await response.Content.ReadAsStreamAsync();
-                        var financierDetails = await JsonSerializer.DeserializeAsync<FinancierReadModel>(jsonResponse, options);
-                        return OperationResult<FinancierReadModel>.CreateSuccessResult(financierDetails!);
+                        return OperationResult<bool>.CreateSuccessResult(true);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<FinancierReadModel>.CreateFailure(ex.Message);
+                return OperationResult<bool>.CreateFailure(ex.Message);
             }
         }
     }

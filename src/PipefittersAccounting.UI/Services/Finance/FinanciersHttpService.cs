@@ -20,13 +20,13 @@ namespace PipefittersAccounting.UI.Services.Finance
         }
 
         public async Task<OperationResult<FinancierReadModel>> CreateFinancier(FinancierWriteModel writeModel)
-            => await CreateFinancierHttpClient.Create(writeModel, _client, _options);
+            => await CreateFinancierHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> EditFinancier(FinancierWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> EditFinancier(FinancierWriteModel writeModel)
+            => await EditFinancierHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> DeleteFinancier(FinancierWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> DeleteFinancier(FinancierWriteModel writeModel)
+            => await DeleteFinancierHttpClient.Execute(writeModel, _client, _options);
 
 
         public async Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters)

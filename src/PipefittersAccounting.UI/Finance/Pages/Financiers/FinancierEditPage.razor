@@ -1,5 +1,6 @@
 @page "/Finance/Pages/Financiers/FinancierEditPage/{FinancierId:guid}"
 @inject ILogger<FinancierEditPage> logger
+@using Blazorise.Snackbar
 
 <PageTitle>Financier Edit</PageTitle>
 
@@ -145,9 +146,16 @@
                             </Validation>
                         </Validations>
 
+                        <Snackbar @ref="_snackbar" Color="SnackbarColor.Info">
+                            <SnackbarBody>
+                                Information for @_financierDetailModel.FinancierName was successfully updated.
+                            </SnackbarBody>
+                        </Snackbar>
+
                         <Field Margin="Margin.Is4.FromTop">
-                            <Button Color="Color.Success" Clicked="Save">Save changes</Button>
-                            <Button Color="Color.Secondary">Cancel editing</Button>
+                            <Button Color="Color.Success" Clicked="Save" Loading="@_isLoading">Save changes</Button>
+                            <Button Color="Color.Secondary" Type="ButtonType.Link"
+                            To="Finance/Pages/Financiers/FinanciersListPage">Cancel editing</Button>
                         </Field>
                     }
                     else
