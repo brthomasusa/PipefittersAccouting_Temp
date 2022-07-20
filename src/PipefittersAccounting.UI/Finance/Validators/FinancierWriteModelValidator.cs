@@ -1,7 +1,7 @@
 using FluentValidation;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.UI.Validators.Financing
+namespace PipefittersAccounting.UI.Finance.Validators
 {
     public class FinancierWriteModelValidator : AbstractValidator<FinancierWriteModel>
     {

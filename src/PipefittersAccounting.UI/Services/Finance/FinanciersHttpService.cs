@@ -19,14 +19,24 @@ namespace PipefittersAccounting.UI.Services.Finance
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
+        public async Task<OperationResult<FinancierReadModel>> CreateFinancier(FinancierWriteModel writeModel)
+            => await CreateFinancierHttpClient.Create(writeModel, _client, _options);
+
+        public Task<OperationResult<bool>> EditFinancier(FinancierWriteModel writeModel)
+            => throw new NotImplementedException();
+
+        public Task<OperationResult<bool>> DeleteFinancier(FinancierWriteModel writeModel)
+            => throw new NotImplementedException();
+
+
         public async Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters)
-            => await GetFinancierDetailHttpClient.Query(queryParameters, _client, _options);
+            => await GetFinancierHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters)
-            => await GetFinancierListItemsHttpClient.Query(queryParameters, _client, _options);
+            => await GetFinanciersHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters)
-            => await GetFinancierListItemsHttpClient.Query(queryParameters, _client, _options);
+            => await GetFinanciersHttpClient.Query(queryParameters, _client, _options);
 
         public Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters)
             => throw new NotImplementedException();

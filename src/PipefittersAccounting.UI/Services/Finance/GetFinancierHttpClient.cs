@@ -4,7 +4,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.Finance
 {
-    public class GetFinancierDetailHttpClient
+    public class GetFinancierHttpClient
     {
         public static async Task<OperationResult<FinancierReadModel>> Query
         (

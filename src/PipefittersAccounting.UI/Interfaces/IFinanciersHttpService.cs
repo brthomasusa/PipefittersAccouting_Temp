@@ -7,6 +7,11 @@ namespace PipefittersAccounting.UI.Interfaces
 {
     public interface IFinanciersHttpService
     {
+        Task<OperationResult<FinancierReadModel>> CreateFinancier(FinancierWriteModel writeModel);
+        Task<OperationResult<bool>> EditFinancier(FinancierWriteModel writeModel);
+        Task<OperationResult<bool>> DeleteFinancier(FinancierWriteModel writeModel);
+
+
         Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters);
         Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters);
         Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters);

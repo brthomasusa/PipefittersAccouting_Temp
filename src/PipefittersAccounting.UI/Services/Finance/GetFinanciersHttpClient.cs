@@ -6,7 +6,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.Finance
 {
-    public class GetFinancierListItemsHttpClient
+    public class GetFinanciersHttpClient
     {
         public static async Task<OperationResult<PagingResponse<FinancierListItems>>> Query
         (

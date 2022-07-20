@@ -144,6 +144,7 @@ namespace Microsoft.Extensions.DependencyInjection
             .AddDefaultTokenProviders();
         }
 
+
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");

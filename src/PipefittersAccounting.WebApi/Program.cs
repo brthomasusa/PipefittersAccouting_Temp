@@ -28,11 +28,11 @@ try
     builder.Services.AddApplicationServices();
     builder.Services.AddDapperQueryServices();
     builder.Services.AddDomainServices();
-    builder.Services.AddAuthentication();
+    // builder.Services.AddAuthentication();
     builder.Services.ConfigureIdentity(builder.Configuration);
     builder.Services.ConfigureEfCoreDbContext(builder.Configuration);
     builder.Services.ConfigureDapper(builder.Configuration);
-    builder.Services.ConfigureJWT(builder.Configuration);
+    // builder.Services.ConfigureJWT(builder.Configuration);
     builder.Services.RegisterDomainEventHandlers();
 
     var app = builder.Build();
@@ -62,8 +62,8 @@ try
 
     app.UseCors("CorsPolicy");
     app.UseRouting();
-    app.UseAuthentication();
-    app.UseAuthorization();
+    // app.UseAuthentication();
+    // app.UseAuthorization();
     app.MapControllers();
     app.MapRazorPages();
     app.MapFallbackToFile("index.html");

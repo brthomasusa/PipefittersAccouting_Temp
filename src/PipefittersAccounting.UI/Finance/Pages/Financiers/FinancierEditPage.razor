@@ -1,5 +1,5 @@
-@page "/Finance/Pages/Financiers/FinancierEdit/{FinancierId:guid}"
-@inject ILogger<FinancierEdit> logger
+@page "/Finance/Pages/Financiers/FinancierEditPage/{FinancierId:guid}"
+@inject ILogger<FinancierEditPage> logger
 
 <PageTitle>Financier Edit</PageTitle>
 
@@ -162,7 +162,7 @@
                 </CardBody>
                 <CardFooter>
                     <Button Color="Color.Primary" Outline Type="ButtonType.Link" Border="Border.Is1.Rounded"
-                        To="Finance/Pages/Financiers/Financiers">
+                        To="Finance/Pages/Financiers/FinanciersListPage">
                         <span class="btn-label"><i class="fas fa-angle-double-left"></i></span>
                     </Button>
                 </CardFooter>

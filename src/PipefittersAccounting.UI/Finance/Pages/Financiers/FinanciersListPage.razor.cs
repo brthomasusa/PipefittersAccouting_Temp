@@ -6,7 +6,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
-    public partial class Financiers
+    public partial class FinanciersListPage
     {
         private string _placeHolderTextForSearch = "Search by financier's name";
         private GetFinanciers? _getFinanciersParameters;
@@ -68,9 +68,9 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             (
                 action switch
                 {
-                    "Details" => $"Finance/Pages/Financiers/FinancierDetails/{financierId}",
-                    "Edit" => $"Finance/Pages/Financiers/FinancierEdit/{financierId}",
-                    "Delete" => $"Finance/Pages/Financiers/FinancierEdit/{financierId}",
+                    "Details" => $"Finance/Pages/Financiers/FinancierDetailsPage/{financierId}",
+                    "Edit" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
+                    "Delete" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
                     _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
                 }
             );
