@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
             {
                 OperationResult<bool> result = await repo.Exists(model.Id);
 
-                if (!result.Success)
+                if (result.Success)
                 {
                     string errMsg = $"Create operation failed! A financier with this Id: {model.Id} already exists!";
                     return OperationResult<bool>.CreateFailure(errMsg);
@@ -38,8 +38,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
                     EntityGuidID.Create(model.Id),
                     OrganizationName.Create(model.FinancierName),
                     PhoneNumber.Create(model.Telephone),
-                    Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode),
-                    PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial, model.ContactTelephone),
+                    Address.Create(model.AddressLine1, model.AddressLine2!, model.City, model.StateCode, model.Zipcode),
+                    PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial!, model.ContactTelephone),
                     EntityGuidID.Create(model.UserId),
                     true
                 );

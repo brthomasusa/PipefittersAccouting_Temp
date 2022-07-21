@@ -40,8 +40,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
                     Financier financier = getResult.Result;
                     financier.UpdateFinancierName(OrganizationName.Create(model.FinancierName));
                     financier.UpdateFinancierTelephone(PhoneNumber.Create(model.Telephone));
-                    financier.UpdateFinancierAddress(Address.Create(model.AddressLine1, model.AddressLine2, model.City, model.StateCode, model.Zipcode));
-                    financier.UpdatePointOfContact(PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial, model.ContactTelephone));
+                    financier.UpdateFinancierAddress(Address.Create(model.AddressLine1, model.AddressLine2!, model.City, model.StateCode, model.Zipcode));
+                    financier.UpdatePointOfContact(PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial!, model.ContactTelephone));
                     financier.UpdateUserId(EntityGuidID.Create(model.UserId));
                     financier.UpdateFinancierStatus(model.IsActive);
 

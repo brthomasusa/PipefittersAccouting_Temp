@@ -13,6 +13,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
     public partial class FinancierEditPage
     {
+        private string? _snackBarMessage;
         private bool _isLoading;
         private Snackbar? _snackbar;
         private FinancierWriteModel? _financierDetailModel;
@@ -51,8 +52,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         {
             var result = await _modelValidator.ValidateAsync(_financierDetailModel!, CancellationToken.None);
 
-            Console.WriteLine("Validated: " + result.IsValid);
-
             if (!await _validations!.ValidateAll())
                 return;
 
@@ -64,11 +63,12 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 
             if (editResult.Success)
             {
+                _snackBarMessage = $"Information for {_financierDetailModel!.FinancierName} was successfully updated";
                 await _snackbar!.Show();
             }
             else
             {
-                await MessageService!.Error($"Error while updating: {editResult.NonSuccessMessage}", "Error");
+                await MessageService!.Error($"Error while updating: {editResult.NonSuccessMessage} info", "Error");
             }
         }
     }

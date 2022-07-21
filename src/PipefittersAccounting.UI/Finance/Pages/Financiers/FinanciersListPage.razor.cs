@@ -21,6 +21,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         protected async override Task OnInitializedAsync()
         {
             _pagerChangedEventHandler = GetFinanciers;
+            Console.WriteLine("FinanciersListPage.OnInitializedAsync() called.");
             await _pagerChangedEventHandler.Invoke(1, 5);
         }
 

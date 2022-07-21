@@ -18,7 +18,7 @@
                 <CardBody>
                     @if (_financierDetailModel is not null)
                     {
-                        <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad
+                        <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad=false
                         Model="@_financierDetailModel">
                             <Validation HandlerType="HandlerTypes.FluentValidation">
                                 <Field>
@@ -155,7 +155,7 @@
                         <Snackbar @ref="_snackbar" Closed=@( () =>
                         NavManager.NavigateTo("Finance/Pages/Financiers/FinanciersListPage") )>
                             <SnackbarBody>
-                                Information for @_financierDetailModel.FinancierName was successfully updated.
+                                @_snackBarMessage
                             </SnackbarBody>
                         </Snackbar>
                     }

@@ -3,7 +3,6 @@
 
 using Microsoft.AspNetCore.Components;
 using PipefittersAccounting.SharedModel.ReadModels;
-using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Components.Common
 {
@@ -30,10 +29,6 @@ namespace PipefittersAccounting.UI.Components.Common
                 totalPages = MetaData.TotalPages;
                 totalCount = MetaData.TotalCount;
                 pageSize = MetaData.PageSize;
-            }
-            else
-            {
-                logger.LogWarning($"DynamicPager.MetaData is null: {MetaData!.ToJson()}");
             }
         }
 
@@ -97,7 +92,7 @@ namespace PipefittersAccounting.UI.Components.Common
                 currentPage = page;
 
                 if (PagerChangedEventHandler is not null)
-                    await PagerChangedEventHandler!.Invoke(int.Parse(currentPage), pageSize);
+                    await PagerChangedEventHandler.Invoke(int.Parse(currentPage), pageSize);
             }
             else
             {
@@ -105,7 +100,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
         }
 
-        private async Task OnSelectedValueChanged(int value)
+        private async Task OnPageSizeChanged(int value)
         {
             pageSize = value;
             if (currentPage is not null)
