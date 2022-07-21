@@ -1,5 +1,6 @@
 @page "/Finance/Pages/Financiers/FinancierEditPage/{FinancierId:guid}"
 @inject ILogger<FinancierEditPage> logger
+@inject NavigationManager NavManager
 @using Blazorise.Snackbar
 
 <PageTitle>Financier Edit</PageTitle>
@@ -146,17 +147,17 @@
                             </Validation>
                         </Validations>
 
-                        <Snackbar @ref="_snackbar" Color="SnackbarColor.Info">
+                        <Field Margin="Margin.Is4.FromTop">
+                            <Button Color="Color.Success" Clicked="Save" Loading="@_isLoading">Save changes</Button>
+                            <Button Color="Color.Warning" Type="ButtonType.Link"
+                            To="Finance/Pages/Financiers/FinanciersListPage">Cancel editing</Button>
+                        </Field>
+                        <Snackbar @ref="_snackbar" Closed=@( () =>
+                        NavManager.NavigateTo("Finance/Pages/Financiers/FinanciersListPage") )>
                             <SnackbarBody>
                                 Information for @_financierDetailModel.FinancierName was successfully updated.
                             </SnackbarBody>
                         </Snackbar>
-
-                        <Field Margin="Margin.Is4.FromTop">
-                            <Button Color="Color.Success" Clicked="Save" Loading="@_isLoading">Save changes</Button>
-                            <Button Color="Color.Secondary" Type="ButtonType.Link"
-                            To="Finance/Pages/Financiers/FinanciersListPage">Cancel editing</Button>
-                        </Field>
                     }
                     else
                     {
@@ -169,10 +170,7 @@
 
                 </CardBody>
                 <CardFooter>
-                    <Button Color="Color.Primary" Outline Type="ButtonType.Link" Border="Border.Is1.Rounded"
-                        To="Finance/Pages/Financiers/FinanciersListPage">
-                        <span class="btn-label"><i class="fas fa-angle-double-left"></i></span>
-                    </Button>
+
                 </CardFooter>
             </Card>
         </Column>

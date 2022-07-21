@@ -1,3 +1,4 @@
+#pragma warning disable CS8602
 using Microsoft.AspNetCore.Components;
 using Blazorise;
 using Blazorise.Snackbar;

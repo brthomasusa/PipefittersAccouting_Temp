@@ -12,11 +12,11 @@
 -- DROP DATABASE Pipefitters_v3
 -- GO
 
-CREATE DATABASE Pipefitters_v3
+CREATE DATABASE Pipefitters_Test
 GO
 
 
-USE Pipefitters_v3
+USE Pipefitters_Test
 GO
 
 CREATE SCHEMA Sales
@@ -612,6 +612,7 @@ VALUES
     ('8b140613-5df8-4f57-beb4-e3f5cd45ad3c', 5),
     ('9d3a25dc-3861-4f78-92b0-92294b808ebf', 5),
     ('6d7f6605-567d-4b2a-9ae7-3736dc6c4f53', 5),
+    ('d383199c-a23d-41f3-9bf4-ac96ca1be2b3', 6),
     ('12998229-7ede-4834-825a-0c55bde75695', 6),
     ('94b1d516-a1c3-4df8-ae85-be1f34966601', 6),
     ('bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 6),
@@ -627,6 +628,7 @@ VALUES
     ('09b53ffb-9983-4cde-b1d6-8a49e785177f', 2),
     ('1511c20b-6df0-4313-98a5-7c3561757dc2', 2),
     ('17b447ea-90a7-45c3-9fc2-c4fb2ea71867', 2),        
+    ('fb8f7751-593d-4c91-be3b-e3f351dc4a5d', 3),
     ('6d663bb9-763c-4797-91ea-b2d9b7a19ba4', 3),
     ('62d6e2e6-215d-4157-b7ec-1ba9b137c770', 3),
     ('fb39b013-1633-4479-8186-9f9b240b5727', 3),
@@ -700,7 +702,9 @@ VALUES
   ('6f0c811c-b948-4c03-a6df-49c768dadc49' ,5),
   ('aeac44d8-feb3-4823-8b0a-ca79da5bb089' ,5),
   ('6f09cd69-4a95-42c7-bcc2-acacbb92270c' ,5),
-  ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5),   
+  ('24d6936a-beb5-451b-a950-0f30e3ad463d' ,5), 
+  ('79de54b8-4ed4-4d43-aff2-891289439ce6' ,10),
+  ('f180874b-c962-4686-a667-ff0cd537aa35' ,10),
   ('41158939-bdbd-47b4-a096-397232a2bc7e' ,10),
   ('9bdac186-d1f1-4279-a807-a03c12a637ab' ,10),
   ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2' ,10),
@@ -874,6 +878,7 @@ GO
 INSERT INTO Finance.Financiers
     (FinancierID, FinancierName, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, ContactLastName, ContactFirstName, ContactMiddleInitial, ContactTelephone, IsActive, UserId)
 VALUES
+    ('d383199c-a23d-41f3-9bf4-ac96ca1be2b3', 'Ken J. Sanchez', '817-987-1234', '321 Tarrant Pl', null, 'Fort Worth', 'TX', '78965', 'Sanchez', 'Ken', 'J', '469-719-8128', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('12998229-7ede-4834-825a-0c55bde75695', 'Arturo Sandoval', '888-719-8128', '5232 Outriggers Way', 'Ste 401', 'Oxnard', 'CA', '93035', 'Sandoval', 'Arturo', 'T', '888-719-8128', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('94b1d516-a1c3-4df8-ae85-be1f34966601', 'Paul Van Horn Enterprises', '415-328-9870', '825 Mandalay Beach Rd', 'Level 2', 'Oxnard', 'CA', '94402', 'Crocker', 'Patrick', 'T', '415-328-9870', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 'New World Tatoo Parlor', '630-321-9875', '1690 S. El Camino Real', 'Room 2C', 'San Mateo', 'CA', '75224', 'Jozef Jr.', 'JoJo', 'D', '630-321-9875', 1, '660bb318-649e-470d-9d2b-693bfb0b2744'),
@@ -954,6 +959,7 @@ GO
 INSERT INTO Finance.StockSubscriptions
     (StockId, FinancierId, SharesIssured, PricePerShare, StockIssueDate, UserId)
 VALUES
+    ('fb8f7751-593d-4c91-be3b-e3f351dc4a5d', 'd383199c-a23d-41f3-9bf4-ac96ca1be2b3', 250000, 1.00, '2022-01-01','660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('6d663bb9-763c-4797-91ea-b2d9b7a19ba4', '01da50f9-021b-4d03-853a-3fd2c95e207d', 15000, 1.00, '2022-01-03','660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('62d6e2e6-215d-4157-b7ec-1ba9b137c770', 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', 10000, 1.00, '2022-01-03','660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('fb39b013-1633-4479-8186-9f9b240b5727', 'b49471a0-5c1e-4a4d-97e7-288fb0f6338a', 12000, 1.00, '2022-01-11','660bb318-649e-470d-9d2b-693bfb0b2744'),
@@ -1009,6 +1015,8 @@ GO
 INSERT INTO Finance.CashAccountTransfers
     (CashTransferId,SourceCashAccountId,DestinationCashAccountId,CashTransferDate,CashTransferAmount,UserId)
 VALUES
+    ('79de54b8-4ed4-4d43-aff2-891289439ce6', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-03', 140000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
+    ('f180874b-c962-4686-a667-ff0cd537aa35', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-03', 110000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('41158939-bdbd-47b4-a096-397232a2bc7e', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-10', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('9bdac186-d1f1-4279-a807-a03c12a637ab', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 10000, '660bb318-649e-470d-9d2b-693bfb0b2744'),
     ('5e3a91f6-74a4-45cc-ab04-5b071459ccb2', '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-13', 9000, '660bb318-649e-470d-9d2b-693bfb0b2744'),     
@@ -1023,6 +1031,11 @@ GO
 INSERT INTO Finance.CashAccountTransactions       -- Receipt of debt issue proceeds
     (CashTransactionTypeId, CashAccountId, CashAcctTransactionDate, CashAcctTransactionAmount, AgentId, EventId, CheckNumber, UserId)
 VALUES
+  (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-03', 250000.00, 'd383199c-a23d-41f3-9bf4-ac96ca1be2b3', 'fb8f7751-593d-4c91-be3b-e3f351dc4a5d', '21477', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+  (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-03', 140000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+  (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-03', 140000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+  (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-03', 110000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer to Payroll', '660bb318-649e-470d-9d2b-693bfb0b2744'),
+  (11, 'c98ac84f-00bb-463d-9116-5828b2e9f718', '2022-01-03', 110000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),  
   (3, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-10', 10000.00, 'bf19cf34-f6ba-4fb2-b70e-ab19d3371886', '62d6e2e6-215d-4157-b7ec-1ba9b137c770', '114980', '660bb318-649e-470d-9d2b-693bfb0b2744'),
   (10, '6a7ed605-c02c-4ec8-89c4-eac6306c885e', '2022-01-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer to Primary', '660bb318-649e-470d-9d2b-693bfb0b2744'),
   (11, '417f8a5f-60e7-411a-8e87-dfab0ae62589', '2022-01-10', 9000.00, '660bb318-649e-470d-9d2b-693bfb0b2744', '41158939-bdbd-47b4-a096-397232a2bc7e', 'Xfer from Financing', '660bb318-649e-470d-9d2b-693bfb0b2744'),
