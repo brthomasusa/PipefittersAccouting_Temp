@@ -24,7 +24,7 @@
                             <Button Color="Color.Success" Clicked="OnSave" Loading="@_isLoading">Save changes</Button>
                             <Button Color="Color.Warning" Type="ButtonType.Link" To=@ReturnUri>Cancel editing</Button>
                         </Field>
-                        <Snackbar @ref="_snackbar" DefaultInterval=2500 Closed=@( () => NavManager.NavigateTo(@ReturnUri!) )>
+                        <Snackbar @ref="_snackbar" DefaultInterval=2000 Closed=@( () => NavManager.NavigateTo(@ReturnUri!) )>
                             <SnackbarBody>
                                 @SnackBarMessage
                             </SnackbarBody>

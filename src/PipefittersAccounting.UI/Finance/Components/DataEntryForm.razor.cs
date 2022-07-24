@@ -39,7 +39,6 @@ namespace PipefittersAccounting.UI.Finance.Components
 
             if (saveResult.Success)
             {
-                SnackBarMessage = "Information was successfully saved!";
                 await _snackbar!.Show();
             }
             else

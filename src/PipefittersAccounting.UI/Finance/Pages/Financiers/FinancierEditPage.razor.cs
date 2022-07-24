@@ -53,6 +53,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             if (updateResult.Success)
             {
                 _snackBarMessage = $"Information for {_financierDetailModel!.FinancierName} was successfully updated.";
+                await InvokeAsync(StateHasChanged);
                 return OperationResult<bool>.CreateSuccessResult(true);
             }
             else
