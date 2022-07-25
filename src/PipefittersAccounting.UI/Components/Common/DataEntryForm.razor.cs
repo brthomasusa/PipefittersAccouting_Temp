@@ -1,13 +1,12 @@
 #pragma warning disable CS8602
 
-
 using Microsoft.AspNetCore.Components;
 using Blazorise;
 using Blazorise.Snackbar;
 using FluentValidation;
 using PipefittersAccounting.UI.Utilities;
 
-namespace PipefittersAccounting.UI.Finance.Components
+namespace PipefittersAccounting.UI.Components.Common
 {
     public partial class DataEntryForm<TWriteModel>  // 
     {

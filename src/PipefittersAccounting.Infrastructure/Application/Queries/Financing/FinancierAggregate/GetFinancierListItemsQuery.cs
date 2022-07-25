@@ -16,12 +16,23 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
             try
             {
                 var sql =
-                @"SELECT 
-                    FinancierID, FinancierName, Telephone, 
+                @"SELECT
+                    fin.FinancierID, FinancierName, Telephone, 
                     AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
                     ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
-                    ContactTelephone, IsActive    
-                FROM Finance.Financiers
+                    ContactTelephone, IsActive, Loans, Stocks 
+                FROM
+                (
+                    SELECT
+                        fin.FinancierID,
+                        COUNT(ll.FinancierId) AS Loans,
+                        COUNT(ss.FinancierId) AS Stocks 
+                    FROM Finance.Financiers fin
+                    LEFT JOIN Finance.LoanAgreements ll ON fin.FinancierID = ll.FinancierId
+                    LEFT JOIN Finance.StockSubscriptions ss ON fin.FinancierID = ss.FinancierId
+                    GROUP BY fin.FinancierID
+                ) AS Attachments
+                JOIN Finance.Financiers fin ON fin.FinancierID = Attachments.FinancierID
                 ORDER BY FinancierName
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
@@ -52,11 +63,22 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
             {
                 var sql =
                 @"SELECT 
-                    FinancierID, FinancierName, Telephone, 
+                    fin.FinancierID, FinancierName, Telephone, 
                     AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
                     ContactFirstName + ' ' + ISNULL(ContactMiddleInitial, '') + ' ' + ContactLastName AS 'ContactFullName',
-                    ContactTelephone, IsActive    
-                FROM Finance.Financiers
+                    ContactTelephone, IsActive, Loans, Stocks 
+                FROM
+                (
+                    SELECT
+                        fin.FinancierID,
+                        COUNT(ll.FinancierId) AS Loans,
+                        COUNT(ss.FinancierId) AS Stocks 
+                    FROM Finance.Financiers fin
+                    LEFT JOIN Finance.LoanAgreements ll ON fin.FinancierID = ll.FinancierId
+                    LEFT JOIN Finance.StockSubscriptions ss ON fin.FinancierID = ss.FinancierId
+                    GROUP BY fin.FinancierID
+                ) AS Attachments
+                JOIN Finance.Financiers fin ON fin.FinancierID = Attachments.FinancierID
                 WHERE FinancierName LIKE CONCAT('%',@Name,'%')
                 ORDER BY FinancierName
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";

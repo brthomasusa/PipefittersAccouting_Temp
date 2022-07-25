@@ -1,5 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
+using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Utilities;
 
@@ -16,7 +18,7 @@ namespace PipefittersAccounting.UI.Services.Finance
         {
             try
             {
-                string uri = "1.0/financiers/delete";
+                string uri = $"1.0/financiers/delete/{model.Id}";
 
                 var memStream = new MemoryStream();
                 await JsonSerializer.SerializeAsync(memStream, model);

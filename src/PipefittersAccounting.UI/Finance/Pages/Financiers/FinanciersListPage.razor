@@ -1,6 +1,7 @@
 @page "/Finance/Pages/Financiers/FinanciersListPage"
 @using PipefittersAccounting.UI.Components.Common
 @inject ILogger<FinanciersListPage> logger
+@using Blazorise.Snackbar
 
 <PageTitle>Financiers</PageTitle>
 
@@ -34,6 +35,8 @@
                             <th>Telephone</th>
                             <th>Contact</th>
                             <th>Contact Tel.</th>
+                            <th>Loans</th>
+                            <th>Stocks</th>
                             <th>Active</th>
                             <th>Actions</th>
                         </TableHeader>
@@ -42,6 +45,8 @@
                             <td>@financier.Telephone</td>
                             <td>@financier.ContactFullName</td>
                             <td>@financier.ContactTelephone</td>
+                            <td>@financier.Loans</td>
+                            <td>@financier.Stocks</td>
                             <td>@(financier.IsActive ? "Yes" : "No")</td>
                             <td>
                                 <Dropdown Direction="Direction.Up">
@@ -57,8 +62,8 @@
                                         Clicked="@( () => OnActionItemClicked("Edit", @financier.FinancierId) )">
                                             Edit
                                         </DropdownItem>
-                                        <DropdownItem
-                                        Clicked="@( () => OnActionItemClicked("Delete", @financier.FinancierId) )">
+                                        <DropdownItem Clicked="@( () => ShowModal(@financier.FinancierId) )"
+                                        Disabled="@( financier.Loans > 0 || financier.Stocks > 0 )">
                                             Delete
                                         </DropdownItem>
                                     </DropdownMenu>
@@ -82,7 +87,35 @@
                         <DynamicPager />
                     </CascadingValue>
                 </CascadingValue>
+
+                <Snackbar @ref="_snackbar" DefaultInterval=2000>
+                    <SnackbarBody>
+                        @_snackarMessage
+                    </SnackbarBody>
+                </Snackbar>
             </CardFooter>
         </Card>
     </Column>
 </Row>
+<ErrorBoundary>
+    <Modal @ref="_modalRef">
+        <ModalContent Size="ModalSize.Default">
+            <ModalHeader>
+                <ModalTitle>@_modalTitle</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                @_modalMessage
+                <Alert Color="Color.Warning" Margin="Margin.Is3.FromTop" Visible>
+                    <AlertMessage>Careful:</AlertMessage>
+                    <AlertDescription>This cannot be undone!</AlertDescription>
+                </Alert>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@( () => HideModal("cancel") )">Cancel Delete</Button>
+                <Button Color="Color.Danger" Loading="@_isLoading" Clicked="@( ()=> HideModal("delete") )">Delete
+                    Financier</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</ErrorBoundary>

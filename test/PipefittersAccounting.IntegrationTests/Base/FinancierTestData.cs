@@ -128,6 +128,18 @@ namespace PipefittersAccounting.IntegrationTests.Base
             new FinancierWriteModel()
             {
                 Id = new Guid("84164388-28ff-4b47-bd63-dd9326d32236"),
+                FinancierName = "Bertha Mae Jones Down Home Cooking",
+                Telephone = "886-587-0001",
+                AddressLine1 = "12333 Menard Heights Blvd",
+                AddressLine2 = "Suite 1001",
+                City = "Palo Alto",
+                StateCode = "CA",
+                Zipcode = "94901",
+                ContactFirstName = "Betty",
+                ContactLastName = "Sinosky",
+                ContactMiddleInitial = "L",
+                ContactTelephone = "886-587-0001",
+                IsActive = true,
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
     }

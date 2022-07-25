@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Components;
+using Blazorise;
+using Blazorise.Snackbar;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
 
@@ -8,6 +11,13 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 {
     public partial class FinanciersListPage
     {
+        private FinancierListItems? _financierToDelete;
+        private bool _isLoading;
+        private Modal? _modalRef;
+        private string? _modalTitle;
+        private string? _modalMessage;
+        private string? _snackarMessage;
+        private Snackbar? _snackbar;
         private string _placeHolderTextForSearch = "Search by financier's name";
         private GetFinanciers? _getFinanciersParameters;
         private GetFinanciersByName? _getFinanciersbyNameParameters;
@@ -17,11 +27,11 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
         [Inject] public NavigationManager? NavManager { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             _pagerChangedEventHandler = GetFinanciers;
-            Console.WriteLine("FinanciersListPage.OnInitializedAsync() called.");
             await _pagerChangedEventHandler.Invoke(1, 5);
         }
 
@@ -82,6 +92,49 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             if (searchCriteria is not null)
             {
                 await GetFinanciers(searchCriteria, 1, 5);
+            }
+        }
+
+        private Task ShowModal(Guid financierId)
+        {
+            _financierToDelete = _financierList!.Find(fin => fin.FinancierId == financierId);
+
+            _modalMessage = $"Delete financier {_financierToDelete!.FinancierName}?";
+            _modalTitle = "Financier delete confirmation";
+
+            return _modalRef!.Show();
+        }
+
+        private async Task HideModal(string action)
+        {
+            if (action == "delete")
+                await DeleteFinancier();
+
+            await _modalRef!.Hide();
+        }
+
+        private async Task DeleteFinancier()
+        {
+            FinancierWriteModel writeModel = new()
+            {
+                Id = _financierToDelete!.FinancierId,
+                FinancierName = _financierToDelete!.FinancierName!
+            };
+
+            _isLoading = true;
+            OperationResult<bool> result = await FinanciersService!.DeleteFinancier(writeModel);
+            _isLoading = false;
+
+            if (result.Success)
+            {
+                await GetFinanciers(1, 5);
+                _snackarMessage = $"Information for financier {_financierToDelete!.FinancierName} was successfully deleted.";
+                await InvokeAsync(StateHasChanged);
+                await _snackbar!.Show();
+            }
+            else
+            {
+                await MessageService!.Error($"Error while deleting info: {result.NonSuccessMessage}", "Error");
             }
         }
     }

@@ -157,8 +157,8 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         [Fact]
         public async Task DeleteFinancierInfo_DeleteFinancierWithValidId_ShouldSucceed()
         {
-            string uri = $"{_urlRoot}/financiers/delete";
             FinancierWriteModel model = FinancierTestData.GetDeleteFinancierInfo();
+            string uri = $"{_urlRoot}/financiers/delete/{model.Id}";
 
             var memStream = new MemoryStream();
             await JsonSerializer.SerializeAsync(memStream, model);

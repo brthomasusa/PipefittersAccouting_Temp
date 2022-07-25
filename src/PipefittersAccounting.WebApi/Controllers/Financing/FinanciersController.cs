@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -147,24 +148,32 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, writeResult.Exception.Message);
         }
 
-        [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteFinancierInfo([FromBody] FinancierWriteModel writeModel)
+        [HttpDelete("delete/{financierId:Guid}")]
+        public async Task<IActionResult> DeleteFinancierInfo(Guid financierId)
         {
-            OperationResult<bool> writeResult = await _cmdSvc.DeleteFinancierInfo(writeModel);
+            GetFinancier queryParams = new() { FinancierId = financierId };
+            OperationResult<FinancierReadModel> result = await _qrySvc.GetFinancierDetails(queryParams);
 
-            if (writeResult.Success)
+            if (result.Success)
             {
-                return StatusCode(200, "Financier info successfully deleted.");
-            }
+                FinancierWriteModel writeModel = result.Result.Map();
+                OperationResult<bool> writeResult = await _cmdSvc.DeleteFinancierInfo(writeModel);
 
-            if (writeResult.Exception is null)
+                if (writeResult.Success)
+                {
+                    return StatusCode(200, "Financier info successfully deleted.");
+                }
+                else
+                {
+                    _logger.LogWarning(writeResult.NonSuccessMessage);
+                    return StatusCode(400, writeResult.NonSuccessMessage);
+                }
+            }
+            else
             {
-                _logger.LogWarning(writeResult.NonSuccessMessage);
-                return StatusCode(400, writeResult.NonSuccessMessage);
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
             }
-
-            _logger.LogError(writeResult.Exception.Message);
-            return StatusCode(500, writeResult.Exception.Message);
         }
     }
 }

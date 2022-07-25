@@ -40,6 +40,8 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public string? ContactFullName { get; set; }
         public string? ContactTelephone { get; set; }
         public bool IsActive { get; set; }
+        public int Loans { get; set; }
+        public int Stocks { get; set; }
     }
 
     public class FinancierLookup : IReadModel
