@@ -54,8 +54,7 @@
                                         <span class="btn-label"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></span>
                                     </DropdownToggle>
                                     <DropdownMenu class="border border-dark rounded-3 shadow-lg">
-                                        <DropdownItem
-                                        Clicked="@( async () => await ShowDetailDialog(@financier.FinancierId) )">
+                                        <DropdownItem Clicked="@( () => ShowDetailDialog(@financier.FinancierId) )">
                                             Details
                                         </DropdownItem>
                                         <DropdownItem
@@ -120,4 +119,4 @@
     </Modal>
 </ErrorBoundary>
 
-<FinancierDetailDialog Financier=@_financierDetailModel />
+<FinancierDetailDialog FinancierId=@_selectedFinancierId />

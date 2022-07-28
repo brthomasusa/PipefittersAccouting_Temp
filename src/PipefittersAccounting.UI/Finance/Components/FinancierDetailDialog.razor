@@ -1,5 +1,5 @@
 <ErrorBoundary>
-    @if (@Financier is not null)
+    @if (@_financier is not null)
     {
         <Modal @ref="@_detailModalRef">
             <ModalContent Centered="true" Size="ModalSize.Large">
@@ -8,39 +8,39 @@
                     <CloseButton Clicked="@CloseDialog" />
                 </ModalHeader>
                 <ModalBody>
-                    <ReadOnlyDetailsForm FormTitle=@Financier!.FinancierName ViewModel=@Financier>
+                    <ReadOnlyDetailsForm FormTitle=@_financier!.FinancierName ViewModel=@_financier>
                         <FormFields>
                             <Field>
                                 <FieldLabel>Telephone</FieldLabel>
-                                <TextEdit Text=@Financier!.Telephone ReadOnly />
+                                <TextEdit Text=@_financier!.Telephone ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Address Line1</FieldLabel>
-                                <TextEdit Text=@Financier!.AddressLine1 ReadOnly />
+                                <TextEdit Text=@_financier!.AddressLine1 ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Address Line2</FieldLabel>
-                                <TextEdit Text=@Financier!.AddressLine2 ReadOnly />
+                                <TextEdit Text=@_financier!.AddressLine2 ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>City</FieldLabel>
-                                <TextEdit Text=@Financier!.City ReadOnly />
+                                <TextEdit Text=@_financier!.City ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>State</FieldLabel>
-                                <TextEdit Text=@Financier!.StateCode ReadOnly />
+                                <TextEdit Text=@_financier!.StateCode ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Zipcode</FieldLabel>
-                                <TextEdit Text=@Financier!.Zipcode ReadOnly />
+                                <TextEdit Text=@_financier!.Zipcode ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Contact Name</FieldLabel>
-                                <TextEdit Text=@Financier!.ContactFullName ReadOnly />
+                                <TextEdit Text=@_financier!.ContactFullName ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Contact Telephone</FieldLabel>
-                                <TextEdit Text=@Financier!.ContactTelephone ReadOnly />
+                                <TextEdit Text=@_financier!.ContactTelephone ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Status</FieldLabel>
@@ -48,11 +48,11 @@
                             </Field>
                             <Field>
                                 <FieldLabel>Created On</FieldLabel>
-                                <TextEdit Text=@(Financier!.CreatedDate.ToShortDateString()) ReadOnly />
+                                <TextEdit Text=@(_financier!.CreatedDate.ToShortDateString()) ReadOnly />
                             </Field>
                             <Field>
                                 <FieldLabel>Last Modified On</FieldLabel>
-                                <TextEdit Text=@(Financier!.LastModifiedDate.ToShortDateString()) ReadOnly />
+                                <TextEdit Text=@(_financier!.LastModifiedDate.ToShortDateString()) ReadOnly />
                             </Field>
                         </FormFields>
                     </ReadOnlyDetailsForm>
