@@ -1,6 +1,6 @@
 @page "/Finance/Pages/Financiers/FinanciersListPage"
 @using PipefittersAccounting.UI.Components.Common
-@inject ILogger<FinanciersListPage> logger
+@using PipefittersAccounting.UI.Finance.Components
 @using Blazorise.Snackbar
 
 <PageTitle>Financiers</PageTitle>
@@ -53,16 +53,16 @@
                                     <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
                                         <span class="btn-label"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></span>
                                     </DropdownToggle>
-                                    <DropdownMenu class="border border-primary rounded-3 shadow-lg">
+                                    <DropdownMenu class="border border-dark rounded-3 shadow-lg">
                                         <DropdownItem
-                                        Clicked="@( () => OnActionItemClicked("Details", @financier.FinancierId) )">
+                                        Clicked="@( async () => await ShowDetailDialog(@financier.FinancierId) )">
                                             Details
                                         </DropdownItem>
                                         <DropdownItem
                                         Clicked="@( () => OnActionItemClicked("Edit", @financier.FinancierId) )">
                                             Edit
                                         </DropdownItem>
-                                        <DropdownItem Clicked="@( () => ShowModal(@financier.FinancierId) )"
+                                        <DropdownItem Clicked="@( () => ShowDeleteModal(@financier.FinancierId) )"
                                         Disabled="@( financier.Loans > 0 || financier.Stocks > 0 )">
                                             Delete
                                         </DropdownItem>
@@ -98,7 +98,7 @@
     </Column>
 </Row>
 <ErrorBoundary>
-    <Modal @ref="_modalRef">
+    <Modal @ref="_deleteModalRef">
         <ModalContent Size="ModalSize.Default">
             <ModalHeader>
                 <ModalTitle>@_modalTitle</ModalTitle>
@@ -112,10 +112,12 @@
                 </Alert>
             </ModalBody>
             <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@( () => HideModal("cancel") )">Cancel Delete</Button>
-                <Button Color="Color.Danger" Loading="@_isLoading" Clicked="@( ()=> HideModal("delete") )">Delete
+                <Button Color="Color.Secondary" Clicked="@( () => HideDeleteModal("cancel") )">Cancel Delete</Button>
+                <Button Color="Color.Danger" Loading="@_isLoading" Clicked="@( ()=> HideDeleteModal("delete") )">Delete
                     Financier</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>
 </ErrorBoundary>
+
+<FinancierDetailDialog Financier=@_financierDetailModel />

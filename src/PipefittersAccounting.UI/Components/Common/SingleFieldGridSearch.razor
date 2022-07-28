@@ -1,4 +1,10 @@
 <ErrorBoundary>
-    <input type="text" class="form-control border border-primary" placeholder=@PlaceHolderText aria-label="Search"
-        @bind-value=SearchTerm @bind-value:event="oninput" @onkeyup="OnSearchTermChanged" />
+    <Field Horizontal>
+        <FieldLabel ColumnSize="ColumnSize.Is1">
+            <span class="btn-label"><i class="fas fa-search"></i></span>
+        </FieldLabel>
+        <FieldBody ColumnSize="ColumnSize.Is11">
+            <TextEdit Placeholder=@PlaceHolderText @bind-Text=_searchTerm KeyPress="@OnSearchTermChanged" />
+        </FieldBody>
+    </Field>
 </ErrorBoundary>

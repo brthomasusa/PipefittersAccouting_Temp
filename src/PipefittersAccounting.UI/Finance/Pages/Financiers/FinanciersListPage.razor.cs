@@ -12,8 +12,9 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
     public partial class FinanciersListPage
     {
         private FinancierListItems? _financierToDelete;
+        private FinancierReadModel? _financierDetailModel;
         private bool _isLoading;
-        private Modal? _modalRef;
+        private Modal? _deleteModalRef;
         private string? _modalTitle;
         private string? _modalMessage;
         private string? _snackarMessage;
@@ -50,7 +51,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
             else
             {
-                logger!.LogError(result.NonSuccessMessage);
+                await MessageService!.Error($"Error while deleting info: {result.NonSuccessMessage}", "Error");
             }
         }
 
@@ -69,7 +70,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
             else
             {
-                logger!.LogError(result.NonSuccessMessage);
+                await MessageService!.Error($"Error while deleting info: {result.NonSuccessMessage}", "Error");
             }
         }
 
@@ -79,7 +80,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             (
                 action switch
                 {
-                    "Details" => $"Finance/Pages/Financiers/FinancierDetailsPage/{financierId}",
+                    // "Details" => $"Finance/Pages/Financiers/FinancierDetailsPage/{financierId}",
                     "Edit" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
                     "Delete" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
                     _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
@@ -95,22 +96,22 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
         }
 
-        private Task ShowModal(Guid financierId)
+        private Task ShowDeleteModal(Guid financierId)
         {
             _financierToDelete = _financierList!.Find(fin => fin.FinancierId == financierId);
 
             _modalMessage = $"Delete financier {_financierToDelete!.FinancierName}?";
             _modalTitle = "Financier delete confirmation";
 
-            return _modalRef!.Show();
+            return _deleteModalRef!.Show();
         }
 
-        private async Task HideModal(string action)
+        private async Task HideDeleteModal(string action)
         {
             if (action == "delete")
                 await DeleteFinancier();
 
-            await _modalRef!.Hide();
+            await _deleteModalRef!.Hide();
         }
 
         private async Task DeleteFinancier()
@@ -131,6 +132,24 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
                 _snackarMessage = $"Information for financier {_financierToDelete!.FinancierName} was successfully deleted.";
                 await InvokeAsync(StateHasChanged);
                 await _snackbar!.Show();
+            }
+            else
+            {
+                await MessageService!.Error($"Error while deleting info: {result.NonSuccessMessage}", "Error");
+            }
+        }
+
+        private async Task ShowDetailDialog(Guid financierId)
+        {
+            GetFinancier getFinancierParameters = new() { FinancierId = financierId };
+
+            OperationResult<FinancierReadModel> result =
+                await FinanciersService!.GetFinancierDetails(getFinancierParameters);
+
+            if (result.Success)
+            {
+                _financierDetailModel = result.Result;
+                await InvokeAsync(StateHasChanged);
             }
             else
             {

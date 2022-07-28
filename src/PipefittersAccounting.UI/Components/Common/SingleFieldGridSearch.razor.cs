@@ -5,7 +5,7 @@ namespace PipefittersAccounting.UI.Components.Common
 {
     public partial class SingleFieldGridSearch
     {
-        private string? SearchTerm { get; set; }
+        private string? _searchTerm;
 
         [Parameter] public string? PlaceHolderText { get; set; }
         [Parameter] public EventCallback<string> OnSearchTermChangedEventHandler { get; set; }
@@ -14,9 +14,9 @@ namespace PipefittersAccounting.UI.Components.Common
         {
             if (e.Code == "Enter" || e.Code == "NumpadEnter")
             {
-                if (SearchTerm is not null)
+                if (_searchTerm is not null)
                 {
-                    await OnSearchTermChangedEventHandler.InvokeAsync(SearchTerm);
+                    await OnSearchTermChangedEventHandler.InvokeAsync(_searchTerm);
                 }
             }
         }
