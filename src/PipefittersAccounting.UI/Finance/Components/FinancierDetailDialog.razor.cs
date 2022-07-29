@@ -50,5 +50,8 @@ namespace PipefittersAccounting.UI.Finance.Components
 
         private string ConvertIsActiveToString()
             => _financier!.IsActive ? "Active" : "Inactive";
+
+        private string HideEmptyDate()
+            => _financier!.LastModifiedDate != default ? _financier!.LastModifiedDate.ToShortDateString() : "";
     }
 }

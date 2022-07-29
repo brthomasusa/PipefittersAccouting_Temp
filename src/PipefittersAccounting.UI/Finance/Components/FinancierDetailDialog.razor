@@ -4,55 +4,56 @@
         <Modal @ref="@_detailModalRef">
             <ModalContent Centered="true" Size="ModalSize.Large">
                 <ModalHeader>
-                    <ModalTitle>Financier Details</ModalTitle>
+                    <ModalTitle>
+                        <span><i class="fas fa-binoculars"></i></span>
+                        Viewing financier details
+                    </ModalTitle>
                     <CloseButton Clicked="@CloseDialog" />
                 </ModalHeader>
                 <ModalBody>
                     <ReadOnlyDetailsForm FormTitle=@_financier!.FinancierName ViewModel=@_financier>
                         <FormFields>
-                            <Field>
-                                <FieldLabel>Telephone</FieldLabel>
-                                <TextEdit Text=@_financier!.Telephone ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@_financier!.Telephone ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>Address Line1</FieldLabel>
-                                <TextEdit Text=@_financier!.AddressLine1 ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Address</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@_financier!.FullAddress ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>Address Line2</FieldLabel>
-                                <TextEdit Text=@_financier!.AddressLine2 ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Contact</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@_financier!.ContactFullName ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>City</FieldLabel>
-                                <TextEdit Text=@_financier!.City ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Contact Telephone</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@_financier!.ContactTelephone ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>State</FieldLabel>
-                                <TextEdit Text=@_financier!.StateCode ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Status</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@(ConvertIsActiveToString()) ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>Zipcode</FieldLabel>
-                                <TextEdit Text=@_financier!.Zipcode ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Created On</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@(_financier!.CreatedDate.ToShortDateString()) ReadOnly />
+                                </FieldBody>
                             </Field>
-                            <Field>
-                                <FieldLabel>Contact Name</FieldLabel>
-                                <TextEdit Text=@_financier!.ContactFullName ReadOnly />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Contact Telephone</FieldLabel>
-                                <TextEdit Text=@_financier!.ContactTelephone ReadOnly />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Status</FieldLabel>
-                                <TextEdit Text=@(ConvertIsActiveToString()) ReadOnly />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Created On</FieldLabel>
-                                <TextEdit Text=@(_financier!.CreatedDate.ToShortDateString()) ReadOnly />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Last Modified On</FieldLabel>
-                                <TextEdit Text=@(_financier!.LastModifiedDate.ToShortDateString()) ReadOnly />
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.Is3">Last Modified On</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is9">
+                                    <TextEdit Text=@(HideEmptyDate()) ReadOnly />
+                                </FieldBody>
                             </Field>
                         </FormFields>
                     </ReadOnlyDetailsForm>
