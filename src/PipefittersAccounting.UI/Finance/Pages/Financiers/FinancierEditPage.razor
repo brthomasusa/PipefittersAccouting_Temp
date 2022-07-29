@@ -3,6 +3,22 @@
 @using PipefittersAccounting.UI.Components.Common
 
 <PageTitle>Financier Edit</PageTitle>
+
+<Breadcrumb Margin="Margin.Is2.FromStart" Mode="BreadcrumbMode.Auto">
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/Finance/FinanceStartPage">Financing</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="Finance/Pages/Financiers/FinanciersListPage">Financiers</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/Finance/Pages/Financiers/FinancierEditPage">Edit</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
 <CascadingValue Name="WriteModelValidator" Value=@_modelValidator>
     <DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_financierDetailModel
         FormTitle="Edit Financier Info" SaveClickedEventHandler=@Update>

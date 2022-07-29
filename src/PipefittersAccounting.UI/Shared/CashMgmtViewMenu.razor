@@ -1,0 +1,34 @@
+@inject NavigationManager NavManager
+
+<Bar Breakpoint="Breakpoint.Desktop" Background="Background.Dark" ThemeContrast="ThemeContrast.Dark">
+    <BarToggler />
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="CashManagement/Pages/CashDeposits">Deposits</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="CashManagement/Pages/CashDisbursements">Disburements</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="CashManagement/Pages/CashAdjustments">Adjustments</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="CashManagement/Pages/CashTransfers">Transfers</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="CashManagement/Pages/CashAccounts">Cash Accounts</BarLink>
+            </BarItem>
+        </BarStart>
+        <BarEnd>
+            <BarItem class="mr-4">
+                <Button Margin="Margin.Is3.FromEnd" Color="Color.Secondary" Size="Size.Small">Log in</Button>
+            </BarItem>
+        </BarEnd>
+    </BarMenu>
+</Bar>
+
+
+@code {
+
+}
