@@ -81,7 +81,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
                 action switch
                 {
                     "Edit" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
-                    "Delete" => $"Finance/Pages/Financiers/FinancierEditPage/{financierId}",
                     _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
                 }
             );

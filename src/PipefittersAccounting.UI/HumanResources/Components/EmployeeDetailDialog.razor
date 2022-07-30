@@ -1,0 +1,136 @@
+<ErrorBoundary>
+    @if (@_employee is not null)
+    {
+        <Modal @ref="@_detailModalRef">
+            <ModalContent Centered="true" Size="ModalSize.Large">
+                <ModalHeader>
+                    <ModalTitle>
+                        <span><i class="fas fa-binoculars"></i></span>
+                        Viewing employee details
+                    </ModalTitle>
+                    <CloseButton Clicked="@CloseDialog" />
+                </ModalHeader>
+                <ModalBody>
+                    <ReadOnlyDetailsForm FormTitle=@_employee!.EmployeeFullName ViewModel=@_employee>
+                        <FormFields>
+                            <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified>
+                                <Items>
+                                    <Tab Name="generalInfo">General Info</Tab>
+                                    <Tab Name="addressInfo">Address</Tab>
+                                    <Tab Name="payrollInfo">Payroll Info</Tab>
+                                </Items>
+                                <Content>
+                                    <TabPanel Name="generalInfo">
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.Telephone ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.StartDate.ToShortDateString() ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Is Manager?</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(ConvertIsSupervisorToString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Manager's name</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.ManagerFullName ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Status</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(ConvertIsActiveToString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Created On</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(_employee!.CreatedDate.ToShortDateString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Last Modified On</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(HideEmptyDate()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                    </TabPanel>
+                                    <TabPanel Name="addressInfo">
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Address Line1</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.AddressLine1 ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Address Line2</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.AddressLine2 ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">City</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.City ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">State</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.StateCode ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Zipcode</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.Zipcode ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                    </TabPanel>
+                                    <TabPanel Name="payrollInfo">
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Social Security No.</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.SSN ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Marital Status</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.MaritalStatus ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Pay rate</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(ConvertCurrencyToString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Exemptions</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.Exemptions.ToString() ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                    </TabPanel>
+                                </Content>
+                            </Tabs>
+                        </FormFields>
+                    </ReadOnlyDetailsForm>
+                </ModalBody>
+                <ModalFooter>
+                    <Button id="footer-close-btn" Color="Color.Secondary" Clicked="@CloseDialog">Close</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    }
+    </ErrorBoundary>

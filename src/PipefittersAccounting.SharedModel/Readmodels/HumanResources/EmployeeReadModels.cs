@@ -2,12 +2,6 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
 {
-    public class SupervisorLookup : IReadModel
-    {
-        public Guid ManagerId { get; set; }
-        public string? ManagerName { get; set; }
-    }
-
     public class EmployeeDetail : IReadModel
     {
         public Guid EmployeeId { get; set; }

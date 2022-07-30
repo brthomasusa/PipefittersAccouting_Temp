@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Blazorise;
+using Blazorise.Snackbar;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.UI.Interfaces;
@@ -8,6 +10,10 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 {
     public partial class Employees
     {
+        private Guid _selectedEmployeeId;
+        private string _placeHolderTextForSearch = "Search by employee's last name";
+        private string? _snackarMessage;
+        private Snackbar? _snackbar;
         private GetEmployeesParameters? _getEmployeesParameters;
         private GetEmployeesByLastNameParameters? _getEmployeesByLastNameParameters;
         private List<EmployeeListItem>? _employeeList;
@@ -15,6 +21,8 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
         [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
+        [Inject] public NavigationManager? NavManager { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -37,7 +45,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
             else
             {
-                logger!.LogError(result.NonSuccessMessage);
+                await MessageService!.Error($"Error while retrieving employees: {result.NonSuccessMessage}", "Error");
             }
         }
 
@@ -56,13 +64,24 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
             else
             {
-                logger!.LogError(result.NonSuccessMessage);
+                await MessageService!.Error($"Error while retrieving employees: {result.NonSuccessMessage}", "Error");
             }
         }
 
-        private async Task SearchChanged(string searchTerm)
+        private void OnActionItemClicked(string action, Guid employeeId)
         {
-            await GetEmployees(searchTerm, 1, 5);
+            NavManager!.NavigateTo
+            (
+                action switch
+                {
+                    "Edit" => $"HumanResouces/Pages/EmployeeEdit/{employeeId}",
+                    _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
+                }
+            );
         }
+
+        private async Task SearchChanged(string searchTerm) => await GetEmployees(searchTerm, 1, 5);
+
+        private void ShowDetailDialog(Guid employeeId) => _selectedEmployeeId = employeeId;
     }
 }

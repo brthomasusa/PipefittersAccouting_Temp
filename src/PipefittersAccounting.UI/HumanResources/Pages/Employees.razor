@@ -1,19 +1,111 @@
 ﻿@page "/HumanResouces/Pages/Employees"
-@inject ILogger<Employees> logger
+
+@using PipefittersAccounting.UI.Components.Common
+@using PipefittersAccounting.UI.HumanResources.Components
+@using Blazorise.Snackbar
 
 <PageTitle>Employees</PageTitle>
-<Heading TextColor="TextColor.Muted" Size="HeadingSize.Is4" Margin="Margin.Is3.FromStart.Is2.FromTop">
+
+<Breadcrumb Margin="Margin.Is2.FromStart" Mode="BreadcrumbMode.Auto">
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/HumanResources/HrStartPage">HR/Payroll</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/HumanResouces/Pages/Employees">Employees</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is3.FromStart.Is1.FromTop">
     Employees
 </Heading>
 
 <ErrorBoundary>
-    <Row Margin="Margin.Is2.FromTop">
-        <Column Margin="Margin.Is4.FromStart.Is4.FromEnd">
-            <CascadingValue Name="MetaData" Value=@_metaData>
-                <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
-                    <EmployeeTable Employees=@_employeeList OnSearchChanged=@SearchChanged />
-                </CascadingValue>
-            </CascadingValue>
+    <Row>
+        <Column>
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <a href="/HumanResouces/Pages/EmployeeCreate"
+                                class="btn btn-labeled btn-lg btn-outline-primary rounded-pill" role="button">
+                                <span class="btn-label"><i class="fas fa-plus"></i></span>
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
+                                OnSearchTermChangedEventHandler=@SearchChanged />
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardBody>
+                    @if (_employeeList is not null && _employeeList.Any())
+                    {
+                        <BasicGrid Items=_employeeList>
+                            <TableHeader>
+                                <th>Name</th>
+                                <th>Telephone</th>
+                                <th>Status</th>
+                                <th>Manager?</th>
+                                <th>Manager's Name</th>
+                                <th>Actions</th>
+                            </TableHeader>
+                            <RowTemplate Context="employee">
+                                <td>@employee.EmployeeFullName</td>
+                                <td>@employee.Telephone</td>
+                                <td>@(employee.IsActive ? "Yes" : "No")</td>
+                                <td>@(employee.IsSupervisor ? "Yes" : "No")</td>
+                                <td>@employee.ManagerFullName</td>
+                                <td>
+                                    <Dropdown Direction="Direction.Up">
+                                        <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary">
+                                            <span class="btn-label"><i class="fas fa-ellipsis-v"
+                                                aria-hidden="true"></i></span>
+                                        </DropdownToggle>
+                                        <DropdownMenu class="border border-dark rounded-3 shadow-lg">
+                                            <DropdownItem Clicked="@( () => ShowDetailDialog(@employee.EmployeeId) )">
+                                                Details
+                                            </DropdownItem>
+                                            <DropdownItem
+                                            Clicked="@( () => OnActionItemClicked("Edit", @employee.EmployeeId) )">
+                                                Edit
+                                            </DropdownItem>
+                                            <DropdownItem Disabled>
+                                                Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </td>
+                            </RowTemplate>
+                        </BasicGrid>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                </CardBody>
+                <CardFooter>
+                    <CascadingValue Name="MetaData" Value=@_metaData>
+                        <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
+                            <DynamicPager />
+                        </CascadingValue>
+                    </CascadingValue>
+
+                    <Snackbar @ref="_snackbar" DefaultInterval=2000>
+                        <SnackbarBody>
+                            @_snackarMessage
+                        </SnackbarBody>
+                    </Snackbar>
+                </CardFooter>
+            </Card>
         </Column>
     </Row>
 </ErrorBoundary>
+
+<EmployeeDetailDialog EmployeeId=@_selectedEmployeeId />
