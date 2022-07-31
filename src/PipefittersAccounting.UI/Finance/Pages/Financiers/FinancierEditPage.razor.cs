@@ -1,6 +1,7 @@
 #pragma warning disable CS8602
 
 using Microsoft.AspNetCore.Components;
+using Blazorise;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -19,6 +20,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
 
         [Parameter] public Guid FinancierId { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -41,7 +43,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
             else
             {
-                logger!.LogError(result.NonSuccessMessage);
+                await MessageService!.Error($"Error while retrieving financier: {result.NonSuccessMessage}", "Error");
             }
         }
 

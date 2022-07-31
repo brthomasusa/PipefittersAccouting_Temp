@@ -5,20 +5,6 @@
     <BarMenu>
         <BarStart>
             <BarItem>
-                <BarDropdown>
-                    <BarDropdownToggle Color="Color.Info" Outline>Cash Management</BarDropdownToggle>
-                    <BarDropdownMenu>
-                        <BarDropdownToggle>Cash Management</BarDropdownToggle>
-                        <BarDropdownItem Clicked="@( () => OnMenuItemClicked("CashAccount") )">Cash Accounts
-                        </BarDropdownItem>
-                        <BarDropdownItem Clicked="@( () => OnMenuItemClicked("Deposit") )">Deposits</BarDropdownItem>
-                        <BarDropdownItem>Disburements</BarDropdownItem>
-                        <BarDropdownItem>Adjustments</BarDropdownItem>
-                        <BarDropdownItem>Transfers</BarDropdownItem>
-                    </BarDropdownMenu>
-                </BarDropdown>
-            </BarItem>
-            <BarItem>
                 <BarLink To="Finance/Pages/Financiers/FinanciersListPage">Financiers</BarLink>
             </BarItem>
             <BarItem>
@@ -35,19 +21,3 @@
         </BarEnd>
     </BarMenu>
 </Bar>
-
-
-@code {
-    private void OnMenuItemClicked(string itemName)
-    {
-        NavManager.NavigateTo
-        (
-        itemName switch
-        {
-            "CashAccount" => "Finance/Pages/CashManagement/CashAccounts",
-            "Deposit" => "Finance/Pages/CashManagement/CashDeposits",
-            _ => throw new ArgumentOutOfRangeException(nameof(itemName), $"Not expected direction value: {itemName}"),
-        }
-        );
-    }
-}

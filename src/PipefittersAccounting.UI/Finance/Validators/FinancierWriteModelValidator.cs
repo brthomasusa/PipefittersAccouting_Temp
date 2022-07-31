@@ -50,18 +50,18 @@ namespace PipefittersAccounting.UI.Finance.Validators
 
             RuleFor(financier => financier.ContactFirstName)
                                           .NotEmpty().WithMessage("Contact first name; this is required.")
-                                          .MaximumLength(30).WithMessage("City name cannot be longer than 30 characters");
+                                          .MaximumLength(30).WithMessage("Contact first name cannot be longer than 30 characters");
 
             RuleFor(financier => financier.ContactLastName)
                                           .NotEmpty().WithMessage("Contact last name; this is required.")
-                                          .MaximumLength(30).WithMessage("City name cannot be longer than 30 characters");
+                                          .MaximumLength(30).WithMessage("Contact last name cannot be longer than 30 characters");
 
             RuleFor(financier => financier.ContactMiddleInitial)
                                           .MaximumLength(1).WithMessage("Middle initial cannot be longer than 1 character");
 
             RuleFor(financier => financier.ContactTelephone)
-                                          .NotEmpty().WithMessage("Missing contact telephone name; this is required.")
-                                          .MaximumLength(14).WithMessage("Telephone number cannot be longer than 15 characters")
+                                          .NotEmpty().WithMessage("Missing contact telephone number; this is required.")
+                                          .MaximumLength(14).WithMessage("Telephone number cannot be longer than 14 characters")
                                           .Matches(@"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$")
                                             .WithMessage("A valid phone number looks like: 123-456-7890");
 

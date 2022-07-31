@@ -1,5 +1,4 @@
-@page "/HumanResouces/Pages/EmployeeEdit/{EmployeeId:guid}"
-@inject ILogger<EmployeeEdit> logger
+@page "/HumanResouces/Pages/EmployeeEditPage/{EmployeeId:guid}"
 
 <PageTitle>Employee Edit</PageTitle>
 
@@ -14,7 +13,7 @@
                     </Heading>
                 </CardHeader>
                 <CardBody>
-                    @if (EmployeeDetailModel is not null)
+                    @if (_employeeWriteModel is not null)
                     {
 
                     }

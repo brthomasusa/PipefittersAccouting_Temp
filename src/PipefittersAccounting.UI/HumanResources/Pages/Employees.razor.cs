@@ -74,7 +74,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             (
                 action switch
                 {
-                    "Edit" => $"HumanResouces/Pages/EmployeeEdit/{employeeId}",
+                    "Edit" => $"HumanResouces/Pages/EmployeeEditPage/{employeeId}",
                     _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
                 }
             );

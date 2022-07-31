@@ -28,7 +28,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjec
 
             DateTime validStartDate = new DateTime(1998, 1, 1);
 
-            if (validStartDate > value)
+            if (validStartDate >= value)
             {
                 throw new InvalidOperationException("Employee start date must be greater than or equal to Jan 1, 1998.");
             }
