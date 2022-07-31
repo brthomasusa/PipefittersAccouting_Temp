@@ -11,6 +11,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters);
         Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesByLastNameParameters queryParameters);
         Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters);
+        Task<OperationResult<List<EmployeeTypes>>> GetEmployeeTypes(GetEmployeeTypesParameters queryParameters);
         Task<OperationResult<Guid>> VerifyEmployeeSSNIsUnique(UniqueEmployeSSNParameter queryParameters);
         Task<OperationResult<Guid>> VerifyEmployeeNameIsUnique(UniqueEmployeeNameParameters queryParameters);
         Task<OperationResult<int>> GetCountOfEmployeeTimeCards(GetEmployeeParameter queryParameters);

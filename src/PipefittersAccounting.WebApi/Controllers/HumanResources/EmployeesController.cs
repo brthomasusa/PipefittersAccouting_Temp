@@ -76,6 +76,22 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("employeetypes")]
+        public async Task<ActionResult<List<EmployeeTypes>>> GetEmployeeTypes()
+        {
+            GetEmployeeTypesParameters typesParams = new GetEmployeeTypesParameters() { };
+
+            OperationResult<List<EmployeeTypes>> result = await _qrySvc.GetEmployeeTypes(typesParams);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
         [HttpGet("detail/{employeeId:Guid}", Name = "Details")]
         public async Task<ActionResult<EmployeeDetail>> Details(Guid employeeId)
         {

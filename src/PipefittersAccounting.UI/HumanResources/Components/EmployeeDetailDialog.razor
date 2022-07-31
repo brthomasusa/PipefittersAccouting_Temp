@@ -22,6 +22,12 @@
                                 <Content>
                                     <TabPanel Name="generalInfo">
                                         <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Job Title</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_employee!.EmployeeTypeName ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
                                             <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
                                             <FieldBody ColumnSize="ColumnSize.Is9">
                                                 <TextEdit Text=@_employee!.Telephone ReadOnly />

@@ -20,8 +20,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 
                 var sql =
                 @"SELECT 
-                    ee.EmployeeId, ee.SupervisorId,
-                    supv.LastName AS ManagerLastName, supv.FirstName AS ManagerFirstName, supv.MiddleInitial AS ManagerMiddleInitial, 
+                    ee.EmployeeId, ee.SupervisorId, types.EmployeeTypeId, types.EmployeeTypeName,
+                     supv.LastName AS ManagerLastName, supv.FirstName AS ManagerFirstName, supv.MiddleInitial AS ManagerMiddleInitial, 
                     CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName,
                     ee.LastName, ee.FirstName, ee.MiddleInitial, 
                     CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName, 
@@ -34,7 +34,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                         EmployeeId, LastName, FirstName, MiddleInitial 
                     FROM HumanResources.Employees supv
                     WHERE IsSupervisor = 1
-                ) supv ON ee.SupervisorId = supv.EmployeeId        
+                ) supv ON ee.SupervisorId = supv.EmployeeId
+                JOIN HumanResources.EmployeeTypes types ON ee.EmployeeTypeId = types.EmployeeTypeId       
                 WHERE ee.EmployeeId = @ID";
 
                 var parameters = new DynamicParameters();

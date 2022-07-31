@@ -96,6 +96,19 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
+        public async Task EmployeeTypes_ShouldReturnAllEmployeeTypes_ShouldSucceed()
+        {
+            using var response = await _client.GetAsync($"{_urlRoot}/employees/employeetypes",
+                                                        HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var employeeTypes = await JsonSerializer.DeserializeAsync<List<EmployeeTypes>>(jsonResponse, _options);
+
+            Assert.Equal(6, employeeTypes.Count);
+        }
+
+        [Fact]
         public async Task Detail_ShouldReturnEmployeeDetail_ShouldSucceed()
         {
             Guid employeeId = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");

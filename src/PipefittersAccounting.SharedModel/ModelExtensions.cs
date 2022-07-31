@@ -1,5 +1,7 @@
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
 namespace PipefittersAccounting.SharedModel
 {
@@ -38,6 +40,32 @@ namespace PipefittersAccounting.SharedModel
                 ContactTelephone = input.ContactTelephone!,
                 IsActive = input.IsActive,
                 UserId = input.UserId
+            };
+        }
+
+        public static EmployeeWriteModel Map(this EmployeeDetail input)
+        {
+            return new EmployeeWriteModel()
+            {
+                EmployeeId = input.EmployeeId,
+                SupervisorId = input.SupervisorId,
+                EmployeeType = input.EmployeeTypeId,
+                FirstName = input.FirstName!,
+                LastName = input.LastName!,
+                MiddleInitial = input.MiddleInitial!,
+                Telephone = input.Telephone!,
+                SSN = input.SSN!,
+                AddressLine1 = input.AddressLine1!,
+                AddressLine2 = input.AddressLine2!,
+                City = input.City!,
+                StateCode = input.StateCode!,
+                Zipcode = input.Zipcode!,
+                MaritalStatus = input.MaritalStatus!,
+                Exemptions = input.Exemptions,
+                PayRate = input.PayRate,
+                StartDate = input.StartDate,
+                IsActive = input.IsActive,
+                IsSupervisor = input.IsSupervisor
             };
         }
     }

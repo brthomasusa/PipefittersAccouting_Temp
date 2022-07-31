@@ -6,6 +6,8 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
     {
         public Guid EmployeeId { get; set; }
         public Guid SupervisorId { get; set; }
+        public int EmployeeTypeId { get; set; }
+        public string? EmployeeTypeName { get; set; }
         public string? ManagerLastName { get; set; }
         public string? ManagerFirstName { get; set; }
         public string? ManagerMiddleInitial { get; set; }
@@ -45,6 +47,12 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
     {
         public Guid ManagerId { get; set; }
         public string? ManagerFullName { get; set; }
+    }
+
+    public class EmployeeTypes
+    {
+        public int EmployeeTypeId { get; set; }
+        public string? EmployeeTypeName { get; set; }
     }
 
     public class TimeCardDetail

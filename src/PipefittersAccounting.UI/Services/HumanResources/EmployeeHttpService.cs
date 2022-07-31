@@ -19,11 +19,11 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         }
 
         // Alter system state with WriteModels
-        public Task<OperationResult<bool>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<EmployeeDetail>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
+            => await CreateEmployeeHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel)
+            => await EditEmployeeHttpClient.Execute(writeModel, _client, _options);
 
         public Task<OperationResult<bool>> DeleteEmployeeInfo(EmployeeWriteModel writeModel)
             => throw new NotImplementedException();
@@ -47,8 +47,11 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesByLastNameParameters queryParameters)
             => await GetEmployeeListItemsHttpClient.Query(queryParameters, _client, _options);
 
-        public Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers()
+            => await GetManagersHttpClient.Query(_client, _options);
+
+        public async Task<OperationResult<List<EmployeeTypes>>> GetEmployeeTypes()
+            => await GetEmployeeTypesHttpClient.Query(_client, _options);
 
         public Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
             => throw new NotImplementedException();

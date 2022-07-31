@@ -26,6 +26,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
         public async Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters) =>
             await GetEmployeeManagersQuery.Query(queryParameters, _dapperCtx);
 
+        public async Task<OperationResult<List<EmployeeTypes>>> GetEmployeeTypes(GetEmployeeTypesParameters queryParameters) =>
+            await GetEmployeeTypesQuery.Query(queryParameters, _dapperCtx);
+
         public async Task<OperationResult<Guid>> VerifyEmployeeSSNIsUnique(UniqueEmployeSSNParameter queryParameters)
             => await VerifyEmployeeSSNIsUniqueQuery.Query(queryParameters, _dapperCtx);
 
