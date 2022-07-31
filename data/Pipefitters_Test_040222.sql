@@ -812,7 +812,7 @@ INSERT INTO HumanResources.Employees
     (EmployeeId, EmployeeTypeId, SupervisorID, LastName, FirstName, MiddleInitial, SSN, Telephone, AddressLine1, AddressLine2, City, StateCode, Zipcode, MaritalStatus, Exemptions, PayRate, StartDate, IsActive, IsSupervisor)
 VALUES
     ('4B900A74-E2D9-4837-B9A4-9E828752716E', 2, '4B900A74-E2D9-4837-B9A4-9E828752716E','Sanchez', 'Ken', 'J', '123789999', '817-987-1234', '321 Tarrant Pl', null, 'Fort Worth', 'TX', '78965', 'M', 5, 40.00, '1998-12-02', 1, 1),
-    ('5C60F693-BEF5-E011-A485-80EE7300C695', 3, 'e716ac28-e354-4d8d-94e4-ec51f08b1af8','Carter', 'Wayne', 'L', '423789999', '972-523-1234', '321 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 3, 40.00, '1998-12-02', 1, 1),
+    ('5C60F693-BEF5-E011-A485-80EE7300C695', 3, '4b900a74-e2d9-4837-b9a4-9e828752716e','Carter', 'Wayne', 'L', '783789999', '972-523-1234', '9999 Fort Worth Ave', null, 'Dallas', 'TX', '75211', 'M', 3, 40.00, '1998-12-02', 1, 1),
     ('660bb318-649e-470d-9d2b-693bfb0b2744', 1, '4B900A74-E2D9-4837-B9A4-9E828752716E','Phide', 'Terri', 'M', '638912345', '214-987-1234', '3455 South Corinth Circle', null, 'Dallas', 'TX', '75224', 'M', 1, 28.00, '2014-09-22', 1, 1),
     ('9f7b902d-566c-4db6-b07b-716dd4e04340', 4, '4B900A74-E2D9-4837-B9A4-9E828752716E','Duffy', 'Terri', 'L', '699912345', '214-987-1234', '98 Reiger Ave', null, 'Dallas', 'TX', '75214', 'M', 2, 30.00, '2018-10-22', 1, 1),
     ('AEDC617C-D035-4213-B55A-DAE5CDFCA366', 5, '4B900A74-E2D9-4837-B9A4-9E828752716E','Goldberg', 'Jozef', 'P', '036889999', '469-321-1234', '6667 Melody Lane', 'Apt 2', 'Dallas', 'TX', '75231', 'S', 1, 29.00, '2013-02-28', 1, 1),

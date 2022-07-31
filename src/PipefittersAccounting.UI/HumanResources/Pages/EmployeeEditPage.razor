@@ -2,30 +2,172 @@
 
 <PageTitle>Employee Edit</PageTitle>
 
-<ErrorBoundary>
-    <Row>
-        <Column>
-            <Card Margin="Margin.Is4.OnY">
-                <CardHeader>
-                    <Heading TextColor="TextColor.Muted" Size="HeadingSize.Is4"
-                        Margin="Margin.Is3.FromStart.Is2.FromTop">
-                        Employee Edit
-                    </Heading>
-                </CardHeader>
-                <CardBody>
-                    @if (_employeeWriteModel is not null)
-                    {
+<Breadcrumb Margin="Margin.Is2.FromStart" Mode="BreadcrumbMode.Auto">
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/Finance/FinanceStartPage">Creditors/Investors</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="Finance/Pages/Financiers/FinanciersListPage">Financiers</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="/Finance/Pages/Financiers/FinancierEditPage">Edit</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
 
-                    }
-                    else
-                    {
-                        <span>Loading employee information...</span>
-                    }
-                </CardBody>
-                <CardFooter>
+<CascadingValue Name="WriteModelValidator" Value=@_modelValidator>
+    <DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_state
+        FormTitle="Edit Employee Info" SaveClickedEventHandler=@Update>
+        <DataEntryFieldsTemplate>
+            <Container>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">First Name</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.FirstName>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">M.I.</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.MiddleInitial>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Last Name</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.LastName>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                </Row>
 
-                </CardFooter>
-            </Card>
-        </Column>
-    </Row>
-</ErrorBoundary>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Manager</FieldLabel>
+                                <Select TValue="Guid" @bind-SelectedValue=@_state.EmployeeWriteModel!.SupervisorId>
+                                    @* <SelectItem Value=@Guid.Empty>-- Select Manager --</SelectItem> *@
+                                    @foreach (var mgr in _state.Managers)
+                                    {
+                                        <SelectItem Value=@mgr.ManagerId>@mgr.ManagerFullName</SelectItem>
+                                    }
+                                </Select>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Job Title</FieldLabel>
+                                <Select TValue="int" @bind-SelectedValue=@_state.EmployeeWriteModel!.EmployeeType>
+                                    @* <SelectItem Value="0">-- Select Job Title --</SelectItem> *@
+                                    @foreach (var type in _state.EmployeeTypes)
+                                    {
+                                        <SelectItem Value=@type.EmployeeTypeId>@type.EmployeeTypeName</SelectItem>
+                                    }
+                                </Select>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Telephone</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.Telephone>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Address Line1</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.AddressLine1>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Address Line2</FieldLabel>
+                                <TextEdit @bind-Text=@_state.EmployeeWriteModel!.AddressLine2>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">City</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.City>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">State</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.StateCode>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Zipcode</FieldLabel>
+                                <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.Zipcode>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                </Row>
+            </Container>
+        </DataEntryFieldsTemplate>
+    </DataEntryForm>
+</CascadingValue>

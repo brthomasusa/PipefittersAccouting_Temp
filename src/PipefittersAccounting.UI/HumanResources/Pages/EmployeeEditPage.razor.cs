@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Blazorise;
 using PipefittersAccounting.SharedModel;
-using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+using PipefittersAccounting.UI.HumanResources.Components;
 using PipefittersAccounting.UI.HumanResources.Validators;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
@@ -15,7 +14,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private const string _returnUri = "HumanResouces/Pages/Employees";
         private string? _snackBarMessage;
         private EmployeeWriteModelValidator _modelValidator = new();
-        private EmployeeWriteModel? _employeeWriteModel;
+        private EmployeeDataEntryState _state = new();
 
         [Parameter] public Guid EmployeeId { get; set; }
         [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
@@ -30,13 +29,63 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 
             if (result.Success)
             {
-                _employeeWriteModel = result.Result.Map();
-                Console.WriteLine(_employeeWriteModel.ToJson());
+                await GetManagers();
+                await GetEmployeeTypes();
+
+                _state.EmployeeWriteModel = result.Result.Map();
+
                 StateHasChanged();
             }
             else
             {
                 await MessageService!.Error($"Error while retrieving employee: {result.NonSuccessMessage}", "Error");
+            }
+        }
+
+        private async Task GetManagers()
+        {
+            OperationResult<List<EmployeeManager>> result = await EmployeeService!.GetEmployeeManagers();
+
+            if (result.Success)
+            {
+                _state.Managers = result.Result;
+            }
+            else
+            {
+                await MessageService!.Error($"Error while retrieving list of managers: {result.NonSuccessMessage}", "Error");
+            }
+        }
+
+        private async Task GetEmployeeTypes()
+        {
+            OperationResult<List<EmployeeTypes>> result = await EmployeeService!.GetEmployeeTypes();
+
+            if (result.Success)
+            {
+                _state.EmployeeTypes = result.Result;
+            }
+            else
+            {
+                await MessageService!.Error($"Error while retrieving employee types: {result.NonSuccessMessage}", "Error");
+            }
+        }
+
+        private async Task<OperationResult<bool>> Update()
+        {
+            _state.EmployeeWriteModel!.StateCode = _state.EmployeeWriteModel!.StateCode.ToUpper();
+            OperationResult<bool> updateResult = await EmployeeService!.EditEmployeeInfo(_state.EmployeeWriteModel!);
+
+            if (updateResult.Success)
+            {
+                string fullName = $"{_state.EmployeeWriteModel!.FirstName} {_state.EmployeeWriteModel!.LastName} ";
+                _snackBarMessage = $"Information for {fullName} was successfully updated.";
+                await InvokeAsync(StateHasChanged);
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            else
+            {
+                // await MessageService!.Error($"Error while retrieving employee: {updateResult.NonSuccessMessage}", "Error");
+                return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
             }
         }
     }
