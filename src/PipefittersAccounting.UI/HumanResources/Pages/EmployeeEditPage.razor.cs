@@ -3,7 +3,6 @@ using Blazorise;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.UI.HumanResources.Components;
-using PipefittersAccounting.UI.HumanResources.Validators;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
 
@@ -13,7 +12,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     {
         private const string _returnUri = "HumanResouces/Pages/Employees";
         private string? _snackBarMessage;
-        private EmployeeWriteModelValidator _modelValidator = new();
         private EmployeeDataEntryState _state = new();
 
         [Parameter] public Guid EmployeeId { get; set; }
@@ -21,6 +19,11 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()
+        {
+            await GetEmployee();
+        }
+
+        private async Task GetEmployee()
         {
             GetEmployeeParameter queryParameters = new() { EmployeeID = EmployeeId };
 
@@ -34,7 +37,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 
                 _state.EmployeeWriteModel = result.Result.Map();
 
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged);
             }
             else
             {
@@ -75,8 +78,10 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             _state.EmployeeWriteModel!.StateCode = _state.EmployeeWriteModel!.StateCode.ToUpper();
             OperationResult<bool> updateResult = await EmployeeService!.EditEmployeeInfo(_state.EmployeeWriteModel!);
 
+            Console.WriteLine("Update() called");
             if (updateResult.Success)
             {
+                Console.WriteLine("Update() succeeded");
                 string fullName = $"{_state.EmployeeWriteModel!.FirstName} {_state.EmployeeWriteModel!.LastName} ";
                 _snackBarMessage = $"Information for {fullName} was successfully updated.";
                 await InvokeAsync(StateHasChanged);
@@ -84,7 +89,8 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
             else
             {
-                // await MessageService!.Error($"Error while retrieving employee: {updateResult.NonSuccessMessage}", "Error");
+                Console.WriteLine("Update() failed");
+                await MessageService!.Error($"Error while retrieving employee: {updateResult.NonSuccessMessage}", "Error");
                 return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
             }
         }

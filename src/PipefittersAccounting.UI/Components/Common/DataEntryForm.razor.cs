@@ -14,9 +14,6 @@ namespace PipefittersAccounting.UI.Components.Common
         private Snackbar? _snackbar;
         private Validations? _validations;
 
-        [CascadingParameter(Name = "WriteModelValidator")]
-        private AbstractValidator<TWriteModel>? ModelValidator { get; set; }
-
         [Parameter] public string? ReturnUri { get; set; }
         [Parameter] public string? FormTitle { get; set; }
         [Parameter] public string? SnackBarMessage { get; set; }
@@ -27,8 +24,6 @@ namespace PipefittersAccounting.UI.Components.Common
 
         public async Task OnSave()
         {
-            var result = await ModelValidator.ValidateAsync(WriteModel!, CancellationToken.None);
-
             if (!await _validations!.ValidateAll())
                 return;
 

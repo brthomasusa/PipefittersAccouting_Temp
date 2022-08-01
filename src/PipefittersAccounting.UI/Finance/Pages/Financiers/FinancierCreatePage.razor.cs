@@ -14,7 +14,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private string _returnUri = "Finance/Pages/Financiers/FinanciersListPage";
         private string? _snackBarMessage;
         private FinancierWriteModel? _financierDetailModel;
-        private FinancierWriteModelValidator _modelValidator = new();
 
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
 

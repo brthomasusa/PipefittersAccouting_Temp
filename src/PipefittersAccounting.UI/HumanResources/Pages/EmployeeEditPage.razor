@@ -2,26 +2,10 @@
 
 <PageTitle>Employee Edit</PageTitle>
 
-<Breadcrumb Margin="Margin.Is2.FromStart" Mode="BreadcrumbMode.Auto">
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/">Home</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/Finance/FinanceStartPage">Creditors/Investors</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="Finance/Pages/Financiers/FinanciersListPage">Financiers</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/Finance/Pages/Financiers/FinancierEditPage">Edit</BreadcrumbLink>
-    </BreadcrumbItem>
-</Breadcrumb>
-
-<CascadingValue Name="WriteModelValidator" Value=@_modelValidator>
     <DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_state
         FormTitle="Edit Employee Info" SaveClickedEventHandler=@Update>
         <DataEntryFieldsTemplate>
-            <Container>
+            <Container style="background-color:#F5F5F5;">
                 <Row>
                     <Column>
                         <Validation HandlerType="HandlerTypes.FluentValidation">
@@ -81,11 +65,16 @@
                             <Field>
                                 <FieldLabel TextWeight="TextWeight.Bold">Job Title</FieldLabel>
                                 <Select TValue="int" @bind-SelectedValue=@_state.EmployeeWriteModel!.EmployeeType>
-                                    @* <SelectItem Value="0">-- Select Job Title --</SelectItem> *@
-                                    @foreach (var type in _state.EmployeeTypes)
-                                    {
-                                        <SelectItem Value=@type.EmployeeTypeId>@type.EmployeeTypeName</SelectItem>
-                                    }
+                                    <ChildContent>
+                                        <SelectItem Value="0">-- Select Job Title --</SelectItem>
+                                        @foreach (var type in _state.EmployeeTypes)
+                                        {
+                                            <SelectItem Value=@type.EmployeeTypeId>@type.EmployeeTypeName</SelectItem>
+                                        }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
                                 </Select>
                             </Field>
                         </Validation>
@@ -167,7 +156,99 @@
                         </Validation>
                     </Column>
                 </Row>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Marital Status</FieldLabel>
+                                <RadioGroup TValue="string" Name="MaritalStatus" Color="Color.Primary"
+                                    @bind-CheckedValue=@_state.EmployeeWriteModel!.MaritalStatus>
+                                    <ChildContent>
+                                        <Radio Value="@("S")">Single</Radio>
+                                        <Radio Value="@("M")">Married</Radio>
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>You must select marital status!</ValidationError>
+                                    </Feedback>
+                                </RadioGroup>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Tax Exemptions</FieldLabel>
+                                <NumericPicker TValue="int" Placeholder="Required" Min=0 Max=11 Decimals="0"
+                                    @bind-Value=@_state.EmployeeWriteModel!.Exemptions>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </NumericPicker>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Rate of Pay</FieldLabel>
+                                <NumericPicker TValue="decimal" CurrencySymbol="$" Placeholder="Required" Min=7.50M Max=40.00M
+                                    @bind-Value=@_state.EmployeeWriteModel!.PayRate>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </NumericPicker>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Date of Hire</FieldLabel>
+                                <DateEdit TValue="DateTime" @bind-Date="@_state.EmployeeWriteModel.StartDate">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </DateEdit>
+                            </Field>
+                        </Validation>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Employment Status</FieldLabel>
+                                <RadioGroup TValue="bool" Name="Status" Color="Color.Primary"
+                                    @bind-CheckedValue=@_state.EmployeeWriteModel!.IsActive>
+                                    <ChildContent>
+                                        <Radio Value="@(true)">Active</Radio>
+                                        <Radio Value="@(false)">Inactive</Radio>
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>You must select active or inactive!</ValidationError>
+                                    </Feedback>
+                                </RadioGroup>
+                            </Field>
+                        </Validation>
+                    </Column>
+                    <Column>
+                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Is this employee a manager?</FieldLabel>
+                                <RadioGroup TValue="bool" Name="IsManager" Color="Color.Primary"
+                                    @bind-CheckedValue=@_state.EmployeeWriteModel!.IsSupervisor>
+                                    <ChildContent>
+                                        <Radio Value="@(true)">Yes</Radio>
+                                        <Radio Value="@(false)">No</Radio>
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>You must indicate if manager!</ValidationError>
+                                    </Feedback>
+                                </RadioGroup>
+                            </Field>
+                        </Validation>
+                    </Column>                    
+                </Row>                
             </Container>
         </DataEntryFieldsTemplate>
     </DataEntryForm>
-</CascadingValue>

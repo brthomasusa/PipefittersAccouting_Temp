@@ -5,7 +5,6 @@ using Blazorise;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
-using PipefittersAccounting.UI.Finance.Validators;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
 
@@ -16,7 +15,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private string? _returnUri;
         private string? _snackBarMessage;
         private FinancierWriteModel? _financierDetailModel;
-        private FinancierWriteModelValidator _modelValidator = new();
 
         [Parameter] public Guid FinancierId { get; set; }
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }

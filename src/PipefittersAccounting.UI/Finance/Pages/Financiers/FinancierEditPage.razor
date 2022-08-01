@@ -4,186 +4,169 @@
 
 <PageTitle>Financier Edit</PageTitle>
 
-<Breadcrumb Margin="Margin.Is2.FromStart" Mode="BreadcrumbMode.Auto">
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/">Home</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/Finance/FinanceStartPage">Creditors/Investors</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="Finance/Pages/Financiers/FinanciersListPage">Financiers</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="/Finance/Pages/Financiers/FinancierEditPage">Edit</BreadcrumbLink>
-    </BreadcrumbItem>
-</Breadcrumb>
-
-<CascadingValue Name="WriteModelValidator" Value=@_modelValidator>
-    <DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_financierDetailModel
-        FormTitle="Edit Financier Info" SaveClickedEventHandler=@Update>
-        <DataEntryFieldsTemplate>
-            <Container>
-                <Row>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Financier Name</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.FinancierName>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Telephone</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.Telephone>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Address Line1</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.AddressLine1>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Address Line2</FieldLabel>
-                                <TextEdit @bind-Text=@_financierDetailModel!.AddressLine2>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">City</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.City>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">State</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.StateCode>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Zipcode</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.Zipcode>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Contact First Name</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactFirstName>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Contact Middle Initial</FieldLabel>
-                                <TextEdit @bind-Text=@_financierDetailModel!.ContactMiddleInitial>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Contact Last Name</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactLastName>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Contact Telephone</FieldLabel>
-                                <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactTelephone>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
-                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                            <Field>
-                                <FieldLabel TextWeight="TextWeight.Bold">Status</FieldLabel>
-                                <RadioGroup TValue="bool" Name="Status" Color="Color.Primary"
-                                    @bind-CheckedValue=@_financierDetailModel!.IsActive>
-                                    <ChildContent>
-                                        <Radio Value="@(true)">Active</Radio>
-                                        <Radio Value="@(false)">Inactive</Radio>
-                                    </ChildContent>
-                                    <Feedback>
-                                        <ValidationError>You must select active or inactive!</ValidationError>
-                                    </Feedback>
-                                </RadioGroup>
-                            </Field>
-                        </Validation>
-                    </Column>
-                </Row>
-            </Container>
-        </DataEntryFieldsTemplate>
-    </DataEntryForm>
-</CascadingValue>
+<DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_financierDetailModel
+    FormTitle="Edit Financier Info" SaveClickedEventHandler=@Update>
+    <DataEntryFieldsTemplate>
+        <Container style="background-color:#F5F5F5;">
+            <Row>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Financier Name</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.FinancierName>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Telephone</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.Telephone>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+            </Row>
+            <Row>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Address Line1</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.AddressLine1>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Address Line2</FieldLabel>
+                            <TextEdit @bind-Text=@_financierDetailModel!.AddressLine2>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+            </Row>
+            <Row>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">City</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.City>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">State</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.StateCode>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Zipcode</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.Zipcode>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+            </Row>
+            <Row>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Contact First Name</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactFirstName>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Contact Middle Initial</FieldLabel>
+                            <TextEdit @bind-Text=@_financierDetailModel!.ContactMiddleInitial>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Contact Last Name</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactLastName>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Contact Telephone</FieldLabel>
+                            <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.ContactTelephone>
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Column>
+            </Row>
+            <Row>
+                <Column>
+                    <Validation HandlerType="HandlerTypes.FluentValidation">
+                        <Field>
+                            <FieldLabel TextWeight="TextWeight.Bold">Status</FieldLabel>
+                            <RadioGroup TValue="bool" Name="Status" Color="Color.Primary"
+                                @bind-CheckedValue=@_financierDetailModel!.IsActive>
+                                <ChildContent>
+                                    <Radio Value="@(true)">Active</Radio>
+                                    <Radio Value="@(false)">Inactive</Radio>
+                                </ChildContent>
+                                <Feedback>
+                                    <ValidationError>You must select active or inactive!</ValidationError>
+                                </Feedback>
+                            </RadioGroup>
+                        </Field>
+                    </Validation>
+                </Column>
+            </Row>
+        </Container>
+    </DataEntryFieldsTemplate>
+</DataEntryForm>
