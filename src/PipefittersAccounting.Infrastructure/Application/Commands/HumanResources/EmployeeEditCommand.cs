@@ -1,3 +1,5 @@
+#pragma warning disable CS8604
+
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;

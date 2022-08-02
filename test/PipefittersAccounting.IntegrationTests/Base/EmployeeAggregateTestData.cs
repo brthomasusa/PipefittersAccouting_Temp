@@ -58,6 +58,29 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 IsSupervisor = true
             };
 
+        public static EmployeeWriteModel GetEmployeeWriteModel_WayneCarter() =>
+            new EmployeeWriteModel()
+            {
+                EmployeeId = new Guid("5c60f693-bef5-e011-a485-80ee7300c695"),
+                EmployeeType = 3,
+                SupervisorId = new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e"),
+                LastName = "Carter",
+                FirstName = "Wayne",
+                MiddleInitial = "L",
+                SSN = "423789999",
+                Telephone = "972-523-1234",
+                AddressLine1 = "321 Fort Worth Ave",
+                City = "Dallas",
+                StateCode = "TX",
+                Zipcode = "75211",
+                MaritalStatus = "M",
+                Exemptions = 3,
+                PayRate = 40.00M,
+                StartDate = new DateTime(2013, 2, 28),
+                IsActive = true,
+                IsSupervisor = true
+            };
+
         public static TimeCardWriteModel GetTimeCardForCreate() =>
             new TimeCardWriteModel()
             {

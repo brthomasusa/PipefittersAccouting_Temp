@@ -69,6 +69,15 @@ namespace PipefittersAccounting.UI.HumanResources.Validators
                                         .Matches(@"^\d{5}(?:[-\s]\d{4})?$")
                                             .WithMessage("A valid zipcode looks like: 12345 or 12345-7890");
 
+            // RuleFor(employee => employee.MaritalStatus)
+            //                             .NotEmpty().WithMessage("Marital status is required.")
+            //                             .Must(BeValidMaritalStatus)
+            //                                 .WithMessage("Invalid marital status; use S for single and M for married.");
+
+            RuleFor(employee => employee.MaritalStatus)
+                                        .Must(status => status == "S" || status == "M")
+                                        .WithMessage("Invalid marital status; use S for single and M for married.");
+
             RuleFor(employee => employee.Exemptions)
                                         .InclusiveBetween(0, 11)
                                         .WithMessage("Number of exemptions must be between zero and eleven.");
@@ -80,14 +89,23 @@ namespace PipefittersAccounting.UI.HumanResources.Validators
                                         .WithMessage("Invalid pay rate, can not have move than two decimal places!");
 
             RuleFor(employee => employee.StartDate)
+                                        .NotEmpty().WithMessage("Start date is required.")
                                         .GreaterThanOrEqualTo(new DateTime(1998, 1, 1))
-                                        .WithMessage("Number of exemptions must be between zero and eleven.");
+                                        .WithMessage("Must be greater than Jan 1st, 1998.");
         }
 
         protected bool BeValidStateCode(string stateCode)
             => Array.Exists(_stateCodes, element => element == stateCode.ToUpper());
 
-        protected bool BeValidMaritalStatus(string status)
-            => status.ToUpper() == "M" || status.ToUpper() == "S";
+        protected bool BeValidMaritalStatus(string maritalStatus)
+        {
+            bool retVal = false;
+
+            if (maritalStatus is not null)
+                retVal = (maritalStatus.ToUpper() == "M" || maritalStatus.ToUpper() == "S");
+
+            return retVal;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 #pragma warning disable CS8602
 
 using Microsoft.AspNetCore.Components;
+using Blazorise;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Finance.Validators;
@@ -16,12 +17,15 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private FinancierWriteModel? _financierDetailModel;
 
         [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
 
         protected override void OnInitialized()
         {
             _financierDetailModel = new()
             {
                 Id = Guid.NewGuid(),
+                StateCode = "",
+                IsActive = true,
                 UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
             };
         }
@@ -39,6 +43,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
             }
             else
             {
+                await MessageService!.Error($"Error while saving financier info: {createResult.NonSuccessMessage}", "Error");
                 return OperationResult<bool>.CreateFailure(createResult.NonSuccessMessage);
             }
         }

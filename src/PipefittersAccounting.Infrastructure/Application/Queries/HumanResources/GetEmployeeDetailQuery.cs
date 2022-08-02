@@ -20,8 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 
                 var sql =
                 @"SELECT 
-                    ee.EmployeeId, ee.SupervisorId, types.EmployeeTypeId, types.EmployeeTypeName,
-                     supv.LastName AS ManagerLastName, supv.FirstName AS ManagerFirstName, supv.MiddleInitial AS ManagerMiddleInitial, 
+                    ee.EmployeeId, ee.SupervisorId, types.EmployeeTypeId, types.EmployeeTypeName, 
                     CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName,
                     ee.LastName, ee.FirstName, ee.MiddleInitial, 
                     CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName, 

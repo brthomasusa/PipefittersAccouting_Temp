@@ -8,8 +8,8 @@
         <Column>
             <Card Margin="Margin.Is4.OnY">
                 <CardHeader>
-                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is4"
-                        Margin="Margin.Is1.FromStart.Is1.FromTop">
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5"
+                        Margin="Margin.Is1.FromStart">
                         @FormTitle
                     </Heading>
                 </CardHeader>
@@ -17,14 +17,16 @@
                     @if (WriteModel is not null)
                     {
                         <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad=false Model=@WriteModel>
-                            @DataEntryFieldsTemplate
+                            <Container style="background-color:#F0F0F0;">
+                                @DataEntryFieldsTemplate
+                            </Container>                            
                         </Validations>
 
                         <Field Margin="Margin.Is4.FromTop">
                             <Button Color="Color.Success" Clicked="OnSave" Loading="@_isLoading">Save changes</Button>
                             <Button Color="Color.Secondary" Type="ButtonType.Link" To=@ReturnUri>Cancel editing</Button>
                         </Field>
-                        <Snackbar @ref="_snackbar" DefaultInterval=2000 Closed=@( () => NavManager.NavigateTo(@ReturnUri!) )>
+                        <Snackbar @ref="_snackbar" DefaultInterval=1500 Closed=@( () => NavManager.NavigateTo(@ReturnUri!) )>
                             <SnackbarBody>
                                 @SnackBarMessage
                             </SnackbarBody>

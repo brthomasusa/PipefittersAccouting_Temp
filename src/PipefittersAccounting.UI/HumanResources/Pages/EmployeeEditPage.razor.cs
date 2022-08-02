@@ -11,6 +11,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     public partial class EmployeeEditPage
     {
         private const string _returnUri = "HumanResouces/Pages/Employees";
+        private const string _formTitle = "Edit Employee Info";
         private string? _snackBarMessage;
         private EmployeeDataEntryState _state = new();
 
@@ -73,15 +74,13 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
         }
 
-        private async Task<OperationResult<bool>> Update()
+        private async Task<OperationResult<bool>> Save()
         {
             _state.EmployeeWriteModel!.StateCode = _state.EmployeeWriteModel!.StateCode.ToUpper();
             OperationResult<bool> updateResult = await EmployeeService!.EditEmployeeInfo(_state.EmployeeWriteModel!);
 
-            Console.WriteLine("Update() called");
             if (updateResult.Success)
             {
-                Console.WriteLine("Update() succeeded");
                 string fullName = $"{_state.EmployeeWriteModel!.FirstName} {_state.EmployeeWriteModel!.LastName} ";
                 _snackBarMessage = $"Information for {fullName} was successfully updated.";
                 await InvokeAsync(StateHasChanged);
@@ -89,10 +88,20 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
             else
             {
-                Console.WriteLine("Update() failed");
                 await MessageService!.Error($"Error while retrieving employee: {updateResult.NonSuccessMessage}", "Error");
                 return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
             }
+        }
+
+        void ValidateMaritalStatus(ValidatorEventArgs e)
+        {
+            var maritalStatus = Convert.ToString(e.Value);
+
+            bool isValid = (maritalStatus!.ToUpper() == "M" || maritalStatus!.ToUpper() == "S");
+            Console.WriteLine($"EmployeeEditPage.ValidateMaritalStatus: MaritalStatus is {maritalStatus}");
+
+            e.Status = string.IsNullOrEmpty(maritalStatus) ? ValidationStatus.None :
+                       isValid ? ValidationStatus.Success : ValidationStatus.Error;
         }
     }
 }

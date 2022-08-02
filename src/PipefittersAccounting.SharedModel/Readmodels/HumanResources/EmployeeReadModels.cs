@@ -8,9 +8,6 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public Guid SupervisorId { get; set; }
         public int EmployeeTypeId { get; set; }
         public string? EmployeeTypeName { get; set; }
-        public string? ManagerLastName { get; set; }
-        public string? ManagerFirstName { get; set; }
-        public string? ManagerMiddleInitial { get; set; }
         public string? ManagerFullName { get; set; }
         public string? LastName { get; set; }
         public string? FirstName { get; set; }

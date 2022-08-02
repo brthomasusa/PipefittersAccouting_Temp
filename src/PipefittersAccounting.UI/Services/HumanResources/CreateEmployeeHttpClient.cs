@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
@@ -37,6 +38,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 
                         var jsonResponse = await response.Content.ReadAsStreamAsync();
                         var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, options);
+
                         return OperationResult<EmployeeDetail>.CreateSuccessResult(employeeDetails!);
                     }
                 }
