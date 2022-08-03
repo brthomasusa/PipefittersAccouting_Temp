@@ -239,92 +239,106 @@
 -- GO
 
 -- For a given period ending date, create TimeCard records for all eligible employees
-CREATE OR ALTER Proc HumanResources.GetTimeCardInfoForPayPeriod
-    @payPeriodEnded datetime2(7),
-    @userId uniqueidentifier
-AS
-BEGIN
-    DECLARE @tmp_timecardId uniqueidentifier;
-    DECLARE @tmp_employeeId uniqueidentifier;
-    DECLARE @tmp_supervisorId uniqueidentifier;
-    DECLARE @eligibleEmployeeCount int;
-    DECLARE @employeesWithUnpaidTimeCards int;
+-- CREATE OR ALTER Proc HumanResources.GetTimeCardInfoForPayPeriod
+--     @payPeriodEnded datetime2(7),
+--     @userId uniqueidentifier
+-- AS
+-- BEGIN
+--     DECLARE @tmp_timecardId uniqueidentifier;
+--     DECLARE @tmp_employeeId uniqueidentifier;
+--     DECLARE @tmp_supervisorId uniqueidentifier;
+--     DECLARE @eligibleEmployeeCount int;
+--     DECLARE @employeesWithUnpaidTimeCards int;
 
-    BEGIN TRAN
-        BEGIN TRY 
+--     BEGIN TRAN
+--         BEGIN TRY 
 
-            -- Step 1 Get number of employees who could potentially be paid for period ending @payPeriodEnded 
-            SET @eligibleEmployeeCount = (SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE StartDate <= @payPeriodEnded AND IsActive = 1);
+--             -- Step 1 Get number of employees who could potentially be paid for period ending @payPeriodEnded 
+--             SET @eligibleEmployeeCount = (SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE StartDate <= @payPeriodEnded AND IsActive = 1);
 
-            -- Step 2 Get employees with unpaid TimeCard entries for period ended @payPeriodEnded
-            SET @employeesWithUnpaidTimeCards =
-            (
-                SELECT 
-                    COUNT(cards.EmployeeId)   
-                FROM HumanResources.Employees ee
-                LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
-                LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
-                WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
-            );
+--             -- Step 2 Get employees with unpaid TimeCard entries for period ended @payPeriodEnded
+--             SET @employeesWithUnpaidTimeCards =
+--             (
+--                 SELECT 
+--                     COUNT(cards.EmployeeId)   
+--                 FROM HumanResources.Employees ee
+--                 LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
+--                 LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+--                 WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
+--             );
 
 
-            -- Step 3 Select EmployeeId's and SupervisorId of eligible employees (from Employees table) who don't have info
-            -- in TimeCard table for the pay period ended @payPeriodEnded. We will loop using the cursor to add this 
-            -- missing info to TimeCard
+--             -- Step 3 Select EmployeeId's and SupervisorId of eligible employees (from Employees table) who don't have info
+--             -- in TimeCard table for the pay period ended @payPeriodEnded. We will loop using the cursor to add this 
+--             -- missing info to TimeCard
 
-            -- Check if there is missing timecard info
-            IF @employeesWithUnpaidTimeCards > 0   
-                DECLARE @get_MissingEmployee cursor;
-                SET @get_MissingEmployee = CURSOR FOR
-                    SELECT EmployeeId, SupervisorId
-                    FROM HumanResources.Employees
-                    WHERE EmployeeId NOT IN 
-                    (
-                        SELECT 
-                            cards.EmployeeId   
-                        FROM HumanResources.Employees ee
-                        LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
-                        LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
-                        WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
-                    ) AND StartDate <= @payPeriodEnded;
+--             -- Check if there is missing timecard info
+--             IF @employeesWithUnpaidTimeCards > 0   
+--                 DECLARE @get_MissingEmployee cursor;
+--                 SET @get_MissingEmployee = CURSOR FOR
+--                     SELECT EmployeeId, SupervisorId
+--                     FROM HumanResources.Employees
+--                     WHERE EmployeeId NOT IN 
+--                     (
+--                         SELECT 
+--                             cards.EmployeeId   
+--                         FROM HumanResources.Employees ee
+--                         LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
+--                         LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+--                         WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
+--                     ) AND StartDate <= @payPeriodEnded;
 
-                OPEN @get_MissingEmployee;
-                FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
+--                 OPEN @get_MissingEmployee;
+--                 FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
 
-                WHILE (@@FETCH_STATUS = 0) 
-                BEGIN 
-                    SET @tmp_timecardId = NEWID()
-                    INSERT INTO Shared.EconomicEvents (EventId, EventTypeId) VALUES (@tmp_timecardId, 6);
+--                 WHILE (@@FETCH_STATUS = 0) 
+--                 BEGIN 
+--                     SET @tmp_timecardId = NEWID()
+--                     INSERT INTO Shared.EconomicEvents (EventId, EventTypeId) VALUES (@tmp_timecardId, 6);
 
-                    INSERT INTO HumanResources.TimeCards 
-                        (TimeCardId, EmployeeId, SupervisorId, PayPeriodEnded, RegularHours, OverTimeHours, UserId) VALUES 
-                        (@tmp_timecardId, @tmp_employeeId, @tmp_supervisorId, @payPeriodEnded, 0, 0, @userId);
+--                     INSERT INTO HumanResources.TimeCards 
+--                         (TimeCardId, EmployeeId, SupervisorId, PayPeriodEnded, RegularHours, OverTimeHours, UserId) VALUES 
+--                         (@tmp_timecardId, @tmp_employeeId, @tmp_supervisorId, @payPeriodEnded, 0, 0, @userId);
                     
-                    FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
-                END 
+--                     FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
+--                 END 
 
-                CLOSE @get_MissingEmployee
-                DEALLOCATE @get_MissingEmployee   
+--                 CLOSE @get_MissingEmployee
+--                 DEALLOCATE @get_MissingEmployee   
 
-            -- Step 4  Return updated TimeCard table to caller
-            SELECT * FROM HumanResources.TimeCards WHERE PayPeriodEnded = @payPeriodEnded;
+--             -- Step 4  Return updated TimeCard table to caller
+--             SELECT 
+--                 cards.TimeCardId, cards.EmployeeId, cards.SupervisorId, 
+--                 CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName,                            
+--                 cards.PayPeriodEnded, cards.RegularHours, cards.OverTimeHours, 
+--                 cash.CashAcctTransactionDate AS DatePaid, 
+--                 CASE
+--                     WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
+--                     ELSE cash.CashAcctTransactionAmount
+--                 END AS AmountPaid,    
+--                 cards.UserId
+--             FROM HumanResources.TimeCards cards
+--             JOIN HumanResources.Employees ee ON cards.EmployeeId = ee.EmployeeId
+--             LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID       
+--             WHERE cards.PayPeriodEnded = @payPeriodEnded
+--             ORDER BY cards.PayPeriodEnded, ee.LastName, ee.FirstName;
+            
+--             COMMIT TRANSACTION
+--         END TRY
+--         BEGIN CATCH
+--                 -- if error, roll back any chanegs done by any of the sql statements
+--                 ROLLBACK TRANSACTION
 
-            COMMIT TRANSACTION
-        END TRY
-        BEGIN CATCH
-                -- if error, roll back any chanegs done by any of the sql statements
-                ROLLBACK TRANSACTION
-
-                SELECT
-                    ERROR_NUMBER() AS ErrorNumber,
-                    -- ERROR_STATE() AS ErrorState,
-                    -- ERROR_SEVERITY() AS ErrorSeverity,
-                    -- ERROR_PROCEDURE() AS ErrorProcedure,
-                    ERROR_LINE() AS ErrorLine,
-                    ERROR_MESSAGE() AS ErrorMessage;                
-        END CATCH 
-END
-GO
+--                 SELECT
+--                     ERROR_NUMBER() AS ErrorNumber,
+--                     -- ERROR_STATE() AS ErrorState,
+--                     -- ERROR_SEVERITY() AS ErrorSeverity,
+--                     -- ERROR_PROCEDURE() AS ErrorProcedure,
+--                     ERROR_LINE() AS ErrorLine,
+--                     ERROR_MESSAGE() AS ErrorMessage;                
+--         END CATCH 
+-- END
+-- GO
 
 
 -- Used to reset the database before each test run
