@@ -166,6 +166,167 @@
 -- END
 -- GO
 
+-- *************************  Fix time card supervisor ids
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '9f7b902d-566c-4db6-b07b-716dd4e04340'
+-- WHERE EmployeeId = 'e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '0cf9de54-c2ca-417e-827c-a5b87be2d788'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '660bb318-649e-470d-9d2b-693bfb0b2744'
+-- WHERE EmployeeId = 'e716ac28-e354-4d8d-94e4-ec51f08b1af8'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '5c60f693-bef5-e011-a485-80ee7300c695'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '9f7b902d-566c-4db6-b07b-716dd4e04340'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '0cf9de54-c2ca-417e-827c-a5b87be2d788'
+-- WHERE EmployeeId = '8b140613-5df8-4f57-beb4-e3f5cd45ad3c'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = 'aedc617c-d035-4213-b55a-dae5cdfca366'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '9f7b902d-566c-4db6-b07b-716dd4e04340'
+-- WHERE EmployeeId = '9d3a25dc-3861-4f78-92b0-92294b808ebf'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '660bb318-649e-470d-9d2b-693bfb0b2744'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '5c60f693-bef5-e011-a485-80ee7300c695'
+-- WHERE EmployeeId = '604536a1-e734-49c4-96b3-9dfef7417f9a'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '0cf9de54-c2ca-417e-827c-a5b87be2d788'
+-- WHERE EmployeeId = '6d7f6605-567d-4b2a-9ae7-3736dc6c4f53'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = 'aedc617c-d035-4213-b55a-dae5cdfca366'
+-- WHERE EmployeeId = 'c40888a1-c182-437e-9c1d-e9227bca7f52'
+-- GO
+-- UPDATE 
+--     HumanResources.TimeCards
+-- SET SupervisorId = '4b900a74-e2d9-4837-b9a4-9e828752716e'
+-- WHERE EmployeeId = '18e67d50-5325-4d5d-ad8e-ea244b80e4b3'
+-- GO
+
+-- For a given period ending date, create TimeCard records for all eligible employees
+CREATE OR ALTER Proc HumanResources.GetTimeCardInfoForPayPeriod
+    @payPeriodEnded datetime2(7),
+    @userId uniqueidentifier
+AS
+BEGIN
+    DECLARE @tmp_timecardId uniqueidentifier;
+    DECLARE @tmp_employeeId uniqueidentifier;
+    DECLARE @tmp_supervisorId uniqueidentifier;
+    DECLARE @eligibleEmployeeCount int;
+    DECLARE @employeesWithUnpaidTimeCards int;
+
+    BEGIN TRAN
+        BEGIN TRY 
+
+            -- Step 1 Get number of employees who could potentially be paid for period ending @payPeriodEnded 
+            SET @eligibleEmployeeCount = (SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE StartDate <= @payPeriodEnded AND IsActive = 1);
+
+            -- Step 2 Get employees with unpaid TimeCard entries for period ended @payPeriodEnded
+            SET @employeesWithUnpaidTimeCards =
+            (
+                SELECT 
+                    COUNT(cards.EmployeeId)   
+                FROM HumanResources.Employees ee
+                LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
+                LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+                WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
+            );
+
+
+            -- Step 3 Select EmployeeId's and SupervisorId of eligible employees (from Employees table) who don't have info
+            -- in TimeCard table for the pay period ended @payPeriodEnded. We will loop using the cursor to add this 
+            -- missing info to TimeCard
+
+            -- Check if there is missing timecard info
+            IF @employeesWithUnpaidTimeCards > 0   
+                DECLARE @get_MissingEmployee cursor;
+                SET @get_MissingEmployee = CURSOR FOR
+                    SELECT EmployeeId, SupervisorId
+                    FROM HumanResources.Employees
+                    WHERE EmployeeId NOT IN 
+                    (
+                        SELECT 
+                            cards.EmployeeId   
+                        FROM HumanResources.Employees ee
+                        LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
+                        LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+                        WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
+                    ) AND StartDate <= @payPeriodEnded;
+
+                OPEN @get_MissingEmployee;
+                FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
+
+                WHILE (@@FETCH_STATUS = 0) 
+                BEGIN 
+                    SET @tmp_timecardId = NEWID()
+                    INSERT INTO Shared.EconomicEvents (EventId, EventTypeId) VALUES (@tmp_timecardId, 6);
+
+                    INSERT INTO HumanResources.TimeCards 
+                        (TimeCardId, EmployeeId, SupervisorId, PayPeriodEnded, RegularHours, OverTimeHours, UserId) VALUES 
+                        (@tmp_timecardId, @tmp_employeeId, @tmp_supervisorId, @payPeriodEnded, 0, 0, @userId);
+                    
+                    FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
+                END 
+
+                CLOSE @get_MissingEmployee
+                DEALLOCATE @get_MissingEmployee   
+
+            -- Step 4  Return updated TimeCard table to caller
+            SELECT * FROM HumanResources.TimeCards WHERE PayPeriodEnded = @payPeriodEnded;
+
+            COMMIT TRANSACTION
+        END TRY
+        BEGIN CATCH
+                -- if error, roll back any chanegs done by any of the sql statements
+                ROLLBACK TRANSACTION
+
+                SELECT
+                    ERROR_NUMBER() AS ErrorNumber,
+                    -- ERROR_STATE() AS ErrorState,
+                    -- ERROR_SEVERITY() AS ErrorSeverity,
+                    -- ERROR_PROCEDURE() AS ErrorProcedure,
+                    ERROR_LINE() AS ErrorLine,
+                    ERROR_MESSAGE() AS ErrorMessage;                
+        END CATCH 
+END
+GO
+
+
 -- Used to reset the database before each test run
 CREATE OR ALTER Proc dbo.usp_resetTestDb
 as

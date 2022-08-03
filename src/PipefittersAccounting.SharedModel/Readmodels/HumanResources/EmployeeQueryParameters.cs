@@ -61,4 +61,9 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
     {
         public DateTime PayPeriodEnded { get; set; }
     }
+
+    public class GetTimeCardsForManagerParameter
+    {
+        public Guid SupervisorId { get; set; }
+    }
 }

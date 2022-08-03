@@ -44,6 +44,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
     {
         public Guid ManagerId { get; set; }
         public string? ManagerFullName { get; set; }
+        public string? Group { get; set; }
     }
 
     public class EmployeeTypes
@@ -78,6 +79,20 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public DateTime PayPeriodEnded { get; set; }
         public int RegularHours { get; set; }
         public int OvertimeHours { get; set; }
+    }
+
+    public class TimeCardWithPymtInfo
+    {
+        public Guid TimeCardId { get; set; }
+        public Guid EmployeeId { get; set; }
+        public Guid SupervisorId { get; set; }
+        public string? EmployeeFullName { get; set; }
+        public DateTime PayPeriodEnded { get; set; }
+        public int RegularHours { get; set; }
+        public int OvertimeHours { get; set; }
+        public decimal AmountPaid { get; set; }
+        public DateTime DatePaid { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class TimeCardVerification

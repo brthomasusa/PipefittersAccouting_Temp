@@ -15,11 +15,20 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
             {
                 var sql =
                 @"SELECT 
-                    EmployeeId AS ManagerId,
-                    CONCAT(FirstName,' ',COALESCE(MiddleInitial,''),' ',LastName) as ManagerFullName              
-                FROM HumanResources.Employees
-                WHERE IsSupervisor = 1
-                ORDER BY LastName";
+                    ee.EmployeeId AS ManagerId,
+                    CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as ManagerFullName,
+                    CASE
+                        WHEN types.EmployeeTypeName = 'Salesperson' THEN 'Sales'        
+                        WHEN types.EmployeeTypeName = 'Maintenance' THEN 'Maintenance'
+                        WHEN types.EmployeeTypeName = 'Materials Handler' THEN 'Warehouse'
+                        WHEN types.EmployeeTypeName = 'Purchasing Agent' THEN 'Purchasing'
+                        WHEN types.EmployeeTypeName = 'Accountant' THEN 'Accounting'
+                        WHEN types.EmployeeTypeName = 'Administrator' THEN 'Administrators'
+                    END AS [Group]              
+                FROM HumanResources.Employees ee
+                JOIN HumanResources.EmployeeTypes types ON ee.EmployeeTypeId = types.EmployeeTypeId
+                WHERE ee.IsSupervisor = 1
+                ORDER BY ee.LastName, ee.FirstName";
 
                 using (var connection = ctx.CreateConnection())
                 {

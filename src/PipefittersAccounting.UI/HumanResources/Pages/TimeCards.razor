@@ -1,6 +1,92 @@
 ﻿@page "/HumanResources/Pages/TimeCards"
 @using PipefittersAccounting.SharedModel.Readmodels.HumanResources
-@inject ILogger<TimeCards> logger
 
 <PageTitle>TimeCards</PageTitle>
-<Heading Size="HeadingSize.Is3" Margin="Margin.Is3.FromStart">TimeCards</Heading>
+
+@inject NavigationManager NavManager
+@using Blazorise.Snackbar
+
+<Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is3.FromStart.Is4.FromTop">
+    TimeCards
+</Heading>
+
+<ErrorBoundary>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is5">
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is1.FromStart">
+                        Managers
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    @if (_managers is not null && _managers.Any())
+                    {
+                        <Table Striped Hoverable Borderless Narrow>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHeaderCell>Manager</TableHeaderCell>
+                                    <TableHeaderCell>Group</TableHeaderCell>
+                                    <TableHeaderCell>+ Hrs</TableHeaderCell>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                @foreach (var mgr in _managers!)
+                                {
+                                    <TableRow>
+                                        <TableRowCell>@mgr.ManagerFullName</TableRowCell>
+                                        <TableRowCell>@mgr.Group</TableRowCell>
+                                        <TableRowCell>
+                                            <Button Color="Color.Primary" Size="Size.ExtraSmall" Outline
+                                        Clicked="@( () => GetWorkerForManager(@mgr.ManagerId) )">
+                                                <span><i class="fas fa-chevron-right"></i></span>
+                                            </Button>
+
+                                        </TableRowCell>
+                                    </TableRow>
+                                }
+                            </TableBody>
+                        </Table>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                </CardBody>
+                <CardFooter>
+
+                </CardFooter>
+            </Card>
+        </Column>
+        <Column ColumnSize="ColumnSize.Is7">
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is1.FromStart">
+                        TimeCards
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    @if (true)
+                    {
+
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                </CardBody>
+                <CardFooter>
+
+                </CardFooter>
+            </Card>
+        </Column>
+    </Row>
+</ErrorBoundary>

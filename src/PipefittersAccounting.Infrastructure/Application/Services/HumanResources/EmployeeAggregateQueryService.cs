@@ -47,6 +47,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
         public async Task<OperationResult<Guid>> VerifyEmployeeSupervisorLink(GetEmployeeParameter queryParameters)
             => await VerifyEmployeeSupervisorLinkQuery.Query(queryParameters, _dapperCtx);
 
+        public Task<OperationResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForManager(GetTimeCardsForManagerParameter queryParameters)
+            => throw new NotImplementedException();
         public async Task<OperationResult<DateTime>> GetMostRecentPayPeriodEndedDate(GetMostRecentPayPeriodParameter queryParameters)
             => await GetMostRecentPayPeriodEndedDateQuery.Query(queryParameters, _dapperCtx);
 
