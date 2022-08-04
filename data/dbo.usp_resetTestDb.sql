@@ -321,7 +321,7 @@
 --             JOIN HumanResources.Employees ee ON cards.EmployeeId = ee.EmployeeId
 --             LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID       
 --             WHERE cards.PayPeriodEnded = @payPeriodEnded
---             ORDER BY cards.PayPeriodEnded, ee.LastName, ee.FirstName;
+--             ORDER BY ee.LastName, ee.FirstName;
             
 --             COMMIT TRANSACTION
 --         END TRY

@@ -98,7 +98,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             var maritalStatus = Convert.ToString(e.Value);
 
             bool isValid = (maritalStatus!.ToUpper() == "M" || maritalStatus!.ToUpper() == "S");
-            Console.WriteLine($"EmployeeEditPage.ValidateMaritalStatus: MaritalStatus is {maritalStatus}");
 
             e.Status = string.IsNullOrEmpty(maritalStatus) ? ValidationStatus.None :
                        isValid ? ValidationStatus.Success : ValidationStatus.Error;

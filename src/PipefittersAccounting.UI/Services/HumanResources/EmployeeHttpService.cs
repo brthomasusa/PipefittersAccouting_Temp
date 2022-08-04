@@ -61,5 +61,11 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 
         public async Task<OperationResult<List<PayrollRegister>>> GetPayrollRegister(GetPayrollRegisterParameter queryParameters)
             => await GetPayrollRegisterHttpClient.Query(queryParameters, _client, _options);
+
+        public async Task<OperationResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForManager(GetTimeCardsForManagerParameter queryParameters)
+            => await GetTimeCardsForManagerHttpClient.Query(queryParameters, _client, _options);
+
+        public async Task<OperationResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForPayPeriod(GetTimeCardsForPayPeriodParameter queryParameters)
+            => await GetTimeCardsForPayPeriodHttpClient.Query(queryParameters, _client, _options);
     }
 }

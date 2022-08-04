@@ -58,6 +58,34 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             return StatusCode(500, result.NonSuccessMessage);
         }
 
+        [HttpGet("timecards/timecardsformanager")]
+        public async Task<ActionResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForManager([FromQuery] GetTimeCardsForManagerParameter queryParameters)
+        {
+            OperationResult<List<TimeCardWithPymtInfo>> result = await _qrySvc.GetTimeCardsForManager(queryParameters);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.NonSuccessMessage);
+            return StatusCode(500, result.NonSuccessMessage);
+        }
+
+        [HttpGet("timecards/timecardsforpayperiod")]
+        public async Task<ActionResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForPayPeriod([FromQuery] GetTimeCardsForPayPeriodParameter queryParameters)
+        {
+            OperationResult<List<TimeCardWithPymtInfo>> result = await _qrySvc.GetTimeCardsForPayPeriod(queryParameters);
+
+            if (result.Success)
+            {
+                return result.Result;
+            }
+
+            _logger.LogError(result.NonSuccessMessage);
+            return StatusCode(500, result.NonSuccessMessage);
+        }
+
         [HttpGet("timecard/{timeCardId:Guid}")]
         public async Task<ActionResult<TimeCardDetail>> GetTimeCard(Guid timeCardId)
         {

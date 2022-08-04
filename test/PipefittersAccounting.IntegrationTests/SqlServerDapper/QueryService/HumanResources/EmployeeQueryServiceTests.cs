@@ -58,6 +58,22 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
         }
 
         [Fact]
+        public async Task GetTimeCardsForManager_EmployeeAggregateQueryService_ShouldSucceed()
+        {
+            GetTimeCardsForManagerParameter queryParameters = new()
+            {
+                SupervisorId = new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e"),
+                PayPeriodEndDate = new DateTime(2022, 2, 28)
+            };
+
+            OperationResult<List<TimeCardWithPymtInfo>> result = await _queryService.GetTimeCardsForManager(queryParameters);
+
+            Assert.True(result.Success);
+            int count = result.Result.Count;
+            Assert.Equal(6, count);
+        }
+
+        [Fact]
         public async Task GetEmployeeListItem_EmployeeAggregateQueryService_EmployeeListItems_ReadModel()
         {
             GetEmployeesParameters queryParameters = new GetEmployeesParameters() { Page = 1, PageSize = 15 };

@@ -68,5 +68,19 @@ namespace PipefittersAccounting.SharedModel
                 IsSupervisor = input.IsSupervisor
             };
         }
+
+        public static TimeCardWriteModel Map(this TimeCardWithPymtInfo input)
+        {
+            return new TimeCardWriteModel()
+            {
+                TimeCardId = input.TimeCardId,
+                EmployeeId = input.EmployeeId,
+                SupervisorId = input.SupervisorId,
+                PayPeriodEnded = input.PayPeriodEnded,
+                RegularHours = input.RegularHours,
+                OvertimeHours = input.OvertimeHours,
+                UserId = input.UserId
+            };
+        }
     }
 }

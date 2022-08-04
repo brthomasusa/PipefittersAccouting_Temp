@@ -1,5 +1,7 @@
 ﻿@page "/HumanResources/Pages/TimeCards"
+
 @using PipefittersAccounting.SharedModel.Readmodels.HumanResources
+@using Blazorise.DataGrid
 
 <PageTitle>TimeCards</PageTitle>
 
@@ -12,7 +14,7 @@
 
 <ErrorBoundary>
     <Row>
-        <Column ColumnSize="ColumnSize.Is5">
+        <Column ColumnSize="ColumnSize.Is4">
             <Card Margin="Margin.Is4.OnY">
                 <CardHeader>
                     <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is1.FromStart">
@@ -20,26 +22,66 @@
                     </Heading>
                 </CardHeader>
                 <CardBody>
-                    @if (_managers is not null && _managers.Any())
+                    @if (_managers is not null)
                     {
-                        <Table Striped Hoverable Borderless Narrow>
+                        <DataGrid TItem="EmployeeManager" Data="@_managers" Editable="false" Striped="true" Hoverable="true"
+                        Responsive="true" SelectedRowChanged="OnSelectedRowChanged" PageSize=20 Narrow>
+                            <ChildContent>
+                                <DataGridCommandColumn TItem="EmployeeManager"></DataGridCommandColumn>
+                                <DataGridColumn TItem="EmployeeManager" Field="ManagerFullName" Caption="Manager"
+                                Sortable="false" Displayable="true" />
+                                <DataGridColumn TItem="EmployeeManager" Field="Group" Caption="Group" Sortable="false"
+                                Displayable="true" />
+                            </ChildContent>
+                            <EmptyTemplate>
+                                <div class="box">
+                                    No records were found.
+                                </div>
+                            </EmptyTemplate>
+                            <LoadingTemplate>
+                                <div class="box">
+                                    <progress class="progress is-small is-primary" max="100" />
+                                </div>
+                            </LoadingTemplate>
+                        </DataGrid>
+                    }
+                </CardBody>
+            </Card>
+        </Column>
+        <Column ColumnSize="ColumnSize.Is8">
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is1.FromStart">
+                        TimeCards
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    @if (_timeCardReadModels is not null)
+                    {
+                        <Table Striped Hoverable Narrow ThemeContrast="ThemeContrast.Light">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHeaderCell>Manager</TableHeaderCell>
-                                    <TableHeaderCell>Group</TableHeaderCell>
-                                    <TableHeaderCell>+ Hrs</TableHeaderCell>
+                                    <TableHeaderCell>Employee</TableHeaderCell>
+                                    <TableHeaderCell style="text-align:center">Period Ended</TableHeaderCell>
+                                    <TableHeaderCell style="text-align:center">Regular Hrs</TableHeaderCell>
+                                    <TableHeaderCell style="text-align:center">Overtime Hrs</TableHeaderCell>
+                                    <TableHeaderCell>Edit</TableHeaderCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                @foreach (var mgr in _managers!)
+                                @foreach (var timeCardReadModel in _timeCardReadModels!)
                                 {
                                     <TableRow>
-                                        <TableRowCell>@mgr.ManagerFullName</TableRowCell>
-                                        <TableRowCell>@mgr.Group</TableRowCell>
+                                        <TableRowCell style="width:250px">@timeCardReadModel.EmployeeFullName</TableRowCell>
+                                        <TableRowCell style="text-align:center">
+                                            @timeCardReadModel.PayPeriodEnded.ToShortDateString()
+                                        </TableRowCell>
+                                        <TableRowCell style="text-align:center">@timeCardReadModel.RegularHours</TableRowCell>
+                                        <TableRowCell style="text-align:center">@timeCardReadModel.OvertimeHours</TableRowCell>
                                         <TableRowCell>
-                                            <Button Color="Color.Primary" Size="Size.ExtraSmall" Outline
-                                        Clicked="@( () => GetWorkerForManager(@mgr.ManagerId) )">
-                                                <span><i class="fas fa-chevron-right"></i></span>
+                                            <Button Color="Color.Primary" Size="Size.ExtraSmall"
+                                        Clicked="@( () => ShowEditModal(@timeCardReadModel) )" Outline>
+                                                <span><i class="fas fa-pen"></i></span>
                                             </Button>
 
                                         </TableRowCell>
@@ -57,36 +99,55 @@
                         </div>
                     }
                 </CardBody>
-                <CardFooter>
-
-                </CardFooter>
-            </Card>
-        </Column>
-        <Column ColumnSize="ColumnSize.Is7">
-            <Card Margin="Margin.Is4.OnY">
-                <CardHeader>
-                    <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is1.FromStart">
-                        TimeCards
-                    </Heading>
-                </CardHeader>
-                <CardBody>
-                    @if (true)
-                    {
-
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    }
-                </CardBody>
-                <CardFooter>
-
-                </CardFooter>
             </Card>
         </Column>
     </Row>
+</ErrorBoundary>
+<ErrorBoundary>
+    <Modal @ref="_modalRef">
+        <ModalContent Size="ModalSize.Default">
+            <ModalHeader>
+                <ModalTitle>Edit TimeCard Hours</ModalTitle>
+                <CloseButton />
+            </ModalHeader>
+            <ModalBody>
+                @if (_selectedTimeCard is not null)
+                {
+                    <Validations @ref="_validations" Mode="ValidationMode.Auto" Model="@_selectedTimeCard">
+                        <Container style="background-color:#F0F0F0;">
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Regular Hours</FieldLabel>
+                                    <NumericPicker TValue="int" Placeholder="Required" Min=0 Max=185 Decimals="0"
+                                    @bind-Value=@_selectedTimeCard!.RegularHours>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </NumericPicker>
+                                    <FieldHelp>Valid regular hours are from 0 to 185 hours.</FieldHelp>
+                                </Field>
+                            </Validation>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Overtime Hours</FieldLabel>
+                                    <NumericPicker TValue="int" Placeholder="Required" Min=0 Max=200 Decimals="0"
+                                    @bind-Value=@_selectedTimeCard!.OvertimeHours>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </NumericPicker>
+                                    <FieldHelp>Valid overtime hours are from 0 to 200 hours.</FieldHelp>
+                                </Field>
+                            </Validation>
+                        </Container>
+                    </Validations>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@( () => HideEditModal("cancel") )">Cancel</Button>
+                <Button Color="Color.Success" Loading="@_isLoading" Clicked="@( ()=> HideEditModal("save") )">Save
+                </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
 </ErrorBoundary>

@@ -96,6 +96,19 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
         }
 
         [Fact]
+        public async Task GetTimeCardsForManager_ShouldReturnAllTimecardForAManager_ShouldSucceed()
+        {
+            using var response = await _client.GetAsync($"{_urlRoot}/employees/managers",
+                                                        HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStreamAsync();
+            var employeeManagers = await JsonSerializer.DeserializeAsync<List<EmployeeManager>>(jsonResponse, _options);
+
+            Assert.Equal(6, employeeManagers.Count);
+        }
+
+        [Fact]
         public async Task EmployeeTypes_ShouldReturnAllEmployeeTypes_ShouldSucceed()
         {
             using var response = await _client.GetAsync($"{_urlRoot}/employees/employeetypes",
@@ -299,6 +312,44 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
 
             List<PayrollRegister> response = await _client
                 .GetFromJsonAsync<List<PayrollRegister>>(QueryHelpers.AddQueryString($"{_urlRoot}/employees/timecards/payrollregister", queryParams));
+
+            Assert.Equal(13, response.Count);
+        }
+
+        [Fact]
+        public async Task GetTimeCardsForManager_TimeCardsController_ShouldSucceed()
+        {
+            Guid supervisorId = new Guid("4b900a74-e2d9-4837-b9a4-9e828752716e");
+            DateTime payPeriodDate = new(2022, 2, 28);
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["supervisorId"] = supervisorId.ToString(),
+                ["payPeriodEndDate"] = payPeriodDate.ToShortDateString()
+            };
+
+            List<TimeCardWithPymtInfo> response = await _client
+                .GetFromJsonAsync<List<TimeCardWithPymtInfo>>(QueryHelpers
+                .AddQueryString($"{_urlRoot}/employees/timecards/timecardsformanager", queryParams));
+
+            Assert.Equal(13, response.Count);
+        }
+
+        [Fact]
+        public async Task GetTimeCardsForPayPeriod_TimeCardsController_ShouldSucceed()
+        {
+            Guid userId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744");
+            DateTime payPeriodDate = new(2022, 2, 28);
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["payPeriodEndDate"] = payPeriodDate.ToShortDateString(),
+                ["userId"] = userId.ToString(),
+            };
+
+            List<TimeCardWithPymtInfo> response = await _client
+                .GetFromJsonAsync<List<TimeCardWithPymtInfo>>(QueryHelpers
+                .AddQueryString($"{_urlRoot}/employees/timecards/timecardsforpayperiod", queryParams));
 
             Assert.Equal(13, response.Count);
         }
