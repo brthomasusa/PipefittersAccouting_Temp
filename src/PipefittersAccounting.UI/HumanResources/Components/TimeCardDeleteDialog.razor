@@ -1,0 +1,41 @@
+<ErrorBoundary>
+    <Modal @ref="_modalRef">
+        <ModalContent Size="ModalSize.Default">
+            <ModalHeader>
+                <ModalTitle>
+                    <span><i class="far fa-trash-alt"></i></span>
+                    Delete TimeCard Hours for @TimeCardReadModel!.EmployeeFullName
+                </ModalTitle>
+                <CloseButton Clicked="@( () => CloseDialog("cancel") )" />
+            </ModalHeader>
+            <ModalBody>
+                @if (TimeCardReadModel is not null)
+                {
+                    <Field Horizontal>
+                        <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is9">
+                            <TextEdit Text=@TimeCardReadModel!.PayPeriodEnded.ToShortDateString() ReadOnly />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal>
+                        <FieldLabel ColumnSize="ColumnSize.Is3">Address</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is9">
+                            <TextEdit Text=@TimeCardReadModel!.RegularHours.ToString() ReadOnly />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal>
+                        <FieldLabel ColumnSize="ColumnSize.Is3">Contact</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is9">
+                            <TextEdit Text=@TimeCardReadModel!.OvertimeHours.ToString() ReadOnly />
+                        </FieldBody>
+                    </Field>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@( () => CloseDialog("cancel") )">Cancel</Button>
+                <Button Color="Color.Success" Loading="@_isLoading" Clicked="@( ()=> CloseDialog("save") )">Save
+                </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</ErrorBoundary>

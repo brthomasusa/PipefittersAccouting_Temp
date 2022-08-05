@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Blazorise;
+using Blazorise.Snackbar;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
@@ -10,12 +11,13 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 {
     public partial class TimeCards
     {
-        private bool _isLoading;
-        private Modal? _modalRef;
-        private Validations? _validations;
+        public bool _showEditDialog;
+        private Snackbar? _snackbar;
+        private string? _snackBarMessage;
         private List<EmployeeManager>? _managers;
         private List<TimeCardWithPymtInfo>? _timeCardReadModels;
-        private TimeCardWriteModel? _selectedTimeCard;
+        private TimeCardWriteModel? _selectedTimeCardWriteModel;
+        private TimeCardWithPymtInfo? _selectedTimeCardReadModel;
 
         [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
@@ -33,7 +35,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             if (result.Success)
             {
                 _managers = result.Result;
-                await GetWorkerForManager(_managers.FirstOrDefault()!.ManagerId);
+                await GetWorkerTimeCardsForManager(_managers.FirstOrDefault()!.ManagerId);
                 await InvokeAsync(StateHasChanged);
             }
             else
@@ -42,8 +44,10 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
         }
 
-        private async Task GetWorkerForManager(Guid managerId)
+        private async Task GetWorkerTimeCardsForManager(Guid managerId)
         {
+            _showEditDialog = false;
+
             GetTimeCardsForManagerParameter queryParameters = new()
             {
                 SupervisorId = managerId,
@@ -63,58 +67,52 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             }
         }
 
-        private void CheckRegularHours(ValidatorEventArgs validationArgs)
-        {
-            bool isValid = ((int)validationArgs.Value >= 0 && (int)validationArgs.Value <= 168);
-
-            validationArgs.Status = isValid ? ValidationStatus.Success : ValidationStatus.Error;
-
-            if (validationArgs.Status == ValidationStatus.Error)
-            {
-                validationArgs.ErrorText = "Regular hours out of range.";
-            }
-        }
-        private void CheckOvertimeHours(ValidatorEventArgs validationArgs)
-        {
-            bool isValid = ((int)validationArgs.Value >= 0 && (int)validationArgs.Value <= 168);
-
-            validationArgs.Status = isValid ? ValidationStatus.Success : ValidationStatus.Error;
-
-            if (validationArgs.Status == ValidationStatus.Error)
-            {
-                validationArgs.ErrorText = "Overtime hours out of range.";
-            }
-        }
-
         private async Task OnSelectedRowChanged(EmployeeManager mgr)
         {
-            await GetWorkerForManager(mgr!.ManagerId);
-        }
-
-        private void OpenEditTimecardModal()
-        {
-
-            Console.WriteLine($"opening new applicant modal...");
+            await GetWorkerTimeCardsForManager(mgr!.ManagerId);
         }
 
         private async Task ShowEditModal(TimeCardWithPymtInfo readModel)
         {
-            _selectedTimeCard = readModel.Map();
-
+            _selectedTimeCardWriteModel = readModel.Map();
+            _showEditDialog = true;
             await InvokeAsync(StateHasChanged);
-
-            await _modalRef!.Show();
         }
 
-        private async Task HideEditModal(string action)
+        private async Task OnEditDialogClosed(string action)
+        {
+            if (action.Equals("saved"))
+            {
+                _snackBarMessage = $"Timecard information was successfully updated.";
+                await GetWorkerTimeCardsForManager(_selectedTimeCardWriteModel!.SupervisorId);
+                await _snackbar!.Show();
+            }
+        }
+
+        private async Task ShowDeleteModal(TimeCardWithPymtInfo readModel)
+        {
+            _selectedTimeCardReadModel = readModel;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task HideDeleteModal(string action)
         {
             if (action == "save")
             {
-                if (!await _validations!.ValidateAll())
-                    return;
-            }
+                OperationResult<bool> result = await EmployeeService!.EditTimeCardInfo(_selectedTimeCardWriteModel!);
 
-            await _modalRef!.Hide();
+                if (result.Success)
+                {
+                    _snackBarMessage = $"Timecard information was successfully updated.";
+                    await GetWorkerTimeCardsForManager(_selectedTimeCardWriteModel!.SupervisorId);
+                    await _snackbar!.Show();
+                    await InvokeAsync(StateHasChanged);
+                }
+                else
+                {
+                    await MessageService!.Error($"Error while deleting timecard info: {result.NonSuccessMessage}", "Error");
+                }
+            }
         }
     }
 }

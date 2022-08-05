@@ -1,6 +1,7 @@
 ﻿@page "/HumanResources/Pages/TimeCards"
 
 @using PipefittersAccounting.SharedModel.Readmodels.HumanResources
+@using PipefittersAccounting.UI.HumanResources.Components
 @using Blazorise.DataGrid
 
 <PageTitle>TimeCards</PageTitle>
@@ -66,13 +67,14 @@
                                     <TableHeaderCell style="text-align:center">Regular Hrs</TableHeaderCell>
                                     <TableHeaderCell style="text-align:center">Overtime Hrs</TableHeaderCell>
                                     <TableHeaderCell>Edit</TableHeaderCell>
+                                    <TableHeaderCell>Delete</TableHeaderCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 @foreach (var timeCardReadModel in _timeCardReadModels!)
                                 {
                                     <TableRow>
-                                        <TableRowCell style="width:250px">@timeCardReadModel.EmployeeFullName</TableRowCell>
+                                        <TableRowCell style="width:225px">@timeCardReadModel.EmployeeFullName</TableRowCell>
                                         <TableRowCell style="text-align:center">
                                             @timeCardReadModel.PayPeriodEnded.ToShortDateString()
                                         </TableRowCell>
@@ -83,7 +85,12 @@
                                         Clicked="@( () => ShowEditModal(@timeCardReadModel) )" Outline>
                                                 <span><i class="fas fa-pen"></i></span>
                                             </Button>
-
+                                        </TableRowCell>
+                                        <TableRowCell>
+                                            <Button Color="Color.Danger" Size="Size.ExtraSmall"
+                                        Clicked="@( () => ShowDeleteModal(@timeCardReadModel) )" Outline>
+                                                <i class="far fa-trash-alt"></i>
+                                            </Button>
                                         </TableRowCell>
                                     </TableRow>
                                 }
@@ -102,52 +109,12 @@
             </Card>
         </Column>
     </Row>
+    <Snackbar @ref="_snackbar" DefaultInterval=1500)>
+        <SnackbarBody>
+            @_snackBarMessage
+        </SnackbarBody>
+    </Snackbar>
 </ErrorBoundary>
-<ErrorBoundary>
-    <Modal @ref="_modalRef">
-        <ModalContent Size="ModalSize.Default">
-            <ModalHeader>
-                <ModalTitle>Edit TimeCard Hours</ModalTitle>
-                <CloseButton />
-            </ModalHeader>
-            <ModalBody>
-                @if (_selectedTimeCard is not null)
-                {
-                    <Validations @ref="_validations" Mode="ValidationMode.Auto" Model="@_selectedTimeCard">
-                        <Container style="background-color:#F0F0F0;">
-                            <Validation HandlerType="HandlerTypes.FluentValidation">
-                                <Field>
-                                    <FieldLabel TextWeight="TextWeight.Bold">Regular Hours</FieldLabel>
-                                    <NumericPicker TValue="int" Placeholder="Required" Min=0 Max=185 Decimals="0"
-                                    @bind-Value=@_selectedTimeCard!.RegularHours>
-                                        <Feedback>
-                                            <ValidationError />
-                                        </Feedback>
-                                    </NumericPicker>
-                                    <FieldHelp>Valid regular hours are from 0 to 185 hours.</FieldHelp>
-                                </Field>
-                            </Validation>
-                            <Validation HandlerType="HandlerTypes.FluentValidation">
-                                <Field>
-                                    <FieldLabel TextWeight="TextWeight.Bold">Overtime Hours</FieldLabel>
-                                    <NumericPicker TValue="int" Placeholder="Required" Min=0 Max=200 Decimals="0"
-                                    @bind-Value=@_selectedTimeCard!.OvertimeHours>
-                                        <Feedback>
-                                            <ValidationError />
-                                        </Feedback>
-                                    </NumericPicker>
-                                    <FieldHelp>Valid overtime hours are from 0 to 200 hours.</FieldHelp>
-                                </Field>
-                            </Validation>
-                        </Container>
-                    </Validations>
-                }
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@( () => HideEditModal("cancel") )">Cancel</Button>
-                <Button Color="Color.Success" Loading="@_isLoading" Clicked="@( ()=> HideEditModal("save") )">Save
-                </Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
-</ErrorBoundary>
+
+<TimeCardEditDialog TimeCardWriteModel=@_selectedTimeCardWriteModel OnDialogCloseEventHandler=@OnEditDialogClosed
+    ShowDialog=@_showEditDialog />

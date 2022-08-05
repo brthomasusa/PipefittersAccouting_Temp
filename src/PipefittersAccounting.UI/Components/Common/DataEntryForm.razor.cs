@@ -26,7 +26,6 @@ namespace PipefittersAccounting.UI.Components.Common
             if (!await _validations!.ValidateAll())
                 return;
 
-            Console.WriteLine("DataEntryForm.OnSave: Beyond validation check");
             _isLoading = true;
             OperationResult<bool> saveResult = await SaveClickedEventHandler.Invoke();
             _isLoading = false;
@@ -42,6 +41,3 @@ namespace PipefittersAccounting.UI.Components.Common
         }
     }
 }
-
-// var result = await validator.ValidateAsync(Person, System.Threading.CancellationToken.None);
-// Console.WriteLine("Validated: " + result.IsValid);

@@ -34,9 +34,9 @@
                                             </FieldBody>
                                         </Field>
                                         <Field Horizontal>
-                                            <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Date of Hire</FieldLabel>
                                             <FieldBody ColumnSize="ColumnSize.Is9">
-                                                <TextEdit Text=@_employee!.StartDate.ToShortDateString() ReadOnly />
+                                                <TextEdit Text=@(_employee!.StartDate.ToShortDateString()) ReadOnly />
                                             </FieldBody>
                                         </Field>
                                         <Field Horizontal>

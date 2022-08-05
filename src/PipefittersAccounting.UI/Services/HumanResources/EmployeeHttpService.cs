@@ -31,8 +31,8 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         public Task<OperationResult<bool>> CreateTimeCardInfo(TimeCardWriteModel writeModel)
             => throw new NotImplementedException();
 
-        public Task<OperationResult<bool>> EditTimeCardInfo(TimeCardWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> EditTimeCardInfo(TimeCardWriteModel writeModel)
+           => await EditTimeCardHttpClient.Execute(writeModel, _client, _options); // 
 
         public Task<OperationResult<bool>> DeleteTimeCardInfo(TimeCardWriteModel writeModel)
             => throw new NotImplementedException();
