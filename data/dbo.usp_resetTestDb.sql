@@ -240,23 +240,21 @@
 
 -- For a given period ending date, create TimeCard records for all eligible employees
 -- CREATE OR ALTER Proc HumanResources.GetTimeCardInfoForPayPeriod
---     @payPeriodEnded datetime2(7),
 --     @userId uniqueidentifier
 -- AS
 -- BEGIN
+--     DECLARE @currentPeriodEnded datetime2(7);
 --     DECLARE @tmp_timecardId uniqueidentifier;
 --     DECLARE @tmp_employeeId uniqueidentifier;
 --     DECLARE @tmp_supervisorId uniqueidentifier;
---     DECLARE @eligibleEmployeeCount int;
 --     DECLARE @employeesWithUnpaidTimeCards int;
 
 --     BEGIN TRAN
 --         BEGIN TRY 
+--             -- Step 1 Get current pay period 
+--             SET @currentPeriodEnded = (SELECT HumanResources.GetCurrentPayPeriod());
 
---             -- Step 1 Get number of employees who could potentially be paid for period ending @payPeriodEnded 
---             SET @eligibleEmployeeCount = (SELECT COUNT(EmployeeId) FROM HumanResources.Employees WHERE StartDate <= @payPeriodEnded AND IsActive = 1);
-
---             -- Step 2 Get employees with unpaid TimeCard entries for period ended @payPeriodEnded
+--             -- Step 2 Get employees with unpaid TimeCard entries for period ended @currentPeriodEnded
 --             SET @employeesWithUnpaidTimeCards =
 --             (
 --                 SELECT 
@@ -264,7 +262,7 @@
 --                 FROM HumanResources.Employees ee
 --                 LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
 --                 LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
---                 WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
+--                 WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @currentPeriodEnded
 --             );
 
 
@@ -285,8 +283,8 @@
 --                         FROM HumanResources.Employees ee
 --                         LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
 --                         LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
---                         WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @payPeriodEnded
---                     ) AND StartDate <= @payPeriodEnded;
+--                         WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @currentPeriodEnded
+--                     ) AND StartDate <= @currentPeriodEnded;
 
 --                 OPEN @get_MissingEmployee;
 --                 FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
@@ -298,7 +296,7 @@
 
 --                     INSERT INTO HumanResources.TimeCards 
 --                         (TimeCardId, EmployeeId, SupervisorId, PayPeriodEnded, RegularHours, OverTimeHours, UserId) VALUES 
---                         (@tmp_timecardId, @tmp_employeeId, @tmp_supervisorId, @payPeriodEnded, 0, 0, @userId);
+--                         (@tmp_timecardId, @tmp_employeeId, @tmp_supervisorId, @currentPeriodEnded, 0, 0, @userId);
                     
 --                     FETCH NEXT FROM @get_MissingEmployee INTO @tmp_employeeId, @tmp_supervisorId;
 --                 END 
@@ -320,9 +318,9 @@
 --             FROM HumanResources.TimeCards cards
 --             JOIN HumanResources.Employees ee ON cards.EmployeeId = ee.EmployeeId
 --             LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID       
---             WHERE cards.PayPeriodEnded = @payPeriodEnded
+--             WHERE cards.PayPeriodEnded = @currentPeriodEnded
 --             ORDER BY ee.LastName, ee.FirstName;
-            
+
 --             COMMIT TRANSACTION
 --         END TRY
 --         BEGIN CATCH
@@ -337,6 +335,74 @@
 --                     ERROR_LINE() AS ErrorLine,
 --                     ERROR_MESSAGE() AS ErrorMessage;                
 --         END CATCH 
+-- END
+-- GO
+
+-- Calculate and return current pay period
+-- CREATE OR ALTER FUNCTION HumanResources.GetCurrentPayPeriod()
+--     RETURNS datetime2(7)
+-- BEGIN
+--     DECLARE @payPeriodEnded datetime2(7);
+--     DECLARE @currentPeriodEnded datetime2(7);
+--     DECLARE @paidTimeCards INT;
+--     DECLARE @tmp_Month INT;
+--     DECLARE @tmp_Year INT;
+--     DECLARE @tmp_Day INT;
+--     DECLARE @isLeapYear BIT;
+
+--     -- Get the most recent pay period
+--     SET @payPeriodEnded = (SELECT MAX (PayPeriodEnded) FROM HumanResources.TimeCards)
+    
+--     -- Determine if any timecards in the most recent pay period have been paid.
+--     -- The presence of paid time cards means the period is closed.
+--     SET @paidTimeCards =
+--     (
+--         SELECT 
+--             COUNT(cards.TimeCardId) AS PaidTimeCards               
+--         FROM HumanResources.TimeCards cards
+--         LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+--         WHERE cards.PayPeriodEnded = @payPeriodEnded AND ISNULL(cash.CashAcctTransactionAmount, 0 ) > 0
+--     );
+
+--     IF (@paidTimeCards = 0) -- the most recent pay period is still open
+--         BEGIN            
+--             SET @currentPeriodEnded = @payPeriodEnded;        
+--         END
+--     ELSE  -- the most recent pay period is closed
+--         BEGIN
+--             SET @tmp_Month = (SELECT DATEPART(MONTH, @payPeriodEnded) );
+--             SET @tmp_Year = (SELECT DATEPART(YEAR, @payPeriodEnded) );  
+
+--             -- If Decenber, set month = Jan and year = year + 1
+--             IF (@tmp_Month = 12)
+--                 BEGIN
+--                     SET @tmp_Month = 1;
+--                     SET @tmp_Year = @tmp_Year + 1;
+--                 END
+--             ELSE
+--                 SET @tmp_Month = @tmp_Month + 1;
+
+--             -- Determine if the year is a leap year
+--             IF @tmp_Year & 3 = 0 AND (@tmp_Year % 25 <> 0 OR @tmp_Year & 15 = 0)
+--                 SET @isLeapYear = 1;
+--             ELSE
+--                 SET @isLeapYear = 0;
+
+--             -- Set the day to the last day of the month
+--             IF (@tmp_Month IN (4,6,9,11))
+--                 SET @tmp_Day = 30
+--             ELSE IF (@tmp_Month  = 2 AND @isLeapYear = 1)
+--                 SET @tmp_Day = 29
+--             ELSE IF (@tmp_Month  = 2 AND @isLeapYear = 0)
+--                 SET @tmp_Day = 28
+--             ELSE
+--                 SET @tmp_Day = 31
+
+--             -- Set current pay period ended date
+--             SET @currentPeriodEnded = DATETIME2FROMPARTS(@tmp_Year,@tmp_Month,@tmp_Day,0,0,0,0,0);
+--         END
+        
+--     RETURN @currentPeriodEnded;
 -- END
 -- GO
 

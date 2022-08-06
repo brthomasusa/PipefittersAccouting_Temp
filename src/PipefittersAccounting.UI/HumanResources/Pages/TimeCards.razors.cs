@@ -61,7 +61,6 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             if (result.Success)
             {
                 _timeCardReadModels = result.Result;
-                await InvokeAsync(StateHasChanged);
             }
             else
             {
