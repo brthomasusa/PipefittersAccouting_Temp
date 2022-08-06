@@ -66,32 +66,41 @@
                                     <TableHeaderCell style="text-align:center">Period Ended</TableHeaderCell>
                                     <TableHeaderCell style="text-align:center">Regular Hrs</TableHeaderCell>
                                     <TableHeaderCell style="text-align:center">Overtime Hrs</TableHeaderCell>
-                                    <TableHeaderCell>Edit</TableHeaderCell>
-                                    <TableHeaderCell>Delete</TableHeaderCell>
+                                    <TableHeaderCell style="text-align:center">Edit</TableHeaderCell>
+                                    <TableHeaderCell style="text-align:center">Delete</TableHeaderCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                @foreach (var timeCardReadModel in _timeCardReadModels!)
+                                @if (_timeCardReadModels!.Any())
+                                {
+                                    foreach (var timeCardReadModel in _timeCardReadModels!)
+                                    {
+                                        <TableRow>
+                                            <TableRowCell style="width:225px">@timeCardReadModel.EmployeeFullName</TableRowCell>
+                                            <TableRowCell style="text-align:center">
+                                                @timeCardReadModel.PayPeriodEnded.ToShortDateString()
+                                            </TableRowCell>
+                                            <TableRowCell style="text-align:center">@timeCardReadModel.RegularHours</TableRowCell>
+                                            <TableRowCell style="text-align:center">@timeCardReadModel.OvertimeHours</TableRowCell>
+                                            <TableRowCell style="text-align:center">
+                                                <Button Color="Color.Primary" Size="Size.ExtraSmall"
+                                                    Clicked=@( () => ShowEditModal(@timeCardReadModel) ) Outline>
+                                                    <span><i class="fas fa-pen"></i></span>
+                                                </Button>
+                                            </TableRowCell>
+                                            <TableRowCell style="text-align:center">
+                                                <Button Color="Color.Danger" Size="Size.ExtraSmall"
+                                                    Clicked=@( () => ShowDeleteModal(@timeCardReadModel) ) Outline>
+                                                    <span><i class="far fa-trash-alt"></i></span>
+                                                </Button>
+                                            </TableRowCell>
+                                        </TableRow>
+                                    }
+                                }
+                                else
                                 {
                                     <TableRow>
-                                        <TableRowCell style="width:225px">@timeCardReadModel.EmployeeFullName</TableRowCell>
-                                        <TableRowCell style="text-align:center">
-                                            @timeCardReadModel.PayPeriodEnded.ToShortDateString()
-                                        </TableRowCell>
-                                        <TableRowCell style="text-align:center">@timeCardReadModel.RegularHours</TableRowCell>
-                                        <TableRowCell style="text-align:center">@timeCardReadModel.OvertimeHours</TableRowCell>
-                                        <TableRowCell>
-                                            <Button Color="Color.Primary" Size="Size.ExtraSmall"
-                                        Clicked="@( () => ShowEditModal(@timeCardReadModel) )" Outline>
-                                                <span><i class="fas fa-pen"></i></span>
-                                            </Button>
-                                        </TableRowCell>
-                                        <TableRowCell>
-                                            <Button Color="Color.Danger" Size="Size.ExtraSmall"
-                                        Clicked="@( () => ShowDeleteModal(@timeCardReadModel) )" Outline>
-                                                <i class="far fa-trash-alt"></i>
-                                            </Button>
-                                        </TableRowCell>
+                                        <TableRowCell style="width:225px">No timecards found.</TableRowCell>
                                     </TableRow>
                                 }
                             </TableBody>
@@ -118,3 +127,6 @@
 
 <TimeCardEditDialog TimeCardWriteModel=@_selectedTimeCardWriteModel OnDialogCloseEventHandler=@OnEditDialogClosed
     ShowDialog=@_showEditDialog />
+
+<TimeCardDeleteDialog TimeCardReadModel=@_selectedTimeCardReadModel OnDialogCloseEventHandler=@OnDeleteDialogClosed
+    ShowDialog=@_showDeleteDialog />

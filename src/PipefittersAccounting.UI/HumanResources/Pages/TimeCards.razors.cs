@@ -12,6 +12,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     public partial class TimeCards
     {
         public bool _showEditDialog;
+        public bool _showDeleteDialog;
         private Snackbar? _snackbar;
         private string? _snackBarMessage;
         private List<EmployeeManager>? _managers;
@@ -47,6 +48,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private async Task GetWorkerTimeCardsForManager(Guid managerId)
         {
             _showEditDialog = false;
+            _showDeleteDialog = false;
 
             GetTimeCardsForManagerParameter queryParameters = new()
             {
@@ -87,32 +89,27 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
                 await GetWorkerTimeCardsForManager(_selectedTimeCardWriteModel!.SupervisorId);
                 await _snackbar!.Show();
             }
+
+            _showEditDialog = false;
         }
 
         private async Task ShowDeleteModal(TimeCardWithPymtInfo readModel)
         {
             _selectedTimeCardReadModel = readModel;
+            _showDeleteDialog = true;
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task HideDeleteModal(string action)
+        private async Task OnDeleteDialogClosed(string action)
         {
-            if (action == "save")
+            if (action == "deleted")
             {
-                OperationResult<bool> result = await EmployeeService!.EditTimeCardInfo(_selectedTimeCardWriteModel!);
-
-                if (result.Success)
-                {
-                    _snackBarMessage = $"Timecard information was successfully updated.";
-                    await GetWorkerTimeCardsForManager(_selectedTimeCardWriteModel!.SupervisorId);
-                    await _snackbar!.Show();
-                    await InvokeAsync(StateHasChanged);
-                }
-                else
-                {
-                    await MessageService!.Error($"Error while deleting timecard info: {result.NonSuccessMessage}", "Error");
-                }
+                _snackBarMessage = $"Timecard information was successfully deleted.";
+                await GetWorkerTimeCardsForManager(_selectedTimeCardReadModel!.SupervisorId);
+                await _snackbar!.Show();
             }
+
+            _showDeleteDialog = false;
         }
     }
 }

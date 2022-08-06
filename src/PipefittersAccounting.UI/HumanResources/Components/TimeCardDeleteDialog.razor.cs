@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Blazorise;
+using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
+using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.HumanResources.Components
 {
@@ -9,12 +12,15 @@ namespace PipefittersAccounting.UI.HumanResources.Components
         private bool _isLoading;
         private Modal? _modalRef;
 
+        [Parameter] public bool ShowDialog { get; set; }
         [Parameter] public TimeCardWithPymtInfo? TimeCardReadModel { get; set; }
-        [Parameter] public EventCallback<string> HandleDialogClose { get; set; }
+        [Parameter] public EventCallback<string> OnDialogCloseEventHandler { get; set; }
+        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnParametersSetAsync()
         {
-            if (TimeCardReadModel is not null)
+            if (TimeCardReadModel is not null && ShowDialog)
             {
                 if (_modalRef is not null)
                 {
@@ -23,19 +29,28 @@ namespace PipefittersAccounting.UI.HumanResources.Components
             }
         }
 
-        private async Task CloseDialog(string action)
+        private async Task OnDelete()
         {
-            if (action.Equals("save"))
+            _isLoading = true;
+            OperationResult<bool> result = await EmployeeService!.DeleteTimeCardInfo(TimeCardReadModel!.Map());
+
+            if (result.Success)
             {
-                _isLoading = true;
-                await HandleDialogClose.InvokeAsync(action);
-                _isLoading = false;
                 await _modalRef!.Hide();
+                await OnDialogCloseEventHandler.InvokeAsync("deleted");
             }
             else
             {
-                await _modalRef!.Hide();
+                await MessageService!.Error($"Error while deleting timecard info: {result.NonSuccessMessage}", "Error");
             }
+
+            _isLoading = false;
+        }
+
+        private async Task CloseDialog()
+        {
+            await _modalRef!.Hide();
+            await OnDialogCloseEventHandler.InvokeAsync("canceled");
         }
     }
 }

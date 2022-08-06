@@ -12,7 +12,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     {
         private Guid _selectedEmployeeId;
         private string _placeHolderTextForSearch = "Search by employee's last name";
-        private string? _snackarMessage;
+        private string? _snackarMessage = "Hello, World";
         private Snackbar? _snackbar;
         private GetEmployeesParameters? _getEmployeesParameters;
         private GetEmployeesByLastNameParameters? _getEmployeesByLastNameParameters;

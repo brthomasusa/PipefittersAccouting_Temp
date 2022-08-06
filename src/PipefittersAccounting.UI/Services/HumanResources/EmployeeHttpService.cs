@@ -32,10 +32,10 @@ namespace PipefittersAccounting.UI.Services.HumanResources
             => throw new NotImplementedException();
 
         public async Task<OperationResult<bool>> EditTimeCardInfo(TimeCardWriteModel writeModel)
-           => await EditTimeCardHttpClient.Execute(writeModel, _client, _options); // 
+           => await EditTimeCardHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> DeleteTimeCardInfo(TimeCardWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> DeleteTimeCardInfo(TimeCardWriteModel writeModel)
+            => await DeleteTimeCardHttpClient.Execute(writeModel, _client, _options);
 
         // Query system state with ReadModels        
         public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters)

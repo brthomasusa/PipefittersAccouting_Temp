@@ -1,39 +1,47 @@
+@inject IJSRuntime jsRuntime
+
 <ErrorBoundary>
     <Modal @ref="_modalRef">
         <ModalContent Size="ModalSize.Default">
             <ModalHeader>
                 <ModalTitle>
                     <span><i class="far fa-trash-alt"></i></span>
-                    Delete TimeCard Hours for @TimeCardReadModel!.EmployeeFullName
+                    Delete TimeCard Hours
                 </ModalTitle>
-                <CloseButton Clicked="@( () => CloseDialog("cancel") )" />
+                <CloseButton Clicked="@( () => CloseDialog() )" />
             </ModalHeader>
             <ModalBody>
                 @if (TimeCardReadModel is not null)
                 {
                     <Field Horizontal>
-                        <FieldLabel ColumnSize="ColumnSize.Is3">Telephone</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is9">
+                        <FieldLabel ColumnSize="ColumnSize.Is4">Employee</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is8">
+                            <TextEdit Text=@TimeCardReadModel!.EmployeeFullName ReadOnly />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal>
+                        <FieldLabel ColumnSize="ColumnSize.Is4">Pay Period Ended</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is8">
                             <TextEdit Text=@TimeCardReadModel!.PayPeriodEnded.ToShortDateString() ReadOnly />
                         </FieldBody>
                     </Field>
                     <Field Horizontal>
-                        <FieldLabel ColumnSize="ColumnSize.Is3">Address</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is9">
+                        <FieldLabel ColumnSize="ColumnSize.Is4">Regular Hours</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is8">
                             <TextEdit Text=@TimeCardReadModel!.RegularHours.ToString() ReadOnly />
                         </FieldBody>
                     </Field>
                     <Field Horizontal>
-                        <FieldLabel ColumnSize="ColumnSize.Is3">Contact</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is9">
+                        <FieldLabel ColumnSize="ColumnSize.Is4">Overtime Hours</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is8">
                             <TextEdit Text=@TimeCardReadModel!.OvertimeHours.ToString() ReadOnly />
                         </FieldBody>
                     </Field>
                 }
             </ModalBody>
             <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@( () => CloseDialog("cancel") )">Cancel</Button>
-                <Button Color="Color.Success" Loading="@_isLoading" Clicked="@( ()=> CloseDialog("save") )">Save
+                <Button Color="Color.Secondary" Clicked="@( () => CloseDialog() )">Cancel</Button>
+                <Button Color="Color.Danger" Loading="@_isLoading" Clicked="@( ()=> OnDelete() )">Delete
                 </Button>
             </ModalFooter>
         </ModalContent>
