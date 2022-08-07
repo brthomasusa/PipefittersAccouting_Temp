@@ -1,0 +1,95 @@
+<ErrorBoundary>
+    <Modal @ref="_modalRef">
+        <ModalContent Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>
+                    <span><i class="far fa-trash-alt"></i></span>
+                    Delete Employee Info
+                </ModalTitle>
+                <CloseButton Clicked="@( () => CloseDialog() )" />
+            </ModalHeader>
+            <ModalBody>
+                @if (EmployeeReadModel is not null)
+                {
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Name</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@EmployeeReadModel!.EmployeeFullName ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Job Title</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@EmployeeReadModel!.EmployeeTypeName ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Telephone</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@EmployeeReadModel!.Telephone ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Date of Hire</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@(EmployeeReadModel!.StartDate.ToShortDateString()) ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Is Manager?</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@(ConvertIsSupervisorToString()) ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Manager's name</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@EmployeeReadModel!.ManagerFullName ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Status</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@(ConvertIsActiveToString()) ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is6">
+                            <Field>
+                                <FieldLabel ColumnSize="ColumnSize.Is4">Marital Status</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.Is8">
+                                    <TextEdit Text=@EmployeeReadModel!.MaritalStatus ReadOnly />
+                                </FieldBody>
+                            </Field>
+                        </Column>
+                    </Row>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@( () => CloseDialog() )">Cancel</Button>
+                <Button Color="Color.Danger" Loading="@_isLoading" Clicked="@( ()=> OnDelete() )">Delete
+                </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</ErrorBoundary>

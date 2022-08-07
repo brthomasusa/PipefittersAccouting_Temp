@@ -25,8 +25,8 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         public async Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel)
             => await EditEmployeeHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> DeleteEmployeeInfo(EmployeeWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> DeleteEmployeeInfo(EmployeeWriteModel writeModel)
+            => await DeleteEmployeeHttpClient.Execute(writeModel, _client, _options);
 
         public Task<OperationResult<bool>> CreateTimeCardInfo(TimeCardWriteModel writeModel)
             => throw new NotImplementedException();

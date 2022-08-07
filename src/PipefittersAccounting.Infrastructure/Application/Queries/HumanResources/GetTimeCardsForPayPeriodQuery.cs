@@ -14,10 +14,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
         {
             try
             {
-                var sql = "EXECUTE HumanResources.GetTimeCardInfoForPayPeriod @PERIODENDDATE, @ID";
+                var sql = "EXECUTE HumanResources.GetTimeCardInfoForPayPeriod @ID";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("PERIODENDDATE", queryParams.PayPeriodEndDate, DbType.DateTime2);
                 parameters.Add("ID", queryParams.UserId, DbType.Guid);
 
                 using var connection = ctx.CreateConnection();

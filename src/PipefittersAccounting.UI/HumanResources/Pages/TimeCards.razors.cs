@@ -25,8 +25,24 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            await GetTimeCardsForPayPeriod();
             await GetManagers();
             await base.OnInitializedAsync();
+        }
+
+        private async Task GetTimeCardsForPayPeriod()
+        {
+            GetTimeCardsForPayPeriodParameter queryParameters = new()
+            {
+                UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+            };
+
+            OperationResult<List<TimeCardWithPymtInfo>> result = await EmployeeService!.GetTimeCardsForPayPeriod(queryParameters);
+
+            if (!result.Success)
+            {
+                await MessageService!.Error($"Error while retrieving list of managers: {result.NonSuccessMessage}", "Error");
+            }
         }
 
         private async Task GetManagers()

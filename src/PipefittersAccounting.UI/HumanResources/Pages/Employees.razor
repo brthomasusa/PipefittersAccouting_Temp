@@ -61,7 +61,8 @@
                                             Clicked="@( () => OnActionItemClicked("Edit", @employee.EmployeeId) )">
                                                 Edit
                                             </DropdownItem>
-                                            <DropdownItem Disabled>
+                                            <DropdownItem Disabled=@( employee.TimeCards > 0 )
+                                            Clicked="@( () => GetEmployee(@employee.EmployeeId) )">
                                                 Delete
                                             </DropdownItem>
                                         </DropdownMenu>
@@ -88,7 +89,7 @@
 
                     <Snackbar @ref="_snackbar" DefaultInterval=2000>
                         <SnackbarBody>
-                            @_snackarMessage
+                            @_snackBarMessage
                         </SnackbarBody>
                     </Snackbar>
                 </CardFooter>
@@ -98,3 +99,6 @@
 </ErrorBoundary>
 
 <EmployeeDetailDialog EmployeeId=@_selectedEmployeeId />
+
+<EmployeeDeleteDialog EmployeeReadModel=@_selectedEmployee OnDialogCloseEventHandler=@OnDeleteDialogClosed
+    ShowDialog=@_showDeleteDialog />

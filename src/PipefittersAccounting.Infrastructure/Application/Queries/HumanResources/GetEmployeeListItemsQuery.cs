@@ -22,7 +22,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     ee.EmployeeId,
                     CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName,
                     ee.Telephone, ee.IsActive, ee.IsSupervisor,
-                    CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName               
+                    CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName ,
+                    ISNULL(cards.TimeCards, 0 ) AS TimeCards             
                 FROM HumanResources.Employees ee
                 LEFT JOIN
                 (
@@ -31,6 +32,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     FROM HumanResources.Employees supv
                     WHERE IsSupervisor = 1
                 ) supv ON ee.SupervisorId = supv.EmployeeId
+                LEFT JOIN
+                (
+                    SELECT 
+                        cards.EmployeeId, COUNT(cards.TimeCardId) AS TimeCards
+                    FROM HumanResources.TimeCards cards
+                    GROUP BY cards.EmployeeId
+                ) cards ON ee.EmployeeId = cards.EmployeeId
                 ORDER BY ee.LastName, ee.FirstName, ee.MiddleInitial
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
