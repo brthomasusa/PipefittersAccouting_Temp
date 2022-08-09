@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.Shared;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Shared
 {

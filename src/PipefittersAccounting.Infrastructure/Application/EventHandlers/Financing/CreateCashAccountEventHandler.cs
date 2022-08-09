@@ -1,5 +1,5 @@
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.Events;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;

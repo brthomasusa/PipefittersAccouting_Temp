@@ -1,6 +1,6 @@
 using PipefittersAccounting.SharedKernel.Interfaces;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 
 namespace PipefittersAccounting.Core.Interfaces.Financing
 {

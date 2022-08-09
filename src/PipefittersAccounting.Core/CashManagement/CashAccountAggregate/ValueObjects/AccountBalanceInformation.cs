@@ -2,7 +2,7 @@
 
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
+namespace PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects
 {
     public class AccountBalanceInformation : ValueObject
     {
@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
             CashTransactionAmount cashInflow,
             CashTransactionAmount cashOutflow,
             CashTransactionAmount currentBalance
-        ) 
+        )
         {
             CashInflow = cashInflow;
             CashOutflow = cashOutflow;
@@ -28,10 +28,10 @@ namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
         (
             CashTransactionAmount cashInflow,
             CashTransactionAmount cashOutflow,
-            CashTransactionAmount currentBalance            
+            CashTransactionAmount currentBalance
         )
         {
             return new AccountBalanceInformation(cashInflow, cashOutflow, currentBalance);
-        }        
+        }
     }
 }

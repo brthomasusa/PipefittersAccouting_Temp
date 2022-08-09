@@ -3,7 +3,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;

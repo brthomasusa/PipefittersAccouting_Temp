@@ -1259,7 +1259,7 @@ END
 GO
 
 -- HumanResources.GetPayrollRegister
-CREATE   Proc HumanResources.GetPayrollRegister
+CREATE OR ALTER  Proc HumanResources.GetPayrollRegister
     @periodStartDate datetime2(7),
     @periodEndDate datetime2(7)
 as
@@ -1328,7 +1328,7 @@ BEGIN
                     COUNT(cards.EmployeeId)   
                 FROM HumanResources.Employees ee
                 LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
-                LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID
                 WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @currentPeriodEnded
             );
 
@@ -1349,7 +1349,7 @@ BEGIN
                             cards.EmployeeId   
                         FROM HumanResources.Employees ee
                         LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId 
-                        LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+                        LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID
                         WHERE ISNULL(cash.CashAcctTransactionAmount, 0 ) = 0 AND cards.PayPeriodEnded = @currentPeriodEnded
                     ) AND StartDate <= @currentPeriodEnded;
 
@@ -1384,7 +1384,7 @@ BEGIN
                 cards.UserId
             FROM HumanResources.TimeCards cards
             JOIN HumanResources.Employees ee ON cards.EmployeeId = ee.EmployeeId
-            LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID       
+            LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID       
             WHERE cards.PayPeriodEnded = @currentPeriodEnded
             ORDER BY ee.LastName, ee.FirstName;
 
@@ -1427,7 +1427,7 @@ BEGIN
         SELECT 
             COUNT(cards.TimeCardId) AS PaidTimeCards               
         FROM HumanResources.TimeCards cards
-        LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID
+        LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID
         WHERE cards.PayPeriodEnded = @payPeriodEnded AND ISNULL(cash.CashAcctTransactionAmount, 0 ) > 0
     );
 

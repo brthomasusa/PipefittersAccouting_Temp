@@ -2,8 +2,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
 {

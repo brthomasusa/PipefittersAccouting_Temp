@@ -1,4 +1,4 @@
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

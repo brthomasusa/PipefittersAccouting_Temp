@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PipefittersAccounting.Core.Shared;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.Financing.LoanAgreementAggregate;
 using PipefittersAccounting.Core.Financing.StockSubscriptionAggregate;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;

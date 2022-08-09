@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;

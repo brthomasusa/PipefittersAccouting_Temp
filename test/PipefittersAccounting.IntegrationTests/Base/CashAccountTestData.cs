@@ -1,8 +1,8 @@
 #pragma warning disable CS8625
 
 using System;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate;
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

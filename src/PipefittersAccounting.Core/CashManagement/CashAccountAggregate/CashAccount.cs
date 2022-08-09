@@ -1,12 +1,12 @@
 #pragma warning disable CS8604
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects;
+using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Interfaces;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate
+namespace PipefittersAccounting.Core.CashManagement.CashAccountAggregate
 {
     public class CashAccount : AggregateRoot<Guid>
     {

@@ -2,7 +2,7 @@
 
 using PipefittersAccounting.SharedKernel;
 
-namespace PipefittersAccounting.Core.Financing.CashAccountAggregate.ValueObjects
+namespace PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects
 {
     public class RemittanceAdvice : ValueObject
     {
