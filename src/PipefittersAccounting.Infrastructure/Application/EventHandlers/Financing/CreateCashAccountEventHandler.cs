@@ -3,7 +3,7 @@ using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.Events;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Application.Validation.Financing;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Interfaces;
 

@@ -12,10 +12,10 @@ using Xunit;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects;
-using PipefittersAccounting.Core.Interfaces.Financing;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
+using PipefittersAccounting.Core.Interfaces.CashManagement;
+using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.IntegrationTests.Base;
 

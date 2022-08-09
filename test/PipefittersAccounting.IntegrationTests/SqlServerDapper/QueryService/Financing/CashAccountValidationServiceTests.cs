@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using Xunit;
 using PipefittersAccounting.Infrastructure.Application.Services;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
-using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate;
-using PipefittersAccounting.Infrastructure.Application.Validation.Financing.CashAccountAggregate.BusinessRules;
+using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
+using PipefittersAccounting.Infrastructure.Application.Validation.CashManagement;
+using PipefittersAccounting.Infrastructure.Application.Validation.CashManagement.BusinessRules;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

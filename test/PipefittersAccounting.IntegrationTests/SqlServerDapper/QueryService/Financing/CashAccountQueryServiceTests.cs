@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;

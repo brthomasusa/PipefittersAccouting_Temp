@@ -4,16 +4,17 @@
 using System;
 using Xunit;
 
-using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.CashManagement;
 using PipefittersAccounting.Infrastructure.Application.Commands.Financing.CashAccountAggregate;
 using PipefittersAccounting.Infrastructure.Application.Services;
-using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
 using PipefittersAccounting.Infrastructure.Application.Services.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
-using PipefittersAccounting.Infrastructure.Persistence.Repositories.Financing;
+using PipefittersAccounting.Infrastructure.Persistence.Repositories.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;

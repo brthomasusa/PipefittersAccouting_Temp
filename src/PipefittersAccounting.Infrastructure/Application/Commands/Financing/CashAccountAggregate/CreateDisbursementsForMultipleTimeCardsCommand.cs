@@ -1,11 +1,11 @@
 #pragma warning disable CS8604
 
-using PipefittersAccounting.Infrastructure.Application.Services.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
 using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.CashManagement.CashAccountAggregate.ValueObjects;
-using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Interfaces.CashManagement;
 using PipefittersAccounting.Infrastructure.Interfaces;
-using PipefittersAccounting.Infrastructure.Interfaces.Financing;
+using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
