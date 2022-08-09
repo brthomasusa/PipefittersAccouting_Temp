@@ -10,6 +10,7 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.Readmodels.Shared;
 

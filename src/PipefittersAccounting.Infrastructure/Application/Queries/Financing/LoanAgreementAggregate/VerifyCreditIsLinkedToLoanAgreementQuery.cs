@@ -2,7 +2,7 @@ using System.Data;
 using Dapper;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.LoanAgreementAggregate
 {

@@ -3,8 +3,8 @@
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.CashManagement.BusinessRules

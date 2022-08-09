@@ -1,7 +1,7 @@
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Interfaces;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.CashManagement
 {

@@ -5,8 +5,8 @@ using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 namespace PipefittersAccounting.WebApi.Controllers.CashManagement
 {

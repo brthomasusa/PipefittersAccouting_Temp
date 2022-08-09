@@ -17,7 +17,7 @@ using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories;
 using PipefittersAccounting.Infrastructure.Persistence.Repositories.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.Financing

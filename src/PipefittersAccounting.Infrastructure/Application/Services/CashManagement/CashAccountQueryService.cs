@@ -1,8 +1,9 @@
-using PipefittersAccounting.Infrastructure.Application.Queries.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Queries.CashManagement;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.CashManagement

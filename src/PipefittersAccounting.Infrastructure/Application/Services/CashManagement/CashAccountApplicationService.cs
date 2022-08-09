@@ -1,10 +1,10 @@
 using PipefittersAccounting.Core.Interfaces.CashManagement;
-using PipefittersAccounting.Infrastructure.Application.Commands.Financing.CashAccountAggregate;
+using PipefittersAccounting.Infrastructure.Application.Commands.CashManagement;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.CashManagement

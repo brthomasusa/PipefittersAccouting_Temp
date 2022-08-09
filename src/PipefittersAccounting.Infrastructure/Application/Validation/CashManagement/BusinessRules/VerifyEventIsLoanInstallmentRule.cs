@@ -4,7 +4,7 @@ using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.Utilities;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 using PipefittersAccounting.SharedModel.Readmodels.Shared;
 
 namespace PipefittersAccounting.Infrastructure.Application.Validation.CashManagement.BusinessRules

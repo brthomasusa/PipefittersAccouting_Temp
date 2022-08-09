@@ -1,8 +1,7 @@
 using PipefittersAccounting.Core.CashManagement.CashAccountAggregate;
 using PipefittersAccounting.Core.Interfaces;
 using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
-using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.CashManagement
 {

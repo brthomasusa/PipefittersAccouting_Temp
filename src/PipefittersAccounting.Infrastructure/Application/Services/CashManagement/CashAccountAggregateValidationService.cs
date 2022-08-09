@@ -3,7 +3,7 @@ using PipefittersAccounting.Infrastructure.Application.Validation.CashManagement
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 namespace PipefittersAccounting.Infrastructure.Application.Services.CashManagement
 {

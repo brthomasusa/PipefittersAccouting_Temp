@@ -1,5 +1,6 @@
 using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.CashManagement

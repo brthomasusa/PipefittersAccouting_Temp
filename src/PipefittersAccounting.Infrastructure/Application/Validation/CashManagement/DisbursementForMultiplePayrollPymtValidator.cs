@@ -2,6 +2,7 @@ using PipefittersAccounting.Infrastructure.Application.Services.CashManagement;
 using PipefittersAccounting.Infrastructure.Application.Validation.CashManagement.BusinessRules;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.SharedKernel;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 

@@ -8,6 +8,7 @@ using PipefittersAccounting.Infrastructure.Application.Services.Financing.LoanAg
 using PipefittersAccounting.Infrastructure.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.ReadModels;
+using PipefittersAccounting.SharedModel.Readmodels.CashManagement;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing

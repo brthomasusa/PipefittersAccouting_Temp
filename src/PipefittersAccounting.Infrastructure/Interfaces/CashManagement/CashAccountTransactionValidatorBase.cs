@@ -1,5 +1,5 @@
 using PipefittersAccounting.SharedKernel;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 
 namespace PipefittersAccounting.Infrastructure.Interfaces.CashManagement
 {

@@ -8,7 +8,7 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Infrastructure.Interfaces.CashManagement;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.Infrastructure.Application.Services.Shared;
-using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.SharedModel.WriteModels.CashManagement;
 using PipefittersAccounting.IntegrationTests.Base;
 
 namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Financing
