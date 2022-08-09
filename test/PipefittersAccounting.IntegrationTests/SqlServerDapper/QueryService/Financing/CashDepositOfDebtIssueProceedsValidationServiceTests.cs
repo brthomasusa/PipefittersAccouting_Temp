@@ -98,7 +98,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             ValidationResult validationResult = await validator.Validate(model);
 
             Assert.False(validationResult.IsValid);
-            Assert.Equal("An event of type 'Cash Receipt from Stock Subscription' is not valid for this operation. Expecting a loan agreement!", validationResult.Messages[0]);
+            Assert.Equal("An event of type 'Cash Receipt - Stock Subscription' is not valid for this operation. Expecting a loan agreement!", validationResult.Messages[0]);
         }
 
         [Fact]

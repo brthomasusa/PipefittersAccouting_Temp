@@ -1251,7 +1251,7 @@ BEGIN
         FROM HumanResources.Employees ee
         LEFT JOIN HumanResources.TimeCards cards ON ee.EmployeeId = cards.EmployeeId
         LEFT JOIN HumanResources.ExemptionLookUp exempt ON ee.Exemptions = exempt.ExemptionLkupId
-        LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID          
+        LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID          
     ) AS BaseQuery
     WHERE BaseQuery.PayPeriodEnded BETWEEN @periodStartDate AND @periodEndDate AND BaseQuery.AmountPaid = 0
     ORDER BY BaseQuery.LastName, BaseQuery.FirstName, BaseQuery.MiddleInitial

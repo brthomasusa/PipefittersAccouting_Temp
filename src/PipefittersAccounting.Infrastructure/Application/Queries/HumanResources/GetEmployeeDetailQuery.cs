@@ -24,7 +24,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     CONCAT(supv.FirstName,' ',COALESCE(supv.MiddleInitial,''),' ',supv.LastName) as ManagerFullName,
                     ee.LastName, ee.FirstName, ee.MiddleInitial, 
                     CONCAT(ee.FirstName,' ',COALESCE(ee.MiddleInitial,''),' ',ee.LastName) as EmployeeFullName, 
-                    ee.SSN, ee.Telephone, ee.AddressLine1, ee.AddressLine2, ee.City, ee.StateCode, ee.Zipcode,                                
+                    ee.SSN, ee.EmailAddress, ee.Telephone, ee.AddressLine1, ee.AddressLine2, ee.City, ee.StateCode, ee.Zipcode,                                
                     ee.MaritalStatus, ee.Exemptions, ee.PayRate, ee.StartDate, ee.IsActive, ee.IsSupervisor, ee.CreatedDate, ee.LastModifiedDate                
                 FROM HumanResources.Employees ee
                 INNER JOIN

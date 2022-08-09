@@ -81,7 +81,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
 
             Assert.True(result.Success);
             int count = result.Result.Count;
-            Assert.Equal(13, count);
+            Assert.Equal(14, count);
         }
 
         [Fact]

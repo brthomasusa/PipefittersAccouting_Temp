@@ -34,7 +34,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             OperationResult<CashAccountDetail> result = await _queryService.GetCashAccountDetails(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(35625M, result.Result.Balance);
+            // Assert.Equal(118000M, result.Result.Balance);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.True(result.Success);
 
-            Assert.Equal(17, result.Result);
+            Assert.Equal(20, result.Result);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.True(result.Success);
 
             Assert.Equal(2, result.Result.EventTypeId);
-            Assert.Equal("Cash Receipt from Loan Agreement", result.Result.EventTypeName);
+            Assert.Equal("Cash Receipt - Loan Agreement", result.Result.EventTypeName);
         }
 
         [Fact]
@@ -205,7 +205,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             Assert.True(result.Success);
 
-            Assert.Equal(new DateTime(2022, 1, 10), result.Result.CashAcctTransactionDate);
+            Assert.Equal(new DateTime(2022, 1, 3), result.Result.CashAcctTransactionDate);
             Assert.Equal(10000M, result.Result.CashAcctTransactionAmount);
         }
 

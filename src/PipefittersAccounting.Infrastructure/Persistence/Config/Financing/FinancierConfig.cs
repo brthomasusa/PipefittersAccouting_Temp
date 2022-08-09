@@ -24,6 +24,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
                 .HasColumnType("NVARCHAR(14)")
                 .HasColumnName("Telephone")
                 .IsRequired();
+            entity.Property(p => p.EmailAddress)
+                .HasConversion(p => p.Value, p => EmailAddress.Create(p))
+                .HasColumnType("NVARCHAR(256)")
+                .HasColumnName("EmailAddress")
+                .IsRequired();
             entity.OwnsOne(p => p.FinancierAddress, p =>
             {
                 p.Property(pp => pp.AddressLine1).HasColumnType("NVARCHAR(30)").HasColumnName("AddressLine1").IsRequired();

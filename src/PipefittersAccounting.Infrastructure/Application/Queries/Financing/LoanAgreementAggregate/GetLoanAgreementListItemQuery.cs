@@ -17,12 +17,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             {
                 var sql =
                 @"SELECT 
-                    LoanId, creditors.FinancierName, LoanAmount, InterestRate, LoanDate, MaturityDate, 
+                    LoanId, LoanNumber, creditors.FinancierName, LoanAmount, InterestRate, LoanDate, MaturityDate, 
                     NumberOfInstallments, cash.CashAcctTransactionDate AS LoanProceedsReceived , 
                     cash.CashAcctTransactionAmount LoanProceedsAmount    
                 FROM Finance.LoanAgreements agreements
                 INNER JOIN Finance.Financiers creditors ON agreements.FinancierId = creditors.FinancierID
-                LEFT JOIN Finance.CashAccountTransactions cash ON agreements.LoanId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON agreements.LoanId = cash.EventID
                 ORDER BY creditors.FinancierName, LoanDate
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 

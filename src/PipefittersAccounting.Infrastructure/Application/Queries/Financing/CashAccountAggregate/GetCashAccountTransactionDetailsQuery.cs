@@ -27,8 +27,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                         trans.CashAcctTransactionDate, trans.CashAcctTransactionAmount, trans.AgentId, agents.AgentTypeId,
                         trans.EventId, events.EventTypeId, trans.CheckNumber, trans.RemittanceAdvice, trans.UserId,
                         trans.CreatedDate, trans.LastModifiedDate
-                    FROM Finance.CashAccountTransactions trans
-                    JOIN Finance.CashTransactionTypes transTypes ON trans.CashTransactionTypeId = transTypes.CashTransactionTypeId
+                    FROM CashManagement.CashTransactions trans
+                    JOIN CashManagement.CashTransactionTypes transTypes ON trans.CashTransactionTypeId = transTypes.CashTransactionTypeId
                     JOIN Shared.ExternalAgents agents ON trans.AgentId = agents.AgentId
                     JOIN Shared.EconomicEvents events ON trans.EventId = events.EventId    
                 ) AS transctionDetails

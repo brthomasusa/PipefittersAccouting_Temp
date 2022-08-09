@@ -20,7 +20,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
                     END AS AmountReceived
                 FROM Finance.Financiers fin 
                 LEFT JOIN Finance.LoanAgreements agree ON fin.FinancierID = agree.FinancierId
-                LEFT JOIN Finance.CashAccountTransactions cash ON agree.LoanId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON agree.LoanId = cash.EventID
                 WHERE fin.FinancierID = @FINANCIERID AND agree.LoanId = @LOANID";
 
                 var parameters = new DynamicParameters();

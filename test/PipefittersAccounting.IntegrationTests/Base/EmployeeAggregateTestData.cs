@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
@@ -20,6 +21,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 FirstName = "Ivanika",
                 MiddleInitial = "I",
                 SSN = "437679876",
+                EmailAddress = "ivanika.trumpster@pipefitterssupply.com",
                 Telephone = "732-555-5555",
                 AddressLine1 = "139th Street NW",
                 AddressLine2 = "B1",
@@ -44,6 +46,7 @@ namespace PipefittersAccounting.IntegrationTests.Base
                 FirstName = "Jozef",
                 MiddleInitial = "P",
                 SSN = "036889999",
+                EmailAddress = "jozef.goldberg@pipefitterssupply.com",
                 Telephone = "469-321-1234",
                 AddressLine1 = "6667 Melody Lane",
                 AddressLine2 = "Apt 2",

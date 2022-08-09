@@ -14,6 +14,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public Guid FinancierId { get; set; }
         public string? FinancierName { get; set; }
         public string? Telephone { get; set; }
+        public string? EmailAddress { get; set; }
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
         public string? City { get; set; }

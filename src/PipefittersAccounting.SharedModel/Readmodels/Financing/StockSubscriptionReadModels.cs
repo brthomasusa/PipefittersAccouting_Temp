@@ -5,6 +5,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     public class StockSubscriptionDetails
     {
         public Guid StockId { get; set; }
+        public string? StockNumber { get; set; }
         public Guid FinancierId { get; set; }
         public string? InvestorName { get; set; }
         public string? StreetAddress { get; set; }
@@ -22,6 +23,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     public class StockSubscriptionListItem
     {
         public Guid StockId { get; set; }
+        public string? StockNumber { get; set; }
         public string? InvestorName { get; set; }
         public string? ContactName { get; set; }
         public string? ContactTelephone { get; set; }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 
 namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
@@ -30,6 +31,11 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.HumanResources
                 .HasConversion(p => p.Value, p => SocialSecurityNumber.Create(p))
                 .HasColumnType("NVARCHAR(9)")
                 .HasColumnName("SSN")
+                .IsRequired();
+            entity.Property(p => p.EmailAddress)
+                .HasConversion(p => p.Value, p => EmailAddress.Create(p))
+                .HasColumnType("NVARCHAR(256)")
+                .HasColumnName("EmailAddress")
                 .IsRequired();
             entity.Property(p => p.EmployeeTelephone)
                 .HasConversion(p => p.Value, p => PhoneNumber.Create(p))

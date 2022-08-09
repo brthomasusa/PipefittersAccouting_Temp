@@ -36,7 +36,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Assert.True(result.Success);
 
             int records = result.Result.Count;
-            Assert.Equal(7, records);
+            Assert.Equal(8, records);
         }
 
         [Fact]

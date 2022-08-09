@@ -10,7 +10,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
     {
         public void Configure(EntityTypeBuilder<CashAccount> entity)
         {
-            entity.ToTable("CashAccounts", schema: "Finance");
+            entity.ToTable("CashAccounts", schema: "CashManagement");
             entity.HasKey(e => e.Id);
             entity.HasMany<CashTransaction>(p => p.CashTransactions).WithOne().HasForeignKey(p => p.CashAccountId);
 

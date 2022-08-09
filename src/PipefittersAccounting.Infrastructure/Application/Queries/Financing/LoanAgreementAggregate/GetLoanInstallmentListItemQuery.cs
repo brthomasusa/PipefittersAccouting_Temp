@@ -19,7 +19,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
                     PrincipalAmount, InterestAmount, PrincipalRemaining, 
                     cash.CashAcctTransactionDate AS DatePaid, cash.CashAcctTransactionAmount AS AmountPaid
                 FROM Finance.LoanInstallments installments
-                LEFT JOIN Finance.CashAccountTransactions cash ON installments.LoanInstallmentId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON installments.LoanInstallmentId = cash.EventID
                 WHERE LoanId = @ID
                 ORDER BY InstallmentNumber";
 

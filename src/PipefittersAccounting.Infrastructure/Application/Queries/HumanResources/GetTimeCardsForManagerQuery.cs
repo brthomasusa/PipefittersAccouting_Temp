@@ -25,7 +25,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                     cards.UserId
                 FROM HumanResources.TimeCards cards
                 JOIN HumanResources.Employees ee ON cards.EmployeeId = ee.EmployeeId
-                LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID       
+                LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID       
                 WHERE cards.SupervisorId = @ID AND cards.PayPeriodEnded = @PERIODENDDATE
                 ORDER BY cards.PayPeriodEnded, ee.LastName, ee.FirstName";
 

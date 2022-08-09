@@ -7,6 +7,7 @@ using Xunit;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
+using PipefittersAccounting.Core.Shared;
 
 namespace PipefittersAccounting.UnitTests.Financing
 {
@@ -20,6 +21,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(Guid.NewGuid()),
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
+                EmailAddress.Create("i.trump@wwf.com"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
                 PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),
@@ -40,6 +42,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 null,
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
+                EmailAddress.Create("j.doe@testing.com"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
                 PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),
@@ -133,6 +136,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 EntityGuidID.Create(Guid.NewGuid()),
                 OrganizationName.Create("Testing"),
                 PhoneNumber.Create("555-555-5555"),
+                EmailAddress.Create("j.doe@testing.com"),
                 Address.Create("123 Main St", "Ste 1", "Somewhere", "OK", "87455"),
                 PointOfContact.Create("Jon", "Doe", "O", "555-555-5555"),
                 EntityGuidID.Create(Guid.NewGuid()),

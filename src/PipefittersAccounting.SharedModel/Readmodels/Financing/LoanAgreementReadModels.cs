@@ -5,6 +5,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     public class LoanAgreementDetail
     {
         public Guid LoanId { get; set; }
+        public string? LoanNumber { get; set; }
         public decimal LoanAmount { get; set; }
         public decimal InterestRate { get; set; }
         public DateTime LoanDate { get; set; }
@@ -22,6 +23,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
     public class LoanAgreementListItem
     {
         public Guid LoanId { get; set; }
+        public string? LoanNumber { get; set; }
         public string? FinancierName { get; set; }
         public decimal LoanAmount { get; set; }
         public decimal InterestRate { get; set; }

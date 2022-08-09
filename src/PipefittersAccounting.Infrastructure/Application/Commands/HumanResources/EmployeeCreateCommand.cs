@@ -8,6 +8,7 @@ using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResources
@@ -44,6 +45,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                     EntityGuidID.Create(WriteModel.SupervisorId),
                     PersonName.Create(WriteModel.LastName, WriteModel.FirstName, WriteModel.MiddleInitial),
                     SocialSecurityNumber.Create(WriteModel.SSN),
+                    EmailAddress.Create(WriteModel.EmailAddress),
                     PhoneNumber.Create(WriteModel.Telephone),
                     Address.Create(WriteModel.AddressLine1, WriteModel.AddressLine2, WriteModel.City, WriteModel.StateCode, WriteModel.Zipcode),
                     MaritalStatus.Create(WriteModel.MaritalStatus),

@@ -15,8 +15,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                 var sql =
                 @"SELECT 
                     COUNT(trans.CashAccountId) AS numberOfTransactions
-                FROM Finance.CashAccounts acct
-                JOIN Finance.CashAccountTransactions trans ON acct.CashAccountId = trans.CashAccountId
+                FROM CashManagement.CashAccounts acct
+                JOIN CashManagement.CashTransactions trans ON acct.CashAccountId = trans.CashAccountId
                 WHERE acct.CashAccountId = @ID";
 
                 var parameters = new DynamicParameters();

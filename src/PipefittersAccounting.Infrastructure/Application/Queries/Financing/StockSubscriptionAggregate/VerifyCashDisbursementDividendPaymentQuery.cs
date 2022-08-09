@@ -29,7 +29,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
                 FROM Finance.Financiers fin 
                 LEFT JOIN Finance.StockSubscriptions sub ON fin.FinancierID = sub.FinancierId
                 LEFT JOIN Finance.DividendDeclarations dividend ON sub.StockId = dividend.StockId
-                LEFT JOIN Finance.CashAccountTransactions cash ON dividend.DividendId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON dividend.DividendId = cash.EventID
                 WHERE dividend.DividendId = @ID";
 
                 var parameters = new DynamicParameters();

@@ -21,7 +21,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
                         ELSE cash.CashAcctTransactionAmount
                     END AS AmountPaid     
                 FROM HumanResources.TimeCards cards
-                LEFT JOIN Finance.CashAccountTransactions cash ON cards.TimeCardId = cash.EventID     
+                LEFT JOIN CashManagement.CashTransactions cash ON cards.TimeCardId = cash.EventID     
                 WHERE cards.TimeCardId = @ID";
 
                 var parameters = new DynamicParameters();

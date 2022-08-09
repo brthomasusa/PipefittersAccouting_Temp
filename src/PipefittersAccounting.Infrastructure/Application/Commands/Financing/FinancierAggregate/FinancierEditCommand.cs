@@ -1,6 +1,7 @@
 using PipefittersAccounting.Core.Financing.FinancierAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -40,6 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
                     Financier financier = getResult.Result;
                     financier.UpdateFinancierName(OrganizationName.Create(model.FinancierName));
                     financier.UpdateFinancierTelephone(PhoneNumber.Create(model.Telephone));
+                    financier.UpdateEmailAddress(EmailAddress.Create(model.EmailAddress));
                     financier.UpdateFinancierAddress(Address.Create(model.AddressLine1, model.AddressLine2!, model.City, model.StateCode, model.Zipcode));
                     financier.UpdatePointOfContact(PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial!, model.ContactTelephone));
                     financier.UpdateUserId(EntityGuidID.Create(model.UserId));

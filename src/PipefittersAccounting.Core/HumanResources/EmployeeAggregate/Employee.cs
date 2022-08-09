@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
@@ -20,6 +21,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             EntityGuidID supervisorId,
             PersonName employeeName,
             SocialSecurityNumber ssn,
+            EmailAddress emailAddress,
             PhoneNumber telephone,
             Address address,
             MaritalStatus maritalStatus,
@@ -36,6 +38,7 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
             SupervisorId = supervisorId ?? throw new ArgumentNullException("A supervisor id is required.");
             EmployeeName = employeeName ?? throw new ArgumentNullException("An employee name is required.");
             SSN = ssn ?? throw new ArgumentNullException("A social security number is required.");
+            EmailAddress = emailAddress ?? throw new ArgumentNullException("An email address is required.");
             EmployeeTelephone = telephone ?? throw new ArgumentNullException("A phone number is required.");
             EmployeeAddress = address ?? throw new ArgumentNullException("An address is required.");
             MaritalStatus = maritalStatus ?? throw new ArgumentNullException("A marital status is required.");
@@ -75,6 +78,13 @@ namespace PipefittersAccounting.Core.HumanResources.EmployeeAggregate
         public void UpdateSSN(SocialSecurityNumber value)
         {
             SSN = value ?? throw new ArgumentNullException("A social security number is required.");
+            UpdateLastModifiedDate();
+        }
+
+        public EmailAddress EmailAddress { get; private set; }
+        public void UpdateEmailAddress(EmailAddress value)
+        {
+            EmailAddress = value ?? throw new ArgumentNullException("An email address is required.");
             UpdateLastModifiedDate();
         }
 

@@ -6,7 +6,7 @@ using Xunit;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
-
+using PipefittersAccounting.Core.Shared;
 
 namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
 {
@@ -22,6 +22,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
+                EmailAddress.Create("john.doe@pipefitterssupply.com"),
                 PhoneNumber.Create("214-874-1234"),
                 Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
                 MaritalStatus.Create("S"),
@@ -48,6 +49,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
+                EmailAddress.Create("john.doe@pipefitterssupply.com"),
                 PhoneNumber.Create("214-874-1234"),
                 Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
                 MaritalStatus.Create("S"),
@@ -359,6 +361,7 @@ namespace PipefittersAccounting.UnitTests.ValueObjects.HumanResources
                 EntityGuidID.Create(Guid.NewGuid()),
                 PersonName.Create("Doe", "John", "T"),
                 SocialSecurityNumber.Create("235981457"),
+                EmailAddress.Create("john.doe@pipefitterssupply.com"),
                 PhoneNumber.Create("214-874-1234"),
                 Address.Create("123 Main Street", "Apt 25", "Dallas", "TX", "75211"),
                 MaritalStatus.Create("S"),

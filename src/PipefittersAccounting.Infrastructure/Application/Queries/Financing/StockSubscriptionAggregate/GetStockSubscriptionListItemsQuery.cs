@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
             {
                 var sql =
                 @"SELECT 
-                    subs.StockId, fin.FinancierName AS InvestorName,
+                    subs.StockId, subs.StockNumber, fin.FinancierName AS InvestorName,
                     fin.ContactFirstName + ' ' + ISNULL(fin.ContactMiddleInitial, '') + ' ' + fin.ContactLastName AS ContactName,
                     fin.ContactTelephone,  
                     subs.StockIssueDate, subs.SharesIssured, subs.PricePerShare

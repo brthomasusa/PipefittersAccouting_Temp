@@ -14,8 +14,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             {
                 var sql =
                 @"SELECT 
-                    LoanId, LoanAmount, InterestRate, LoanDate, MaturityDate, NumberOfInstallments, 
-                    creditors.FinancierName, creditors.AddressLine1, creditors.AddressLine2,
+                    LoanId, LoanNumber, LoanAmount, InterestRate, LoanDate, MaturityDate,  
+                    NumberOfInstallments, creditors.FinancierName, creditors.AddressLine1, creditors.AddressLine2,
                     creditors.City + ', ' + creditors.StateCode + ' ' + creditors.Zipcode AS CityStateZipcode, creditors.Telephone,
                     creditors.ContactFirstName + ' ' + ISNULL(creditors.ContactMiddleInitial, '') + ' ' + creditors.ContactLastName + ' (' + 
                     creditors.ContactTelephone + ') '  AS PointOfContact 

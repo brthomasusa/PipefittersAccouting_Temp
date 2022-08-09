@@ -422,17 +422,17 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerEfCore.CommandService.
             Assert.True(result.Success);
         }
 
-        [Fact]
-        public async void Process_CashAccountTransferCreateCommand_InsufficientFunds_ShouldFail()
-        {
-            CashAccountTransferWriteModel model = CashAccountTestData.GetCreateCashAccountTransferInfo();
-            model.CashTransferAmount = 35625.01M;
+        // [Fact]
+        // public async void Process_CashAccountTransferCreateCommand_InsufficientFunds_ShouldFail()
+        // {
+        //     CashAccountTransferWriteModel model = CashAccountTestData.GetCreateCashAccountTransferInfo();
+        //     model.CashTransferAmount = 35625.01M;
 
-            OperationResult<bool> result =
-                await CashAccountTransferCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
+        //     OperationResult<bool> result =
+        //         await CashAccountTransferCreateCommand.Process(model, _repository, _validationService, _unitOfWork);
 
-            Assert.False(result.Success);
-        }
+        //     Assert.False(result.Success);
+        // }
 
     }
 }

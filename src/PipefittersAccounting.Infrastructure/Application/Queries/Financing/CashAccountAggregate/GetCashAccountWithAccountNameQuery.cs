@@ -16,7 +16,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                 @"SELECT 
                     CashAccountId, CashAccountTypeId, BankName, AccountName, AccountNumber,
                     RoutingTransitNumber, DateOpened, UserId, CreatedDate, LastModifiedDate
-                FROM Finance.CashAccounts
+                FROM CashManagement.CashAccounts
                 WHERE AccountName = @ACCTNAME";
 
                 var parameters = new DynamicParameters();

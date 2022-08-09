@@ -42,15 +42,14 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                                 THEN SUM(acctTrans.CashAcctTransactionAmount)
                             ELSE 0
                             END AS CashOutflows      
-                        FROM Finance.CashAccounts cashacct
-                        -- JOIN Finance.CashAccountTypes acctTypes ON cashacct.CashAccountTypeId = acctTypes.CashAccountTypeId
-                        LEFT JOIN Finance.CashAccountTransactions acctTrans ON cashacct.CashAccountId = acctTrans.CashAccountId
+                        FROM CashManagement.CashAccounts cashacct
+                        LEFT JOIN CashManagement.CashTransactions acctTrans ON cashacct.CashAccountId = acctTrans.CashAccountId
                         GROUP BY cashacct.CashAccountId, acctTrans.CashTransactionTypeId    
                     ) AS transactionSummary
                     GROUP BY transactionSummary.CashAccountId
                 ) AS acctSummary
-                JOIN Finance.CashAccounts cashAcct ON acctSummary.CashAccountId = cashAcct.CashAccountId
-                JOIN Finance.CashAccountTypes acctTypes ON cashAcct.CashAccountTypeId = acctTypes.CashAccountTypeId
+                JOIN CashManagement.CashAccounts cashAcct ON acctSummary.CashAccountId = cashAcct.CashAccountId
+                JOIN CashManagement.CashAccountTypes acctTypes ON cashAcct.CashAccountTypeId = acctTypes.CashAccountTypeId
                 WHERE cashAcct.CashAccountId = @ID";
 
                 var parameters = new DynamicParameters();

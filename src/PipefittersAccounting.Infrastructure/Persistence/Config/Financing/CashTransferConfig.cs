@@ -11,7 +11,7 @@ namespace PipefittersAccounting.Infrastructure.Persistence.Config.Financing
     {
         public void Configure(EntityTypeBuilder<CashTransfer> entity)
         {
-            entity.ToTable("CashAccountTransfers", schema: "Finance");
+            entity.ToTable("CashTransfers", schema: "CashManagement");
             entity.HasKey(e => e.Id);
 
             entity.Property(p => p.Id).HasColumnType("UNIQUEIDENTIFIER").HasColumnName("CashTransferId");

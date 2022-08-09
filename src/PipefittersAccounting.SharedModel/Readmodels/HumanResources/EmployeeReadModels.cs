@@ -14,6 +14,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public string? MiddleInitial { get; set; }
         public string? EmployeeFullName { get; set; }
         public string? SSN { get; set; }
+        public string? EmailAddress { get; set; }
         public string? Telephone { get; set; }
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }

@@ -4,6 +4,7 @@ using PipefittersAccounting.Core.HumanResources.EmployeeAggregate;
 using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.Core.Interfaces.HumanResources;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
@@ -47,6 +48,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
                     employee.UpdateEmployeeName(PersonName.Create(WriteModel.LastName, WriteModel.FirstName, WriteModel.MiddleInitial));
                     employee.UpdateSSN(SocialSecurityNumber.Create(WriteModel.SSN));
                     employee.UpdateEmployeePhoneNumber(PhoneNumber.Create(WriteModel.Telephone));
+                    employee.UpdateEmailAddress(EmailAddress.Create(WriteModel.EmailAddress));
                     employee.UpdateEmployeeAddress(Address.Create(WriteModel.AddressLine1, WriteModel.AddressLine2, WriteModel.City, WriteModel.StateCode, WriteModel.Zipcode));
                     employee.UpdateMaritalStatus(MaritalStatus.Create(WriteModel.MaritalStatus));
                     employee.UpdateTaxExemptions(TaxExemption.Create(WriteModel.Exemptions));

@@ -25,8 +25,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                     SELECT 
                         trans.CashTransactionId, trans.CashAccountId, trans.CashTransactionTypeId, transTypes.CashTransactionTypeName,
                         trans.CashAcctTransactionDate, trans.CashAcctTransactionAmount, trans.AgentId, agents.AgentTypeId        
-                    FROM Finance.CashAccountTransactions trans
-                    JOIN Finance.CashTransactionTypes transTypes ON trans.CashTransactionTypeId = transTypes.CashTransactionTypeId
+                    FROM CashManagement.CashTransactions trans
+                    JOIN CashManagement.CashTransactionTypes transTypes ON trans.CashTransactionTypeId = transTypes.CashTransactionTypeId
                     JOIN Shared.ExternalAgents agents ON trans.AgentId = agents.AgentId
                     JOIN Shared.EconomicEvents events ON trans.EventId = events.EventId    
                 ) AS transctionDetails
@@ -41,7 +41,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                 parameters.Add("PageSize", queryParameters.PageSize, DbType.Int32);
 
                 var countParam = new { CASHACCOUNTID = queryParameters.CashAccountId };
-                var totalRecordsSql = $"SELECT COUNT(CashTransactionId) FROM Finance.CashAccountTransactions WHERE CashAccountId = @CASHACCOUNTID";
+                var totalRecordsSql = $"SELECT COUNT(CashTransactionId) FROM CashManagement.CashTransactions WHERE CashAccountId = @CASHACCOUNTID";
 
                 using (var connection = ctx.CreateConnection())
                 {

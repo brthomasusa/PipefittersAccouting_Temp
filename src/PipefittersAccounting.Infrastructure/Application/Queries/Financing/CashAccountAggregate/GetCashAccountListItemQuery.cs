@@ -45,15 +45,15 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                                 THEN SUM(acctTrans.CashAcctTransactionAmount)
                             ELSE 0
                             END AS CashOutflows      
-                        FROM Finance.CashAccounts cashacct
-                        -- JOIN Finance.CashAccountTypes acctTypes ON cashacct.CashAccountTypeId = acctTypes.CashAccountTypeId
-                        LEFT JOIN Finance.CashAccountTransactions acctTrans ON cashacct.CashAccountId = acctTrans.CashAccountId
+                        FROM CashManagement.CashAccounts cashacct
+                        -- JOIN CashManagement.CashAccountTypes acctTypes ON cashacct.CashAccountTypeId = acctTypes.CashAccountTypeId
+                        LEFT JOIN CashManagement.CashTransactions acctTrans ON cashacct.CashAccountId = acctTrans.CashAccountId
                         GROUP BY cashacct.CashAccountId, acctTrans.CashTransactionTypeId    
                     ) AS transactionSummary
                     GROUP BY transactionSummary.CashAccountId
                 ) AS acctSummary
-                JOIN Finance.CashAccounts cashAcct ON acctSummary.CashAccountId = cashAcct.CashAccountId
-                JOIN Finance.CashAccountTypes acctTypes ON cashAcct.CashAccountTypeId = acctTypes.CashAccountTypeId
+                JOIN CashManagement.CashAccounts cashAcct ON acctSummary.CashAccountId = cashAcct.CashAccountId
+                JOIN CashManagement.CashAccountTypes acctTypes ON cashAcct.CashAccountTypeId = acctTypes.CashAccountTypeId
                 ORDER BY acctTypes.CashAccountTypeName, cashAcct.AccountName
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
@@ -61,7 +61,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Cas
                 parameters.Add("Offset", Offset(queryParameters.Page, queryParameters.PageSize), DbType.Int32);
                 parameters.Add("PageSize", queryParameters.PageSize, DbType.Int32);
 
-                var totalRecordsSql = $"SELECT COUNT(CashAccountId) FROM Finance.CashAccounts";
+                var totalRecordsSql = $"SELECT COUNT(CashAccountId) FROM CashManagement.CashAccounts";
 
                 using (var connection = ctx.CreateConnection())
                 {

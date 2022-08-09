@@ -23,7 +23,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
                     END AS AmountReceived
                 FROM Finance.Financiers fin 
                 LEFT JOIN Finance.StockSubscriptions sub ON fin.FinancierID = sub.FinancierId
-                LEFT JOIN Finance.CashAccountTransactions cash ON sub.StockId = cash.EventID
+                LEFT JOIN CashManagement.CashTransactions cash ON sub.StockId = cash.EventID
                 WHERE sub.StockId = @ID";
 
                 var parameters = new DynamicParameters();

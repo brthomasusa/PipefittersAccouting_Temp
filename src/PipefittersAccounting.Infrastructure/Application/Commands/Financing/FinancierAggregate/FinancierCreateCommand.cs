@@ -3,6 +3,7 @@ using PipefittersAccounting.Infrastructure.Interfaces;
 using PipefittersAccounting.Core.Interfaces.Financing;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 using PipefittersAccounting.SharedKernel.Utilities;
+using PipefittersAccounting.Core.Shared;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.FinancierAggregate
@@ -38,6 +39,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Fi
                     EntityGuidID.Create(model.Id),
                     OrganizationName.Create(model.FinancierName),
                     PhoneNumber.Create(model.Telephone),
+                    EmailAddress.Create(model.EmailAddress),
                     Address.Create(model.AddressLine1, model.AddressLine2!, model.City, model.StateCode, model.Zipcode),
                     PointOfContact.Create(model.ContactFirstName, model.ContactLastName, model.ContactMiddleInitial!, model.ContactTelephone),
                     EntityGuidID.Create(model.UserId),

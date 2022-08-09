@@ -21,7 +21,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Fin
 
                 var sql =
                 @"SELECT 
-                    FinancierID, FinancierName, Telephone, 
+                    FinancierID, FinancierName, Telephone, EmailAddress,
                     AddressLine1, AddressLine2, City, StateCode, Zipcode,
                     AddressLine1 + ' ' + ISNULL(AddressLine2, '') + ' ' + City + ', ' + StateCode + ' ' + Zipcode AS FullAddress, 
                     ContactFirstName, ContactLastName, ContactMiddleInitial, 
