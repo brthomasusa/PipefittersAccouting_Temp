@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using System.Net.Mail;
 using Blazorise;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
@@ -101,6 +102,27 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
 
             e.Status = string.IsNullOrEmpty(maritalStatus) ? ValidationStatus.None :
                        isValid ? ValidationStatus.Success : ValidationStatus.Error;
+        }
+
+        void ValidateEmail(ValidatorEventArgs e)
+        {
+            bool isValid;
+
+            var email = Convert.ToString(e.Value);
+
+            try
+            {
+                MailAddress emailAddress = new MailAddress(email!);
+                isValid = true;
+            }
+            catch (FormatException)
+            {
+                isValid = false;
+            }
+
+
+            e.Status = string.IsNullOrEmpty(email) ? ValidationStatus.None :
+                isValid ? ValidationStatus.Success : ValidationStatus.Error;
         }
     }
 }

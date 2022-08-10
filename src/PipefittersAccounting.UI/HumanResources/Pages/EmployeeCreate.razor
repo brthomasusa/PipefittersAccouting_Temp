@@ -6,7 +6,7 @@
     SaveClickedEventHandler=@Save>
     <DataEntryFieldsTemplate>
         <Row>
-            <Column>
+            <Column ColumnSize="ColumnSize.Is2">
                 <Validation HandlerType="HandlerTypes.FluentValidation">
                     <Field>
                         <FieldLabel TextWeight="TextWeight.Bold">First Name</FieldLabel>
@@ -18,7 +18,7 @@
                     </Field>
                 </Validation>
             </Column>
-            <Column>
+            <Column ColumnSize="ColumnSize.Is2">
                 <Validation HandlerType="HandlerTypes.FluentValidation">
                     <Field>
                         <FieldLabel TextWeight="TextWeight.Bold">M.I.</FieldLabel>
@@ -30,11 +30,23 @@
                     </Field>
                 </Validation>
             </Column>
-            <Column>
+            <Column ColumnSize="ColumnSize.Is3">
                 <Validation HandlerType="HandlerTypes.FluentValidation">
                     <Field>
                         <FieldLabel TextWeight="TextWeight.Bold">Last Name</FieldLabel>
                         <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.LastName>
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is5">
+                <Validation HandlerType="HandlerTypes.FluentValidation">
+                    <Field>
+                        <FieldLabel TextWeight="TextWeight.Bold">Email Address</FieldLabel>
+                        <TextEdit Placeholder="Required" @bind-Text=@_state.EmployeeWriteModel!.EmailAddress>
                             <Feedback>
                                 <ValidationError />
                             </Feedback>

@@ -32,6 +32,18 @@
                     </Field>
                 </Validation>
             </Column>
+            <Column>
+                <Validation HandlerType="HandlerTypes.FluentValidation">
+                    <Field>
+                        <FieldLabel TextWeight="TextWeight.Bold">Email Address</FieldLabel>
+                        <TextEdit Placeholder="Required" @bind-Text=@_financierDetailModel!.EmailAddress>
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+            </Column>
         </Row>
         <Row>
             <Column>

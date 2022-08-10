@@ -27,6 +27,11 @@ namespace PipefittersAccounting.UI.Finance.Validators
                                           .Matches(@"^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$")
                                             .WithMessage("A valid phone number looks like: 123-456-7890");
 
+            RuleFor(financier => financier.EmailAddress)
+                                          .EmailAddress().WithMessage("Invalid email address.")
+                                          .NotEmpty().WithMessage("Missing email address; this is required.")
+                                          .MaximumLength(256).WithMessage("Email address cannot be longer than 256 characters");
+
             RuleFor(financier => financier.AddressLine1)
                                           .NotEmpty().WithMessage("Missing address line; this is required.")
                                           .MaximumLength(30).WithMessage("Address line cannot be longer than 30 characters");

@@ -1,6 +1,7 @@
 #pragma warning disable CS8602
 
 using Microsoft.AspNetCore.Components;
+using System.Net.Mail;
 using Blazorise;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -46,6 +47,27 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
                 await MessageService!.Error($"Error while saving financier info: {createResult.NonSuccessMessage}", "Error");
                 return OperationResult<bool>.CreateFailure(createResult.NonSuccessMessage);
             }
+        }
+
+        void ValidateEmail(ValidatorEventArgs e)
+        {
+            bool isValid;
+
+            var email = Convert.ToString(e.Value);
+
+            try
+            {
+                MailAddress emailAddress = new MailAddress(email!);
+                isValid = true;
+            }
+            catch (FormatException)
+            {
+                isValid = false;
+            }
+
+
+            e.Status = string.IsNullOrEmpty(email) ? ValidationStatus.None :
+                isValid ? ValidationStatus.Success : ValidationStatus.Error;
         }
     }
 }
