@@ -6,12 +6,12 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.HumanResources
 {
-    public class EmployeeHttpService : IEmployeeHttpService
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
 
-        public EmployeeHttpService(HttpClient client)
+        public EmployeeRepository(HttpClient client)
         {
             _client = client;
             _client.DefaultRequestHeaders.Add("Accept", "*/*");

@@ -17,7 +17,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private FinancierWriteModel? _financierDetailModel;
 
         [Parameter] public Guid FinancierId { get; set; }
-        [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IFinanciersRepository? FinanciersService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()

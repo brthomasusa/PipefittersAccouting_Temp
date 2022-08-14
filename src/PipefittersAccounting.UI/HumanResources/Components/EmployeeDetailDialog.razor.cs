@@ -13,7 +13,7 @@ namespace PipefittersAccounting.UI.HumanResources.Components
         private string selectedTab = "generalInfo";
 
         [Parameter] public Guid EmployeeId { get; set; }
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnParametersSetAsync()

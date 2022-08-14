@@ -16,7 +16,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private string? _snackBarMessage;
         private EmployeeDataEntryState _state = new();
 
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()

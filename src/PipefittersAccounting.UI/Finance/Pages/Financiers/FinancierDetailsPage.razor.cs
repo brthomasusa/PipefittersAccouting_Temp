@@ -13,7 +13,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private string? _backButtonHref = "Finance/Pages/Financiers/FinanciersListPage";
 
         [Parameter] public Guid FinancierId { get; set; }
-        [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IFinanciersRepository? FinanciersService { get; set; }
 
 
         protected async override Task OnInitializedAsync()

@@ -31,7 +31,8 @@ builder.Services.AddScoped(sp => new HttpClient
     BaseAddress = new Uri("https://localhost:7035/api/")
 });
 
-builder.Services.AddScoped<IEmployeeHttpService, EmployeeHttpService>();
-builder.Services.AddScoped<IFinanciersHttpService, FinanciersHttpService>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IFinanciersRepository, FinanciersRepository>();
+builder.Services.AddScoped<ILoanAgreementRepository, LoanAgreementRepository>();
 
 await builder.Build().RunAsync();

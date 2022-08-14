@@ -15,7 +15,7 @@ namespace PipefittersAccounting.UI.HumanResources.Components
         [Parameter] public bool ShowDialog { get; set; }
         [Parameter] public TimeCardWriteModel? TimeCardWriteModel { get; set; }
         [Parameter] public EventCallback<string> OnDialogCloseEventHandler { get; set; }
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnParametersSetAsync()

@@ -43,6 +43,32 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         }
 
         [Fact]
+        public async Task GetLoanAgreement_Search_ReturnOneLoanAgreement_ShouldSucceed()
+        {
+            GetLoanAgreementByLoanNumber queryParameters =
+                new()
+                {
+                    LoanNumber = "LOAN-10001",
+                    Page = 1,
+                    PageSize = 10
+                };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["loanNumber"] = queryParameters.LoanNumber,
+                ["page"] = queryParameters.Page.ToString(),
+                ["pageSize"] = queryParameters.PageSize.ToString()
+            };
+
+            List<FinancierListItems> response = await _client
+
+                .GetFromJsonAsync<List<FinancierListItems>>(QueryHelpers.AddQueryString($"{_urlRoot}/loanagreements/search", queryParams));
+
+            int count = response.Count;
+            Assert.Equal(1, count);
+        }
+
+        [Fact]
         public async Task GetLoanAgreementDetail_LoanAgreementsController_ShouldSucceed()
         {
             Guid loanId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1");

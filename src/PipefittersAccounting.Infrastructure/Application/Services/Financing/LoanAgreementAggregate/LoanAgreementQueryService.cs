@@ -20,6 +20,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
         public async Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters)
             => await GetLoanAgreementListItemQuery.Query(queryParameters, _dapperCtx);
 
+        public async Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreementByLoanNumber queryParameters)
+            => await GetLoanAgreementListItemQuery.Query(queryParameters, _dapperCtx);
+
         public async Task<OperationResult<Guid>> GetLoanIdOfDuplicationLoanAgreement(GetDuplicateLoanAgreement queryParameters)
             => await GetLoanIdOfDuplicationLoanAgreementQuery.Query(queryParameters, _dapperCtx);
 

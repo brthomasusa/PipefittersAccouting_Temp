@@ -22,7 +22,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private MetaData? _metaData;
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
         [Inject] public NavigationManager? NavManager { get; set; }
 

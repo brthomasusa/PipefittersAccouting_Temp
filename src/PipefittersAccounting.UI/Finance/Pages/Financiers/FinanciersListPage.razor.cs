@@ -26,7 +26,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private MetaData? _metaData;
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
-        [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IFinanciersRepository? FinanciersService { get; set; }
         [Inject] public NavigationManager? NavManager { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 

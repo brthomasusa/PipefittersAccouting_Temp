@@ -5,7 +5,7 @@ using PipefittersAccounting.SharedModel.WriteModels.HumanResources;
 
 namespace PipefittersAccounting.UI.Interfaces
 {
-    public interface IEmployeeHttpService
+    public interface IEmployeeRepository
     {
         // Alter system state with WriteModels
         Task<OperationResult<EmployeeDetail>> CreateEmployeeInfo(EmployeeWriteModel writeModel);

@@ -17,9 +17,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             {
                 var sql =
                 @"SELECT 
-                    LoanId, LoanNumber, creditors.FinancierName, LoanAmount, InterestRate, LoanDate, MaturityDate, 
-                    NumberOfInstallments, cash.CashAcctTransactionDate AS LoanProceedsReceived , 
-                    cash.CashAcctTransactionAmount LoanProceedsAmount    
+                    LoanId, LoanNumber, creditors.FinancierName, LoanAmount,
+                    InterestRate, LoanDate, MaturityDate, NumberOfInstallments, 
+                    cash.CashAcctTransactionDate AS LoanProceedsReceived , 
+                    CASE
+                        WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
+                        ELSE cash.CashAcctTransactionAmount
+                    END AS LoanProceedsAmount                        
                 FROM Finance.LoanAgreements agreements
                 INNER JOIN Finance.Financiers creditors ON agreements.FinancierId = creditors.FinancierID
                 LEFT JOIN CashManagement.CashTransactions cash ON agreements.LoanId = cash.EventID
@@ -35,6 +39,48 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
                 using (var connection = ctx.CreateConnection())
                 {
                     int count = await connection.ExecuteScalarAsync<int>(totalRecordsSql);
+                    var items = await connection.QueryAsync<LoanAgreementListItem>(sql, parameters);
+                    var pagedList = PagedList<LoanAgreementListItem>.CreatePagedList(items.ToList(), count, queryParameters.Page, queryParameters.PageSize);
+
+                    return OperationResult<PagedList<LoanAgreementListItem>>.CreateSuccessResult(pagedList);
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<PagedList<LoanAgreementListItem>>.CreateFailure(ex.Message);
+            }
+        }
+
+        public async static Task<OperationResult<PagedList<LoanAgreementListItem>>> Query(GetLoanAgreementByLoanNumber queryParameters, DapperContext ctx)
+        {
+            try
+            {
+                var sql =
+                @"SELECT 
+                    LoanId, LoanNumber, creditors.FinancierName, LoanAmount,
+                    InterestRate, LoanDate, MaturityDate, NumberOfInstallments, 
+                    cash.CashAcctTransactionDate AS LoanProceedsReceived , 
+                    CASE
+                        WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
+                        ELSE cash.CashAcctTransactionAmount
+                    END AS LoanProceedsAmount                        
+                FROM Finance.LoanAgreements agreements
+                INNER JOIN Finance.Financiers creditors ON agreements.FinancierId = creditors.FinancierID
+                LEFT JOIN CashManagement.CashTransactions cash ON agreements.LoanId = cash.EventID
+                WHERE LoanNumber LIKE CONCAT('%',@LOANNUMBER,'%')
+                ORDER BY LoanNumber
+                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("LoanNumber", queryParameters.LoanNumber, DbType.String);
+                parameters.Add("Offset", Offset(queryParameters.Page, queryParameters.PageSize), DbType.Int32);
+                parameters.Add("PageSize", queryParameters.PageSize, DbType.Int32);
+
+                var totalRecordsSql = $"SELECT COUNT(LoanId) FROM Finance.LoanAgreements WHERE LoanNumber LIKE CONCAT('%',@LoanNumber,'%')";
+
+                using (var connection = ctx.CreateConnection())
+                {
+                    int count = await connection.ExecuteScalarAsync<int>(totalRecordsSql, parameters);
                     var items = await connection.QueryAsync<LoanAgreementListItem>(sql, parameters);
                     var pagedList = PagedList<LoanAgreementListItem>.CreatePagedList(items.ToList(), count, queryParameters.Page, queryParameters.PageSize);
 

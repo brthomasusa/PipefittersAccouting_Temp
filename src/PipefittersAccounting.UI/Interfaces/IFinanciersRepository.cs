@@ -5,7 +5,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Interfaces
 {
-    public interface IFinanciersHttpService
+    public interface IFinanciersRepository
     {
         Task<OperationResult<FinancierReadModel>> CreateFinancier(FinancierWriteModel writeModel);
         Task<OperationResult<bool>> EditFinancier(FinancierWriteModel writeModel);
@@ -15,6 +15,5 @@ namespace PipefittersAccounting.UI.Interfaces
         Task<OperationResult<FinancierReadModel>> GetFinancierDetails(GetFinancier queryParameters);
         Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciers queryParameters);
         Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters);
-        Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters);
     }
 }

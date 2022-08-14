@@ -14,13 +14,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             {
                 var sql =
                 @"SELECT 
-                    LoanId, LoanNumber, LoanAmount, InterestRate, LoanDate, MaturityDate,  
+                    LoanId, LoanNumber, agreements.FinancierId, LoanAmount, InterestRate, LoanDate, MaturityDate,  
                     NumberOfInstallments, creditors.FinancierName, creditors.AddressLine1, creditors.AddressLine2,
                     creditors.City + ', ' + creditors.StateCode + ' ' + creditors.Zipcode AS CityStateZipcode, creditors.Telephone,
                     creditors.ContactFirstName + ' ' + ISNULL(creditors.ContactMiddleInitial, '') + ' ' + creditors.ContactLastName + ' (' + 
-                    creditors.ContactTelephone + ') '  AS PointOfContact 
+                    creditors.ContactTelephone + ') '  AS PointOfContact, agreements.UserId 
                 FROM Finance.LoanAgreements agreements
-                INNER JOIN Finance.Financiers creditors ON agreements.FinancierId = creditors.FinancierID      
+                INNER JOIN Finance.Financiers creditors ON agreements.FinancierId = creditors.FinancierID       
                 WHERE LoanId = @ID";
 
                 var parameters = new DynamicParameters();

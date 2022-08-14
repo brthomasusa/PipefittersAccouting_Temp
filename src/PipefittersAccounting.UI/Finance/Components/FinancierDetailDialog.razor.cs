@@ -12,7 +12,7 @@ namespace PipefittersAccounting.UI.Finance.Components
         private FinancierReadModel? _financier;
 
         [Parameter] public Guid FinancierId { get; set; }
-        [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IFinanciersRepository? FinanciersService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnParametersSetAsync()

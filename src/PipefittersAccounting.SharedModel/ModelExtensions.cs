@@ -12,7 +12,7 @@ namespace PipefittersAccounting.SharedModel
     {
         public static CashTransactionWriteModel Map(this TimeCardPaymentInfo input, Guid cashAcctId, Guid userId)
         {
-            return new CashTransactionWriteModel()
+            return new()
             {
                 CashAccountId = cashAcctId,
                 TransactionType = 6,
@@ -27,7 +27,7 @@ namespace PipefittersAccounting.SharedModel
 
         public static FinancierWriteModel Map(this FinancierReadModel input)
         {
-            return new FinancierWriteModel()
+            return new()
             {
                 Id = input.FinancierId,
                 FinancierName = input.FinancierName!,
@@ -49,7 +49,7 @@ namespace PipefittersAccounting.SharedModel
 
         public static EmployeeWriteModel Map(this EmployeeDetail input)
         {
-            return new EmployeeWriteModel()
+            return new()
             {
                 EmployeeId = input.EmployeeId,
                 SupervisorId = input.SupervisorId,
@@ -76,7 +76,7 @@ namespace PipefittersAccounting.SharedModel
 
         public static TimeCardWriteModel Map(this TimeCardWithPymtInfo input)
         {
-            return new TimeCardWriteModel()
+            return new()
             {
                 TimeCardId = input.TimeCardId,
                 EmployeeId = input.EmployeeId,
@@ -87,5 +87,21 @@ namespace PipefittersAccounting.SharedModel
                 UserId = input.UserId
             };
         }
+
+        public static LoanAgreementWriteModel Map(this LoanAgreementDetail input)
+        {
+            return new()
+            {
+                LoanId = input.LoanId,
+                FinancierId = input.FinancierId,
+                LoanAmount = input.LoanAmount,
+                InterestRate = input.InterestRate,
+                LoanDate = input.LoanDate,
+                MaturityDate = input.MaturityDate,
+                NumberOfInstallments = input.NumberOfInstallments,
+                UserId = input.UserId
+            };
+        }
+
     }
 }

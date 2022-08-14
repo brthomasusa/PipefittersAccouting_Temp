@@ -62,7 +62,6 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             };
 
             List<FinancierListItems> response = await _client
-
                 .GetFromJsonAsync<List<FinancierListItems>>(QueryHelpers.AddQueryString($"{_urlRoot}/financiers/search", queryParams));
 
             int count = response.Count;

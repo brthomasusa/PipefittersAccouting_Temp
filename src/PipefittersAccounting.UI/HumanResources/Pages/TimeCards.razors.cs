@@ -20,7 +20,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private TimeCardWriteModel? _selectedTimeCardWriteModel;
         private TimeCardWithPymtInfo? _selectedTimeCardReadModel;
 
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected async override Task OnInitializedAsync()

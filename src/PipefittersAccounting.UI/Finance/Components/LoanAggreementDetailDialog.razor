@@ -1,0 +1,26 @@
+<ErrorBoundary>
+    @if (@_loanDetail is not null)
+    {
+        <Modal @ref="@_detailModalRef">
+            <ModalContent Centered="true" Size="ModalSize.Fullscreen">
+                <ModalHeader>
+                    <ModalTitle>
+                        <span><i class="fas fa-binoculars"></i></span>
+                        Viewing loan agreement details
+                    </ModalTitle>
+                    <CloseButton Clicked="@CloseDialog" />
+                </ModalHeader>
+                <ModalBody>
+                    <ReadOnlyDetailsForm FormTitle=@_loanDetail!.FinancierName ViewModel=@_loanDetail>
+                        <FormFields>
+
+                        </FormFields>
+                    </ReadOnlyDetailsForm>
+                </ModalBody>
+                <ModalFooter>
+                    <Button id="footer-close-btn" Color="Color.Secondary" Clicked="@CloseDialog">Close</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    }
+    </ErrorBoundary>

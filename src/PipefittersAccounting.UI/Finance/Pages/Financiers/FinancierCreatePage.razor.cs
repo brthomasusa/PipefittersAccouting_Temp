@@ -17,7 +17,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.Financiers
         private string? _snackBarMessage;
         private FinancierWriteModel? _financierDetailModel;
 
-        [Inject] public IFinanciersHttpService? FinanciersService { get; set; }
+        [Inject] public IFinanciersRepository? FinanciersService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
         protected override void OnInitialized()

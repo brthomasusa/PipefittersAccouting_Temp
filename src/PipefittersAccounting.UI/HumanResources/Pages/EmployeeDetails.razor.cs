@@ -9,7 +9,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     {
         [Parameter] public Guid EmployeeId { get; set; }
         [Parameter] public EmployeeDetail? EmployeeDetailModel { get; set; }
-        [Inject] public IEmployeeHttpService? EmployeeService { get; set; }
+        [Inject] public IEmployeeRepository? EmployeeService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {

@@ -7,12 +7,12 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Services.Finance
 {
-    public class FinanciersHttpService : IFinanciersHttpService
+    public class FinanciersRepository : IFinanciersRepository
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
 
-        public FinanciersHttpService(HttpClient client)
+        public FinanciersRepository(HttpClient client)
         {
             _client = client;
             _client.DefaultRequestHeaders.Add("Accept", "*/*");
@@ -37,8 +37,5 @@ namespace PipefittersAccounting.UI.Services.Finance
 
         public async Task<OperationResult<PagingResponse<FinancierListItems>>> GetFinancierListItems(GetFinanciersByName queryParameters)
             => await GetFinanciersHttpClient.Query(queryParameters, _client, _options);
-
-        public Task<OperationResult<List<FinancierLookup>>> GetFinanciersLookup(GetFinanciersLookup queryParameters)
-            => throw new NotImplementedException();
     }
 }

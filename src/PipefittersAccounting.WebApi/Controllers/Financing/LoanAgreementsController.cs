@@ -51,6 +51,21 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedList<LoanAgreementListItem>>> GetLoanAgreements([FromQuery] GetLoanAgreementByLoanNumber qryParams)
+        {
+            OperationResult<PagedList<LoanAgreementListItem>> result = await _qrySvc.GetLoanAgreementListItems(qryParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
         [HttpGet("detail/{loanId:Guid}")]
         public async Task<ActionResult<LoanAgreementDetail>> GetLoanAgreementDetail(Guid loanId)
         {
