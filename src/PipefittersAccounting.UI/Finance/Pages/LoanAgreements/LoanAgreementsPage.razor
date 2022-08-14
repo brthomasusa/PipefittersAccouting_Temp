@@ -34,7 +34,7 @@
                             <TableHeader>
                                 <th>Loan #</th>
                                 <th>Creditor</th>
-                                <th style="text-align:center">Amount</th>
+                                <th style="text-align:center">Principal</th>
                                 <th style="text-align:center">Int. Rate</th>
                                 <th style="text-align:center">Loan Date</th>
                                 <th style="text-align:center">Maturity Date</th>
@@ -44,8 +44,8 @@
                             <RowTemplate Context="loan">
                                 <td>@loan.LoanNumber</td>
                                 <td>@loan.FinancierName</td>
-                                <td style="text-align:center">@loan.LoanAmount</td>
-                                <td style="text-align:center">@loan.InterestRate</td>
+                                <td style="text-align:center">@(string.Format("{0:n2}", loan.LoanAmount))</td>
+                                <td style="text-align:center">@(string.Format("{0:p3}", loan.InterestRate))</td>
                                 <td style="text-align:center">@loan.LoanDate.ToShortDateString()</td>
                                 <td style="text-align:center">@loan.MaturityDate.ToShortDateString()</td>
                                 <td style="text-align:center">@loan.NumberOfInstallments</td>

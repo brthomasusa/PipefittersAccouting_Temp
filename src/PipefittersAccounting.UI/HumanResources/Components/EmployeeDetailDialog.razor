@@ -2,7 +2,7 @@
     @if (@_employee is not null)
     {
         <Modal @ref="@_detailModalRef">
-            <ModalContent Centered="true" Size="ModalSize.Large">
+            <ModalContent Size="ModalSize.Large">
                 <ModalHeader>
                     <ModalTitle>
                         <span><i class="fas fa-binoculars"></i></span>
@@ -13,7 +13,8 @@
                 <ModalBody>
                     <ReadOnlyDetailsForm FormTitle=@_employee!.EmployeeFullName ViewModel=@_employee>
                         <FormFields>
-                            <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified>
+                            <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified
+                            Pills=true>
                                 <Items>
                                     <Tab Name="generalInfo">General Info</Tab>
                                     <Tab Name="addressInfo">Address</Tab>

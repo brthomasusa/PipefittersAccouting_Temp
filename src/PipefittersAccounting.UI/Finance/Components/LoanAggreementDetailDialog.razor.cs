@@ -8,6 +8,8 @@ namespace PipefittersAccounting.UI.Finance.Components
 {
     public partial class LoanAggreementDetailDialog
     {
+        private string _selectedTab = "loanInfo";
+        private string? _formTitle;
         private Modal? _detailModalRef;
         private LoanAgreementDetail? _loanDetail;
 
@@ -39,6 +41,7 @@ namespace PipefittersAccounting.UI.Finance.Components
             if (result.Success)
             {
                 _loanDetail = result.Result;
+                _formTitle = $"Loan number: {_loanDetail.LoanNumber}";
             }
             else
             {
@@ -46,6 +49,15 @@ namespace PipefittersAccounting.UI.Finance.Components
             }
         }
 
+        private Task OnSelectedTabChanged(string name)
+        {
+            _selectedTab = name;
+
+            return Task.CompletedTask;
+        }
+
         private async Task CloseDialog() => await _detailModalRef!.Hide();
+
+        private string ConvertPercentage() => $"{_loanDetail!.InterestRate * 100}%";
     }
 }

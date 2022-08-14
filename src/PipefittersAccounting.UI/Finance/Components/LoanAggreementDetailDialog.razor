@@ -1,8 +1,10 @@
+@using PipefittersAccounting.UI.Components.Common
+
 <ErrorBoundary>
     @if (@_loanDetail is not null)
     {
         <Modal @ref="@_detailModalRef">
-            <ModalContent Centered="true" Size="ModalSize.Fullscreen">
+            <ModalContent Size="ModalSize.Large">
                 <ModalHeader>
                     <ModalTitle>
                         <span><i class="fas fa-binoculars"></i></span>
@@ -11,16 +13,103 @@
                     <CloseButton Clicked="@CloseDialog" />
                 </ModalHeader>
                 <ModalBody>
-                    <ReadOnlyDetailsForm FormTitle=@_loanDetail!.FinancierName ViewModel=@_loanDetail>
+                    <ReadOnlyDetailsForm FormTitle=@_formTitle ViewModel=@_loanDetail>
                         <FormFields>
+                            <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified
+                            Pills=true>
+                                <Items>
+                                    <Tab Name="loanInfo">Loan Info</Tab>
+                                    <Tab Name="loanInstallmentInfo">Installments</Tab>
+                                </Items>
+                                <Content>
+                                    <TabPanel Name="loanInfo">
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Creditor</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_loanDetail!.FinancierName ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Principal</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(string.Format("{0:n2}", _loanDetail!.LoanAmount))
+                                                ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Interest Rate</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(string.Format("{0:p3}", _loanDetail.InterestRate))
+                                                ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Loan Date</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@_loanDetail!.LoanDate.ToShortDateString() ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Maturity Date</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(_loanDetail.MaturityDate.ToShortDateString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                        <Field Horizontal>
+                                            <FieldLabel ColumnSize="ColumnSize.Is3">Installments</FieldLabel>
+                                            <FieldBody ColumnSize="ColumnSize.Is9">
+                                                <TextEdit Text=@(_loanDetail!.NumberOfInstallments.ToString()) ReadOnly />
+                                            </FieldBody>
+                                        </Field>
+                                    </TabPanel>
+                                    <TabPanel Name="loanInstallmentInfo">
+                                        @if (_loanDetail is not null && _loanDetail.LoanInstallmentListItems!.Any())
+                                    {
 
-                        </FormFields>
-                    </ReadOnlyDetailsForm>
-                </ModalBody>
-                <ModalFooter>
-                    <Button id="footer-close-btn" Color="Color.Secondary" Clicked="@CloseDialog">Close</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                                        <BasicGrid Items=@_loanDetail.LoanInstallmentListItems>
+                                            <TableHeader>
+                                                <th style="text-align:center">#</th>
+                                                <th style="text-align:center">Due Date</th>
+                                                <th style="text-align:center">E.M.I.</th>
+                                                <th style="text-align:center">Principal</th>
+                                                <th style="text-align:center">Interest</th>
+                                                <th style="text-align:center">Balance</th>
+                                                <th style="text-align:center">Amt Paid</th>
+                                                <th style="text-align:center">Date Paid</th>
+                                            </TableHeader>
+                                            <RowTemplate Context="installment">
+                                                <td style="text-align:center">@installment.InstallmentNumber</td>
+                                                <td style="text-align:center">
+                                                    @installment.PaymentDueDate.ToShortDateString()</td>
+                                                <td style="text-align:center">
+                                                    @installment.EqualMonthlyInstallment.ToString("N2")</td>
+                                                <td style="text-align:center">@installment.PrincipalAmount.ToString("N2")
+                                                </td>
+                                                <td style="text-align:center">@installment.InterestAmount.ToString("N2")
+                                                </td>
+                                                <td style="text-align:center">@installment.PrincipalRemaining.ToString("N2")
+                                                </td>
+                                                <td style="text-align:center">@installment.AmountPaid.ToString("N2")</td>
+                                                <td style="text-align:center">@installment.DatePaid.ToShortDateString()</td>
+                                            </RowTemplate>
+                                        </BasicGrid>
+                                    }
+                                    else
+                                    {
+                                        <Paragraph>
+                                            This loan does not have a amortization schedule.
+                                        </Paragraph>
+                                    }
+                                </TabPanel>
+                            </Content>
+                        </Tabs>
+                    </FormFields>
+                </ReadOnlyDetailsForm>
+            </ModalBody>
+            <ModalFooter>
+                <Button id="footer-close-btn" Color="Color.Secondary" Clicked="@CloseDialog">Close</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
     }
     </ErrorBoundary>
