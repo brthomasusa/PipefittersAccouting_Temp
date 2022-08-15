@@ -90,7 +90,8 @@
                                                 <td style="text-align:center">@installment.PrincipalRemaining.ToString("N2")
                                                 </td>
                                                 <td style="text-align:center">@installment.AmountPaid.ToString("N2")</td>
-                                                <td style="text-align:center">@installment.DatePaid.ToShortDateString()</td>
+                                                <td style="text-align:center">@( installment.DatePaid != default ?
+                                                installment.DatePaid.ToShortDateString() : "" )</td>
                                             </RowTemplate>
                                         </BasicGrid>
                                     }

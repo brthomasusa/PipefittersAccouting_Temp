@@ -60,7 +60,8 @@
                                             <DropdownItem Clicked="@( () => ShowDetailDialog(@loan.LoanId) )">
                                                 Details
                                             </DropdownItem>
-                                            <DropdownItem Clicked="@( () => OnActionItemClicked("Edit", @loan.LoanId) )">
+                                            <DropdownItem Disabled=@( loan.LoanProceedsAmount> 0 ) Clicked="@( () =>
+                                            OnActionItemClicked("Edit", @loan.LoanId) )">
                                                 Edit
                                             </DropdownItem>
                                             <DropdownItem Disabled=@( loan.LoanProceedsAmount > 0 )

@@ -68,66 +68,66 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void EqualMonthlyInstallment_Should_have_error_when_value_NotGreaterThanZero()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.EqualMonthlyInstallment = 0;
+            installmentInfo.PaymentAmount = 0;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.EqualMonthlyInstallment);
+            result.ShouldHaveValidationErrorFor(installment => installment.PaymentAmount);
         }
 
         [Fact]
         public void LoanPrincipalAmount_Should_have_error_when_value_NotGreaterThanZero()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanPrincipalAmount = 0;
+            installmentInfo.PrincipalPymtAmount = 0;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.LoanPrincipalAmount);
+            result.ShouldHaveValidationErrorFor(installment => installment.PrincipalPymtAmount);
         }
 
         [Fact]
         public void LoanPrincipalAmount_Should_have_error_when_value_Over_100000()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanPrincipalAmount = 100000.01M;
+            installmentInfo.PrincipalPymtAmount = 100000.01M;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.LoanPrincipalAmount);
+            result.ShouldHaveValidationErrorFor(installment => installment.PrincipalPymtAmount);
         }
 
         [Fact]
         public void LoanInterestAmount_Should_have_error_when_value_IsNegative()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanInterestAmount = -1M;
+            installmentInfo.InterestPymtAmount = -1M;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.LoanInterestAmount);
+            result.ShouldHaveValidationErrorFor(installment => installment.InterestPymtAmount);
         }
 
         [Fact]
         public void LoanPrincipalRemaining_Should_have_error_when_value_IsNegative()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanPrincipalRemaining = -1M;
+            installmentInfo.PrincipalRemaining = -1M;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.LoanPrincipalRemaining);
+            result.ShouldHaveValidationErrorFor(installment => installment.PrincipalRemaining);
         }
 
         [Fact]
         public void LoanPrincipalRemaining_Should_have_error_when_value_Over_115000()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanPrincipalRemaining = 115000.01M;
+            installmentInfo.PrincipalRemaining = 115000.01M;
             LoanInstallmentWriteModelValidator validator = new();
 
             var result = validator.TestValidate(installmentInfo);
-            result.ShouldHaveValidationErrorFor(installment => installment.LoanPrincipalRemaining);
+            result.ShouldHaveValidationErrorFor(installment => installment.PrincipalRemaining);
         }
 
 
@@ -135,7 +135,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void EMI_Principal_Interest_Should_have_error_when_InValidEMI_is_specified()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.EqualMonthlyInstallment = 865.20M;          // Off by a six cents
+            installmentInfo.PaymentAmount = 865.20M;          // Off by a six cents
             LoanInstallmentWriteModelValidator validator = new();
 
             ValidationResult result = validator.Validate(installmentInfo);
@@ -147,7 +147,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void EMI_Principal_Interest_Should_have_error_when_InValidPrincipal_is_specified()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanPrincipalAmount = 831.01M;              // Off by a penny
+            installmentInfo.PrincipalPymtAmount = 831.01M;              // Off by a penny
             LoanInstallmentWriteModelValidator validator = new();
 
             ValidationResult result = validator.Validate(installmentInfo);
@@ -159,7 +159,7 @@ namespace PipefittersAccounting.UnitTests.Financing
         public void EMI_Principal_Interest_Should_have_error_when_InValidInterest_is_specified()
         {
             LoanInstallmentWriteModel installmentInfo = LoanAgreementTestData.GetLoanInstallmentInfo();
-            installmentInfo.LoanInterestAmount = 34.27M;              // Off by a penny
+            installmentInfo.InterestPymtAmount = 34.27M;              // Off by a penny
             LoanInstallmentWriteModelValidator validator = new();
 
             ValidationResult result = validator.Validate(installmentInfo);

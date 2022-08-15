@@ -23,21 +23,21 @@ namespace PipefittersAccounting.SharedModel.Validation.Financing
                                                 .NotEmpty()
                                                 .WithMessage("A non default payment due date is required.");
 
-            RuleFor(installment => installment.EqualMonthlyInstallment)
+            RuleFor(installment => installment.PaymentAmount)
                                                 .GreaterThan(0)
                                                 .LessThanOrEqualTo(115000M)
                                                 .ScalePrecision(2, 7)
                                                 .WithMessage("Monthly payment amount (EMI) can not be negative or greater thant $115,000.00.");
 
-            RuleFor(installment => installment.LoanPrincipalAmount)
+            RuleFor(installment => installment.PrincipalPymtAmount)
                                                 .GreaterThan(0)
                                                 .LessThanOrEqualTo(100000M).WithMessage("Principal portion of payment can not be negative or greater thant $100,000.00.");
 
-            RuleFor(installment => installment.LoanInterestAmount)
+            RuleFor(installment => installment.InterestPymtAmount)
                                                 .GreaterThanOrEqualTo(0)
                                                 .WithMessage("Interest portion of payment can not be negative.");
 
-            RuleFor(installment => installment.LoanPrincipalRemaining)
+            RuleFor(installment => installment.PrincipalRemaining)
                                                 .GreaterThanOrEqualTo(0)
                                                 .LessThanOrEqualTo(115000M)
                                                 .WithMessage("Loan balance remaining can not be negative or greater thant $115,000.00.");
@@ -52,7 +52,7 @@ namespace PipefittersAccounting.SharedModel.Validation.Financing
 
         private bool ValidPrincipalInterestEMI(LoanInstallmentWriteModel installmentInfo)
         {
-            if (installmentInfo.EqualMonthlyInstallment != (installmentInfo.LoanInterestAmount + installmentInfo.LoanPrincipalAmount))
+            if (installmentInfo.PaymentAmount != (installmentInfo.InterestPymtAmount + installmentInfo.PrincipalPymtAmount))
                 return false;
 
             return true;

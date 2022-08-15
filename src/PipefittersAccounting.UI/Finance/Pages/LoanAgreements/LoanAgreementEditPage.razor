@@ -1,0 +1,49 @@
+@page "/Finance/Pages/LoanAgreements/LoanAgreementEditPage/{LoanId:guid}"
+
+<PageTitle>Edit Loan Agreement</PageTitle>
+
+<DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_state FormTitle=@_formTitle
+    SaveClickedEventHandler=@Save>
+    <DataEntryFieldsTemplate>
+        <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified Pills=true>
+            <Items>
+                <Tab Name="loanInfo">Loan Agreement Details</Tab>
+                <Tab Name="loanInstallmentInfo">Loan Amortization Schedule</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="loanInfo">
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is4">
+                            <Field>
+                                <FieldLabel TextWeight="TextWeight.Bold">Loan Number</FieldLabel>
+                                <TextEdit Text=@_selectedLoanNumber ReadOnly />
+                            </Field>
+                        </Column>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Manager</FieldLabel>
+                                    <Select TValue="Guid" @bind-SelectedValue=@_state.LoanWriteModel!.FinancierId>
+                                        <ChildContent>
+                                            <SelectItem Value=@Guid.Empty>-- Select Creditor --</SelectItem>
+                                            @foreach (var creditor in _state.Financiers)
+                                            {
+                                                <SelectItem Value=@creditor.FinancierId>@creditor.FinancierName</SelectItem>
+                                            }
+                                        </ChildContent>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </Select>
+                                </Field>
+                            </Validation>
+                        </Column>
+                    </Row>
+                </TabPanel>
+                <TabPanel Name="loanInstallmentInfo">
+
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </DataEntryFieldsTemplate>
+</DataEntryForm>

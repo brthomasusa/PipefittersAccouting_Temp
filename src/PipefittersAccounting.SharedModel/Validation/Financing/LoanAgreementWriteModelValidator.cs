@@ -62,7 +62,7 @@ namespace PipefittersAccounting.SharedModel.Validation.Financing
                 if (installment.PaymentDueDate < agreementInfo.LoanDate || installment.PaymentDueDate > agreementInfo.MaturityDate)
                     return false;
 
-                if (installment.EqualMonthlyInstallment != (installment.LoanInterestAmount + installment.LoanPrincipalAmount))
+                if (installment.PaymentAmount != (installment.InterestPymtAmount + installment.PrincipalPymtAmount))
                     return false;
             }
 

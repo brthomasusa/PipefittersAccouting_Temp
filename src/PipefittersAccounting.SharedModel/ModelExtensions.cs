@@ -103,5 +103,20 @@ namespace PipefittersAccounting.SharedModel
             };
         }
 
+        public static LoanInstallmentWriteModel Map(this LoanInstallmentDetail input)
+        {
+            return new()
+            {
+                LoanInstallmentId = input.LoanInstallmentId,
+                LoanId = input.LoanId,
+                InstallmentNumber = input.InstallmentNumber,
+                PaymentDueDate = input.PaymentDueDate,
+                PaymentAmount = input.EqualMonthlyInstallment,
+                PrincipalPymtAmount = input.LoanPrincipalAmount,
+                InterestPymtAmount = input.LoanInterestAmount,
+                PrincipalRemaining = input.LoanPrincipalRemaining,
+                UserId = input.UserId
+            };
+        }
     }
 }

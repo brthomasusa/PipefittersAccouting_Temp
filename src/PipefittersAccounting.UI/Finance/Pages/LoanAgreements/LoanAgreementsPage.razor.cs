@@ -91,13 +91,13 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             }
         }
 
-        private void OnActionItemClicked(string action, Guid employeeId)
+        private void OnActionItemClicked(string action, Guid loanId)
         {
             NavManager!.NavigateTo
             (
                 action switch
                 {
-                    "Edit" => $"HumanResouces/Pages/EmployeeEditPage/{employeeId}",
+                    "Edit" => $"Finance/Pages/LoanAgreements/LoanAgreementEditPage/{loanId}",
                     _ => throw new ArgumentOutOfRangeException(nameof(action), $"Unexpected menu item: {action}"),
                 }
             );

@@ -71,10 +71,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.Financing.Lo
                         EntityGuidID.Create(x.LoanId),
                         InstallmentNumber.Create(x.InstallmentNumber),
                         PaymentDueDate.Create(x.PaymentDueDate),
-                        EqualMonthlyInstallment.Create(x.EqualMonthlyInstallment),
-                        LoanPrincipalAmount.Create(x.LoanPrincipalAmount),
-                        LoanInterestAmount.Create(x.LoanInterestAmount),
-                        LoanPrincipalRemaining.Create(x.LoanPrincipalRemaining),
+                        EqualMonthlyInstallment.Create(x.PaymentAmount),
+                        LoanPrincipalAmount.Create(x.PrincipalPymtAmount),
+                        LoanInterestAmount.Create(x.InterestPymtAmount),
+                        LoanPrincipalRemaining.Create(x.PrincipalRemaining),
                         EntityGuidID.Create(x.UserId)
                     )
                 )
