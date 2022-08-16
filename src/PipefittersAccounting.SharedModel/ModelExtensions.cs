@@ -112,9 +112,9 @@ namespace PipefittersAccounting.SharedModel
                 InstallmentNumber = input.InstallmentNumber,
                 PaymentDueDate = input.PaymentDueDate,
                 PaymentAmount = input.EqualMonthlyInstallment,
-                PrincipalPymtAmount = input.LoanPrincipalAmount,
-                InterestPymtAmount = input.LoanInterestAmount,
-                PrincipalRemaining = input.LoanPrincipalRemaining,
+                PrincipalPymtAmount = input.PrincipalAmount,
+                InterestPymtAmount = input.InterestAmount,
+                PrincipalRemaining = input.PrincipalRemaining,
                 UserId = input.UserId
             };
         }

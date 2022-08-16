@@ -30,7 +30,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             OperationResult<LoanAgreementDetail> result = await _queryService.GetLoanAgreementDetails(qryParam);
 
             Assert.True(result.Success);
-            int count = result.Result.LoanInstallmentListItems.Count;
+            int count = result.Result.LoanInstallmentDetailsList.Count;
             Assert.Equal(24, count);
         }
 

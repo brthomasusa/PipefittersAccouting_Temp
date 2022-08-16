@@ -18,7 +18,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public string? CityStateZipcode { get; set; }
         public string? Telephone { get; set; }
         public string? PointOfContact { get; set; }
-        public List<LoanInstallmentListItem>? LoanInstallmentListItems { get; set; }
+        public List<LoanInstallmentDetail>? LoanInstallmentDetailsList { get; set; } = new();
         public Guid UserId { get; set; }
     }
 
@@ -43,9 +43,11 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public int InstallmentNumber { get; set; }
         public DateTime PaymentDueDate { get; set; }
         public decimal EqualMonthlyInstallment { get; set; }
-        public decimal LoanPrincipalAmount { get; set; }
-        public decimal LoanInterestAmount { get; set; }
-        public decimal LoanPrincipalRemaining { get; set; }
+        public decimal PrincipalAmount { get; set; }
+        public decimal InterestAmount { get; set; }
+        public decimal PrincipalRemaining { get; set; }
+        public DateTime DatePaid { get; set; }
+        public decimal AmountPaid { get; set; }
         public Guid UserId { get; set; }
     }
 

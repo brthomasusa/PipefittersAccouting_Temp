@@ -38,6 +38,14 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
                 await GetFinanciers();
                 _selectedLoanNumber = result.Result.LoanNumber;
                 _state.LoanWriteModel = result.Result.Map();
+
+                List<LoanInstallmentDetail> schedule = result.Result.LoanInstallmentDetailsList!;
+
+                foreach (LoanInstallmentDetail item in schedule!)
+                {
+                    _state.LoanWriteModel.AmortizationSchedule.Add(item.Map());
+                }
+
                 await InvokeAsync(StateHasChanged);
             }
             else
@@ -82,6 +90,11 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             _selectedTab = name;
 
             return Task.CompletedTask;
+        }
+
+        private void OnActionItemClicked(string action, Guid installmentId)
+        {
+
         }
     }
 }

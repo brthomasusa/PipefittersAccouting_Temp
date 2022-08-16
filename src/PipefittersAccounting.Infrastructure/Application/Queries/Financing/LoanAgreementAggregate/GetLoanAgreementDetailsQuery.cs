@@ -35,11 +35,11 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
                         return OperationResult<LoanAgreementDetail>.CreateFailure(msg);
                     }
 
-                    OperationResult<List<LoanInstallmentListItem>> getInstallmentsResult = await GetLoanInstallments(queryParameters, ctx);
+                    OperationResult<List<LoanInstallmentDetail>> getInstallmentsResult = await GetLoanInstallments(queryParameters, ctx);
 
                     if (getInstallmentsResult.Success)
                     {
-                        detail.LoanInstallmentListItems = getInstallmentsResult.Result;
+                        detail.LoanInstallmentDetailsList = getInstallmentsResult.Result;
                         return OperationResult<LoanAgreementDetail>.CreateSuccessResult(detail);
                     }
                     else
@@ -54,12 +54,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             }
         }
 
-        private async static Task<OperationResult<List<LoanInstallmentListItem>>> GetLoanInstallments(GetLoanAgreement queryParameters, DapperContext ctx)
+        private async static Task<OperationResult<List<LoanInstallmentDetail>>> GetLoanInstallments(GetLoanAgreement queryParameters, DapperContext ctx)
         {
             GetLoanAgreementInstallments installmentParams = new() { LoanId = queryParameters.LoanId };
 
-            OperationResult<List<LoanInstallmentListItem>> getInstallmentsResult =
-                await GetLoanInstallmentListItemQuery.Query(installmentParams, ctx);
+            OperationResult<List<LoanInstallmentDetail>> getInstallmentsResult =
+                await GetLoanInstallmentDetailQuery.Query(installmentParams, ctx);
 
             if (getInstallmentsResult.Success)
             {
@@ -67,7 +67,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             }
             else
             {
-                return OperationResult<List<LoanInstallmentListItem>>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
+                return OperationResult<List<LoanInstallmentDetail>>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
             }
         }
     }
