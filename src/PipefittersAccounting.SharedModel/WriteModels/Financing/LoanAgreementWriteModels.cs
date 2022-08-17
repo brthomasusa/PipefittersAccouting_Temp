@@ -13,8 +13,8 @@ namespace PipefittersAccounting.SharedModel.WriteModels.Financing
         public DateTime LoanDate { get; set; }
         public DateTime MaturityDate { get; set; }
         public int NumberOfInstallments { get; set; }
-        public List<LoanInstallmentWriteModel> AmortizationSchedule { get; set; } = new();
         public Guid UserId { get; set; }
+        public List<LoanInstallmentWriteModel> AmortizationSchedule { get; set; } = new();
     }
 
     public class LoanInstallmentWriteModel : IWriteModel

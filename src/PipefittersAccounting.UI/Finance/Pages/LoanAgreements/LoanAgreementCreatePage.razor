@@ -2,6 +2,208 @@
 
 <PageTitle>Create Loan Agreement</PageTitle>
 
-<Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is3.FromStart.Is4.FromTop">
-    Create Loan Agreement
-</Heading>
+<DataEntryForm ReturnUri=@_returnUri SnackBarMessage=@_snackBarMessage WriteModel=@_state FormTitle=@_formTitle
+    SaveClickedEventHandler=@Save>
+    <DataEntryFieldsTemplate>
+        <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified Pills=true>
+            <Items>
+                <Tab Name="loanInfo">Loan Agreement Details</Tab>
+                <Tab Name="loanInstallmentInfo">Loan Amortization Schedule</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="loanInfo">
+
+                    <Row Margin="Margin.Is4.FromTop">
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Creditor</FieldLabel>
+                                    <Select TValue="Guid" @bind-SelectedValue=@_state.LoanWriteModel!.FinancierId>
+                                        <ChildContent>
+                                            <SelectItem Value=@Guid.Empty>-- Select Creditor --</SelectItem>
+                                            @foreach (var creditor in _state.Financiers)
+                                            {
+                                                <SelectItem Value=@creditor.FinancierId>@creditor.FinancierName</SelectItem>
+                                            }
+                                        </ChildContent>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </Select>
+                                </Field>
+                            </Validation>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Principal</FieldLabel>
+                                    <NumericPicker TValue="decimal" CurrencySymbol="$" Placeholder="Required"
+                                        @bind-Value=@_state.LoanWriteModel!.LoanAmount>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </NumericPicker>
+                                </Field>
+                            </Validation>
+                        </Column>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Interest Rate</FieldLabel>
+                                    <NumericPicker TValue="decimal" Placeholder="Required" Decimals="3"
+                                        @bind-Value=@_state.LoanWriteModel!.InterestRate>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </NumericPicker>
+                                </Field>
+                            </Validation>
+                        </Column>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Number of Installments</FieldLabel>
+                                    <NumericPicker TValue="int" Placeholder="Required" Min=1 Decimals="0"
+                                        @bind-Value=@_state.LoanWriteModel!.NumberOfInstallments>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </NumericPicker>
+                                </Field>
+                            </Validation>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Loan Date</FieldLabel>
+                                    <DateEdit TValue="DateTime" @bind-Date="@_state.LoanWriteModel!.LoanDate">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </DateEdit>
+                                </Field>
+                            </Validation>
+                        </Column>
+                        <Column>
+                            <Validation HandlerType="HandlerTypes.FluentValidation">
+                                <Field>
+                                    <FieldLabel TextWeight="TextWeight.Bold">Maturity Date</FieldLabel>
+                                    <DateEdit TValue="DateTime" @bind-Date="@_state.LoanWriteModel!.MaturityDate">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </DateEdit>
+                                </Field>
+                            </Validation>
+                        </Column>
+                    </Row>
+                </TabPanel>
+                <TabPanel Name="loanInstallmentInfo">
+                    <Row Margin="Margin.Is4.FromTop">
+                        @if (_state.LoanWriteModel.AmortizationSchedule is not null &&
+                        _state.LoanWriteModel.AmortizationSchedule.Any())
+                        {
+                            <br />
+                            <BasicGrid Items=@_state.LoanWriteModel.AmortizationSchedule>
+                                <TableHeader>
+                                    <th style="text-align:center">#</th>
+                                    <th style="text-align:center">Due Date</th>
+                                    <th style="text-align:center">Payment.</th>
+                                    <th style="text-align:center">Principal</th>
+                                    <th style="text-align:center">Interest</th>
+                                    <th style="text-align:center">Balance</th>
+                                    <th style="text-align:center">Actions</th>
+                                </TableHeader>
+                                <RowTemplate Context="installment">
+                                    <td style="text-align:center">@installment.InstallmentNumber</td>
+                                    <td style="text-align:center">
+                                        @installment.PaymentDueDate.ToShortDateString()</td>
+                                    <td style="text-align:center">
+                                        @installment.PaymentAmount.ToString("N2")</td>
+                                    <td style="text-align:center">
+                                        @installment.PrincipalPymtAmount.ToString("N2")
+                                    </td>
+                                    <td style="text-align:center">@installment.InterestPymtAmount.ToString("N2")
+                                    </td>
+                                    <td style="text-align:center">
+                                        @installment.PrincipalRemaining.ToString("N2")
+                                    </td>
+                                    <td style="text-align:center">
+                                        <Dropdown Direction="Direction.Up">
+                                            <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary"
+                                            ToggleIconVisible="false">
+                                                <span class="btn-label"><i class="fas fa-ellipsis-v"
+                                                    aria-hidden="true"></i></span>
+                                            </DropdownToggle>
+                                            <DropdownMenu class="border border-dark rounded-3 shadow-lg">
+                                                <DropdownItem
+                                                Clicked="@( () => OnActionItemClicked("edit", @installment.LoanInstallmentId) )">
+                                                    Edit
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                Clicked="@( () => OnActionItemClicked("delete", @installment.LoanInstallmentId) )">
+                                                    Delete
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </td>
+                                </RowTemplate>
+                            </BasicGrid>
+                        }
+                        else
+                        {
+                            <Paragraph>
+                                <Button Clicked="@( () => AmortizationSchedule("auto") )" Color="Color.Dark" Block
+                                Outline>Generate amortization schedule for me</Button>
+                                <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
+                                    <AlertMessage>Option 1</AlertMessage>
+                                    <AlertDescription>Make sure you have filled in values for the loan agreement before
+                                        selecting this option. At a minimum, principal, interest rate,
+                                        loan date and maturity date are necessary.
+                                    </AlertDescription>
+                                </Alert>
+                            </Paragraph>
+                            <Paragraph>
+                                <Button Clicked="@( () => AmortizationSchedule("manual") )" Color="Color.Dark" Block
+                                Outline>I want to manually create the amortization
+                                    schedule</Button>
+                                <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
+                                    <AlertMessage>Option 2</AlertMessage>
+                                    <AlertDescription>Selecting this option will display a data entry dialog to appear
+                                        where you can manually build an amortization schedule.
+                                    </AlertDescription>
+                                </Alert>
+                            </Paragraph>
+                            <Paragraph>
+                                <Button Clicked="@( () => AmortizationSchedule("import") )" Color="Color.Dark" Block
+                                Outline>I want to import amortization schedule from a
+                                    file</Button>
+                                <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
+                                    <AlertMessage>Option 3</AlertMessage>
+                                    <AlertDescription>
+                                        This option will display a file open dialog where you can
+                                        select a file that contains the amortization schedule.
+                                        Currently, xls, csv, and json file formats are supported.
+                                        <br />
+                                        The file's internal formatting is critical! It must contain the following six
+                                        columns (for xls and csv, the column order is important): <br />
+                                        Installment Number, <br />
+                                        Payment Due Date, <br />
+                                        Payment Amount (this is principal + interest payments), <br />
+                                        Principal Payment Amount, <br />
+                                        Interest Payment Amount, <br />
+                                        Principal Remaining
+                                    </AlertDescription>
+                                </Alert>
+                            </Paragraph>
+                        }
+                    </Row>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </DataEntryFieldsTemplate>
+</DataEntryForm>

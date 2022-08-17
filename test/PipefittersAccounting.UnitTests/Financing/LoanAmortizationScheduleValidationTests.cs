@@ -13,6 +13,45 @@ namespace PipefittersAccounting.UnitTests.Financing
     public class LoanAmortizationScheduleValidationTests
     {
         [Fact]
+        public void LoanAmortizationCalculator_Create_ShouldSucceed()
+        {
+            decimal annualInterestRate = 0.025M;
+            decimal principal = 5000M;
+            DateTime firstPaymentDate = new DateTime(2022, 4, 15);
+            DateTime maturityDate = new DateTime(2023, 4, 15);
+
+            LoanAmortizationCalculator calculator =
+                LoanAmortizationCalculator.Create(annualInterestRate, principal, firstPaymentDate, maturityDate);
+
+            Assert.NotNull(calculator);
+
+            PipefittersAccounting.SharedModel.WriteModels.Financing.LoanAgreementWriteModel model
+                = new() { LoanId = Guid.NewGuid() };
+
+            foreach (InstallmentRecord installment in calculator.RepaymentSchedule)
+            {
+                model!.AmortizationSchedule.Add
+                (
+                    new PipefittersAccounting.SharedModel.WriteModels.Financing.LoanInstallmentWriteModel()
+                    {
+                        LoanInstallmentId = Guid.NewGuid(),
+                        LoanId = model!.LoanId,
+                        InstallmentNumber = installment.InstallmentNumber,
+                        PaymentDueDate = installment.PaymentDueDate,
+                        PaymentAmount = installment.Payment,
+                        PrincipalPymtAmount = installment.Principal,
+                        InterestPymtAmount = installment.Interest,
+                        PrincipalRemaining = installment.RemainingBalance,
+                        UserId = new Guid("660bb318-649e-470d-9d2b-693bfb0b2744")
+                    }
+                );
+            }
+
+            int count = model!.AmortizationSchedule.Count;
+            Assert.Equal(12, count);
+        }
+
+        [Fact]
         public void LoanInstallmentPaymentSchedule_Validation_ValidInfo_Chained_ShouldSucceed()
         {
             int numberOfPayments = 12;

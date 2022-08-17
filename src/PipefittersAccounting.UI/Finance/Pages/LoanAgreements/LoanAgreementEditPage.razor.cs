@@ -80,7 +80,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             }
             else
             {
-                await MessageService!.Error($"Error while retrieving employee: {updateResult.NonSuccessMessage}", "Error");
+                await MessageService!.Error($"Error while updating loan agreement: {updateResult.NonSuccessMessage}", "Error");
                 return OperationResult<bool>.CreateFailure(updateResult.NonSuccessMessage);
             }
         }

@@ -17,6 +17,8 @@ namespace PipefittersAccounting.UI.Services.Finance
         {
             try
             {
+                Console.WriteLine(model!.ToJson());
+
                 string uri = "1.0/loanagreements/create";
 
                 var memStream = new MemoryStream();

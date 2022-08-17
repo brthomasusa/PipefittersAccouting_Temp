@@ -18,14 +18,14 @@ namespace PipefittersAccounting.UI.Services.Finance
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public Task<OperationResult<LoanAgreementDetail>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<LoanAgreementDetail>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
+            => await CreateLoanAgreementHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> EditLoanAgreement(LoanAgreementWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> EditLoanAgreement(LoanAgreementWriteModel writeModel)
+            => await EditLoanAgreementHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> DeleteLoanAgreement(LoanAgreementWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> DeleteLoanAgreement(LoanAgreementWriteModel writeModel)
+            => await DeleteLoanAgreementHttpClient.Execute(writeModel, _client, _options);
 
         public async Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
             => await GetLoanAgreementHttpClient.Query(queryParameters, _client, _options);
