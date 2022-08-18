@@ -1,0 +1,66 @@
+@using PipefittersAccounting.UI.Components.Common
+
+<ErrorBoundary>
+    <Modal @ref="@_modalRef">
+        <ModalContent Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>
+                    <span><i class="fas fa-pen"></i></span>
+                    Create loan amortization schedule
+                </ModalTitle>
+                <CloseButton Clicked="@CloseDialog" />
+            </ModalHeader>
+            <ModalBody>
+                @if (@LoanAgreement is not null)
+                {
+                    <fieldset>
+                        <legend>Loan Installment:</legend>
+                        <Validations @ref="_validations" Mode="ValidationMode.Auto" Model="@LoanAgreement">
+
+                            <Container style="background-color:#F0F0F0;">
+                                <Row>
+                                    <Column>
+                                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                                            <Field>
+                                                <FieldLabel TextWeight="TextWeight.Bold">Regular Hours</FieldLabel>
+                                                @* <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
+                                                    @bind-Value=@TimeCardWriteModel!.RegularHours>
+                                                    <Feedback>
+                                                    <ValidationError />
+                                                    </Feedback>
+                                                    </NumericPicker>
+                                                    <FieldHelp>Valid regular hours are from 0 to 185 hours.</FieldHelp> *@
+                                            </Field>
+                                        </Validation>
+                                    </Column>
+                                    <Column>
+                                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                                            <Field>
+                                                <FieldLabel TextWeight="TextWeight.Bold">Overtime Hours</FieldLabel>
+                                                @* <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
+                                                    @bind-Value=@TimeCardWriteModel!.OvertimeHours>
+                                                    <Feedback>
+                                                    <ValidationError />
+                                                    </Feedback>
+                                                    </NumericPicker>
+                                                    <FieldHelp>Valid overtime hours are from 0 to 200 hours.</FieldHelp> *@
+                                            </Field>
+                                        </Validation>
+                                    </Column>
+                                </Row>
+                            </Container>
+                        </Validations>
+                    </fieldset>
+                    <fieldset>
+                    <legend>Amortization Schedule:</legend>
+                </fieldset>
+                }
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked=@CloseDialog>Cancel</Button>
+                <Button Color=" Color.Success" Loading="@_isLoading" Clicked=@OnSave>Save</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+</ErrorBoundary>

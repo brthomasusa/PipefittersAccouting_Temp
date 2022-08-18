@@ -1,4 +1,5 @@
 @page "/Finance/Pages/LoanAgreements/LoanAgreementCreatePage"
+@using PipefittersAccounting.UI.Finance.Components
 
 <PageTitle>Create Loan Agreement</PageTitle>
 
@@ -157,7 +158,7 @@
                         else
                         {
                             <Paragraph>
-                                <Button Clicked="@( () => AmortizationSchedule("auto") )" Color="Color.Dark" Block
+                                <Button Clicked="@( () => CreateAmortizationSchedule("auto") )" Color="Color.Dark" Block
                                 Outline>Generate amortization schedule for me</Button>
                                 <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
                                     <AlertMessage>Option 1</AlertMessage>
@@ -168,7 +169,7 @@
                                 </Alert>
                             </Paragraph>
                             <Paragraph>
-                                <Button Clicked="@( () => AmortizationSchedule("manual") )" Color="Color.Dark" Block
+                                <Button Clicked="@( () => CreateAmortizationSchedule("manual") )" Color="Color.Dark" Block
                                 Outline>I want to manually create the amortization
                                     schedule</Button>
                                 <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
@@ -179,7 +180,7 @@
                                 </Alert>
                             </Paragraph>
                             <Paragraph>
-                                <Button Clicked="@( () => AmortizationSchedule("import") )" Color="Color.Dark" Block
+                                <Button Clicked="@( () => CreateAmortizationSchedule("import") )" Color="Color.Dark" Block
                                 Outline>I want to import amortization schedule from a
                                     file</Button>
                                 <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
@@ -207,3 +208,6 @@
         </Tabs>
     </DataEntryFieldsTemplate>
 </DataEntryForm>
+
+<LoanInstallmentDataEntryDialog LoanAgreement=@_state.LoanWriteModel OnDialogClosedHandler=@OnEditDialogClosed
+    ShowDialog=@_showEditDialog />

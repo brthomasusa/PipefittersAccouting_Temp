@@ -8,8 +8,10 @@ using FluentValidation;
 
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Services.Sqlite;
 using PipefittersAccounting.UI.Services.Finance;
 using PipefittersAccounting.UI.Services.HumanResources;
+using PipefittersAccounting.UI.Sqlite;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -34,5 +36,10 @@ builder.Services.AddScoped(sp => new HttpClient
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IFinanciersRepository, FinanciersRepository>();
 builder.Services.AddScoped<ILoanAgreementRepository, LoanAgreementRepository>();
+builder.Services.AddSingleton<DatabaseService<SqliteDbContext>>();
+builder.Services.AddSqliteDbContextFeature();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+await host.InitializeLoanInstallmentFeature();
+
+await host.RunAsync();

@@ -11,6 +11,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 {
     public partial class LoanAgreementCreatePage
     {
+        private bool _showEditDialog;
         private string _selectedTab = "loanInfo";
         private const string _returnUri = "Finance/Pages/LoanAgreements/LoanAgreementsPage";
         private const string _formTitle = "Create Loan Agreement Info";
@@ -46,20 +47,30 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 
         private async Task<OperationResult<bool>> Save()
         {
-            OperationResult<LoanAgreementDetail> result = await LoanAgreementService!.CreateLoanAgreement(_state.LoanWriteModel!);
-
-            if (result.Success)
+            if (_state.LoanWriteModel.AmortizationSchedule.Count > 0)
             {
-                _snackBarMessage = $"Information for loan number {result.Result.LoanNumber} was successfully created.";
-                _state.LoanWriteModel = result.Result.Map();
-                await InvokeAsync(StateHasChanged);
-                return OperationResult<bool>.CreateSuccessResult(true);
+                OperationResult<LoanAgreementDetail> result = await LoanAgreementService!.CreateLoanAgreement(_state.LoanWriteModel!);
+
+                if (result.Success)
+                {
+                    _snackBarMessage = $"Information for loan number {result.Result.LoanNumber} was successfully created.";
+                    _state.LoanWriteModel = result.Result.Map();
+                    await InvokeAsync(StateHasChanged);
+                    return OperationResult<bool>.CreateSuccessResult(true);
+                }
+                else
+                {
+                    await MessageService!.Error($"Error while creating loan agreement: {result.NonSuccessMessage}", "Error");
+                    return OperationResult<bool>.CreateFailure(result.NonSuccessMessage);
+                }
             }
             else
             {
-                await MessageService!.Error($"Error while creating loan agreement: {result.NonSuccessMessage}", "Error");
-                return OperationResult<bool>.CreateFailure(result.NonSuccessMessage);
+                string msg = "A loan agreement must have an amortization schedule.";
+                await MessageService!.Error($"Error while creating loan agreement: {msg}", "Error");
+                return OperationResult<bool>.CreateFailure(msg);
             }
+
         }
 
         private Task OnSelectedTabChanged(string name)
@@ -71,59 +82,85 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 
         private void OnActionItemClicked(string action, Guid installmentId)
         {
-
+            // LoanInstallments on second tab
         }
 
-        private async Task AmortizationSchedule(string creationMethod)
+        private async Task CreateAmortizationSchedule(string creationMethod)
         {
-            if (creationMethod.Equals("auto"))
-                await GetAmortizationSchedule();
-        }
-
-        private async Task GetAmortizationSchedule()
-        {
-            bool isValid = _state.LoanWriteModel!.LoanAmount > 0 &&
+            bool isValid = _state.LoanWriteModel!.LoanId != default &&
+                           _state.LoanWriteModel!.LoanAmount > 0 &&
                            _state.LoanWriteModel!.LoanDate != default &&
                            _state.LoanWriteModel!.MaturityDate != default &&
                            _state.LoanWriteModel!.MaturityDate > _state.LoanWriteModel!.LoanDate;
 
             if (isValid)
             {
-                LoanAmortizationCalculator schedule = LoanAmortizationCalculator.Create
-                (
-                    _state.LoanWriteModel!.InterestRate,
-                    _state.LoanWriteModel!.LoanAmount,
-                    _state.LoanWriteModel!.LoanDate.AddMonths(1),
-                    _state.LoanWriteModel!.MaturityDate
-                );
-
-                foreach (InstallmentRecord installment in schedule.RepaymentSchedule)
+                switch (creationMethod)
                 {
-                    _state.LoanWriteModel!.AmortizationSchedule.Add
-                    (
-                        new LoanInstallmentWriteModel()
-                        {
-                            LoanInstallmentId = Guid.NewGuid(),
-                            LoanId = _state.LoanWriteModel!.LoanId,
-                            InstallmentNumber = installment.InstallmentNumber,
-                            PaymentDueDate = installment.PaymentDueDate,
-                            PaymentAmount = installment.Payment,
-                            PrincipalPymtAmount = installment.Principal,
-                            InterestPymtAmount = installment.Interest,
-                            PrincipalRemaining = installment.RemainingBalance,
-                            UserId = _state.LoanWriteModel!.UserId
-                        }
-                    );
-                }
-
-                _state.LoanWriteModel!.NumberOfInstallments = schedule.RepaymentSchedule.Count;
-                await InvokeAsync(StateHasChanged);
+                    case "auto":
+                        await GenerateAmortizationSchedule();
+                        break;
+                    case "manual":
+                        await ShowDataEntryDialog();
+                        break;
+                    case "import":
+                        break;
+                };
             }
             else
             {
-                string msg = "It seems that one or more of the following is missing: interest rate, loan amount, loan date, or maturity date.";
+                string msg = "It seems that one or more of the following is missing: loan id, interest rate, loan amount, loan date, or maturity date.";
                 await MessageService!.Warning(msg, "Missing loan agreement info!");
             }
+        }
+
+        private async Task ShowDataEntryDialog()
+        {
+            _showEditDialog = true;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task OnEditDialogClosed(string action)
+        {
+            if (action.Equals("saved"))
+            {
+                await Task.CompletedTask;
+            }
+
+            _showEditDialog = false;
+        }
+
+        private async Task GenerateAmortizationSchedule()
+        {
+            LoanAmortizationCalculator schedule = LoanAmortizationCalculator.Create
+            (
+                _state.LoanWriteModel!.InterestRate,
+                _state.LoanWriteModel!.LoanAmount,
+                _state.LoanWriteModel!.LoanDate.AddMonths(1),
+                _state.LoanWriteModel!.MaturityDate
+            );
+
+            foreach (InstallmentRecord installment in schedule.RepaymentSchedule)
+            {
+                _state.LoanWriteModel!.AmortizationSchedule.Add
+                (
+                    new LoanInstallmentWriteModel()
+                    {
+                        LoanInstallmentId = Guid.NewGuid(),
+                        LoanId = _state.LoanWriteModel!.LoanId,
+                        InstallmentNumber = installment.InstallmentNumber,
+                        PaymentDueDate = installment.PaymentDueDate,
+                        PaymentAmount = installment.Payment,
+                        PrincipalPymtAmount = installment.Principal,
+                        InterestPymtAmount = installment.Interest,
+                        PrincipalRemaining = installment.RemainingBalance,
+                        UserId = _state.LoanWriteModel!.UserId
+                    }
+                );
+            }
+
+            _state.LoanWriteModel!.NumberOfInstallments = schedule.RepaymentSchedule.Count;
+            await InvokeAsync(StateHasChanged);
         }
     }
 }
