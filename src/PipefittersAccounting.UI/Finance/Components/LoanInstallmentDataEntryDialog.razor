@@ -1,11 +1,13 @@
 @using PipefittersAccounting.UI.Components.Common
+@using PipefittersAccounting.SharedModel.WriteModels.Financing
+@using Blazorise.DataGrid
 
 <ErrorBoundary>
     <Modal @ref="@_modalRef">
-        <ModalContent Size="ModalSize.Large">
+        <ModalContent Size="ModalSize.ExtraLarge">
             <ModalHeader>
                 <ModalTitle>
-                    <span><i class="fas fa-pen"></i></span>
+                    <span><i class="fas fa-plus"></i></span>
                     Create loan amortization schedule
                 </ModalTitle>
                 <CloseButton Clicked="@CloseDialog" />
@@ -13,47 +15,151 @@
             <ModalBody>
                 @if (@LoanAgreement is not null)
                 {
-                    <fieldset>
-                        <legend>Loan Installment:</legend>
-                        <Validations @ref="_validations" Mode="ValidationMode.Auto" Model="@LoanAgreement">
+                    <Card>
+                        <CardHeader>
+                            <Row TextAlignment=TextAlignment.Center Margin="Margin.Is1.FromTop">
+                                <Heading Size="HeadingSize.Is4">
+                                    Loan Installment
+                                </Heading>
+                            </Row>
+                        </CardHeader>
+                        <CardBody>
+                            @if (_currentInstallment is not null)
+                            {
+                                <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad=false Model="@_currentInstallment">
 
-                            <Container style="background-color:#F0F0F0;">
-                                <Row>
-                                    <Column>
-                                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                                            <Field>
-                                                <FieldLabel TextWeight="TextWeight.Bold">Regular Hours</FieldLabel>
-                                                @* <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
-                                                    @bind-Value=@TimeCardWriteModel!.RegularHours>
-                                                    <Feedback>
-                                                    <ValidationError />
-                                                    </Feedback>
-                                                    </NumericPicker>
-                                                    <FieldHelp>Valid regular hours are from 0 to 185 hours.</FieldHelp> *@
-                                            </Field>
-                                        </Validation>
-                                    </Column>
-                                    <Column>
-                                        <Validation HandlerType="HandlerTypes.FluentValidation">
-                                            <Field>
-                                                <FieldLabel TextWeight="TextWeight.Bold">Overtime Hours</FieldLabel>
-                                                @* <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
-                                                    @bind-Value=@TimeCardWriteModel!.OvertimeHours>
-                                                    <Feedback>
-                                                    <ValidationError />
-                                                    </Feedback>
-                                                    </NumericPicker>
-                                                    <FieldHelp>Valid overtime hours are from 0 to 200 hours.</FieldHelp> *@
-                                            </Field>
-                                        </Validation>
+                                    <Container style="background-color:#F0F0F0;">
+                                        <Row>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Installment #</FieldLabel>
+                                                        <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
+                                                        @bind-Value=@_currentInstallment!.InstallmentNumber>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </NumericPicker>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Due Date</FieldLabel>
+                                                        <DateEdit TValue="DateTime"
+                                                        @bind-Date=@_currentInstallment!.PaymentDueDate>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </DateEdit>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Principal</FieldLabel>
+                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                        @bind-Value=@_currentInstallment!.PrincipalPymtAmount>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </NumericPicker>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Interest</FieldLabel>
+                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                        @bind-Value=@_currentInstallment!.InterestPymtAmount>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </NumericPicker>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Payment</FieldLabel>
+                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                        @bind-Value=@_currentInstallment!.PaymentAmount>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </NumericPicker>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                            <Column>
+                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                    <Field>
+                                                        <FieldLabel TextWeight="TextWeight.Bold">Balance</FieldLabel>
+                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                        @bind-Value=@_currentInstallment!.PrincipalRemaining>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </NumericPicker>
+                                                    </Field>
+                                                </Validation>
+                                            </Column>
+                                        </Row>
+                                    </Container>
+                                </Validations>
+                            }
+                        </CardBody>
+                        <CardFooter>
+                            <Button Color="Color.Secondary" Clicked=@CreateEmptyInstallment>Clear</Button>
+                            <Button Color=" Color.Success" Clicked=@AddToSchedule>
+                                <span><i class="fas fa-plus"></i></span> Add to schedule
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <Row TextAlignment=TextAlignment.Center Margin="Margin.Is3.FromTop">
+                                <Heading Size="HeadingSize.Is4">
+                                    Amortization Schedule
+                                </Heading>
+                            </Row>
+                        </CardHeader>
+                        <CardBody>
+                            <Row>
+                                <Column>
+                                    @if (_installments is not null)
+                                    {
+                                            <DataGrid TItem="LoanInstallmentWriteModel" Data="@_installments" Editable="false" Striped="true" Hoverable="true"
+                                                Responsive="true" SelectedRowChanged="OnSelectedRowChanged" PageSize=20 Narrow>
+                                            <ChildContent>
+                                                <DataGridCommandColumn TItem="LoanInstallmentWriteModel"></DataGridCommandColumn>
+                                                <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InstallmentNumber" Caption="#" Sortable="false" Displayable="true" />                                            
+                                                <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentDueDate" Caption="Due Date" Sortable="false" Displayable="true" />
+                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalPymtAmount" Caption="Principal" Sortable="false" Displayable="true" />
+                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InterestPymtAmount" Caption="Interest" Sortable="false" Displayable="true" />
+                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentAmount" Caption="Payment" Sortable="false" Displayable="true" />
+                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalRemaining" Caption="Balance" Sortable="false" Displayable="true" />
+                                                </ChildContent>
+                                                <EmptyTemplate>
+                                                    <div class="box">
+                                                        No installments were found.
+                                                    </div>
+                                                </EmptyTemplate>
+                                                <LoadingTemplate>
+                                                    <div class="box">
+                                                        <progress class="progress is-small is-primary" max="100" />
+                                                    </div>
+                                                </LoadingTemplate>
+                                            </DataGrid>
+                                    }
                                     </Column>
                                 </Row>
-                            </Container>
-                        </Validations>
-                    </fieldset>
-                    <fieldset>
-                    <legend>Amortization Schedule:</legend>
-                </fieldset>
+                            </CardBody>
+                        </Card>
                 }
             </ModalBody>
             <ModalFooter>

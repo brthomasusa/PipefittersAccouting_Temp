@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Blazorise;
+using Blazorise.FluentValidation;
+using FluentValidation;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
@@ -25,6 +27,7 @@ namespace PipefittersAccounting.UI.Finance.Components
             {
                 if (_modalRef is not null && LoanAgreement is not null)
                 {
+                    CreateEmptyInstallment();
                     await _modalRef!.Show();
                     await InvokeAsync(StateHasChanged);
                 }
@@ -50,11 +53,35 @@ namespace PipefittersAccounting.UI.Finance.Components
             // }
         }
 
+        private void OnSelectedRowChanged(LoanInstallmentWriteModel installment)
+        {
+            _currentInstallment = installment;
+        }
+
         private async Task CloseDialog()
         {
             await _modalRef!.Hide();
             await OnDialogClosedHandler.InvokeAsync("canceled");
-            // await OnDialogCloseEventHandler.InvokeAsync("canceled");
+        }
+
+        private void CreateEmptyInstallment()
+        {
+            _currentInstallment = new()
+            {
+                LoanInstallmentId = Guid.NewGuid(),
+                LoanId = LoanAgreement!.LoanId,
+                UserId = LoanAgreement!.UserId
+            };
+        }
+
+        private async Task AddToSchedule()
+        {
+            if (!await _validations!.ValidateAll())
+                await MessageService!.Error($"Validation Error", "Error");
+
+            _installments.Add(_currentInstallment!);
+            CreateEmptyInstallment();
+            await InvokeAsync(StateHasChanged);
         }
     }
 }
