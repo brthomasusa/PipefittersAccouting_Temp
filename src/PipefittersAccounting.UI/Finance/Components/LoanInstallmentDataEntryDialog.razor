@@ -26,7 +26,7 @@
                         <CardBody>
                             @if (_currentInstallment is not null)
                             {
-                                <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad=false Model="@_currentInstallment">
+                                <Validations @ref="_validations" Mode="ValidationMode.Manual" ValidateOnLoad=false Model="@_currentInstallment">
 
                                     <Container style="background-color:#F0F0F0;">
                                         <Row>
@@ -44,13 +44,13 @@
                                                 </Validation>
                                             </Column>
                                             <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                <Validation Validator=@ValidatePymtDueDate>
                                                     <Field>
                                                         <FieldLabel TextWeight="TextWeight.Bold">Due Date</FieldLabel>
                                                         <DateEdit TValue="DateTime"
                                                         @bind-Date=@_currentInstallment!.PaymentDueDate>
                                                             <Feedback>
-                                                                <ValidationError />
+                                                               <ValidationError>The due date is required and must be between the loan date and maturity date!</ValidationError>
                                                             </Feedback>
                                                         </DateEdit>
                                                     </Field>

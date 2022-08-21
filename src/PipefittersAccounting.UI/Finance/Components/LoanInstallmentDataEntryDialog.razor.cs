@@ -64,6 +64,27 @@ namespace PipefittersAccounting.UI.Finance.Components
             await OnDialogClosedHandler.InvokeAsync("canceled");
         }
 
+        private void ValidatePymtDueDate(ValidatorEventArgs e)
+        {
+            bool isValid;
+            var dateString = Convert.ToString(e.Value);
+
+            try
+            {
+                var parsedDate = DateTime.Parse(dateString!);
+
+                isValid = (parsedDate >= LoanAgreement!.LoanDate && parsedDate <= LoanAgreement!.MaturityDate);
+            }
+            catch (FormatException)
+            {
+                isValid = false;
+            }
+
+
+            e.Status = string.IsNullOrEmpty(dateString) ? ValidationStatus.None :
+                isValid ? ValidationStatus.Success : ValidationStatus.Error;
+        }
+
         private void CreateEmptyInstallment()
         {
             _currentInstallment = new()
@@ -77,7 +98,7 @@ namespace PipefittersAccounting.UI.Finance.Components
         private async Task AddToSchedule()
         {
             if (!await _validations!.ValidateAll())
-                await MessageService!.Error($"Validation Error", "Error");
+                return;
 
             _installments.Add(_currentInstallment!);
             CreateEmptyInstallment();
