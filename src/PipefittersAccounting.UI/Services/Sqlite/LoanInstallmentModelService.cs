@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
+using PipefittersAccounting.UI.Utilities;
 using PipefittersAccounting.UI.Sqlite;
 
 namespace PipefittersAccounting.UI.Services.Sqlite
@@ -27,24 +29,122 @@ namespace PipefittersAccounting.UI.Services.Sqlite
 
             await using var dbContext = await _factory!.CreateDbContextAsync();
 
-            if (dbContext.LoanInstallmentModel!.Count() > 0)
+            if (dbContext.LoanInstallments!.Count() > 0)
                 return;
 
-            var result = await _httpClient!.GetFromJsonAsync<Root<LoanInstallmentModel>>("/sample-data/LoanInstallmentModel.json");
+            var result = await _httpClient!.GetFromJsonAsync<Root<LoanInstallmentWriteModel>>("/sample-data/LoanInstallmentModel.json");
 
             if (result != null)
             {
-                await dbContext.LoanInstallmentModel!.AddRangeAsync(result.Items);
+                await dbContext.LoanInstallments!.AddRangeAsync(result.Items);
             }
 
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<LoanInstallmentModel>> GetLoanInstallmentModelsAsync()
+        public async Task<OperationResult<List<LoanInstallmentWriteModel>>> GetLoanInstallmentModelsAsync()
         {
-            await using var dbContext = await _factory!.CreateDbContextAsync();
+            try
+            {
+                await using var dbContext = await _factory!.CreateDbContextAsync();
+                List<LoanInstallmentWriteModel>? installments = await dbContext.LoanInstallments!.ToListAsync();
 
-            return await dbContext.LoanInstallmentModel!.ToListAsync();
+                if (installments is not null)
+                {
+                    return OperationResult<List<LoanInstallmentWriteModel>>.CreateSuccessResult(installments);
+                }
+                else
+                {
+                    return OperationResult<List<LoanInstallmentWriteModel>>.CreateFailure("No loan installments were found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<LoanInstallmentWriteModel>>.CreateFailure($"Error: {ex.Message}");
+            }
+
+        }
+
+        public async Task<OperationResult<LoanInstallmentWriteModel>> GetLoanInstallmentModelAsync(int id)
+        {
+            try
+            {
+                await using var dbContext = await _factory!.CreateDbContextAsync();
+                LoanInstallmentWriteModel? installment = await dbContext.LoanInstallments!.FindAsync(id);
+
+                if (installment is not null)
+                {
+                    return OperationResult<LoanInstallmentWriteModel>.CreateSuccessResult(installment);
+                }
+                else
+                {
+                    return OperationResult<LoanInstallmentWriteModel>.CreateFailure($"Loan installment with installment number {id} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<LoanInstallmentWriteModel>.CreateFailure($"Error: {ex.Message}");
+            }
+
+        }
+
+        public async Task<OperationResult<bool>> AddAsync(LoanInstallmentWriteModel installment)
+        {
+            try
+            {
+                await using var dbContext = await _factory!.CreateDbContextAsync();
+
+                await dbContext.LoanInstallments!.AddAsync(installment);
+                await dbContext.SaveChangesAsync();
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure($"Error: {ex.Message}.");
+            }
+        }
+
+        public async Task<OperationResult<bool>> AddAsync(List<LoanInstallmentWriteModel> installments)
+        {
+            Console.WriteLine("AddAsync");
+            try
+            {
+                await using var dbContext = await _factory!.CreateDbContextAsync();
+
+                await dbContext.LoanInstallments!.AddRangeAsync(installments);
+                await dbContext.SaveChangesAsync();
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure($"Error: {ex.Message}.");
+            }
+        }
+
+        public async Task<OperationResult<bool>> DeleteAll()
+        {
+            Console.WriteLine("DeleteAll");
+
+            try
+            {
+                await using var dbContext = await _factory!.CreateDbContextAsync();
+
+                List<LoanInstallmentWriteModel>? installments = await dbContext.LoanInstallments!.ToListAsync();
+
+                if (installments is not null && installments.Any())
+                {
+                    dbContext.RemoveRange(installments);
+                    await dbContext.SaveChangesAsync();
+                }
+
+                return OperationResult<bool>.CreateSuccessResult(true);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.CreateFailure($"Error: {ex.Message}.");
+            }
         }
     }
 }

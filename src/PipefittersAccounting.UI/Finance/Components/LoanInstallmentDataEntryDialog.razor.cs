@@ -4,6 +4,8 @@ using Blazorise.FluentValidation;
 using FluentValidation;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Services.Sqlite;
+using PipefittersAccounting.UI.Sqlite;
 using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Finance.Components
@@ -15,6 +17,7 @@ namespace PipefittersAccounting.UI.Finance.Components
         private Modal? _modalRef;
         private LoanInstallmentWriteModel? _currentInstallment;
         private List<LoanInstallmentWriteModel> _installments = new();
+        [Inject] private LoanInstallmentModelService? SqliteDbService { get; set; }
 
         [Parameter] public bool ShowDialog { get; set; }
         [Parameter] public LoanAgreementWriteModel? LoanAgreement { get; set; }
@@ -36,21 +39,35 @@ namespace PipefittersAccounting.UI.Finance.Components
 
         private async Task OnSave()
         {
+            if (_installments.Count == 0)
+            {
+                await MessageService!.Error($"The amortization schedule requires at least one installment!", "Error");
+                return;
+            }
+
             _isLoading = true;
-            await Task.CompletedTask;
+
+            OperationResult<bool> deleteResult = await SqliteDbService!.DeleteAll();
+
+            if (deleteResult.Success)
+            {
+                OperationResult<bool> result = await SqliteDbService!.AddAsync(_installments);
+
+                if (result.Success)
+                {
+                    await MessageService!.Info($"{_installments.Count} records inserted", "It Works!");
+                }
+                else
+                {
+                    await MessageService!.Error($"Error: {result.NonSuccessMessage}", "Error");
+                }
+            }
+            else
+            {
+                await MessageService!.Error($"System Error: {deleteResult.NonSuccessMessage}", "Error");
+            }
+
             _isLoading = false;
-
-            // OperationResult<bool> result = await EmployeeService!.EditTimeCardInfo(TimeCardWriteModel!);
-
-            // if (result.Success)
-            // {
-            //     await _modalRef!.Hide();
-            //     await OnDialogCloseEventHandler.InvokeAsync("saved");
-            // }
-            // else
-            // {
-            //     await MessageService!.Error($"Error while updating timecard info: {result.NonSuccessMessage}", "Error");
-            // }
         }
 
         private void OnSelectedRowChanged(LoanInstallmentWriteModel installment)

@@ -23,7 +23,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" /> 
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />    
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0" />
+    <PackageReference Include="GemBox.Spreadsheet" Version="49.0.1084" />    
   </ItemGroup>
 
   <ItemGroup>

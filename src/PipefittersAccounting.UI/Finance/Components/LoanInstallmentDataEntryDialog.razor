@@ -116,7 +116,7 @@
                         <CardFooter>
                             <Button Color="Color.Secondary" Clicked=@CreateEmptyInstallment>Clear</Button>
                             <Button Color=" Color.Success" Clicked=@AddToSchedule>
-                                <span><i class="fas fa-plus"></i></span> Add to schedule
+                                <span><i class="fas fa-plus"></i></span> Add Installment to Schedule
                             </Button>
                         </CardFooter>
                     </Card>
@@ -164,7 +164,7 @@
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked=@CloseDialog>Cancel</Button>
-                <Button Color=" Color.Success" Loading="@_isLoading" Clicked=@OnSave>Save</Button>
+                <Button Color=" Color.Success" Loading="@_isLoading" Clicked=@OnSave>Add Schedule to Loan Agreement</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>

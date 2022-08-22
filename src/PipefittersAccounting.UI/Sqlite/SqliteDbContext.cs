@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.UI.Sqlite
 {
     public class SqliteDbContext : DbContext
     {
-        public DbSet<LoanInstallmentModel>? LoanInstallmentModel { get; set; }
+        public DbSet<LoanInstallmentWriteModel>? LoanInstallments { get; set; }
 
         private readonly Lazy<Task<IJSObjectReference>>? _moduleTask;
 
