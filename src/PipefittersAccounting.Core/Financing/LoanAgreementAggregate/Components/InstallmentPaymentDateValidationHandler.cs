@@ -5,15 +5,18 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
     public class InstallmentPaymentDateValidationHandler : Handler<LoanAmortizationSchedule>
     {
         private readonly DateTime _firstPaymentDate;
+        private readonly DateTime _loanDate;
         private readonly DateTime _maturityDate;
 
         public InstallmentPaymentDateValidationHandler
         (
             DateTime firstPaymentDate,
+            DateTime loanDate,
             DateTime maturityDate
         )
         {
             _firstPaymentDate = firstPaymentDate;
+            _loanDate = loanDate;
             _maturityDate = maturityDate;
         }
 
@@ -32,7 +35,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate.Components
 
             // Ensure all payment dates are withing the loan date and maturity date range
             var result = request.AmortizationSchedule.Values
-                .Where(i => i.PaymentDueDate < _firstPaymentDate || i.PaymentDueDate > _maturityDate)
+                .Where(i => i.PaymentDueDate < _loanDate || i.PaymentDueDate > _maturityDate)
                 .ToList();
 
             if (result is not null && result.Count > 0)

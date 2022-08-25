@@ -1,3 +1,4 @@
+@using System.Globalization
 @using PipefittersAccounting.UI.Components.Common
 @using PipefittersAccounting.SharedModel.WriteModels.Financing
 @using Blazorise.DataGrid
@@ -15,156 +16,152 @@
             <ModalBody>
                 @if (@LoanAgreement is not null)
                 {
-                    <Card>
-                        <CardHeader>
-                            <Row TextAlignment=TextAlignment.Center Margin="Margin.Is1.FromTop">
-                                <Heading Size="HeadingSize.Is4">
-                                    Loan Installment
-                                </Heading>
-                            </Row>
-                        </CardHeader>
-                        <CardBody>
+                        <Card>
+                            <CardHeader>
+                                <Row TextAlignment=TextAlignment.Center Margin="Margin.Is1.FromTop">
+                                    <Heading Size="HeadingSize.Is4">
+                                        Loan Installment
+                                    </Heading>
+                                </Row>
+                            </CardHeader>
+                            <CardBody>
                             @if (_currentInstallment is not null)
                             {
-                                <Validations @ref="_validations" Mode="ValidationMode.Manual" ValidateOnLoad=false Model="@_currentInstallment">
+                                        <Validations @ref="_validations" Mode="ValidationMode.Manual" ValidateOnLoad=false Model="@_currentInstallment">
 
-                                    <Container style="background-color:#F0F0F0;">
-                                        <Row>
-                                            <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Installment #</FieldLabel>
-                                                        <NumericPicker TValue="int" Placeholder="Required" Decimals="0"
+                                            <Container style="background-color:#F0F0F0;">
+                                                <Row>
+                                                    <Column>
+                                                        <Field>
+                                                            <FieldLabel TextWeight="TextWeight.Bold">Installment #</FieldLabel>
+                                                            <NumericPicker TValue="int" Placeholder="Required" Decimals="0" ReadOnly
                                                         @bind-Value=@_currentInstallment!.InstallmentNumber>
-                                                            <Feedback>
-                                                                <ValidationError />
-                                                            </Feedback>
-                                                        </NumericPicker>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                            <Column>
-                                                <Validation Validator=@ValidatePymtDueDate>
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Due Date</FieldLabel>
-                                                        <DateEdit TValue="DateTime"
+                                                            </NumericPicker>
+                                                        </Field>
+                                                    </Column>
+                                                    <Column>
+                                                        <Validation Validator=@ValidatePymtDueDate>
+                                                            <Field>
+                                                                <FieldLabel TextWeight="TextWeight.Bold">Due Date</FieldLabel>
+                                                                <DateEdit TValue="DateTime"
                                                         @bind-Date=@_currentInstallment!.PaymentDueDate>
-                                                            <Feedback>
-                                                               <ValidationError>The due date is required and must be between the loan date and maturity date!</ValidationError>
-                                                            </Feedback>
-                                                        </DateEdit>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                            <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Principal</FieldLabel>
-                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                                    <Feedback>
+                                                                       <ValidationError />
+                                                                    </Feedback>
+                                                                </DateEdit>
+                                                            </Field>
+                                                        </Validation>
+                                                    </Column>
+                                                    <Column>
+                                                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                            <Field>
+                                                                <FieldLabel TextWeight="TextWeight.Bold">Principal</FieldLabel>
+                                                                <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
                                                         @bind-Value=@_currentInstallment!.PrincipalPymtAmount>
-                                                            <Feedback>
-                                                                <ValidationError />
-                                                            </Feedback>
-                                                        </NumericPicker>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                            <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Interest</FieldLabel>
-                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                                    <Feedback>
+                                                                        <ValidationError />
+                                                                    </Feedback>
+                                                                </NumericPicker>
+                                                            </Field>
+                                                        </Validation>
+                                                    </Column>
+                                                    <Column>
+                                                        <Validation HandlerType="HandlerTypes.FluentValidation">
+                                                            <Field>
+                                                                <FieldLabel TextWeight="TextWeight.Bold">Interest</FieldLabel>
+                                                                <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
                                                         @bind-Value=@_currentInstallment!.InterestPymtAmount>
-                                                            <Feedback>
-                                                                <ValidationError />
-                                                            </Feedback>
-                                                        </NumericPicker>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                            <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Payment</FieldLabel>
-                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
-                                                        @bind-Value=@_currentInstallment!.PaymentAmount>
-                                                            <Feedback>
-                                                                <ValidationError />
-                                                            </Feedback>
-                                                        </NumericPicker>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                            <Column>
-                                                <Validation HandlerType="HandlerTypes.FluentValidation">
-                                                    <Field>
-                                                        <FieldLabel TextWeight="TextWeight.Bold">Balance</FieldLabel>
-                                                        <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
-                                                        @bind-Value=@_currentInstallment!.PrincipalRemaining>
-                                                            <Feedback>
-                                                                <ValidationError />
-                                                            </Feedback>
-                                                        </NumericPicker>
-                                                    </Field>
-                                                </Validation>
-                                            </Column>
-                                        </Row>
-                                    </Container>
-                                </Validations>
+                                                                    <Feedback>
+                                                                        <ValidationError />
+                                                                    </Feedback>
+                                                                </NumericPicker>
+                                                            </Field>
+                                                        </Validation>
+                                                    </Column>
+                                                    <Column>
+                                                        <Field>
+                                                            <FieldLabel TextWeight="TextWeight.Bold">Payment</FieldLabel>
+                                                            <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                        @bind-Value=@_currentInstallment!.PaymentAmount ReadOnly>
+                                                            </NumericPicker>
+                                                        </Field>
+                                                    </Column>
+                                                    <Column>
+                                                        <Field>
+                                                            <FieldLabel TextWeight="TextWeight.Bold">Balance</FieldLabel>
+                                                            <NumericPicker TValue="decimal" Placeholder="Required" Decimals="2"
+                                                    @bind-Value=@_currentInstallment!.PrincipalRemaining ReadOnly>
+                                                            </NumericPicker>
+                                                        </Field>
+                                                    </Column>
+                                                </Row>
+                                            </Container>
+                                        </Validations>
                             }
-                        </CardBody>
-                        <CardFooter>
-                            <Button Color="Color.Secondary" Clicked=@CreateEmptyInstallment>Clear</Button>
-                            <Button Color=" Color.Success" Clicked=@AddToSchedule>
-                                <span><i class="fas fa-plus"></i></span> Add Installment to Schedule
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <Row TextAlignment=TextAlignment.Center Margin="Margin.Is3.FromTop">
-                                <Heading Size="HeadingSize.Is4">
-                                    Amortization Schedule
-                                </Heading>
-                            </Row>
-                        </CardHeader>
-                        <CardBody>
-                            <Row>
-                                <Column>
+                            </CardBody>
+                            <CardFooter>
+                                <Button Color="Color.Secondary" Clicked=@CreateEmptyInstallment>Clear</Button>                                     
+                                <Button Color=" Color.Success" Clicked=@AddToSchedule>
+                                    <span><i class="fas fa-plus"></i></span> Add Installment to Schedule
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <Row TextAlignment=TextAlignment.Center Margin="Margin.Is3.FromTop">
+                                    <Heading Size="HeadingSize.Is4">
+                                        Amortization Schedule
+                                    </Heading>
+                                </Row>
+                            </CardHeader>
+                            <CardBody>
+                                <Row>
+                                    <Column>
                                     @if (_installments is not null)
                                     {
-                                            <DataGrid TItem="LoanInstallmentWriteModel" Data="@_installments" Editable="false" Striped="true" Hoverable="true"
-                                                Responsive="true" SelectedRowChanged="OnSelectedRowChanged" PageSize=20 Narrow>
-                                            <ChildContent>
-                                                <DataGridCommandColumn TItem="LoanInstallmentWriteModel"></DataGridCommandColumn>
-                                                <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InstallmentNumber" Caption="#" Sortable="false" Displayable="true" />                                            
-                                                <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentDueDate" Caption="Due Date" Sortable="false" Displayable="true" />
-                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalPymtAmount" Caption="Principal" Sortable="false" Displayable="true" />
-                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InterestPymtAmount" Caption="Interest" Sortable="false" Displayable="true" />
-                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentAmount" Caption="Payment" Sortable="false" Displayable="true" />
-                                                    <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalRemaining" Caption="Balance" Sortable="false" Displayable="true" />
-                                                </ChildContent>
-                                                <EmptyTemplate>
-                                                    <div class="box">
-                                                        No installments were found.
-                                                    </div>
-                                                </EmptyTemplate>
-                                                <LoadingTemplate>
-                                                    <div class="box">
-                                                        <progress class="progress is-small is-primary" max="100" />
-                                                    </div>
-                                                </LoadingTemplate>
-                                            </DataGrid>
+                                                <DataGrid TItem="LoanInstallmentWriteModel" Data="@_installments" Editable="true" Striped="true" Hoverable="true"
+                                                    Responsive="true" SelectedRowChanged="OnSelectedRowChanged" ShowPager PageSize=12 Narrow CommandMode="DataGridCommandMode.ButtonRow">                                                    
+                                                    <ChildContent>
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InstallmentNumber" Caption="#" Sortable="false" Displayable="true" />                                            
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentDueDate" Caption="Due Date" Sortable="false" Displayable="true" 
+                                                        DisplayFormat="{0:MMM dd, yyyy}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalPymtAmount" Caption="Principal" Sortable="false" Displayable="true" 
+                                                            DisplayFormat="{0:n2}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="InterestPymtAmount" Caption="Interest" Sortable="false" Displayable="true" 
+                                                            DisplayFormat="{0:n2}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PaymentAmount" Caption="Payment" Sortable="false" Displayable="true"
+                                                            DisplayFormat="{0:n2}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />
+                                                        <DataGridColumn TItem="LoanInstallmentWriteModel" Field="PrincipalRemaining" Caption="Balance" Sortable="false" Displayable="true" 
+                                                            DisplayFormat="{0:C}" DisplayFormatProvider="@CultureInfo.GetCultureInfo("en-US")" />                                                       
+                                                    </ChildContent>
+                                                    <EmptyTemplate>
+                                                        <div class="box">
+                                                            No installments were found.
+                                                        </div>
+                                                    </EmptyTemplate>
+                                                    <LoadingTemplate>
+                                                        <div class="box">
+                                                            <progress class="progress is-small is-primary" max="100" />
+                                                        </div>
+                                                    </LoadingTemplate>
+                                                    <ButtonRowTemplate>
+                                                        <Button Color="Color.Danger" Size="Size.Small"
+                                                            Clicked=@( () => RemoveInstallmentFromSchedule() ) Outline>
+                                                            <span><i class="far fa-trash-alt"></i></span>
+                                                        </Button>
+                                                    </ButtonRowTemplate>                                                    
+                                                </DataGrid>
                                     }
-                                    </Column>
-                                </Row>
-                            </CardBody>
-                        </Card>
+                                        </Column>
+                                    </Row>
+                                </CardBody>
+                            </Card>
                 }
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked=@CloseDialog>Cancel</Button>
-                <Button Color=" Color.Success" Loading="@_isLoading" Clicked=@OnSave>Add Schedule to Loan Agreement</Button>
+                <Button Color="Color.Primary" Clicked=@Refresh><span><i class="fas fa-sync-alt"></i></span> Refresh</Button>
+                <Button Color=" Color.Success" Loading="@_isLoading" Clicked=@AddInstallmentsToLoanAgreement><span><i class="fas fa-plus"></i></span> Add Schedule to Loan Agreement</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>

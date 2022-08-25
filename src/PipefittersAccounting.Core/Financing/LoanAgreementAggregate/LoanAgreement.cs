@@ -119,7 +119,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             if (result.Success)
             {
                 InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
-                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
+                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, LoanDate.Value, MaturityDate.Value))
                        .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount));
 
                 handler.Handle(result.Result);
@@ -147,7 +147,7 @@ namespace PipefittersAccounting.Core.Financing.LoanAgreementAggregate
             if (result.Success)
             {
                 InstallmentNumberValidationHandler handler = new(NumberOfInstallments);
-                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, MaturityDate.Value))
+                handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, LoanDate.Value, MaturityDate.Value))
                        .SetNext(new InstallmentPaymentAmountValidationHandler(LoanAmount));
 
                 handler.Handle(result.Result);

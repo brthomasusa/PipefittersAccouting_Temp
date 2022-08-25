@@ -63,7 +63,7 @@ namespace PipefittersAccounting.UnitTests.Financing
                 LoanAmortizationSchedule.Create(LoanAgreementTestData.GetInstallments12MonthsOfValidInfo());
 
             InstallmentNumberValidationHandler handler = new(numberOfPayments);
-            handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, maturityDate))
+            handler.SetNext(new InstallmentPaymentDateValidationHandler(firstPaymentDate, firstPaymentDate, maturityDate))
                    .SetNext(new InstallmentPaymentAmountValidationHandler(loanAmount));
 
             var exception = Record.Exception(() => handler.Handle(result.Result));
@@ -183,7 +183,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, firstPaymentDate, maturityDate);
 
             Action action = () => handler.Handle(result.Result);
 
@@ -205,7 +205,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, firstPaymentDate, maturityDate);
 
             Action action = () => handler.Handle(result.Result);
 
@@ -227,7 +227,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, firstPaymentDate, maturityDate);
 
             Action action = () => handler.Handle(result.Result);
 
@@ -249,7 +249,7 @@ namespace PipefittersAccounting.UnitTests.Financing
             OperationResult<LoanAmortizationSchedule> result =
                 LoanAmortizationSchedule.Create(installments);
 
-            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, maturityDate);
+            InstallmentPaymentDateValidationHandler handler = new(firstPaymentDate, firstPaymentDate, maturityDate);
 
             Action action = () => handler.Handle(result.Result);
 

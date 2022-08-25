@@ -26,7 +26,8 @@
                     @if (_managers is not null)
                     {
                         <DataGrid TItem="EmployeeManager" Data="@_managers" Editable="false" Striped="true" Hoverable="true"
-                        Responsive="true" SelectedRowChanged="OnSelectedRowChanged" PageSize=20 Narrow>
+                            Responsive="true" SelectedRowChanged="OnSelectedRowChanged" ShowPager PageSize=12 Narrow
+                            CommandMode="DataGridCommandMode.ButtonRow">
                             <ChildContent>
                                 <DataGridCommandColumn TItem="EmployeeManager"></DataGridCommandColumn>
                                 <DataGridColumn TItem="EmployeeManager" Field="ManagerFullName" Caption="Manager"
