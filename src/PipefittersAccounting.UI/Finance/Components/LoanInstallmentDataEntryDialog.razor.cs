@@ -10,7 +10,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Finance.Components
 {
-    public partial class LoanInstallmentDataEntryDialog
+    public partial class LoanInstallmentDataEntryDialog : ComponentBase
     {
         private Validations? _validations;
         private bool _isLoading;

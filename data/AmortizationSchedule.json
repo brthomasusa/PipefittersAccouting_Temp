@@ -1,0 +1,98 @@
+[
+  {
+    "InstallmentNumber": 1,
+    "PaymentDueDate": "2022-04-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 807.00,
+    "InterestAmount": 58.26,
+    "PrincipalRemaining": 9193.00
+  },
+  {
+    "InstallmentNumber": 2,
+    "PaymentDueDate": "2022-05-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 812.00,
+    "InterestAmount": 53.26,
+    "PrincipalRemaining": 8381.00
+  },
+  {
+    "InstallmentNumber": 3,
+    "PaymentDueDate": "2022-06-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 816.00,
+    "InterestAmount": 49.26,
+    "PrincipalRemaining": 7565.00
+  },
+  {
+    "InstallmentNumber": 4,
+    "PaymentDueDate": "2022-07-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 821.00,
+    "InterestAmount": 44.26,
+    "PrincipalRemaining": 6744.00
+  },
+  {
+    "InstallmentNumber": 5,
+    "PaymentDueDate": "2022-08-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 826.00,
+    "InterestAmount": 39.26,
+    "PrincipalRemaining": 5918.00
+  },
+  {
+    "InstallmentNumber": 6,
+    "PaymentDueDate": "2022-09-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 831.00,
+    "InterestAmount": 34.26,
+    "PrincipalRemaining": 5087.00
+  },
+  {
+    "InstallmentNumber": 7,
+    "PaymentDueDate": "2022-10-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 835.00,
+    "InterestAmount": 30.26,
+    "PrincipalRemaining": 4252.00
+  },
+  {
+    "InstallmentNumber": 8,
+    "PaymentDueDate": "2022-11-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 841.00,
+    "InterestAmount": 24.26,
+    "PrincipalRemaining": 3411.00
+  },
+  {
+    "InstallmentNumber": 9,
+    "PaymentDueDate": "2022-12-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 845.00,
+    "InterestAmount": 20.26,
+    "PrincipalRemaining": 2566.00
+  },
+  {
+    "InstallmentNumber": 10,
+    "PaymentDueDate": "2023-01-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 850.00,
+    "InterestAmount": 15.26,
+    "PrincipalRemaining": 1716.00
+  },
+  {
+    "InstallmentNumber": 11,
+    "PaymentDueDate": "2023-02-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 856.00,
+    "InterestAmount": 9.26,
+    "PrincipalRemaining": 860.00
+  },
+  {
+    "InstallmentNumber": 12,
+    "PaymentDueDate": "2023-03-15T00:00:00",
+    "EqualMonthlyInstallment": 865.26,
+    "PrincipalAmount": 860.00,
+    "InterestAmount": 5.26,
+    "PrincipalRemaining": 0.00
+  }
+]

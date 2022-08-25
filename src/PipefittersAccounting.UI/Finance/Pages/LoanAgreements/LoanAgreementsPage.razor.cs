@@ -8,7 +8,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 {
-    public partial class LoanAgreementsPage
+    public partial class LoanAgreementsPage : ComponentBase
     {
         private bool _showDeleteDialog;
         private Guid _selectedLoanId;
