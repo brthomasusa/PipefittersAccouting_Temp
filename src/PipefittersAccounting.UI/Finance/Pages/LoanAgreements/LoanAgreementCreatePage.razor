@@ -174,30 +174,8 @@
                                     schedule</Button>
                                 <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
                                     <AlertMessage>Option 2</AlertMessage>
-                                    <AlertDescription>Selecting this option will display a data entry dialog to appear
+                                    <AlertDescription>Selecting this option will display a data entry screen
                                         where you can manually build an amortization schedule.
-                                    </AlertDescription>
-                                </Alert>
-                            </Paragraph>
-                            <Paragraph>
-                                <Button Clicked="@( () => CreateAmortizationSchedule("import") )" Color="Color.Dark" Block
-                                Outline>I want to import amortization schedule from a
-                                    file</Button>
-                                <Alert Margin="Margin.Is3.FromTop" Color="Color.Info" Visible>
-                                    <AlertMessage>Option 3</AlertMessage>
-                                    <AlertDescription>
-                                        This option will display a file open dialog where you can
-                                        select a file that contains the amortization schedule.
-                                        Currently, xls, csv, and json file formats are supported.
-                                        <br />
-                                        The file's internal formatting is critical! It must contain the following six
-                                        columns (for xls and csv, the column order is important): <br />
-                                        Installment Number, <br />
-                                        Payment Due Date, <br />
-                                        Payment Amount (this is principal + interest payments), <br />
-                                        Principal Payment Amount, <br />
-                                        Interest Payment Amount, <br />
-                                        Principal Remaining
                                     </AlertDescription>
                                 </Alert>
                             </Paragraph>

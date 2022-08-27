@@ -1,5 +1,8 @@
+using System.IO;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Blazorise;
+using GemBox.Spreadsheet;
 using PipefittersAccounting.SharedModel;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
@@ -11,6 +14,11 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 {
     public partial class LoanAgreementCreatePage
     {
+        private Stream? _fileStream;
+        private string? _selectedFileName;
+        private List<IBrowserFile> _loadedFiles = new();
+        private bool isLoading;
+
         private bool _showEditDialog;
         private string _selectedTab = "loanInfo";
         private const string _returnUri = "Finance/Pages/LoanAgreements/LoanAgreementsPage";
@@ -161,6 +169,64 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 
             _state.LoanWriteModel!.NumberOfInstallments = schedule.RepaymentSchedule.Count;
             await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task HandleSelected(InputFileChangeEventArgs e)
+        {
+            isLoading = true;
+
+            var file = e.File;
+
+            try
+            {
+                if (file == null)
+                    return;
+
+                var path = $"/sample-data//{file.Name}";
+
+                using (var stream = file.OpenReadStream(50000000))
+                {
+                    _fileStream = stream;
+                    _selectedFileName = file.Name;
+
+                    FileStream fs = File.Create(path);
+                    await stream.CopyToAsync(fs);
+                    stream.Close();
+                    fs.Close();
+                }
+
+
+                // await using FileStream fs = new(path, FileMode.Create);
+                // await e.OpenReadStream().CopyToAsync(fs)
+
+                SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+                ExcelFile workBook = ExcelFile.Load(path);
+
+                if (workBook is not null)
+                {
+                    foreach (ExcelWorksheet worksheet in workBook.Worksheets)
+                    {
+                        Console.WriteLine("{1} {0} {1}\n", worksheet.Name, new string('#', 30));
+
+                        foreach (ExcelRow row in worksheet.Rows)
+                        {
+                            foreach (ExcelCell cell in row.AllocatedCells)
+                            {
+                                string value = cell.Value?.ToString() ?? "EMPTY";
+                                value = value.Length > 15 ? value.Remove(15) + "..." : value;
+                                Console.WriteLine($"{value} [{cell.ValueType}]".PadRight(30));
+                            }
+                            Console.WriteLine();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await MessageService!.Error($"File: {file.Name} Error: {ex.Message}", "Error reading file!");
+            }
+
+            isLoading = false;
         }
     }
 }

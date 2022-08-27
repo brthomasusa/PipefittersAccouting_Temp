@@ -29,7 +29,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
         protected async override Task OnInitializedAsync()
         {
             _pagerChangedEventHandler = GetAllLoanAgreements;
-            await _pagerChangedEventHandler.Invoke(1, 5);
+            await _pagerChangedEventHandler.Invoke(1, 10);
         }
 
         private async Task GetAllLoanAgreements(int pageNumber, int pageSize)
@@ -108,14 +108,14 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             if (action == "deleted")
             {
                 _snackBarMessage = $"Loan agreement information for loan number {_selectedLoanAgreement!.LoanNumber} was successfully deleted.";
-                await GetAllLoanAgreements(1, 5);
+                await GetAllLoanAgreements(1, 10);
                 await _snackbar!.Show();
             }
 
             _showDeleteDialog = false;
         }
 
-        private async Task SearchChanged(string searchTerm) => await GetAllLoanAgreements(searchTerm, 1, 5);
+        private async Task SearchChanged(string searchTerm) => await GetAllLoanAgreements(searchTerm, 1, 10);
 
         private void ShowDetailDialog(Guid loanId) => _selectedLoanId = loanId;
 

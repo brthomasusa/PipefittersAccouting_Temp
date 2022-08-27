@@ -30,7 +30,7 @@ namespace PipefittersAccounting.UI.Finance.Components
             {
                 if (_modalRef is not null && LoanAgreement is not null)
                 {
-                    CreateEmptyInstallment();
+                    await CreateEmptyInstallment();
                     await _modalRef!.Show();
                     await InvokeAsync(StateHasChanged);
                 }
@@ -39,12 +39,14 @@ namespace PipefittersAccounting.UI.Finance.Components
 
         private async Task AddInstallmentsToLoanAgreement()
         {
+            // Enforce the requirement that a loan agreement must have an amortization schedule
             if (_installments.Count == 0)
             {
                 await MessageService!.Error($"The amortization schedule requires at least one installment!", "Missing amortization schedule.");
                 return;
             }
 
+            // Make sure there are no duplicate payment due dates
             DateTime dupeDueDate = CheckForDuplicateDueDate();
             if (dupeDueDate != DateTime.MinValue)
             {
@@ -52,7 +54,11 @@ namespace PipefittersAccounting.UI.Finance.Components
                 return;
             }
 
+            // Sort schedule by payment due date
             SortAmortizationSchedule();
+
+            // Refresh calculatiion of principal remaining, it should
+            // equal zero or the schedule is not considered complete
             CalcRemainingBalances();
 
             decimal balance = _installments[_installments.Count - 1].PrincipalRemaining;
@@ -63,6 +69,8 @@ namespace PipefittersAccounting.UI.Finance.Components
                 return;
             }
 
+            // If here, then the schedule is valid. Add it the 
+            // loan agreement and close the loan installment dialog
             _isLoading = true;
 
             LoanAgreement!.NumberOfInstallments = _installments.Count;
@@ -94,8 +102,7 @@ namespace PipefittersAccounting.UI.Finance.Components
                 var dateString = Convert.ToString(e.Value);
                 var parsedDate = DateTime.Parse(dateString!);
 
-                isValid = (parsedDate >= LoanAgreement!.LoanDate && parsedDate <= LoanAgreement!.MaturityDate) &&
-                          IsGreatestPymtDueDate(parsedDate);
+                isValid = (parsedDate >= LoanAgreement!.LoanDate && parsedDate <= LoanAgreement!.MaturityDate);
 
                 e.Status = parsedDate == default ? ValidationStatus.Error :
                     isValid ? ValidationStatus.Success : ValidationStatus.Error;
@@ -118,11 +125,20 @@ namespace PipefittersAccounting.UI.Finance.Components
                 UserId = LoanAgreement!.UserId
             };
 
-            await _validations!.ClearAll();
+            if (_validations is not null)
+                await _validations!.ClearAll();
         }
 
         private async Task AddToSchedule()
         {
+            CalcRemainingBalances();
+
+            // Calculate payment amount
+            _currentInstallment!.PaymentAmount =
+                _currentInstallment!.PrincipalPymtAmount +
+                _currentInstallment!.InterestPymtAmount;
+
+            // Will adding this installment payment over pay the loan principal??
             if (_installments is not null && _installments.Any())
             {
                 if (_currentInstallment!.PrincipalPymtAmount > _installments[_installments.Count - 1].PrincipalRemaining)
@@ -133,29 +149,31 @@ namespace PipefittersAccounting.UI.Finance.Components
                 }
             }
 
-            _currentInstallment!.PaymentAmount =
-                _currentInstallment!.PrincipalPymtAmount +
-                _currentInstallment!.InterestPymtAmount;
-
+            // Invoke validations before attempting to add the installment to the schedule
             if (!await _validations!.ValidateAll())
                 return;
 
             _installments!.Add(_currentInstallment!);
+
+            // Calculate new remaining balance
             CalcRemainingBalances();
 
-            CreateEmptyInstallment();
+            // Clear fields of the data entry form
+            await CreateEmptyInstallment();
+
+            // Update the UI
             await InvokeAsync(StateHasChanged);
         }
 
-        private bool IsGreatestPymtDueDate(DateTime dueDate)
-        {
-            List<LoanInstallmentWriteModel> SortedList = _installments.OrderBy(i => i.PaymentDueDate).ToList();
+        // private bool IsGreatestPymtDueDate(DateTime dueDate)
+        // {
+        //     List<LoanInstallmentWriteModel> SortedList = _installments.OrderBy(i => i.PaymentDueDate).ToList();
 
-            if (SortedList is null || !SortedList.Any())
-                return true;
+        //     if (SortedList is null || !SortedList.Any())
+        //         return true;
 
-            return dueDate > SortedList[SortedList.Count - 1].PaymentDueDate;
-        }
+        //     return dueDate > SortedList[SortedList.Count - 1].PaymentDueDate;
+        // }
 
         private void CalcRemainingBalances()
         {
