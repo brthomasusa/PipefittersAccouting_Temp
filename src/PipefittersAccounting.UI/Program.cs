@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Reflection;
 
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using FluentValidation;
+using Fluxor;
 
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
@@ -38,6 +40,9 @@ builder.Services.AddScoped<IFinanciersRepository, FinanciersRepository>();
 builder.Services.AddScoped<ILoanAgreementRepository, LoanAgreementRepository>();
 builder.Services.AddSingleton<DatabaseService<SqliteDbContext>>();
 builder.Services.AddSqliteDbContextFeature();
+
+var currentAssembly = typeof(Program).Assembly;
+builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
 
 var host = builder.Build();
 await host.InitializeLoanInstallmentFeature();
