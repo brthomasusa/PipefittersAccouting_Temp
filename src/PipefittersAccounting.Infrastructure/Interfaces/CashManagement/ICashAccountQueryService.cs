@@ -22,7 +22,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.CashManagement
         Task<OperationResult<Guid>> GetInvestorIdForStockSubscription(GetInvestorIdForStockSubscriptionParameter queryParameters);
         Task<OperationResult<Guid>> GetInvestorIdForDividendDeclaration(GetDividendDeclarationParameter queryParameters);
         Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameter queryParameters);
-        Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters);
+        Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters);
         Task<OperationResult<List<TimeCardPaymentInfo>>> GetTimeCardPaymentInfo(GetTimeCardPaymentInfoParameter queryParameters);
     }
 }

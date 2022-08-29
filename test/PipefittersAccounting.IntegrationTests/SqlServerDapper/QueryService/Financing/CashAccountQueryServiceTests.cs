@@ -295,7 +295,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
 
             GetDividendDeclarationParameter queryParameters = new() { DividendId = dividendId };
 
-            OperationResult<DividendDeclarationDetails> result = await _queryService.GetDividendDeclarationDetails(queryParameters);
+            OperationResult<DividendDeclarationReadModel> result = await _queryService.GetDividendDeclarationDetails(queryParameters);
 
             Assert.True(result.Success);
             Assert.Equal(.01M, result.Result.DividendPerShare);

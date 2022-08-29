@@ -38,7 +38,25 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             List<StockSubscriptionListItem> response = await _client
                 .GetFromJsonAsync<List<StockSubscriptionListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/stocksubscriptions/list", queryParams));
 
-            Assert.Equal(7, response.Count);
+            Assert.Equal(8, response.Count);
+        }
+
+        [Fact]
+        public async Task GetStockSubscriptions_ByInvestorName_StockSubscriptionsController_ShouldSucceed()
+        {
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["InvestorName"] = "San",
+                ["page"] = pagingParams.Page.ToString(),
+                ["pageSize"] = pagingParams.PageSize.ToString()
+            };
+
+            List<StockSubscriptionListItem> response = await _client
+                .GetFromJsonAsync<List<StockSubscriptionListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/stocksubscriptions/search", queryParams));
+
+            Assert.Equal(4, response.Count);
         }
 
         [Fact]
@@ -51,7 +69,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var subscription = await JsonSerializer.DeserializeAsync<StockSubscriptionDetails>(jsonResponse, _options);
+            var subscription = await JsonSerializer.DeserializeAsync<StockSubscriptionReadModel>(jsonResponse, _options);
 
             Assert.Equal(12000, subscription.SharesIssured);
             Assert.Equal(1.00M, subscription.PricePerShare);
@@ -80,7 +98,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var subscription = await JsonSerializer.DeserializeAsync<StockSubscriptionDetails>(jsonResponse, _options);
+                    var subscription = await JsonSerializer.DeserializeAsync<StockSubscriptionReadModel>(jsonResponse, _options);
 
                     Assert.Equal(8700, subscription.SharesIssured);
                     Assert.Equal(.95M, subscription.PricePerShare);
@@ -153,7 +171,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var subscription = await JsonSerializer.DeserializeAsync<DividendDeclarationDetails>(jsonResponse, _options);
+            var subscription = await JsonSerializer.DeserializeAsync<DividendDeclarationReadModel>(jsonResponse, _options);
 
             Assert.Equal(new DateTime(2022, 2, 1), subscription.StockIssueDate);
         }
@@ -200,7 +218,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var dividend = await JsonSerializer.DeserializeAsync<DividendDeclarationDetails>(jsonResponse, _options);
+                    var dividend = await JsonSerializer.DeserializeAsync<DividendDeclarationReadModel>(jsonResponse, _options);
 
                     Assert.Equal(new DateTime(2022, 6, 1), dividend.DividendDeclarationDate);
                 }

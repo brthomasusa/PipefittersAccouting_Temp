@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.CashManagemen
 {
     public class GetDividendDeclarationDetailsQuery
     {
-        public async static Task<OperationResult<DividendDeclarationDetails>> Query(GetDividendDeclarationParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<DividendDeclarationReadModel>> Query(GetDividendDeclarationParameter queryParameters, DapperContext ctx)
         {
             try
             {
@@ -40,19 +40,19 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.CashManagemen
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    DividendDeclarationDetails detail = await connection.QueryFirstOrDefaultAsync<DividendDeclarationDetails>(sql, parameters);
+                    DividendDeclarationReadModel detail = await connection.QueryFirstOrDefaultAsync<DividendDeclarationReadModel>(sql, parameters);
                     if (detail is null)
                     {
                         string msg = $"Unable to locate a stock subscription with StockId '{queryParameters.DividendId}'!";
-                        return OperationResult<DividendDeclarationDetails>.CreateFailure(msg);
+                        return OperationResult<DividendDeclarationReadModel>.CreateFailure(msg);
                     }
 
-                    return OperationResult<DividendDeclarationDetails>.CreateSuccessResult(detail);
+                    return OperationResult<DividendDeclarationReadModel>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<DividendDeclarationDetails>.CreateFailure(ex.Message);
+                return OperationResult<DividendDeclarationReadModel>.CreateFailure(ex.Message);
             }
         }
     }

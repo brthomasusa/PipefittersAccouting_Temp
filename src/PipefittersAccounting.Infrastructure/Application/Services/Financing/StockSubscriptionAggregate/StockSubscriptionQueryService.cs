@@ -13,11 +13,22 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
 
         public StockSubscriptionQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<StockSubscriptionDetails>> GetStockSubscriptionDetails(GetStockSubscriptionParameter queryParameters)
-            => await GetStockSubscriptionDetailsQuery.Query(queryParameters, _dapperCtx);
+        public async Task<OperationResult<StockSubscriptionReadModel>> GetStockSubscriptionReadModel(GetStockSubscriptionParameter queryParameters)
+            => await GetStockSubscriptionReadModelQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemParameters queryParameters)
+        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItem queryParameters)
             => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemByInvestorName queryParameters)
+            => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationReadModel(GetDividendDeclarationParameter queryParameters)
+            => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters)
+            => await GetDividendDeclarationListItemsQuery.Query(queryParameters, _dapperCtx);
+
+
 
         public async Task<OperationResult<Guid>> VerifyStockSubscriptionIsUnique(UniqueStockSubscriptionParameters queryParameters)
             => await VerifyStockSubscriptionIsUniqueQuery.Query(queryParameters, _dapperCtx);
@@ -39,10 +50,6 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
         public async Task<OperationResult<Guid>> VerifyDividendDeclarationIdentification(GetDividendDeclarationParameter queryParameters)
             => await VerifyDividendDeclarationIdentificationQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
-            => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<PagedList<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters)
-            => await GetDividendDeclarationListItemsQuery.Query(queryParameters, _dapperCtx);
     }
 }

@@ -60,7 +60,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.CashManageme
         public async Task<OperationResult<VerificationOfCashDepositStockIssueProceeds>> VerifyCashDepositOfStockIssueProceeds(GetStockSubscriptionParameter queryParameters)
             => await VerifyCashDepositOfStockIssueProceedsQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
+        public async Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationDetails(GetDividendDeclarationParameter queryParameters)
             => await GetDividendDeclarationDetailsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<List<TimeCardPaymentInfo>>> GetTimeCardPaymentInfo(GetTimeCardPaymentInfoParameter queryParameters)

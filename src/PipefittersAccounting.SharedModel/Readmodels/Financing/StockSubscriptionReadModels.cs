@@ -2,7 +2,7 @@
 
 namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 {
-    public class StockSubscriptionDetails
+    public class StockSubscriptionReadModel
     {
         public Guid StockId { get; set; }
         public string? StockNumber { get; set; }
@@ -30,6 +30,8 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime StockIssueDate { get; set; }
         public int SharesIssued { get; set; }
         public decimal PricePerShare { get; set; }
+        public DateTime DateReceived { get; set; }
+        public decimal AmountReceived { get; set; }
     }
 
     public class VerificationOfCashDepositStockIssueProceeds
@@ -55,7 +57,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal AmountPaid { get; set; }
     }
 
-    public class DividendDeclarationDetails
+    public class DividendDeclarationReadModel
     {
         public Guid StockId { get; set; }
         public DateTime StockIssueDate { get; set; }

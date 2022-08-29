@@ -21,7 +21,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.CashManage
 
             GetDividendDeclarationParameter queryParameters = new() { DividendId = transaction.EventId };
 
-            OperationResult<DividendDeclarationDetails> detailsResult =
+            OperationResult<DividendDeclarationReadModel> detailsResult =
                 await _cashAcctQrySvc.GetDividendDeclarationDetails(queryParameters);
 
             if (detailsResult.Success)

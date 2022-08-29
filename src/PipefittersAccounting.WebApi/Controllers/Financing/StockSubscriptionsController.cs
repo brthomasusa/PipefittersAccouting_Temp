@@ -31,7 +31,28 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptions([FromQuery] GetStockSubscriptionListItemParameters qryParams)
+        public async Task<ActionResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptions([FromQuery] GetStockSubscriptionListItem qryParams)
+        {
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _qrySvc.GetStockSubscriptionListItems(qryParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            if (result.Exception is null)
+            {
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptions([FromQuery] GetStockSubscriptionListItemByInvestorName qryParams)
         {
             OperationResult<PagedList<StockSubscriptionListItem>> result = await _qrySvc.GetStockSubscriptionListItems(qryParams);
 
@@ -52,11 +73,11 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpGet("detail/{stockId:Guid}")]
-        public async Task<ActionResult<StockSubscriptionDetails>> GetStockSubscriptionDetail(Guid stockId)
+        public async Task<ActionResult<StockSubscriptionReadModel>> GetStockSubscriptionDetail(Guid stockId)
         {
             GetStockSubscriptionParameter queryParams = new() { StockId = stockId };
 
-            OperationResult<StockSubscriptionDetails> result = await _qrySvc.GetStockSubscriptionDetails(queryParams);
+            OperationResult<StockSubscriptionReadModel> result = await _qrySvc.GetStockSubscriptionReadModel(queryParams);
 
             if (result.Success)
             {
@@ -81,7 +102,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             if (writeResult.Success)
             {
                 GetStockSubscriptionParameter queryParams = new() { StockId = writeModel.StockId };
-                OperationResult<StockSubscriptionDetails> result = await _qrySvc.GetStockSubscriptionDetails(queryParams);
+                OperationResult<StockSubscriptionReadModel> result = await _qrySvc.GetStockSubscriptionReadModel(queryParams);
 
                 if (result.Success)
                 {
@@ -145,11 +166,11 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
 
         [HttpGet]
         [Route("dividenddeclaration/{dividendId:Guid}")]
-        public async Task<ActionResult<DividendDeclarationDetails>> GetDividendDeclarationDetails(Guid dividendId)
+        public async Task<ActionResult<DividendDeclarationReadModel>> GetDividendDeclarationDetails(Guid dividendId)
         {
             GetDividendDeclarationParameter queryParams = new() { DividendId = dividendId };
 
-            OperationResult<DividendDeclarationDetails> result = await _qrySvc.GetDividendDeclarationDetails(queryParams);
+            OperationResult<DividendDeclarationReadModel> result = await _qrySvc.GetDividendDeclarationReadModel(queryParams);
 
             if (result.Success)
             {
@@ -197,7 +218,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             if (writeResult.Success)
             {
                 GetDividendDeclarationParameter queryParams = new() { DividendId = writeModel.DividendId };
-                OperationResult<DividendDeclarationDetails> getResult = await _qrySvc.GetDividendDeclarationDetails(queryParams);
+                OperationResult<DividendDeclarationReadModel> getResult = await _qrySvc.GetDividendDeclarationReadModel(queryParams);
 
                 if (getResult.Success)
                 {

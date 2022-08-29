@@ -6,9 +6,9 @@ using PipefittersAccounting.SharedModel.Readmodels.Financing;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.StockSubscriptionAggregate
 {
-    public class GetStockSubscriptionDetailsQuery
+    public class GetStockSubscriptionReadModelQuery
     {
-        public async static Task<OperationResult<StockSubscriptionDetails>> Query(GetStockSubscriptionParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<StockSubscriptionReadModel>> Query(GetStockSubscriptionParameter queryParameters, DapperContext ctx)
         {
             try
             {
@@ -30,19 +30,19 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    StockSubscriptionDetails detail = await connection.QueryFirstOrDefaultAsync<StockSubscriptionDetails>(sql, parameters);
+                    StockSubscriptionReadModel detail = await connection.QueryFirstOrDefaultAsync<StockSubscriptionReadModel>(sql, parameters);
                     if (detail is null)
                     {
                         string msg = $"Unable to locate a stock subscription with StockId '{queryParameters.StockId}'!";
-                        return OperationResult<StockSubscriptionDetails>.CreateFailure(msg);
+                        return OperationResult<StockSubscriptionReadModel>.CreateFailure(msg);
                     }
 
-                    return OperationResult<StockSubscriptionDetails>.CreateSuccessResult(detail);
+                    return OperationResult<StockSubscriptionReadModel>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<StockSubscriptionDetails>.CreateFailure(ex.Message);
+                return OperationResult<StockSubscriptionReadModel>.CreateFailure(ex.Message);
             }
         }
     }

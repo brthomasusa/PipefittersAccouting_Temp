@@ -118,5 +118,18 @@ namespace PipefittersAccounting.SharedModel
                 UserId = input.UserId
             };
         }
+
+        public static StockSubscriptionWriteModel Map(this StockSubscriptionReadModel input)
+        {
+            return new()
+            {
+                StockId = input.StockId,
+                FinancierId = input.FinancierId,
+                StockIssueDate = input.StockIssueDate,
+                SharesIssued = input.SharesIssured,
+                PricePerShare = input.PricePerShare,
+                UserId = input.UserId
+            };
+        }
     }
 }

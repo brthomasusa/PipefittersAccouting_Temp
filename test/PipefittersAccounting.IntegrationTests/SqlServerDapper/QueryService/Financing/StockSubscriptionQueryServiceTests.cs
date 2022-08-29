@@ -21,22 +21,34 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task GetStockSubscriptionDetails_StockSubscriptionQueryService_ShouldSucceed()
         {
             GetStockSubscriptionParameter queryParameters = new() { StockId = new Guid("62d6e2e6-215d-4157-b7ec-1ba9b137c770") };
-            OperationResult<StockSubscriptionDetails> result = await _queryService.GetStockSubscriptionDetails(queryParameters);
+            OperationResult<StockSubscriptionReadModel> result = await _queryService.GetStockSubscriptionReadModel(queryParameters);
 
             Assert.True(result.Success);
             Assert.Equal("New World Tatoo Parlor", result.Result.InvestorName);
         }
 
         [Fact]
-        public async Task GetCashAccountListItems_StockSubscriptionQueryService_ShouldSucceed()
+        public async Task GetStockSubscriptionListItems_StockSubscriptionQueryService_ShouldSucceed()
         {
-            GetStockSubscriptionListItemParameters queryParameters = new() { Page = 1, PageSize = 10 };
+            GetStockSubscriptionListItem queryParameters = new() { Page = 1, PageSize = 10 };
             OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetStockSubscriptionListItems(queryParameters);
 
             Assert.True(result.Success);
 
             int records = result.Result.Count;
             Assert.Equal(8, records);
+        }
+
+        [Fact]
+        public async Task GetStockSubscriptionListItemsByInvestorName_StockSubscriptionQueryService_ShouldSucceed()
+        {
+            GetStockSubscriptionListItemByInvestorName queryParameters = new() { InvestorName = "San", Page = 1, PageSize = 10 };
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetStockSubscriptionListItems(queryParameters);
+
+            Assert.True(result.Success);
+
+            int records = result.Result.Count;
+            Assert.Equal(4, records);
         }
 
         [Fact]
@@ -293,7 +305,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         public async Task GetDividendDeclarationDetails_StockSubscriptionQueryService_ShouldSucceed()
         {
             GetDividendDeclarationParameter queryParameters = new() { DividendId = new Guid("2558ab00-118c-4b67-a6d0-1b9888f841bc") };
-            OperationResult<DividendDeclarationDetails> result = await _queryService.GetDividendDeclarationDetails(queryParameters);
+            OperationResult<DividendDeclarationReadModel> result = await _queryService.GetDividendDeclarationReadModel(queryParameters);
 
             Assert.True(result.Success);
             Assert.Equal(new DateTime(2022, 2, 1), result.Result.StockIssueDate);
