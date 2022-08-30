@@ -30,7 +30,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
         {
             GetLoanAgreement loanAgreementParameters = new() { LoanId = this.LoanId };
 
-            OperationResult<LoanAgreementDetail> result =
+            OperationResult<LoanAgreementReadModel> result =
                 await LoanAgreementService!.GetLoanAgreementDetails(loanAgreementParameters);
 
             if (result.Success)
@@ -39,9 +39,9 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
                 _selectedLoanNumber = result.Result.LoanNumber;
                 _state.LoanWriteModel = result.Result.Map();
 
-                List<LoanInstallmentDetail> schedule = result.Result.LoanInstallmentDetailsList!;
+                List<LoanInstallmentReadModel> schedule = result.Result.LoanInstallmentDetailsList!;
 
-                foreach (LoanInstallmentDetail item in schedule!)
+                foreach (LoanInstallmentReadModel item in schedule!)
                 {
                     _state.LoanWriteModel.AmortizationSchedule.Add(item.Map());
                 }

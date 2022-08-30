@@ -51,7 +51,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
         {
             if (_state.LoanWriteModel.AmortizationSchedule.Count > 0)
             {
-                OperationResult<LoanAgreementDetail> result = await LoanAgreementService!.CreateLoanAgreement(_state.LoanWriteModel!);
+                OperationResult<LoanAgreementReadModel> result = await LoanAgreementService!.CreateLoanAgreement(_state.LoanWriteModel!);
 
                 if (result.Success)
                 {

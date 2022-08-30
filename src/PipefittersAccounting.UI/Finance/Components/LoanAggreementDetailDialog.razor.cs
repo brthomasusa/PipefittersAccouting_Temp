@@ -11,7 +11,7 @@ namespace PipefittersAccounting.UI.Finance.Components
         private string _selectedTab = "loanInfo";
         private string? _formTitle;
         private Modal? _detailModalRef;
-        private LoanAgreementDetail? _loanDetail;
+        private LoanAgreementReadModel? _loanDetail;
 
         [Parameter] public Guid LoanId { get; set; }
         [Inject] public ILoanAgreementRepository? LoanAgreementService { get; set; }
@@ -35,7 +35,7 @@ namespace PipefittersAccounting.UI.Finance.Components
         {
             GetLoanAgreement loanAgreementParameters = new() { LoanId = this.LoanId };
 
-            OperationResult<LoanAgreementDetail> result =
+            OperationResult<LoanAgreementReadModel> result =
                 await LoanAgreementService!.GetLoanAgreementDetails(loanAgreementParameters);
 
             if (result.Success)

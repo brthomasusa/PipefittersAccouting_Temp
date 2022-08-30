@@ -18,7 +18,7 @@ namespace PipefittersAccounting.UI.Services.Finance
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<OperationResult<LoanAgreementDetail>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
+        public async Task<OperationResult<LoanAgreementReadModel>> CreateLoanAgreement(LoanAgreementWriteModel writeModel)
             => await CreateLoanAgreementHttpClient.Execute(writeModel, _client, _options);
 
         public async Task<OperationResult<bool>> EditLoanAgreement(LoanAgreementWriteModel writeModel)
@@ -27,7 +27,7 @@ namespace PipefittersAccounting.UI.Services.Finance
         public async Task<OperationResult<bool>> DeleteLoanAgreement(LoanAgreementWriteModel writeModel)
             => await DeleteLoanAgreementHttpClient.Execute(writeModel, _client, _options);
 
-        public async Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
+        public async Task<OperationResult<LoanAgreementReadModel>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
             => await GetLoanAgreementHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters)

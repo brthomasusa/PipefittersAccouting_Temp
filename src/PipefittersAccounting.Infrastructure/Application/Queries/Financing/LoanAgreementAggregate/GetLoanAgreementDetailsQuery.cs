@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
 {
     public class GetLoanAgreementDetailsQuery
     {
-        public async static Task<OperationResult<LoanAgreementDetail>> Query(GetLoanAgreement queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<LoanAgreementReadModel>> Query(GetLoanAgreement queryParameters, DapperContext ctx)
         {
             try
             {
@@ -28,37 +28,37 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    LoanAgreementDetail detail = await connection.QueryFirstOrDefaultAsync<LoanAgreementDetail>(sql, parameters);
+                    LoanAgreementReadModel detail = await connection.QueryFirstOrDefaultAsync<LoanAgreementReadModel>(sql, parameters);
                     if (detail is null)
                     {
                         string msg = $"Unable to locate a loan agreement with LoanId: {queryParameters.LoanId}.";
-                        return OperationResult<LoanAgreementDetail>.CreateFailure(msg);
+                        return OperationResult<LoanAgreementReadModel>.CreateFailure(msg);
                     }
 
-                    OperationResult<List<LoanInstallmentDetail>> getInstallmentsResult = await GetLoanInstallments(queryParameters, ctx);
+                    OperationResult<List<LoanInstallmentReadModel>> getInstallmentsResult = await GetLoanInstallments(queryParameters, ctx);
 
                     if (getInstallmentsResult.Success)
                     {
                         detail.LoanInstallmentDetailsList = getInstallmentsResult.Result;
-                        return OperationResult<LoanAgreementDetail>.CreateSuccessResult(detail);
+                        return OperationResult<LoanAgreementReadModel>.CreateSuccessResult(detail);
                     }
                     else
                     {
-                        return OperationResult<LoanAgreementDetail>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
+                        return OperationResult<LoanAgreementReadModel>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<LoanAgreementDetail>.CreateFailure(ex.Message);
+                return OperationResult<LoanAgreementReadModel>.CreateFailure(ex.Message);
             }
         }
 
-        private async static Task<OperationResult<List<LoanInstallmentDetail>>> GetLoanInstallments(GetLoanAgreement queryParameters, DapperContext ctx)
+        private async static Task<OperationResult<List<LoanInstallmentReadModel>>> GetLoanInstallments(GetLoanAgreement queryParameters, DapperContext ctx)
         {
             GetLoanAgreementInstallments installmentParams = new() { LoanId = queryParameters.LoanId };
 
-            OperationResult<List<LoanInstallmentDetail>> getInstallmentsResult =
+            OperationResult<List<LoanInstallmentReadModel>> getInstallmentsResult =
                 await GetLoanInstallmentDetailQuery.Query(installmentParams, ctx);
 
             if (getInstallmentsResult.Success)
@@ -67,7 +67,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
             }
             else
             {
-                return OperationResult<List<LoanInstallmentDetail>>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
+                return OperationResult<List<LoanInstallmentReadModel>>.CreateFailure(getInstallmentsResult.NonSuccessMessage);
             }
         }
     }

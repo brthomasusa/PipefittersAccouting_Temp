@@ -15,6 +15,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public DateTime StockIssueDate { get; set; }
         public int SharesIssured { get; set; }
         public decimal PricePerShare { get; set; }
+        public List<DividendDeclarationReadModel>? DividendDeclarations { get; set; } = new();
         public Guid UserId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
@@ -59,11 +60,9 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 
     public class DividendDeclarationReadModel
     {
-        public Guid StockId { get; set; }
-        public DateTime StockIssueDate { get; set; }
-        public int SharesIssured { get; set; }
-        public decimal PricePerShare { get; set; }
         public Guid DividendId { get; set; }
+        public Guid StockId { get; set; }
+        public int SharesIssured { get; set; }
         public DateTime DividendDeclarationDate { get; set; }
         public decimal DividendPerShare { get; set; }
         public DateTime DatePaid { get; set; }

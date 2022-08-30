@@ -2,7 +2,7 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.Readmodels.Financing
 {
-    public class LoanAgreementDetail
+    public class LoanAgreementReadModel
     {
         public Guid LoanId { get; set; }
         public string? LoanNumber { get; set; }
@@ -18,7 +18,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public string? CityStateZipcode { get; set; }
         public string? Telephone { get; set; }
         public string? PointOfContact { get; set; }
-        public List<LoanInstallmentDetail>? LoanInstallmentDetailsList { get; set; } = new();
+        public List<LoanInstallmentReadModel>? LoanInstallmentDetailsList { get; set; } = new();
         public Guid UserId { get; set; }
     }
 
@@ -36,7 +36,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public decimal LoanProceedsAmount { get; set; }
     }
 
-    public class LoanInstallmentDetail
+    public class LoanInstallmentReadModel
     {
         public Guid LoanInstallmentId { get; set; }
         public Guid LoanId { get; set; }

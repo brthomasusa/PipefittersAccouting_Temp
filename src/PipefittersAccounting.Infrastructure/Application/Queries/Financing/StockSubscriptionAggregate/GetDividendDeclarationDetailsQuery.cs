@@ -14,11 +14,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
             {
                 var sql =
                 @"SELECT 
-                    sub.StockId, 
-                    sub.StockIssueDate, 
-                    sub.SharesIssured, 
-                    sub.PricePerShare,    
-                    dividend.DividendId, 
+                    dividend.DividendId,
+                    sub.StockId,                     
+                    sub.SharesIssured,                          
                     dividend.DividendDeclarationDate,
                     dividend.DividendPerShare,    
                     cash.CashAcctTransactionDate AS DatePaid, 

@@ -308,7 +308,6 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             OperationResult<DividendDeclarationReadModel> result = await _queryService.GetDividendDeclarationReadModel(queryParameters);
 
             Assert.True(result.Success);
-            Assert.Equal(new DateTime(2022, 2, 1), result.Result.StockIssueDate);
         }
 
         [Fact]

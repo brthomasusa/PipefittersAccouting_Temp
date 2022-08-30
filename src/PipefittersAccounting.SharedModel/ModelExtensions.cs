@@ -88,7 +88,7 @@ namespace PipefittersAccounting.SharedModel
             };
         }
 
-        public static LoanAgreementWriteModel Map(this LoanAgreementDetail input)
+        public static LoanAgreementWriteModel Map(this LoanAgreementReadModel input)
         {
             return new()
             {
@@ -103,7 +103,7 @@ namespace PipefittersAccounting.SharedModel
             };
         }
 
-        public static LoanInstallmentWriteModel Map(this LoanInstallmentDetail input)
+        public static LoanInstallmentWriteModel Map(this LoanInstallmentReadModel input)
         {
             return new()
             {

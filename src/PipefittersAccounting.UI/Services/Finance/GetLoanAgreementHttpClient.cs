@@ -6,7 +6,7 @@ namespace PipefittersAccounting.UI.Services.Finance
 {
     public class GetLoanAgreementHttpClient
     {
-        public static async Task<OperationResult<LoanAgreementDetail>> Query
+        public static async Task<OperationResult<LoanAgreementReadModel>> Query
         (
             GetLoanAgreement queryParameters,
             HttpClient client,
@@ -21,24 +21,24 @@ namespace PipefittersAccounting.UI.Services.Finance
 
                 if (response.IsSuccessStatusCode)
                 {
-                    LoanAgreementDetail? loan = JsonSerializer.Deserialize<LoanAgreementDetail>(content, options);
+                    LoanAgreementReadModel? loan = JsonSerializer.Deserialize<LoanAgreementReadModel>(content, options);
                     if (loan is not null)
                     {
-                        return OperationResult<LoanAgreementDetail>.CreateSuccessResult(loan);
+                        return OperationResult<LoanAgreementReadModel>.CreateSuccessResult(loan);
                     }
                     else
                     {
-                        return OperationResult<LoanAgreementDetail>.CreateFailure($"A loan agreement with Id: '{queryParameters.LoanId}' was not found.");
+                        return OperationResult<LoanAgreementReadModel>.CreateFailure($"A loan agreement with Id: '{queryParameters.LoanId}' was not found.");
                     }
                 }
                 else
                 {
-                    return OperationResult<LoanAgreementDetail>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
+                    return OperationResult<LoanAgreementReadModel>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<LoanAgreementDetail>.CreateFailure(ex.Message);
+                return OperationResult<LoanAgreementReadModel>.CreateFailure(ex.Message);
             }
         }
     }

@@ -27,7 +27,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid loanID = new Guid("09b53ffb-9983-4cde-b1d6-8a49e785177f");
 
             GetLoanAgreement qryParam = new GetLoanAgreement() { LoanId = loanID };
-            OperationResult<LoanAgreementDetail> result = await _queryService.GetLoanAgreementDetails(qryParam);
+            OperationResult<LoanAgreementReadModel> result = await _queryService.GetLoanAgreementDetails(qryParam);
 
             Assert.True(result.Success);
             int count = result.Result.LoanInstallmentDetailsList.Count;
@@ -40,7 +40,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
             Guid loanID = new Guid("93adf7e5-bf6c-4ec8-881a-bfdf37aaf12e");
 
             GetLoanAgreement qryParam = new GetLoanAgreement() { LoanId = loanID };
-            OperationResult<LoanAgreementDetail> result = await _queryService.GetLoanAgreementDetails(qryParam);
+            OperationResult<LoanAgreementReadModel> result = await _queryService.GetLoanAgreementDetails(qryParam);
 
             Assert.False(result.Success);
             Assert.Equal($"Unable to locate a loan agreement with LoanId: {qryParam.LoanId}.", result.NonSuccessMessage);

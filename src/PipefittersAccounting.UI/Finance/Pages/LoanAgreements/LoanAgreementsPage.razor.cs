@@ -10,7 +10,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 {
     public partial class LoanAgreementsPage : ComponentBase
     {
-        private bool _showDeleteDialog;
+        private bool _showDeleteDialog = false;
         private Guid _selectedLoanId;
         private string _placeHolderTextForSearch = "Search by loan number";
         private string? _snackBarMessage;
@@ -18,7 +18,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
         private GetLoanAgreements? _getLoanAgreementsParameters;
         private GetLoanAgreementByLoanNumber? _getLoanAgreementByLoanNumber;
         private List<LoanAgreementListItem>? _loanAgreementList;
-        private LoanAgreementDetail? _selectedLoanAgreement;
+        private LoanAgreementReadModel? _selectedLoanAgreement;
         private MetaData? _metaData;
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
@@ -56,7 +56,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
         {
             GetLoanAgreement queryParam = new() { LoanId = loanId };
 
-            OperationResult<LoanAgreementDetail> result =
+            OperationResult<LoanAgreementReadModel> result =
                 await LoanAgreementService!.GetLoanAgreementDetails(queryParam);
 
             if (result.Success)

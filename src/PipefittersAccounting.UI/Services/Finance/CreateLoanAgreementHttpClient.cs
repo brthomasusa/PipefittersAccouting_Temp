@@ -8,7 +8,7 @@ namespace PipefittersAccounting.UI.Services.Finance
 {
     public class CreateLoanAgreementHttpClient
     {
-        public static async Task<OperationResult<LoanAgreementDetail>> Execute
+        public static async Task<OperationResult<LoanAgreementReadModel>> Execute
         (
             LoanAgreementWriteModel model,
             HttpClient client,
@@ -38,15 +38,15 @@ namespace PipefittersAccounting.UI.Services.Finance
                         response.EnsureSuccessStatusCode();
 
                         var jsonResponse = await response.Content.ReadAsStreamAsync();
-                        var loanDetails = await JsonSerializer.DeserializeAsync<LoanAgreementDetail>(jsonResponse, options);
+                        var loanDetails = await JsonSerializer.DeserializeAsync<LoanAgreementReadModel>(jsonResponse, options);
 
-                        return OperationResult<LoanAgreementDetail>.CreateSuccessResult(loanDetails!);
+                        return OperationResult<LoanAgreementReadModel>.CreateSuccessResult(loanDetails!);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<LoanAgreementDetail>.CreateFailure(ex.Message);
+                return OperationResult<LoanAgreementReadModel>.CreateFailure(ex.Message);
             }
         }
     }

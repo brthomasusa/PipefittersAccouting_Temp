@@ -7,7 +7,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
 {
     public interface ILoanAgreementQueryService
     {
-        Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters);
+        Task<OperationResult<LoanAgreementReadModel>> GetLoanAgreementDetails(GetLoanAgreement queryParameters);
         Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters);
         Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreementByLoanNumber queryParameters);
         Task<OperationResult<Guid>> GetLoanIdOfDuplicationLoanAgreement(GetDuplicateLoanAgreement queryParameters);

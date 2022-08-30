@@ -9,7 +9,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
 {
     public class GetLoanInstallmentDetailQuery
     {
-        public async static Task<OperationResult<List<LoanInstallmentDetail>>> Query(GetLoanAgreementInstallments queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<List<LoanInstallmentReadModel>>> Query(GetLoanAgreementInstallments queryParameters, DapperContext ctx)
         {
             try
             {
@@ -33,13 +33,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Loa
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    var items = await connection.QueryAsync<LoanInstallmentDetail>(sql, parameters);
-                    return OperationResult<List<LoanInstallmentDetail>>.CreateSuccessResult(items.ToList());
+                    var items = await connection.QueryAsync<LoanInstallmentReadModel>(sql, parameters);
+                    return OperationResult<List<LoanInstallmentReadModel>>.CreateSuccessResult(items.ToList());
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<List<LoanInstallmentDetail>>.CreateFailure(ex.Message);
+                return OperationResult<List<LoanInstallmentReadModel>>.CreateFailure(ex.Message);
             }
         }
     }

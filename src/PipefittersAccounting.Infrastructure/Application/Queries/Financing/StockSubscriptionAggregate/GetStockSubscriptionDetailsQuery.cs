@@ -45,5 +45,44 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Financing.Sto
                 return OperationResult<StockSubscriptionReadModel>.CreateFailure(ex.Message);
             }
         }
+
+        private async static Task<OperationResult<List<DividendDeclarationReadModel>>> Query(Guid stockId, DapperContext ctx)
+        {
+            try
+            {
+                var sql =
+                @"SELECT 
+                    dividend.DividendId,
+                    sub.StockId,                     
+                    sub.SharesIssured,                          
+                    dividend.DividendDeclarationDate,
+                    dividend.DividendPerShare,    
+                    cash.CashAcctTransactionDate AS DatePaid, 
+                    CASE
+                        WHEN cash.CashAcctTransactionAmount IS NULL THEN 0        
+                        ELSE cash.CashAcctTransactionAmount
+                    END AS AmountPaid,
+                    dividend.CreatedDate,
+                    dividend.LastModifiedDate 
+                FROM Finance.StockSubscriptions sub
+                LEFT JOIN Finance.DividendDeclarations dividend ON sub.StockId = dividend.StockId
+                LEFT JOIN CashManagement.CashTransactions cash ON dividend.DividendId = cash.EventID
+                WHERE sub.StockId = @StockId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("StockId", stockId, DbType.Guid);
+
+                using (var connection = ctx.CreateConnection())
+                {
+                    var items = await connection.QueryAsync<DividendDeclarationReadModel>(sql, parameters);
+
+                    return OperationResult<List<DividendDeclarationReadModel>>.CreateSuccessResult(items.ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<DividendDeclarationReadModel>>.CreateFailure(ex.Message);
+            }
+        }
     }
 }

@@ -25,8 +25,8 @@ namespace PipefittersAccounting.UI.Services.Finance
         public async Task<OperationResult<bool>> EditStockSubscription(StockSubscriptionWriteModel writeModel)
             => await EditStockSubscriptionHttpClient.Execute(writeModel, _client, _options);
 
-        public Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel)
+            => await DeleteStockSubscriptionHttpClient.Execute(writeModel, _client, _options);
 
         // Read
         public async Task<OperationResult<StockSubscriptionReadModel>> GetStockSubscriptionReadModel(GetStockSubscriptionParameter queryParameters)
@@ -38,10 +38,10 @@ namespace PipefittersAccounting.UI.Services.Finance
         public async Task<OperationResult<PagingResponse<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemByInvestorName queryParameters)
             => await GetStockSubscriptionsHttpClient.Query(queryParameters, _client, _options);
 
-        public Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationReadModel(GetDividendDeclarationParameter queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationReadModel(GetDividendDeclarationParameter queryParameters)
+            => await GetDividendDeclarationHttpClient.Query(queryParameters, _client, _options);
 
-        public Task<OperationResult<PagingResponse<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters)
-            => throw new NotImplementedException();
+        public async Task<OperationResult<PagingResponse<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters)
+            => await GetDividendDeclarationsHttpClient.Query(queryParameters, _client, _options);
     }
 }

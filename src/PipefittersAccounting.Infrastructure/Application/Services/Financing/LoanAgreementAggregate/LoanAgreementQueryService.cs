@@ -14,7 +14,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.Lo
 
         public LoanAgreementQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<LoanAgreementDetail>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
+        public async Task<OperationResult<LoanAgreementReadModel>> GetLoanAgreementDetails(GetLoanAgreement queryParameters)
             => await GetLoanAgreementDetailsQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<PagedList<LoanAgreementListItem>>> GetLoanAgreementListItems(GetLoanAgreements queryParameters)

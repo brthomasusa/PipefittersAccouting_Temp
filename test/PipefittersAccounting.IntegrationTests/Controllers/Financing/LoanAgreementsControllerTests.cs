@@ -78,7 +78,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var detail = await JsonSerializer.DeserializeAsync<LoanAgreementDetail>(jsonResponse, _options);
+            var detail = await JsonSerializer.DeserializeAsync<LoanAgreementReadModel>(jsonResponse, _options);
 
             Assert.Equal("Arturo Sandoval", detail.FinancierName);
         }
@@ -106,7 +106,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var details = await JsonSerializer.DeserializeAsync<LoanAgreementDetail>(jsonResponse, _options);
+                    var details = await JsonSerializer.DeserializeAsync<LoanAgreementReadModel>(jsonResponse, _options);
 
                     Assert.Equal(new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601"), model.FinancierId);
                 }

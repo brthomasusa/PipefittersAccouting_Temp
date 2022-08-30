@@ -67,11 +67,11 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
         }
 
         [HttpGet("detail/{loanId:Guid}")]
-        public async Task<ActionResult<LoanAgreementDetail>> GetLoanAgreementDetail(Guid loanId)
+        public async Task<ActionResult<LoanAgreementReadModel>> GetLoanAgreementDetail(Guid loanId)
         {
             GetLoanAgreement queryParams = new() { LoanId = loanId };
 
-            OperationResult<LoanAgreementDetail> result = await _qrySvc.GetLoanAgreementDetails(queryParams);
+            OperationResult<LoanAgreementReadModel> result = await _qrySvc.GetLoanAgreementDetails(queryParams);
 
             if (result.Success)
             {
@@ -95,7 +95,7 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             if (writeResult.Success)
             {
                 GetLoanAgreement queryParams = new() { LoanId = writeModel.LoanId };
-                OperationResult<LoanAgreementDetail> result = await _qrySvc.GetLoanAgreementDetails(queryParams);
+                OperationResult<LoanAgreementReadModel> result = await _qrySvc.GetLoanAgreementDetails(queryParams);
 
                 if (result.Success)
                 {
