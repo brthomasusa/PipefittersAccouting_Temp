@@ -38,6 +38,8 @@ builder.Services.AddScoped(sp => new HttpClient
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IFinanciersRepository, FinanciersRepository>();
 builder.Services.AddScoped<ILoanAgreementRepository, LoanAgreementRepository>();
+builder.Services.AddScoped<IStockSubscriptionRepository, StockSubscriptionRepository>();
+
 builder.Services.AddSingleton<DatabaseService<SqliteDbContext>>();
 builder.Services.AddSqliteDbContextFeature();
 

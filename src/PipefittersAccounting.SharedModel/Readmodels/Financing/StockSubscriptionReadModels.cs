@@ -29,7 +29,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.Financing
         public string? ContactName { get; set; }
         public string? ContactTelephone { get; set; }
         public DateTime StockIssueDate { get; set; }
-        public int SharesIssued { get; set; }
+        public int SharesIssured { get; set; }
         public decimal PricePerShare { get; set; }
         public DateTime DateReceived { get; set; }
         public decimal AmountReceived { get; set; }

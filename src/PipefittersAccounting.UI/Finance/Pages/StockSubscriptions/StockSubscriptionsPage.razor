@@ -1,3 +1,5 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 @page "/Finance/Pages/StockSubscriptions/StockSubscriptionsPage"
 @using PipefittersAccounting.UI.Components.Common
 @using PipefittersAccounting.UI.Finance.Components
@@ -8,3 +10,95 @@
 <Heading TextColor="TextColor.Dark" Size="HeadingSize.Is5" Margin="Margin.Is3.FromStart.Is4.FromTop">
     Stock Subscriptions
 </Heading>
+
+<ErrorBoundary>
+    <Row>
+        <Column>
+            <Card Margin="Margin.Is4.OnY">
+                <CardHeader>
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <a href="/Finance/Pages/StockSubscriptions/StockSubscriptionCreatePage"
+                                class="btn btn-labeled btn-lg btn-outline-primary rounded-pill" role="button">
+                                <span class="btn-label"><i class="fas fa-plus"></i></span>
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
+                                OnSearchTermChangedEventHandler=@SearchChanged />
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardBody>
+                    @if (_subscriptionList is not null && _subscriptionList.Any())
+                    {
+                        <BasicGrid Items=_subscriptionList>
+                            <TableHeader>
+                                <th>Stock #</th>
+                                <th>Investor</th>
+                                <th style="text-align:center">Issued On</th>
+                                <th style="text-align:center">Shares Issued</th>
+                                <th style="text-align:center">Share Price</th>
+                                <th style="text-align:center">Amt Received</th>
+                                <th style="text-align:center">Received On</th>
+                                <th style="text-align:center">Actions</th>
+                            </TableHeader>
+                            <RowTemplate Context="subscription">
+                                <td>@subscription.StockNumber</td>
+                                <td>@subscription.InvestorName</td>
+                                <td style="text-align:center">@subscription.StockIssueDate.ToShortDateString()</td>
+                                <td style="text-align:center">@(string.Format("{0:n0}", subscription.SharesIssured))</td>
+                                <td style="text-align:center">@(string.Format("{0:C2}", subscription.PricePerShare))</td>
+                                <td style="text-align:center">@(string.Format("{0:C2}", subscription.AmountReceived))</td>
+                                <td style="text-align:center">@subscription.DateReceived.ToShortDateString()</td>
+                                <td style="text-align:center">
+                                    <Dropdown Direction="Direction.Up">
+                                        <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary"
+                                        ToggleIconVisible="false">
+                                            <span class="btn-label"><i class="fas fa-ellipsis-v"
+                                                aria-hidden="true"></i></span>
+                                        </DropdownToggle>
+                                        <DropdownMenu class="border border-dark rounded-3 shadow-lg">
+                                            <DropdownItem Clicked="@( () => ShowDetailDialog(@subscription.StockId) )">
+                                                Details
+                                            </DropdownItem>
+                                            <DropdownItem Disabled=@( subscription.AmountReceived > 0 ) Clicked="@( () =>
+                                            OnActionItemClicked("Edit", @subscription.StockId) )">
+                                                Edit
+                                            </DropdownItem>
+                                            <DropdownItem Disabled=@( subscription.AmountReceived > 0 )
+                                            Clicked="@( () => GetStockSubscription(@subscription.StockId) )">
+                                                Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </td>
+                            </RowTemplate>
+                        </BasicGrid>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                </CardBody>
+                <CardFooter>
+                    <CascadingValue Name="MetaData" Value=@_metaData>
+                        <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
+                            <DynamicPager />
+                        </CascadingValue>
+                    </CascadingValue>
+
+                    <Snackbar @ref="_snackbar" DefaultInterval=2000>
+                        <SnackbarBody>
+                            @_snackBarMessage
+                        </SnackbarBody>
+                    </Snackbar>
+                </CardFooter>
+            </Card>
+        </Column>
+    </Row>
+</ErrorBoundary>

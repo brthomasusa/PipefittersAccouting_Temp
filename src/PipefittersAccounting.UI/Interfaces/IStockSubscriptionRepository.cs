@@ -11,6 +11,9 @@ namespace PipefittersAccounting.UI.Interfaces
         Task<OperationResult<StockSubscriptionReadModel>> CreateStockSubscription(StockSubscriptionWriteModel writeModel);
         Task<OperationResult<bool>> EditStockSubscription(StockSubscriptionWriteModel writeModel);
         Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel);
+        Task<OperationResult<DividendDeclarationReadModel>> CreateDividendDeclaration(DividendDeclarationWriteModel writeModel);
+        Task<OperationResult<bool>> EditDividendDeclaration(DividendDeclarationWriteModel writeModel);
+        Task<OperationResult<bool>> DeleteDividendDeclaration(DividendDeclarationWriteModel writeModel);
 
         // Read
         Task<OperationResult<StockSubscriptionReadModel>> GetStockSubscriptionReadModel(GetStockSubscriptionParameter queryParameters);

@@ -1,3 +1,5 @@
+#pragma warning disable CS0414
+
 using Microsoft.AspNetCore.Components;
 using Blazorise;
 using Blazorise.Snackbar;
@@ -8,7 +10,7 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
 {
-    public partial class LoanAgreementsPage : ComponentBase
+    public partial class LoanAgreementsPage
     {
         private bool _showDeleteDialog = false;
         private Guid _selectedLoanId;
@@ -48,7 +50,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             }
             else
             {
-                await MessageService!.Error($"Error while retrieving employees: {result.NonSuccessMessage}", "Error");
+                await MessageService!.Error($"Error while retrieving loan agreements: {result.NonSuccessMessage}", "Error");
             }
         }
 
@@ -67,7 +69,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.LoanAgreements
             }
             else
             {
-                await MessageService!.Error($"Error while retrieving employees: {result.NonSuccessMessage}", "Error");
+                await MessageService!.Error($"Error while retrieving loan agreements: {result.NonSuccessMessage}", "Error");
             }
         }
 

@@ -28,6 +28,16 @@ namespace PipefittersAccounting.UI.Services.Finance
         public async Task<OperationResult<bool>> DeleteStockSubscription(StockSubscriptionWriteModel writeModel)
             => await DeleteStockSubscriptionHttpClient.Execute(writeModel, _client, _options);
 
+        public async Task<OperationResult<DividendDeclarationReadModel>> CreateDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await CreateDividendDeclarationHttpClient.Execute(writeModel, _client, _options);
+
+        public async Task<OperationResult<bool>> EditDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await EditDividendDeclarationHttpClient.Execute(writeModel, _client, _options);
+
+        public async Task<OperationResult<bool>> DeleteDividendDeclaration(DividendDeclarationWriteModel writeModel)
+            => await DeleteDividendDeclarationHttpClient.Execute(writeModel, _client, _options);
+
+
         // Read
         public async Task<OperationResult<StockSubscriptionReadModel>> GetStockSubscriptionReadModel(GetStockSubscriptionParameter queryParameters)
             => await GetStockSubscriptionHttpClient.Query(queryParameters, _client, _options);
