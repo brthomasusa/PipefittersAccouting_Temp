@@ -19,6 +19,8 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
         {
             try
             {
+                Console.WriteLine("LoadStockSubscriptionsEffect.HandleAsync called...");
+
                 GetStockSubscriptionListItem parameter = new() { Page = 1, PageSize = 10 };
 
                 OperationResult<PagingResponse<StockSubscriptionListItem>> result =
@@ -26,6 +28,7 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
 
                 if (result.Success)
                 {
+                    Console.WriteLine($"LoadStockSubscriptionsEffect.HandleAsync called..., {result.Result!.Items!.Count} stock subscriptions retrieved.");
                     dispatcher.Dispatch(new LoadStockSubscriptionSuccessAction(result.Result!));
                 }
                 else

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using System.Reflection;
 
 using Blazorise;
 using Blazorise.Bootstrap5;
@@ -10,6 +9,7 @@ using Fluxor;
 
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Services.Fluxor;
 using PipefittersAccounting.UI.Services.Sqlite;
 using PipefittersAccounting.UI.Services.Finance;
 using PipefittersAccounting.UI.Services.HumanResources;
@@ -44,7 +44,15 @@ builder.Services.AddSingleton<DatabaseService<SqliteDbContext>>();
 builder.Services.AddSqliteDbContextFeature();
 
 var currentAssembly = typeof(Program).Assembly;
-builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
+builder.Services.AddFluxor(options =>
+{
+    options.ScanAssemblies(currentAssembly);
+#if DEBUG
+    options.UseReduxDevTools();
+#endif        
+});
+
+builder.Services.AddScoped<StateFacade>();
 
 var host = builder.Build();
 await host.InitializeLoanInstallmentFeature();

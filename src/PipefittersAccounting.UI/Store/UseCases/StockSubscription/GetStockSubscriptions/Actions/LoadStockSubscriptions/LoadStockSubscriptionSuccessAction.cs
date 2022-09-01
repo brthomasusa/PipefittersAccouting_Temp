@@ -5,8 +5,11 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
 {
     public class LoadStockSubscriptionSuccessAction
     {
-        public LoadStockSubscriptionSuccessAction(PagingResponse<StockSubscriptionListItem> subscriptions) =>
+        public LoadStockSubscriptionSuccessAction(PagingResponse<StockSubscriptionListItem> subscriptions)
+        {
+            Console.WriteLine("LoadStockSubscriptionSuccessAction.Ctor called...");
             CurrentSubscriptions = subscriptions;
+        }
 
         public PagingResponse<StockSubscriptionListItem>? CurrentSubscriptions { get; }
     }

@@ -1,5 +1,5 @@
 using Fluxor;
-using PipefittersAccounting.UI.Store.State;
+using PipefittersAccounting.UI.Store.State.StockSubscription;
 using PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions.LoadStockSubscriptions;
 
 namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Reducers
@@ -12,7 +12,10 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
             StockSubscriptionState state,
             LoadStockSubscriptionAction _
         )
-            => new StockSubscriptionState(true, null, null, state.CurrentSubscription);
+        {
+            Console.WriteLine("LoadStockSubscriptionsActionsReducer.ReduceLoadStockSubscriptionAction called...");
+            return new StockSubscriptionState(true, null, null, state.CurrentSubscription);
+        }
 
 
         [ReducerMethod]
@@ -21,7 +24,10 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
             StockSubscriptionState state,
             LoadStockSubscriptionSuccessAction action
         )
-            => new StockSubscriptionState(false, null, action.CurrentSubscriptions, state.CurrentSubscription);
+        {
+            Console.WriteLine("LoadStockSubscriptionsActionsReducer.ReduceLoadStockSubscriptionSuccessAction called...");
+            return new StockSubscriptionState(false, null, action.CurrentSubscriptions, state.CurrentSubscription);
+        }
 
         [ReducerMethod]
         public static StockSubscriptionState ReduceLoadStockSubscriptionFailureAction
@@ -29,6 +35,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
             StockSubscriptionState state,
             LoadStockSubscriptionFailureAction action
         )
-            => new StockSubscriptionState(false, action.ErrorMessage, null, state.CurrentSubscription);
+        {
+            Console.WriteLine("LoadStockSubscriptionsActionsReducer.ReduceLoadStockSubscriptionFailureAction called...");
+            return new StockSubscriptionState(false, action.ErrorMessage, null, state.CurrentSubscription);
+        }
     }
 }

@@ -2,7 +2,6 @@
 
 @page "/Finance/Pages/StockSubscriptions/StockSubscriptionsPage"
 @using PipefittersAccounting.UI.Components.Common
-@using PipefittersAccounting.UI.Finance.Components
 @using Blazorise.Snackbar
 
 <PageTitle>Stock Subscriptions</PageTitle>
@@ -30,9 +29,9 @@
                     </div>
                 </CardHeader>
                 <CardBody>
-                    @if (_subscriptionList is not null && _subscriptionList.Any())
+                    @if (!_stockSubscriptionState!.Value.IsLoading)
                     {
-                        <BasicGrid Items=_subscriptionList>
+                        <BasicGrid Items=_stockSubscriptionState!.Value.CurrentSubscriptions!.Items>
                             <TableHeader>
                                 <th>Stock #</th>
                                 <th>Investor</th>

@@ -1,5 +1,5 @@
 using Fluxor;
-using PipefittersAccounting.UI.Store.State;
+using PipefittersAccounting.UI.Store.State.StockSubscription;
 
 namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions
 {

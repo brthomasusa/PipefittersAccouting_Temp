@@ -1,14 +1,10 @@
-using Fluxor;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Utilities;
 
-namespace PipefittersAccounting.UI.Store.State
+namespace PipefittersAccounting.UI.Store.State.StockSubscription
 {
-    [FeatureState]
     public class StockSubscriptionState : RootState
     {
-
-
         public StockSubscriptionState
         (
             bool isLoading,
