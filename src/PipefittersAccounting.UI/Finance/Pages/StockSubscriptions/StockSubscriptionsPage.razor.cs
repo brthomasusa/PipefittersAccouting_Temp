@@ -32,24 +32,25 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         protected async override Task OnInitializedAsync()
         {
             _pagerChangedEventHandler = GetAllStockSubscriptions;
-            await _pagerChangedEventHandler.Invoke(1, 10);
+
+            if (_stockSubscriptionState!.Value.CurrentSubscriptions is null)
+            {
+                _facade!.LoadStockSubscriptionsUnfiltered(1, 10);
+            }
+
             await base.OnInitializedAsync();
         }
 
         private async Task GetAllStockSubscriptions(int pageNumber, int pageSize)
         {
-            if (_stockSubscriptionState!.Value.CurrentSubscriptions is null)
-            {
-                _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
-            }
-
-            await Task.CompletedTask;
+            _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task GetAllStockSubscriptions(string investorName, int pageNumber, int pageSize)
         {
             _facade!.LoadStockSubscriptionsFiltered(investorName, pageNumber, pageSize);
-            await Task.CompletedTask;
+            await InvokeAsync(StateHasChanged);
         }
 
         private void OnActionItemClicked(string action, Guid stockId)
