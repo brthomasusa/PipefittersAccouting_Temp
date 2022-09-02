@@ -1,4 +1,4 @@
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inherits FluxorComponent
 
 @page "/Finance/Pages/StockSubscriptions/StockSubscriptionsPage"
 @using PipefittersAccounting.UI.Components.Common
@@ -74,6 +74,12 @@
                                 </td>
                             </RowTemplate>
                         </BasicGrid>
+                        <CascadingValue Name="MetaData"
+                        Value=@_stockSubscriptionState!.Value.CurrentSubscriptions!.MetaData>
+                            <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
+                                <DynamicPager />
+                            </CascadingValue>
+                        </CascadingValue>
                     }
                     else
                     {
@@ -85,12 +91,6 @@
                     }
                 </CardBody>
                 <CardFooter>
-                    <CascadingValue Name="MetaData" Value=@_metaData>
-                        <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
-                            <DynamicPager />
-                        </CascadingValue>
-                    </CascadingValue>
-
                     <Snackbar @ref="_snackbar" DefaultInterval=2000>
                         <SnackbarBody>
                             @_snackBarMessage

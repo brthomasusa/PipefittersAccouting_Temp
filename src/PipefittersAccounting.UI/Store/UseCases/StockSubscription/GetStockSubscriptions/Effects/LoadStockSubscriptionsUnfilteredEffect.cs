@@ -1,0 +1,43 @@
+using Fluxor;
+using Blazorise;
+using PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions;
+using PipefittersAccounting.SharedModel.Readmodels.Financing;
+using PipefittersAccounting.UI.Interfaces;
+using PipefittersAccounting.UI.Utilities;
+
+namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Effects
+{
+    public class LoadStockSubscriptionsUnfilteredEffect : Effect<LoadStockSubscriptionsUnfilteredAction>
+    {
+        private IStockSubscriptionRepository? _stockSubscriptionService;
+        private IMessageService? _messageService;
+
+        public LoadStockSubscriptionsUnfilteredEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
+            => (_stockSubscriptionService, _messageService) = (repo, messageSvc);
+
+        public override async Task HandleAsync(LoadStockSubscriptionsUnfilteredAction action, IDispatcher dispatcher)
+        {
+            try
+            {
+                GetStockSubscriptionListItem parameter = new() { Page = action.PageNumber, PageSize = action.PageSize };
+
+                OperationResult<PagingResponse<StockSubscriptionListItem>> result =
+                    await _stockSubscriptionService!.GetStockSubscriptionListItems(parameter);
+
+                if (result.Success)
+                {
+                    dispatcher.Dispatch(new LoadStockSubscriptionsSuccessAction(result.Result!));
+                }
+                else
+                {
+                    dispatcher.Dispatch(new LoadStockSubscriptionsFailureAction(result.NonSuccessMessage));
+                }
+            }
+            catch (Exception e)
+            {
+                dispatcher.Dispatch(new LoadStockSubscriptionsFailureAction(e.Message));
+            }
+
+        }
+    }
+}

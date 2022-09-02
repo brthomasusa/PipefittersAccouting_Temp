@@ -33,58 +33,23 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         {
             _pagerChangedEventHandler = GetAllStockSubscriptions;
             await _pagerChangedEventHandler.Invoke(1, 10);
+            await base.OnInitializedAsync();
         }
 
         private async Task GetAllStockSubscriptions(int pageNumber, int pageSize)
         {
             if (_stockSubscriptionState!.Value.CurrentSubscriptions is null)
             {
-                _facade!.LoadStockSubscriptions();
+                _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
             }
 
-            // if (!_stockSubscriptionState!.Value.IsLoading && _stockSubscriptionState!.Value.CurrentSubscriptions is not null)
-            // {
-            //     _subscriptionList = _stockSubscriptionState!.Value.CurrentSubscriptions!.Items;
-            //     _metaData = _stockSubscriptionState!.Value.CurrentSubscriptions!.MetaData;
-            //     await InvokeAsync(StateHasChanged);
-            // }
-
-            await base.OnInitializedAsync();
-
-            // GetStockSubscriptionListItem parameter = new() { Page = pageNumber, PageSize = pageSize };
-
-            // OperationResult<PagingResponse<StockSubscriptionListItem>> result =
-            //     await StockSubscriptionService!.GetStockSubscriptionListItems(parameter);
-
-            // if (result.Success)
-            // {
-            //     _subscriptionList = result.Result.Items;
-            //     _metaData = result.Result.MetaData;
-            //     await InvokeAsync(StateHasChanged);
-            // }
-            // else
-            // {
-            //     await MessageService!.Error($"Error while retrieving stock subscriptions: {result.NonSuccessMessage}", "Error");
-            // }
+            await Task.CompletedTask;
         }
 
         private async Task GetAllStockSubscriptions(string investorName, int pageNumber, int pageSize)
         {
-            GetStockSubscriptionListItemByInvestorName parameter = new() { InvestorName = investorName, Page = pageNumber, PageSize = pageSize };
-
-            OperationResult<PagingResponse<StockSubscriptionListItem>> result =
-                await StockSubscriptionService!.GetStockSubscriptionListItems(parameter);
-
-            if (result.Success)
-            {
-                _subscriptionList = result.Result.Items;
-                _metaData = result.Result.MetaData;
-                StateHasChanged();
-            }
-            else
-            {
-                await MessageService!.Error($"Error while retrieving stock subscriptions: {result.NonSuccessMessage}", "Error");
-            }
+            _facade!.LoadStockSubscriptionsFiltered(investorName, pageNumber, pageSize);
+            await Task.CompletedTask;
         }
 
         private void OnActionItemClicked(string action, Guid stockId)
