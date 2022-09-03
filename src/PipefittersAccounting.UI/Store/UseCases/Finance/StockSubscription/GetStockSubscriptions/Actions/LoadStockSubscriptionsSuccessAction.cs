@@ -1,7 +1,7 @@
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Utilities;
 
-namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions
+namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions
 {
     public class LoadStockSubscriptionsSuccessAction
     {

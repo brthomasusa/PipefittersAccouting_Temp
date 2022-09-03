@@ -1,8 +1,8 @@
 using Fluxor;
-using PipefittersAccounting.UI.Store.State.StockSubscription;
-using PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions;
+using PipefittersAccounting.UI.Store.State.Finance.StockSubscription;
+using PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions;
 
-namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Reducers
+namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Reducers
 {
     public static class LoadStockSubscriptionsActionsReducer
     {

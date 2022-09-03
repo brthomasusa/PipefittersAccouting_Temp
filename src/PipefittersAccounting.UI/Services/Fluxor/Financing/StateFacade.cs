@@ -1,8 +1,8 @@
 using Fluxor;
-using PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions;
+using PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions;
 
 
-namespace PipefittersAccounting.UI.Services.Fluxor
+namespace PipefittersAccounting.UI.Services.Fluxor.Financing
 {
     public class StateFacade
     {

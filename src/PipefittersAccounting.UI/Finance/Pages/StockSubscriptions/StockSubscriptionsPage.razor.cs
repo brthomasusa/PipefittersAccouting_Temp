@@ -6,8 +6,8 @@ using PipefittersAccounting.SharedModel.ReadModels;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
-using PipefittersAccounting.UI.Store.State.StockSubscription;
-using PipefittersAccounting.UI.Services.Fluxor;
+using PipefittersAccounting.UI.Store.State.Finance.StockSubscription;
+using PipefittersAccounting.UI.Services.Fluxor.Financing;
 
 namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
 {

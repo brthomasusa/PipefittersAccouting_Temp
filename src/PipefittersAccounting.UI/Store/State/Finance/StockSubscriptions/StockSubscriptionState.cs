@@ -1,7 +1,7 @@
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Utilities;
 
-namespace PipefittersAccounting.UI.Store.State.StockSubscription
+namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
 {
     public class StockSubscriptionState : RootState
     {

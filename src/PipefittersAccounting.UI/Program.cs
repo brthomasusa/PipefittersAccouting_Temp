@@ -9,7 +9,7 @@ using Fluxor;
 
 using PipefittersAccounting.UI;
 using PipefittersAccounting.UI.Interfaces;
-using PipefittersAccounting.UI.Services.Fluxor;
+using PipefittersAccounting.UI.Services.Fluxor.Financing;
 using PipefittersAccounting.UI.Services.Sqlite;
 using PipefittersAccounting.UI.Services.Finance;
 using PipefittersAccounting.UI.Services.HumanResources;

@@ -1,31 +1,25 @@
 using Fluxor;
 using Blazorise;
-using PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Actions;
+using PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions;
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
 
-namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubscriptions.Effects
+namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Effects
 {
-    public class LoadStockSubscriptionsFilteredEffect : Effect<LoadStockSubscriptionsFilteredAction>
+    public class LoadStockSubscriptionsUnfilteredEffect : Effect<LoadStockSubscriptionsUnfilteredAction>
     {
         private IStockSubscriptionRepository? _stockSubscriptionService;
         private IMessageService? _messageService;
 
-        public LoadStockSubscriptionsFilteredEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
+        public LoadStockSubscriptionsUnfilteredEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
             => (_stockSubscriptionService, _messageService) = (repo, messageSvc);
 
-        public override async Task HandleAsync(LoadStockSubscriptionsFilteredAction action, IDispatcher dispatcher)
+        public override async Task HandleAsync(LoadStockSubscriptionsUnfilteredAction action, IDispatcher dispatcher)
         {
             try
             {
-                GetStockSubscriptionListItemByInvestorName parameter =
-                    new()
-                    {
-                        InvestorName = action.InvestorName,
-                        Page = action.PageNumber,
-                        PageSize = action.PageSize
-                    };
+                GetStockSubscriptionListItem parameter = new() { Page = action.PageNumber, PageSize = action.PageSize };
 
                 OperationResult<PagingResponse<StockSubscriptionListItem>> result =
                     await _stockSubscriptionService!.GetStockSubscriptionListItems(parameter);
@@ -43,6 +37,7 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.GetStockSubs
             {
                 dispatcher.Dispatch(new LoadStockSubscriptionsFailureAction(e.Message));
             }
+
         }
     }
 }
