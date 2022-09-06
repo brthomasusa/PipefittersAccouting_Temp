@@ -7,34 +7,57 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
     public static class LoadStockSubscriptionsActionsReducer
     {
         [ReducerMethod]
-        public static StockSubscriptionState ReduceLoadStockSubscriptionAction
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionAction
         (
-            StockSubscriptionState state,
+            StockSubscriptionsState state,
             LoadStockSubscriptionsUnfilteredAction _
         )
         {
-            return new StockSubscriptionState(true, null, null, state.CurrentSubscription);
+            return new StockSubscriptionsState
+                (
+                    true,
+                    null,
+                    null,
+                    state.StockSubscriptionReadModel,
+                    state.PageNumber,
+                    state.PageSize
+                );
         }
 
-
         [ReducerMethod]
-        public static StockSubscriptionState ReduceLoadStockSubscriptionSuccessAction
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionSuccessAction
         (
-            StockSubscriptionState state,
+            StockSubscriptionsState state,
             LoadStockSubscriptionsSuccessAction action
         )
         {
-            return new StockSubscriptionState(false, null, action.CurrentSubscriptions, state.CurrentSubscription);
+            return new StockSubscriptionsState
+                (
+                    false,
+                    null,
+                    action.CurrentSubscriptions,
+                    state.StockSubscriptionReadModel,
+                    action.CurrentSubscriptions!.MetaData!.CurrentPage,
+                    action.CurrentSubscriptions!.MetaData!.PageSize
+                );
         }
 
         [ReducerMethod]
-        public static StockSubscriptionState ReduceLoadStockSubscriptionFailureAction
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionFailureAction
         (
-            StockSubscriptionState state,
+            StockSubscriptionsState state,
             LoadStockSubscriptionsFailureAction action
         )
         {
-            return new StockSubscriptionState(false, action.ErrorMessage, null, state.CurrentSubscription);
+            return new StockSubscriptionsState
+                (
+                    false,
+                    action.ErrorMessage,
+                    null,
+                    state.StockSubscriptionReadModel,
+                    state.PageNumber,
+                    state.PageSize
+                );
         }
     }
 }

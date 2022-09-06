@@ -1,6 +1,6 @@
 using PipefittersAccounting.UI.Store.UseCases.Shared.Actions;
 
-namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.CreateStockSubscription.Actions
+namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.CreateStockSubscription.Actions
 {
     public class CreateStockSubscriptionFailureAction : FailureAction
     {

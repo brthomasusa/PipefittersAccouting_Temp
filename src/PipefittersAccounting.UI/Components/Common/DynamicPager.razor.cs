@@ -62,7 +62,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger.LogWarning("DynamicPager.Previous: currentPage property is null!");
+                Console.WriteLine("DynamicPager.Previous: currentPage property is null!");
             }
 
         }
@@ -81,7 +81,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger.LogWarning("DynamicPager.Next: currentPage property is null!");
+                Console.WriteLine("DynamicPager.Next: currentPage property is null!");
             }
         }
 
@@ -96,7 +96,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger!.LogWarning($"DynamicPager.SetActive(string page) called with null parameter!");
+                Console.WriteLine($"DynamicPager.SetActive(string page) called with null parameter!");
             }
         }
 
@@ -109,7 +109,7 @@ namespace PipefittersAccounting.UI.Components.Common
             }
             else
             {
-                logger!.LogWarning($"DynamicPager.OnSelectedValueChanged(); property currentPage is null!");
+                Console.WriteLine($"DynamicPager.OnSelectedValueChanged(); property currentPage is null!");
             }
         }
 

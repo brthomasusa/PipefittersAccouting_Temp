@@ -29,9 +29,23 @@
                     </div>
                 </CardHeader>
                 <CardBody>
-                    @if (!_stockSubscriptionState!.Value.IsLoading)
+                    @if (_stockSubscriptionState!.Value.IsLoading)
                     {
-                        <BasicGrid Items=_stockSubscriptionState!.Value.CurrentSubscriptions!.Items>
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                    else if (_stockSubscriptionState!.Value.HasCurrentErrors)
+                    {
+                        <div class="d-flex flex-column align-items-center">
+                            <span>Whoops! Looks like an issue occurred loading stock subscriptions :(</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <BasicGrid Items=_stockSubscriptionState!.Value.StockSubscriptionList!.Items>
                             <TableHeader>
                                 <th>Stock #</th>
                                 <th>Investor</th>
@@ -75,19 +89,11 @@
                             </RowTemplate>
                         </BasicGrid>
                         <CascadingValue Name="MetaData"
-                        Value=@_stockSubscriptionState!.Value.CurrentSubscriptions!.MetaData>
+                        Value=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData>
                             <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
                                 <DynamicPager />
                             </CascadingValue>
                         </CascadingValue>
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
                     }
                 </CardBody>
                 <CardFooter>

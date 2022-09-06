@@ -1,12 +1,12 @@
 using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
-namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.CreateStockSubscription.Actions
+namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.CreateStockSubscription.Actions
 {
     public class CreateStockSubscriptionAction
     {
         public CreateStockSubscriptionAction(StockSubscriptionWriteModel subscription)
-            => StockSubscription = subscription;
+            => StockSubscriptionWriteModel = subscription;
 
-        public StockSubscriptionWriteModel StockSubscription { get; init; }
+        public StockSubscriptionWriteModel StockSubscriptionWriteModel { get; init; }
     }
 }
