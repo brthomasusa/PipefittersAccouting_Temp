@@ -20,7 +20,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         private List<StockSubscriptionListItem>? _subscriptionList;
         private StockSubscriptionReadModel? _selectedSubscription;
         private MetaData? _metaData;
-        private Func<int, int, Task>? _pagerChangedEventHandler;
+        private Func<int, int, Task> _pagerChangedEventHandler => GetAllStockSubscriptions;
 
         [Inject] private IState<StockSubscriptionsState>? _stockSubscriptionState { get; set; }
         [Inject] private StateFacade? _facade { get; set; }
@@ -31,8 +31,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
 
         protected async override Task OnInitializedAsync()
         {
-            _pagerChangedEventHandler = GetAllStockSubscriptions;
-
             if (_stockSubscriptionState!.Value.StockSubscriptionList is null)
             {
                 _facade!.LoadStockSubscriptionsUnfiltered
@@ -48,7 +46,6 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         private async Task GetAllStockSubscriptions(int pageNumber, int pageSize)
         {
             _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
-            // await InvokeAsync(StateHasChanged);
             await Task.CompletedTask;
         }
 
@@ -60,7 +57,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
                 pageNumber,
                 pageSize
             );
-            // await InvokeAsync(StateHasChanged);
+
             await Task.CompletedTask;
         }
 

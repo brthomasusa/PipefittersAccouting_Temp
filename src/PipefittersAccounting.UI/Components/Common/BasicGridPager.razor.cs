@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Components;
+#pragma warning disable CS8601
+#pragma warning disable CS8602
+
 using Fluxor;
+using Microsoft.AspNetCore.Components;
 using PipefittersAccounting.SharedModel.ReadModels;
 
 namespace PipefittersAccounting.UI.Components.Common
@@ -14,6 +17,7 @@ namespace PipefittersAccounting.UI.Components.Common
         private int pageSize;
 
         [Parameter] public MetaData? MetaData { get; set; }
+        [Parameter] public Func<int, int, Task>? PagerChangedEventHandler { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -26,22 +30,77 @@ namespace PipefittersAccounting.UI.Components.Common
             }
         }
 
-        private bool IsActive(string page)
-            => currentPage == page;
+        private bool IsActive(string page) => currentPage == page;
 
         private bool IsPageNavigationDisabled(string navigation)
         {
             if (navigation.Equals(PREVIOUS))
             {
-                return currentPage!.Equals("1");
+                return currentPage.Equals("1");
             }
             else if (navigation.Equals(NEXT))
             {
-                return currentPage!.Equals(totalPages.ToString());
+                return currentPage.Equals(totalPages.ToString());
             }
             return false;
         }
 
+        private async Task Previous()
+        {
+            if (currentPage != null)
+            {
+                int currentPageAsInt = int.Parse(currentPage);
 
+                if (currentPageAsInt > 1)
+                {
+                    currentPage = (currentPageAsInt - 1).ToString();
+                    await PagerChangedEventHandler!.Invoke(currentPageAsInt - 1, pageSize);
+                }
+            }
+            else
+            {
+                Console.WriteLine("DynamicPager.Previous: currentPage property is null!");
+            }
+
+        }
+
+        private async Task Next()
+        {
+            if (currentPage != null)
+            {
+                var currentPageAsInt = int.Parse(currentPage);
+
+                if (currentPageAsInt < totalPages)
+                {
+                    currentPage = (currentPageAsInt + 1).ToString();
+                    await PagerChangedEventHandler!.Invoke(currentPageAsInt + 1, pageSize);
+                }
+            }
+            else
+            {
+                Console.WriteLine("DynamicPager.Next: currentPage property is null!");
+            }
+        }
+
+        private async Task SetActive(string? page)
+        {
+            if (page is not null)
+            {
+                currentPage = page;
+
+                if (PagerChangedEventHandler is not null)
+                    await PagerChangedEventHandler.Invoke(int.Parse(currentPage), pageSize);
+            }
+            else
+            {
+                Console.WriteLine($"DynamicPager.SetActive(string page) called with null parameter!");
+            }
+        }
+
+        private async Task OnPageSizeChanged(int value)
+        {
+            pageSize = value;
+            await PagerChangedEventHandler!.Invoke(1, value);
+        }
     }
 }

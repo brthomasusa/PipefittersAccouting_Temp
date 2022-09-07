@@ -84,16 +84,12 @@
                                 </td>
                             </RowTemplate>
                         </BasicGrid>
-                        <CascadingValue Name="MetaData"
-                        Value=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData>
-                            <CascadingValue Name="PagerChangedEventHandler" Value=@_pagerChangedEventHandler>
-                                <DynamicPager />
-                            </CascadingValue>
-                        </CascadingValue>
+                        <BasicGridPager MetaData=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData
+                        PagerChangedEventHandler=@_pagerChangedEventHandler />
                     }
                 </CardBody>
                 <CardFooter>
-                    <Snackbar @ref="_snackbar" DefaultInterval=2000>
+                    <Snackbar @ref="_snackbar" DefaultInterval=1000>
                         <SnackbarBody>
                             @_snackBarMessage
                         </SnackbarBody>
