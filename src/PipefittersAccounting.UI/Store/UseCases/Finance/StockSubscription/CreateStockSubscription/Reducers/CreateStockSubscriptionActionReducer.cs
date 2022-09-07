@@ -13,7 +13,7 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.CreateStockS
             StockSubscriptionsState state,
             CreateStockSubscriptionAction _
         )
-            => new StockSubscriptionsState(true, null, state.StockSubscriptionList, state.StockSubscriptionReadModel, state.PageNumber, state.PageSize);
+            => new StockSubscriptionsState(true, null, state.StockSubscriptionList, state.StockSubscriptionReadModel, state.PageNumber, state.PageSize, state.CreatePagePath);
 
         [ReducerMethod]
         public static StockSubscriptionsState ReduceCreateStockSubscriptionSuccessAction
@@ -21,7 +21,7 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.CreateStockS
             StockSubscriptionsState state,
             CreateStockSubscriptionSuccessAction action
         )
-            => new StockSubscriptionsState(false, null, action.StockSubscriptionList, action.StockSubscriptionReadModel, state.PageNumber, state.PageSize);
+            => new StockSubscriptionsState(false, null, action.StockSubscriptionList, action.StockSubscriptionReadModel, state.PageNumber, state.PageSize, state.CreatePagePath);
 
         [ReducerMethod]
         public static StockSubscriptionsState ReduceCreateStockSubscriptionFailureAction
@@ -30,7 +30,7 @@ namespace PipefittersAccounting.UI.Store.UseCases.StockSubscription.CreateStockS
             CreateStockSubscriptionFailureAction action
         )
         {
-            return new StockSubscriptionsState(false, action.ErrorMessage, state.StockSubscriptionList, state.StockSubscriptionReadModel, state.PageNumber, state.PageSize);
+            return new StockSubscriptionsState(false, action.ErrorMessage, state.StockSubscriptionList, state.StockSubscriptionReadModel, state.PageNumber, state.PageSize, state.CreatePagePath);
         }
     }
 }

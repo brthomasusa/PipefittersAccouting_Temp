@@ -1,0 +1,11 @@
+@inherits FluxorComponent
+
+<div class="col-md-2">
+    <a href=@Uri class="btn btn-labeled btn-lg btn-outline-primary rounded-pill" role="button">
+        <span class="btn-label"><i class="fas fa-plus"></i></span>
+    </a>
+</div>
+
+@code {
+    [Parameter] public string? Uri { get; set; }
+}

@@ -16,12 +16,7 @@
             <Card Margin="Margin.Is4.OnY">
                 <CardHeader>
                     <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <a href="/Finance/Pages/StockSubscriptions/StockSubscriptionCreatePage"
-                                class="btn btn-labeled btn-lg btn-outline-primary rounded-pill" role="button">
-                                <span class="btn-label"><i class="fas fa-plus"></i></span>
-                            </a>
-                        </div>
+                        <CreateResourceLink Uri=@_stockSubscriptionState!.Value.CreatePagePath />
                         <div class="col-md-5">
                             <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
                                 OnSearchTermChangedEventHandler=@SearchChanged />
@@ -37,13 +32,14 @@
                             </div>
                         </div>
                     }
-                    else if (_stockSubscriptionState!.Value.HasCurrentErrors)
+                    else if (_stockSubscriptionState!.Value.HasCurrentErrors ||
+                    _stockSubscriptionState.Value.StockSubscriptionList is null)
                     {
                         <div class="d-flex flex-column align-items-center">
-                            <span>Whoops! Looks like an issue occurred loading stock subscriptions :(</span>
+                            <span>Whoops! Looks like an issue occurred while loading stock subscriptions :(</span>
                         </div>
                     }
-                    else
+                    else if (_stockSubscriptionState.Value.StockSubscriptionList is not null)
                     {
                         <BasicGrid Items=_stockSubscriptionState!.Value.StockSubscriptionList!.Items>
                             <TableHeader>

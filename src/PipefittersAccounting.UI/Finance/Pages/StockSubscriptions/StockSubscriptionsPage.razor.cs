@@ -20,7 +20,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         private List<StockSubscriptionListItem>? _subscriptionList;
         private StockSubscriptionReadModel? _selectedSubscription;
         private MetaData? _metaData;
-        private Func<Task>? _pagerChangedEventHandler;
+        private Func<int, int, Task>? _pagerChangedEventHandler;
 
         [Inject] private IState<StockSubscriptionsState>? _stockSubscriptionState { get; set; }
         [Inject] private StateFacade? _facade { get; set; }
@@ -45,26 +45,23 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
             await base.OnInitializedAsync();
         }
 
-        private async Task GetAllStockSubscriptions()
+        private async Task GetAllStockSubscriptions(int pageNumber, int pageSize)
         {
-            _facade!.LoadStockSubscriptionsUnfiltered
-            (
-                _stockSubscriptionState!.Value.PageNumber,
-                _stockSubscriptionState!.Value.PageSize
-            );
-
-            await InvokeAsync(StateHasChanged);
+            _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
+            // await InvokeAsync(StateHasChanged);
+            await Task.CompletedTask;
         }
 
-        private async Task GetAllStockSubscriptions(string investorName)
+        private async Task GetAllStockSubscriptions(string investorName, int pageNumber, int pageSize)
         {
             _facade!.LoadStockSubscriptionsFiltered
             (
                 investorName,
-                _stockSubscriptionState!.Value.PageNumber,
-                _stockSubscriptionState!.Value.PageSize
+                pageNumber,
+                pageSize
             );
-            await InvokeAsync(StateHasChanged);
+            // await InvokeAsync(StateHasChanged);
+            await Task.CompletedTask;
         }
 
         private void OnActionItemClicked(string action, Guid stockId)
@@ -97,7 +94,8 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
             }
         }
 
-        private async Task SearchChanged(string searchTerm) => await GetAllStockSubscriptions(searchTerm);
+        private async Task SearchChanged(string searchTerm)
+            => await GetAllStockSubscriptions(searchTerm, 1, _stockSubscriptionState!.Value.PageSize);
 
         private void ShowDetailDialog(Guid stockId) => _selectedStockId = stockId;
     }

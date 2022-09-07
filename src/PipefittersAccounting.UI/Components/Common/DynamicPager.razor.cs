@@ -103,15 +103,7 @@ namespace PipefittersAccounting.UI.Components.Common
         private async Task OnPageSizeChanged(int value)
         {
             pageSize = value;
-            if (currentPage is not null)
-            {
-                await PagerChangedEventHandler!.Invoke(int.Parse(currentPage), pageSize);
-            }
-            else
-            {
-                Console.WriteLine($"DynamicPager.OnSelectedValueChanged(); property currentPage is null!");
-            }
+            await PagerChangedEventHandler!.Invoke(1, value);
         }
-
     }
 }
