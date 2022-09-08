@@ -52,6 +52,30 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         }
 
         [Fact]
+        public async Task GetStockSubscriptionListItemsByFundsRcvd_StockSubscriptionQueryService_ShouldSucceed()
+        {
+            GetStockSubscriptionListItem queryParameters = new() { Page = 1, PageSize = 10 };
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetStockSubscriptionListItemsByFundsRcvd(queryParameters);
+
+            Assert.True(result.Success);
+
+            int records = result.Result.Count;
+            Assert.Equal(7, records);
+        }
+
+        [Fact]
+        public async Task GetStockSubscriptionListItemsByFundsNotRcvd_StockSubscriptionQueryService_ShouldSucceed()
+        {
+            GetStockSubscriptionListItem queryParameters = new() { Page = 1, PageSize = 10 };
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _queryService.GetStockSubscriptionListItemsByFundsNotRcvd(queryParameters);
+
+            Assert.True(result.Success);
+
+            int records = result.Result.Count;
+            Assert.Equal(1, records);
+        }
+
+        [Fact]
         public async Task VerifyStockSubscriptionIsUnique_StockSubscriptionQueryService_Unique()
         {
             Guid stockId = Guid.Empty;

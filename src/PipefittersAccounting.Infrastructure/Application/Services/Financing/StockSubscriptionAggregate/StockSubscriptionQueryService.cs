@@ -19,6 +19,12 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Financing.St
         public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItem queryParameters)
             => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
 
+        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItemsByFundsRcvd(GetStockSubscriptionListItem queryParameters)
+            => await GetStockSubscriptionListItemsQuery.QueryByFundsRcvd(queryParameters, _dapperCtx);
+
+        public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItemsByFundsNotRcvd(GetStockSubscriptionListItem queryParameters)
+            => await GetStockSubscriptionListItemsQuery.QueryByFundsNotRcvd(queryParameters, _dapperCtx);
+
         public async Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemByInvestorName queryParameters)
             => await GetStockSubscriptionListItemsQuery.Query(queryParameters, _dapperCtx);
 

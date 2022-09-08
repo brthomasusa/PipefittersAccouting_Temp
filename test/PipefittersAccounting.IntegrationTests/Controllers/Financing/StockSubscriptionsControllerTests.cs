@@ -60,6 +60,40 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.Financing
         }
 
         [Fact]
+        public async Task GetStockSubscriptions_ByFundsRcvd_StockSubscriptionsController_ShouldSucceed()
+        {
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["page"] = pagingParams.Page.ToString(),
+                ["pageSize"] = pagingParams.PageSize.ToString()
+            };
+
+            List<StockSubscriptionListItem> response = await _client
+                .GetFromJsonAsync<List<StockSubscriptionListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/stocksubscriptions/fundsrcvd", queryParams));
+
+            Assert.Equal(7, response.Count);
+        }
+
+        [Fact]
+        public async Task GetStockSubscriptions_ByFundsNotRcvd_StockSubscriptionsController_ShouldSucceed()
+        {
+            var pagingParams = new PagingParameters { Page = 1, PageSize = 10 };
+
+            var queryParams = new Dictionary<string, string?>
+            {
+                ["page"] = pagingParams.Page.ToString(),
+                ["pageSize"] = pagingParams.PageSize.ToString()
+            };
+
+            List<StockSubscriptionListItem> response = await _client
+                .GetFromJsonAsync<List<StockSubscriptionListItem>>(QueryHelpers.AddQueryString($"{_urlRoot}/stocksubscriptions/fundsnotrcvd", queryParams));
+
+            Assert.Equal(1, response.Count);
+        }
+
+        [Fact]
         public async Task GetStockSubscriptionDetail_StockSubscriptionsController_ShouldSucceed()
         {
             Guid stockId = new Guid("fb39b013-1633-4479-8186-9f9b240b5727");

@@ -72,6 +72,62 @@ namespace PipefittersAccounting.WebApi.Controllers.Financing
             return StatusCode(500, result.Exception.Message);
         }
 
+        [HttpGet("fundsrcvd")]
+        public async Task<ActionResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionsByFundsRcvd([FromQuery] GetStockSubscriptionListItem qryParams)
+        {
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _qrySvc.GetStockSubscriptionListItemsByFundsRcvd(qryParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            if (result.Exception is null)
+            {
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
+        [HttpGet("fundsnotrcvd")]
+        public async Task<ActionResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionsByFundsNotRcvd([FromQuery] GetStockSubscriptionListItem qryParams)
+        {
+            OperationResult<PagedList<StockSubscriptionListItem>> result = await _qrySvc.GetStockSubscriptionListItemsByFundsNotRcvd(qryParams);
+
+            if (result.Success)
+            {
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Result.MetaData));
+                return result.Result;
+            }
+
+            if (result.Exception is null)
+            {
+                _logger.LogWarning(result.NonSuccessMessage);
+                return StatusCode(400, result.NonSuccessMessage);
+            }
+
+            _logger.LogError(result.Exception.Message);
+            return StatusCode(500, result.Exception.Message);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpGet("detail/{stockId:Guid}")]
         public async Task<ActionResult<StockSubscriptionReadModel>> GetStockSubscriptionDetail(Guid stockId)
         {

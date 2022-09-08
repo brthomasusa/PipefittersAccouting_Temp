@@ -8,6 +8,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.Financing
     {
         Task<OperationResult<StockSubscriptionReadModel>> GetStockSubscriptionReadModel(GetStockSubscriptionParameter queryParameters);
         Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItem queryParameters);
+        Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItemsByFundsRcvd(GetStockSubscriptionListItem queryParameters);
+        Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItemsByFundsNotRcvd(GetStockSubscriptionListItem queryParameters);
         Task<OperationResult<PagedList<StockSubscriptionListItem>>> GetStockSubscriptionListItems(GetStockSubscriptionListItemByInvestorName queryParameters);
         Task<OperationResult<DividendDeclarationReadModel>> GetDividendDeclarationReadModel(GetDividendDeclarationParameter queryParameters);
         Task<OperationResult<PagedList<DividendDeclarationListItem>>> GetDividendDeclarationListItems(GetDividendDeclarationsParameters queryParameters);

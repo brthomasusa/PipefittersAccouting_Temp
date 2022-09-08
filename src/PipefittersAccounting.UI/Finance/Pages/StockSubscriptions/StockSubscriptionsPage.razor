@@ -2,6 +2,7 @@
 
 @page "/Finance/Pages/StockSubscriptions/StockSubscriptionsPage"
 @using PipefittersAccounting.UI.Components.Common
+@using PipefittersAccounting.UI.Finance.Components
 @using Blazorise.Snackbar
 
 <PageTitle>Stock Subscriptions</PageTitle>
@@ -41,51 +42,63 @@
                     }
                     else if (_stockSubscriptionState.Value.StockSubscriptionList is not null)
                     {
-                        <BasicGrid Items=_stockSubscriptionState!.Value.StockSubscriptionList!.Items>
-                            <TableHeader>
-                                <th>Stock #</th>
-                                <th>Investor</th>
-                                <th style="text-align:center">Issued On</th>
-                                <th style="text-align:center">Shares Issued</th>
-                                <th style="text-align:center">Share Price</th>
-                                <th style="text-align:center">Amt Received</th>
-                                <th style="text-align:center">Received On</th>
-                                <th style="text-align:center">Actions</th>
-                            </TableHeader>
-                            <RowTemplate Context="subscription">
-                                <td>@subscription.StockNumber</td>
-                                <td>@subscription.InvestorName</td>
-                                <td style="text-align:center">@subscription.StockIssueDate.ToShortDateString()</td>
-                                <td style="text-align:center">@(string.Format("{0:n0}", subscription.SharesIssured))</td>
-                                <td style="text-align:center">@(string.Format("{0:C2}", subscription.PricePerShare))</td>
-                                <td style="text-align:center">@(string.Format("{0:C2}", subscription.AmountReceived))</td>
-                                <td style="text-align:center">@subscription.DateReceived.ToShortDateString()</td>
-                                <td style="text-align:center">
-                                    <Dropdown Direction="Direction.Up">
-                                        <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary"
-                                        ToggleIconVisible="false">
-                                            <span class="btn-label"><i class="fas fa-ellipsis-v"
-                                                aria-hidden="true"></i></span>
-                                        </DropdownToggle>
-                                        <DropdownMenu class="border border-dark rounded-3 shadow-lg">
-                                            <DropdownItem Clicked="@( () => ShowDetailDialog(@subscription.StockId) )">
-                                                Details
-                                            </DropdownItem>
-                                            <DropdownItem Disabled=@( subscription.AmountReceived > 0 ) Clicked="@( () =>
+                        <Row>
+                            <BasicGrid Items=_stockSubscriptionState!.Value.StockSubscriptionList!.Items>
+                                <TableHeader>
+                                    <th>Stock #</th>
+                                    <th>Investor</th>
+                                    <th style="text-align:center">Issued On</th>
+                                    <th style="text-align:center">Shares Issued</th>
+                                    <th style="text-align:center">Share Price</th>
+                                    <th style="text-align:center">Amt Received</th>
+                                    <th style="text-align:center">Received On</th>
+                                    <th style="text-align:center">Actions</th>
+                                </TableHeader>
+                                <RowTemplate Context="subscription">
+                                    <td>@subscription.StockNumber</td>
+                                    <td>@subscription.InvestorName</td>
+                                    <td style="text-align:center">@subscription.StockIssueDate.ToShortDateString()</td>
+                                    <td style="text-align:center">@(string.Format("{0:n0}", subscription.SharesIssured))
+                                    </td>
+                                    <td style="text-align:center">@(string.Format("{0:C2}", subscription.PricePerShare))
+                                    </td>
+                                    <td style="text-align:center">@(string.Format("{0:C2}", subscription.AmountReceived))
+                                    </td>
+                                    <td style="text-align:center">@subscription.DateReceived.ToShortDateString()</td>
+                                    <td style="text-align:center">
+                                        <Dropdown Direction="Direction.Up">
+                                            <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary"
+                                            ToggleIconVisible="false">
+                                                <span class="btn-label"><i class="fas fa-ellipsis-v"
+                                                    aria-hidden="true"></i></span>
+                                            </DropdownToggle>
+                                            <DropdownMenu class="border border-dark rounded-3 shadow-lg">
+                                                <DropdownItem Clicked="@( () => ShowDetailDialog(@subscription.StockId) )">
+                                                    Details
+                                                </DropdownItem>
+                                                <DropdownItem Disabled=@( subscription.AmountReceived > 0 ) Clicked="@( () =>
                                             OnActionItemClicked("Edit", @subscription.StockId) )">
-                                                Edit
-                                            </DropdownItem>
-                                            <DropdownItem Disabled=@( subscription.AmountReceived > 0 )
-                                            Clicked="@( () => GetStockSubscription(@subscription.StockId) )">
-                                                Delete
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </td>
-                            </RowTemplate>
-                        </BasicGrid>
-                        <BasicGridPager MetaData=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData
-                        PagerChangedEventHandler=@_pagerChangedEventHandler />
+                                                    Edit
+                                                </DropdownItem>
+                                                <DropdownItem Disabled=@( subscription.AmountReceived > 0 )
+                                                Clicked="@( () => GetStockSubscription(@subscription.StockId) )">
+                                                    Delete
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </td>
+                                </RowTemplate>
+                            </BasicGrid>
+                        </Row>
+                        <Row Margin="Margin.Is3.FromTop">
+                            <Column ColumnSize="ColumnSize.Is8">
+                                <BasicGridPager MetaData=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData
+                                PagerChangedEventHandler=@_pagerChangedEventHandler />
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is4">
+                                <StockIssueProceedsFilter />
+                            </Column>
+                        </Row>
                     }
                 </CardBody>
                 <CardFooter>

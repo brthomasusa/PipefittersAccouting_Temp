@@ -17,9 +17,7 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         private string _placeHolderTextForSearch = "Search by investor name";
         private string? _snackBarMessage;
         private Snackbar? _snackbar;
-        private List<StockSubscriptionListItem>? _subscriptionList;
         private StockSubscriptionReadModel? _selectedSubscription;
-        private MetaData? _metaData;
         private Func<int, int, Task> _pagerChangedEventHandler => GetAllStockSubscriptions;
 
         [Inject] private IState<StockSubscriptionsState>? _stockSubscriptionState { get; set; }
