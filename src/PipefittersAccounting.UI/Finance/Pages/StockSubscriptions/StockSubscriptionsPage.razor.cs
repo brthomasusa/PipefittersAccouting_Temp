@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Blazorise;
 using Blazorise.Snackbar;
 using Fluxor;
-using PipefittersAccounting.SharedModel.ReadModels;
+
 using PipefittersAccounting.SharedModel.Readmodels.Financing;
 using PipefittersAccounting.UI.Interfaces;
 using PipefittersAccounting.UI.Utilities;
@@ -13,10 +13,10 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
 {
     public partial class StockSubscriptionsPage
     {
-        private Guid _selectedStockId;
         private string _placeHolderTextForSearch = "Search by investor name";
         private string? _snackBarMessage;
         private Snackbar? _snackbar;
+        private Guid _selectedStockId;
         private StockSubscriptionReadModel? _selectedSubscription;
         private Func<int, int, Task> _pagerChangedEventHandler => GetAllStockSubscriptions;
 
@@ -31,8 +31,9 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         {
             if (_stockSubscriptionState!.Value.StockSubscriptionList is null)
             {
-                _facade!.LoadStockSubscriptionsUnfiltered
+                _facade!.LoadStockSubscriptions
                     (
+                        _stockSubscriptionState!.Value.SubscriptionListFilter,
                         _stockSubscriptionState!.Value.PageNumber,
                         _stockSubscriptionState!.Value.PageSize
                     );
@@ -43,17 +44,35 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
 
         private async Task GetAllStockSubscriptions(int pageNumber, int pageSize)
         {
-            _facade!.LoadStockSubscriptionsUnfiltered(pageNumber, pageSize);
+            _facade!.LoadStockSubscriptions
+                (
+                    _stockSubscriptionState!.Value.SubscriptionListFilter,
+                    pageNumber,
+                    pageSize
+                );
+
             await Task.CompletedTask;
         }
 
-        private async Task GetAllStockSubscriptions(string investorName, int pageNumber, int pageSize)
+        private async Task GetStockSubscriptionsBySearchTerm(string investorName, int pageNumber, int pageSize)
         {
-            _facade!.LoadStockSubscriptionsFiltered
+            _facade!.LoadStockSubscriptionsWithSearchTerm
             (
                 investorName,
                 pageNumber,
                 pageSize
+            );
+
+            await Task.CompletedTask;
+        }
+
+        private async Task GetFilteredStockSubscriptions(string filterName)
+        {
+            _facade!.LoadStockSubscriptions
+            (
+                filterName,
+                1,
+                _stockSubscriptionState!.Value.PageSize
             );
 
             await Task.CompletedTask;
@@ -90,8 +109,14 @@ namespace PipefittersAccounting.UI.Finance.Pages.StockSubscriptions
         }
 
         private async Task SearchChanged(string searchTerm)
-            => await GetAllStockSubscriptions(searchTerm, 1, _stockSubscriptionState!.Value.PageSize);
+            => await GetStockSubscriptionsBySearchTerm(searchTerm, 1, _stockSubscriptionState!.Value.PageSize);
+
+        private async Task FilterChanged(string filterName)
+            => await GetFilteredStockSubscriptions(filterName);
 
         private void ShowDetailDialog(Guid stockId) => _selectedStockId = stockId;
+
+        private string ConvertEmptyDate(DateTime date)
+            => date == default ? string.Empty : date.ToShortDateString();
     }
 }

@@ -100,7 +100,7 @@ namespace PipefittersAccounting.UI.Components.Common
         private async Task OnPageSizeChanged(int value)
         {
             pageSize = value;
-            await PagerChangedEventHandler!.Invoke(1, value);
+            await PagerChangedEventHandler!.Invoke(1, pageSize);
         }
     }
 }

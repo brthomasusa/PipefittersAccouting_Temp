@@ -7,26 +7,32 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Effects
 {
-    public class LoadStockSubscriptionsUnfilteredEffect : Effect<LoadStockSubscriptionsUnfilteredAction>
+    public class LoadStockSubscriptionsWithSearchTermEffect : Effect<LoadStockSubscriptionsWithSearchTermAction>
     {
         private IStockSubscriptionRepository? _stockSubscriptionService;
         private IMessageService? _messageService;
 
-        public LoadStockSubscriptionsUnfilteredEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
+        public LoadStockSubscriptionsWithSearchTermEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
             => (_stockSubscriptionService, _messageService) = (repo, messageSvc);
 
-        public override async Task HandleAsync(LoadStockSubscriptionsUnfilteredAction action, IDispatcher dispatcher)
+        public override async Task HandleAsync(LoadStockSubscriptionsWithSearchTermAction action, IDispatcher dispatcher)
         {
             try
             {
-                GetStockSubscriptionListItem parameter = new() { Page = action.PageNumber, PageSize = action.PageSize };
+                GetStockSubscriptionListItemByInvestorName parameter =
+                    new()
+                    {
+                        InvestorName = action.SearchTerm,
+                        Page = action.PageNumber,
+                        PageSize = action.PageSize
+                    };
 
                 OperationResult<PagingResponse<StockSubscriptionListItem>> result =
                     await _stockSubscriptionService!.GetStockSubscriptionListItems(parameter);
 
                 if (result.Success)
                 {
-                    dispatcher.Dispatch(new LoadStockSubscriptionsSuccessAction(result.Result!));
+                    dispatcher.Dispatch(new LoadStockSubscriptionsWithSearchTermSuccessAction(result.Result!));
                 }
                 else
                 {
@@ -37,7 +43,6 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
             {
                 dispatcher.Dispatch(new LoadStockSubscriptionsFailureAction(e.Message));
             }
-
         }
     }
 }

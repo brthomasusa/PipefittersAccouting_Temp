@@ -14,7 +14,8 @@ namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
             StockSubscriptionReadModel? currentSubscription,
             int pageNumber,
             int pageSize,
-            string createPageHref
+            string createPageHref,
+            string subscriptionListFilter
         ) : base(isLoading, currentErrorMessage)
         {
             StockSubscriptionList = currentSubscriptions;
@@ -22,6 +23,7 @@ namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
             PageNumber = pageNumber;
             PageSize = pageSize;
             CreatePagePath = createPageHref;
+            SubscriptionListFilter = subscriptionListFilter;
         }
 
         public PagingResponse<StockSubscriptionListItem>? StockSubscriptionList { get; init; }
@@ -32,5 +34,6 @@ namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
         public int PageNumber { get; init; }
         public int PageSize { get; init; }
         public string CreatePagePath { get; init; }
+        public string SubscriptionListFilter { get; init; }
     }
 }

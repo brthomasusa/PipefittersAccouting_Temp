@@ -16,7 +16,8 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription
                     null,
                     1,
                     5,
-                    @"/Finance/Pages/StockSubscriptions/StockSubscriptionCreatePage"
+                    @"/Finance/Pages/StockSubscriptions/StockSubscriptionCreatePage",
+                    "all"
                 );
     }
 }

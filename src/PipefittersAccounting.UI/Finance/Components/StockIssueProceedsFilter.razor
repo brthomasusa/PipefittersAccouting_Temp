@@ -1,9 +1,20 @@
 @inherits FluxorComponent
 
 <ErrorBoundary>
-    <Buttons Role="ButtonsRole.Toolbar" Margin="Margin.Is1.FromEnd">
-        <Button Color="Color.Primary" Size=Size.Small>All</Button>
-        <Button Color="Color.Primary" Size=Size.Small>Funds Rcvd</Button>
-        <Button Color="Color.Primary" Size=Size.Small>Funds Not Rcvd</Button>
-    </Buttons>
+    <div class="row align-items-center justify-content-end">
+        <div class="col-5 align-self-center">
+            <Text>
+                Filter: @_selectedFilter
+            </Text>
+        </div>
+        <div class="col-7 align-self-center justify-content-end">
+            <Buttons Role="ButtonsRole.Toolbar" Margin="Margin.Is1.FromEnd">
+                <Button Color="Color.Primary" Size=Size.Small Clicked=@( () => OnFilterChanged("all") )>All</Button>
+                <Button Color="Color.Primary" Size=Size.Small Clicked=@( () => OnFilterChanged("rcvd") )>Funds
+                    Rcvd</Button>
+                <Button Color="Color.Primary" Size=Size.Small Clicked=@( () => OnFilterChanged("notrcvd") )>Funds Not
+                    Rcvd</Button>
+            </Buttons>
+        </div>
+    </div>
 </ErrorBoundary>

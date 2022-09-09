@@ -7,10 +7,10 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
     public static class LoadStockSubscriptionsActionsReducer
     {
         [ReducerMethod]
-        public static StockSubscriptionsState ReduceLoadStockSubscriptionAction
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionsAction
         (
             StockSubscriptionsState state,
-            LoadStockSubscriptionsUnfilteredAction _
+            LoadStockSubscriptionsAction _
         )
         {
             return new StockSubscriptionsState
@@ -21,12 +21,13 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     state.StockSubscriptionReadModel,
                     state.PageNumber,
                     state.PageSize,
-                    state.CreatePagePath
+                    state.CreatePagePath,
+                    state.SubscriptionListFilter
                 );
         }
 
         [ReducerMethod]
-        public static StockSubscriptionsState ReduceLoadStockSubscriptionSuccessAction
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionsSuccessAction
         (
             StockSubscriptionsState state,
             LoadStockSubscriptionsSuccessAction action
@@ -40,7 +41,28 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     state.StockSubscriptionReadModel,
                     action.CurrentSubscriptions!.MetaData!.CurrentPage,
                     action.CurrentSubscriptions!.MetaData!.PageSize,
-                    state.CreatePagePath
+                    state.CreatePagePath,
+                    action.SubscriptionListFilter
+                );
+        }
+
+        [ReducerMethod]
+        public static StockSubscriptionsState ReduceLoadStockSubscriptionsWithSearchTermSuccessAction
+        (
+            StockSubscriptionsState state,
+            LoadStockSubscriptionsWithSearchTermSuccessAction action
+        )
+        {
+            return new StockSubscriptionsState
+                (
+                    false,
+                    null,
+                    action.CurrentSubscriptions,
+                    state.StockSubscriptionReadModel,
+                    action.CurrentSubscriptions!.MetaData!.CurrentPage,
+                    action.CurrentSubscriptions!.MetaData!.PageSize,
+                    state.CreatePagePath,
+                    state.SubscriptionListFilter
                 );
         }
 
@@ -59,7 +81,8 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     state.StockSubscriptionReadModel,
                     state.PageNumber,
                     state.PageSize,
-                    state.CreatePagePath
+                    state.CreatePagePath,
+                    state.SubscriptionListFilter
                 );
         }
     }

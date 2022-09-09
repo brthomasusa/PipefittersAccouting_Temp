@@ -10,10 +10,10 @@ namespace PipefittersAccounting.UI.Services.Fluxor.Financing
 
         public StateFacade(IDispatcher dispatcher) => _dispatcher = dispatcher;
 
-        public void LoadStockSubscriptionsUnfiltered(int pageNumber, int pageSize)
-            => _dispatcher!.Dispatch(new LoadStockSubscriptionsUnfilteredAction(pageNumber, pageSize));
+        public void LoadStockSubscriptionsWithSearchTerm(string investorName, int pageNumber, int pageSize)
+            => _dispatcher!.Dispatch(new LoadStockSubscriptionsWithSearchTermAction(investorName, pageNumber, pageSize));
 
-        public void LoadStockSubscriptionsFiltered(string investorName, int pageNumber, int pageSize)
-            => _dispatcher!.Dispatch(new LoadStockSubscriptionsFilteredAction(investorName, pageNumber, pageSize));
+        public void LoadStockSubscriptions(string filterName, int pageNumber, int pageSize)
+            => _dispatcher!.Dispatch(new LoadStockSubscriptionsAction(filterName, pageNumber, pageSize));
     }
 }

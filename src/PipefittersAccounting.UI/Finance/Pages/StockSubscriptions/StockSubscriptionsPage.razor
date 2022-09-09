@@ -16,11 +16,18 @@
         <Column>
             <Card Margin="Margin.Is4.OnY">
                 <CardHeader>
-                    <div class="row align-items-center">
-                        <CreateResourceLink Uri=@_stockSubscriptionState!.Value.CreatePagePath />
-                        <div class="col-md-5">
-                            <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
-                                OnSearchTermChangedEventHandler=@SearchChanged />
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-1 align-self-center justify-content-start">
+                                <CreateResourceLink Uri=@_stockSubscriptionState!.Value.CreatePagePath />
+                            </div>
+                            <div class="col-5 align-self-center justify-content-start">
+                                <SingleFieldGridSearch PlaceHolderText=@_placeHolderTextForSearch
+                                    OnSearchTermChangedEventHandler=@SearchChanged />
+                            </div>
+                            <div class="col-6 align-self-center justify-content-end">
+                                <StockIssueProceedsFilter FilterSetEventHandler=@FilterChanged />
+                            </div>
                         </div>
                     </div>
                 </CardHeader>
@@ -64,7 +71,9 @@
                                     </td>
                                     <td style="text-align:center">@(string.Format("{0:C2}", subscription.AmountReceived))
                                     </td>
-                                    <td style="text-align:center">@subscription.DateReceived.ToShortDateString()</td>
+                                    <td style="text-align:center">
+                                        @ConvertEmptyDate(subscription.DateReceived)
+                                    </td>
                                     <td style="text-align:center">
                                         <Dropdown Direction="Direction.Up">
                                             <DropdownToggle Outline Size="Size.ExtraSmall" Color="Color.Primary"
@@ -91,12 +100,9 @@
                             </BasicGrid>
                         </Row>
                         <Row Margin="Margin.Is3.FromTop">
-                            <Column ColumnSize="ColumnSize.Is8">
+                            <Column ColumnSize="ColumnSize.IsFull">
                                 <BasicGridPager MetaData=@_stockSubscriptionState!.Value.StockSubscriptionList!.MetaData
                                 PagerChangedEventHandler=@_pagerChangedEventHandler />
-                            </Column>
-                            <Column ColumnSize="ColumnSize.Is4">
-                                <StockIssueProceedsFilter />
                             </Column>
                         </Row>
                     }

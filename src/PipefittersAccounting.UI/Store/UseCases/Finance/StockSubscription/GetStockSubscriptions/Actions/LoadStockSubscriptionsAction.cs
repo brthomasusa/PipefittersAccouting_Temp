@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions
 {
-    public readonly record struct LoadStockSubscriptionsFilteredAction(string InvestorName, int PageNumber, int PageSize);
+    public readonly record struct LoadStockSubscriptionsAction(string filterName, int PageNumber, int PageSize);
 }
