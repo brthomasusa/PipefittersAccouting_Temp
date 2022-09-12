@@ -1,5 +1,6 @@
 using Fluxor;
 using PipefittersAccounting.UI.Store.State.Finance.StockSubscription;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription
 {
@@ -17,7 +18,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription
                     1,
                     5,
                     @"/Finance/Pages/StockSubscriptions/StockSubscriptionCreatePage",
-                    "all"
+                    "all",
+                    new StockSubscriptionWriteModel(),
+                    new StockSubscriptionWriteModel()
                 );
     }
 }

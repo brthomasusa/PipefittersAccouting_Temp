@@ -3,9 +3,9 @@ using PipefittersAccounting.SharedModel.WriteModels.Financing;
 
 namespace PipefittersAccounting.UI.Finance.Components
 {
-    public class LoanAgreementDataEntryState
+    public class StockSubscriptionDataEntryState
     {
-        public LoanAgreementWriteModel LoanWriteModel { get; set; } = new();
+        public StockSubscriptionWriteModel SubscriptionWriteModel { get; set; } = new();
         public List<FinancierLookup> Financiers { get; set; } = new();
     }
 }

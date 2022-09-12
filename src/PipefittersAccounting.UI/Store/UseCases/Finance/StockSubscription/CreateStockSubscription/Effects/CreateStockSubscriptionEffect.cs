@@ -12,35 +12,21 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.Crea
         private IStockSubscriptionRepository? _stockSubscriptionService;
         private IMessageService? _messageService;
 
-        public CreateStockSubscriptionEffect(IStockSubscriptionRepository repo, IMessageService messageSvc)
-            => (_stockSubscriptionService, _messageService) = (repo, messageSvc);
+        public CreateStockSubscriptionEffect() { }
+
 
         public override async Task HandleAsync(CreateStockSubscriptionAction action, IDispatcher dispatcher)
         {
-            OperationResult<StockSubscriptionReadModel> createResult
-                = await _stockSubscriptionService!.CreateStockSubscription(action.StockSubscriptionWriteModel);
-
-            if (createResult.Success)
+            try
             {
-                GetStockSubscriptionListItem parameter = new() { Page = 1, PageSize = 10 };
-
-                OperationResult<PagingResponse<StockSubscriptionListItem>> result =
-                    await _stockSubscriptionService!.GetStockSubscriptionListItems(parameter);
-
-                if (result.Success)
-                {
-                    dispatcher.Dispatch(new CreateStockSubscriptionSuccessAction(result.Result!, createResult.Result));
-                }
-                else
-                {
-                    dispatcher.Dispatch(new CreateStockSubscriptionFailureAction(result.NonSuccessMessage));
-                }
+                dispatcher.Dispatch(new CreateStockSubscriptionSuccessAction(action.StockSubscriptionWriteModel));
             }
-            else
+            catch (Exception ex)
             {
-                dispatcher.Dispatch(new CreateStockSubscriptionFailureAction(createResult.NonSuccessMessage));
+                dispatcher.Dispatch(new CreateStockSubscriptionFailureAction(ex.Message));
             }
+
+            await Task.CompletedTask;
         }
-
     }
 }

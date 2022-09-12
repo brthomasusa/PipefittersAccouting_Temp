@@ -8,16 +8,12 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.Crea
     {
         public CreateStockSubscriptionSuccessAction
         (
-            PagingResponse<StockSubscriptionListItem> subscriptionList,
-            StockSubscriptionReadModel subscription
+            StockSubscriptionWriteModel subscription
         )
         {
-            StockSubscriptionList = subscriptionList;
-            StockSubscriptionReadModel = subscription;
+            StockSubscriptionCreateModel = subscription;
         }
 
-        public PagingResponse<StockSubscriptionListItem>? StockSubscriptionList { get; init; }
-
-        public StockSubscriptionReadModel? StockSubscriptionReadModel { get; init; }
+        public StockSubscriptionWriteModel StockSubscriptionCreateModel { get; init; }
     }
 }

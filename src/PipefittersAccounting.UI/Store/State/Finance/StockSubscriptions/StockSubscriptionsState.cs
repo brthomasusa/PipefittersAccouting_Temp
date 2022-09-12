@@ -15,7 +15,9 @@ namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
             int pageNumber,
             int pageSize,
             string createPageHref,
-            string subscriptionListFilter
+            string subscriptionListFilter,
+            StockSubscriptionWriteModel createModel,
+            StockSubscriptionWriteModel editModel
         ) : base(isLoading, currentErrorMessage)
         {
             StockSubscriptionList = currentSubscriptions;
@@ -24,13 +26,15 @@ namespace PipefittersAccounting.UI.Store.State.Finance.StockSubscription
             PageSize = pageSize;
             CreatePagePath = createPageHref;
             SubscriptionListFilter = subscriptionListFilter;
+            StockSubscriptionCreateModel = createModel;
+            StockSubscriptionEditModel = editModel;
         }
 
         public PagingResponse<StockSubscriptionListItem>? StockSubscriptionList { get; init; }
 
         public StockSubscriptionReadModel? StockSubscriptionReadModel { get; init; }
-        public StockSubscriptionWriteModel? StockSubscriptionCreateModel { get; init; }
-        public StockSubscriptionWriteModel? StockSubscriptionEditModel { get; init; }
+        public StockSubscriptionWriteModel StockSubscriptionCreateModel { get; init; }
+        public StockSubscriptionWriteModel StockSubscriptionEditModel { get; init; }
         public int PageNumber { get; init; }
         public int PageSize { get; init; }
         public string CreatePagePath { get; init; }

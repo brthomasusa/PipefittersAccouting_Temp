@@ -22,7 +22,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     state.PageNumber,
                     state.PageSize,
                     state.CreatePagePath,
-                    state.SubscriptionListFilter
+                    state.SubscriptionListFilter,
+                    state.StockSubscriptionCreateModel,
+                    state.StockSubscriptionEditModel
                 );
         }
 
@@ -42,7 +44,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     action.CurrentSubscriptions!.MetaData!.CurrentPage,
                     action.CurrentSubscriptions!.MetaData!.PageSize,
                     state.CreatePagePath,
-                    action.SubscriptionListFilter
+                    action.SubscriptionListFilter,
+                    state.StockSubscriptionCreateModel,
+                    state.StockSubscriptionEditModel
                 );
         }
 
@@ -62,7 +66,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     action.CurrentSubscriptions!.MetaData!.CurrentPage,
                     action.CurrentSubscriptions!.MetaData!.PageSize,
                     state.CreatePagePath,
-                    state.SubscriptionListFilter
+                    state.SubscriptionListFilter,
+                    state.StockSubscriptionCreateModel,
+                    state.StockSubscriptionEditModel
                 );
         }
 
@@ -82,7 +88,9 @@ namespace PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetS
                     state.PageNumber,
                     state.PageSize,
                     state.CreatePagePath,
-                    state.SubscriptionListFilter
+                    state.SubscriptionListFilter,
+                    state.StockSubscriptionCreateModel,
+                    state.StockSubscriptionEditModel
                 );
         }
     }

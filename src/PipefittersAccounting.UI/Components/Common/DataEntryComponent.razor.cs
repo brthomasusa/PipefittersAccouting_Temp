@@ -8,11 +8,10 @@ using PipefittersAccounting.UI.Utilities;
 
 namespace PipefittersAccounting.UI.Components.Common
 {
-    public partial class DataEntryForm<TWriteModel>  // 
+    public partial class DataEntryComponent<TWriteModel>
     {
         private bool _isLoading;
         private Snackbar? _snackbar;
-        private Validations? _validations;
         private EditContext? _editContext;
 
         [Parameter] public string? ReturnUri { get; set; }
@@ -23,23 +22,9 @@ namespace PipefittersAccounting.UI.Components.Common
         [Parameter] public Func<Task<OperationResult<bool>>>? SaveClickedEventHandler { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }
 
-        protected override void OnInitialized()
-        {
-            if (_validations is null)
-            {
-                Console.WriteLine("DataEntryForm: _validations is null");
-            }
-            else
-            {
-                Console.WriteLine("DataEntryForm: _validations is not null");
-                _editContext = _validations.EditContext;
-            }
-        }
-
         public async Task OnSave()
         {
-            if (!await _validations!.ValidateAll())
-                return;
+
 
             _isLoading = true;
             OperationResult<bool> saveResult = await SaveClickedEventHandler.Invoke();

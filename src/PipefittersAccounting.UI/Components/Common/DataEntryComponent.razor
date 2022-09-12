@@ -1,5 +1,4 @@
 @typeparam TWriteModel
-@* @inherits FluxorComponent *@
 
 @inject NavigationManager NavManager
 @using PipefittersAccounting.UI.Finance.Components
@@ -18,16 +17,18 @@
                 <CardBody>
                     @if (WriteModel is not null)
                     {
-                        <Validations @ref="_validations" Mode="ValidationMode.Auto" ValidateOnLoad=false Model=@WriteModel>
+                        <EditForm Model=@WriteModel OnValidSubmit="OnSave">
+                            <FluentValidationValidator />
                             <Container style="background-color:#F0F0F0;">
                                 @DataEntryFieldsTemplate
-                            </Container>                            
-                        </Validations>
-
+                            </Container>
+                        </EditForm>
+                        
                         <Field Margin="Margin.Is4.FromTop">
-                            <Button Color="Color.Success" Clicked="OnSave" Loading="@_isLoading">Save changes</Button>
+                                <Button Color="Color.Success" Type="ButtonType.Submit" Clicked="OnSave" Loading="@_isLoading">Save changes</Button>
                             <Button Color="Color.Secondary" Type="ButtonType.Link" To=@ReturnUri>Cancel editing</Button>
                         </Field>
+                        
                         <Snackbar @ref="_snackbar" DefaultInterval=1500 Closed=@( () => NavManager.NavigateTo(@ReturnUri!) )>
                             <SnackbarBody>
                                 @SnackBarMessage
@@ -50,5 +51,3 @@
         </Column>
     </Row>
 </ErrorBoundary>
-@* CreateEditContext=@_validations!.EditContext *@
-<CreateStockSubscriptionTracker CreateEditContext=@_editContext />

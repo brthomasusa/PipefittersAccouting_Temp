@@ -1,6 +1,7 @@
 using Fluxor;
+using PipefittersAccounting.SharedModel.WriteModels.Financing;
 using PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.GetStockSubscriptions.Actions;
-
+using PipefittersAccounting.UI.Store.UseCases.Finance.StockSubscription.CreateStockSubscription.Actions;
 
 namespace PipefittersAccounting.UI.Services.Fluxor.Financing
 {
@@ -15,5 +16,8 @@ namespace PipefittersAccounting.UI.Services.Fluxor.Financing
 
         public void LoadStockSubscriptions(string filterName, int pageNumber, int pageSize)
             => _dispatcher!.Dispatch(new LoadStockSubscriptionsAction(filterName, pageNumber, pageSize));
+
+        public void UpdateStockSubscriptionCreateModel(StockSubscriptionWriteModel subscription)
+            => _dispatcher!.Dispatch(new CreateStockSubscriptionAction(subscription));
     }
 }
