@@ -20,8 +20,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.CashManage
         {
             ValidationResult validationResult = new();
 
-            EventIdentificationParameter queryParameters = new() { EventId = transactionInfo.EventId };
-            OperationResult<EventIdentificationInfo> eventResult =
+            EconomicEventParameter queryParameters = new() { EventId = transactionInfo.EventId };
+            OperationResult<EconomicEventReadModel> eventResult =
                 await _qrySvc.GetEconomicEventIdentificationInfo(queryParameters);
 
             // Is the event id known to the system?

@@ -22,8 +22,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.CashManage
         {
             ValidationResult validationResult = new();
 
-            AgentIdentificationParameter queryParameters = new() { AgentId = transactionInfo.AgentId };
-            OperationResult<AgentIdentificationInfo> agentResult =
+            ExternalAgentParameter queryParameters = new() { AgentId = transactionInfo.AgentId };
+            OperationResult<ExternalAgentReadModel> agentResult =
                 await _qrySvc.GetExternalAgentIdentificationInfo(queryParameters);
 
             // Is the agent id known to the system?

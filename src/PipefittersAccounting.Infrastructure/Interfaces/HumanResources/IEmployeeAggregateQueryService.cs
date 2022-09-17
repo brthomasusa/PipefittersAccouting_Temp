@@ -7,7 +7,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
 {
     public interface IEmployeeAggregateQueryService
     {
-        Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters);
+        Task<OperationResult<EmployeeReadModel>> GetEmployeeReadModel(GetEmployeeParameter queryParameters);
         Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters);
         Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesByLastNameParameters queryParameters);
         Task<OperationResult<List<EmployeeManager>>> GetEmployeeManagers(GetEmployeeManagersParameters queryParameters);
@@ -15,7 +15,7 @@ namespace PipefittersAccounting.Infrastructure.Interfaces.HumanResources
         Task<OperationResult<Guid>> VerifyEmployeeSSNIsUnique(UniqueEmployeSSNParameter queryParameters);
         Task<OperationResult<Guid>> VerifyEmployeeNameIsUnique(UniqueEmployeeNameParameters queryParameters);
         Task<OperationResult<int>> GetCountOfEmployeeTimeCards(GetEmployeeParameter queryParameters);
-        Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters);
+        Task<OperationResult<TimeCardReadModel>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters);
         Task<OperationResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForManager(GetTimeCardsForManagerParameter queryParameters);
         Task<OperationResult<List<TimeCardWithPymtInfo>>> GetTimeCardsForPayPeriod(GetTimeCardsForPayPeriodParameter queryParameters);
         Task<OperationResult<List<TimeCardListItem>>> GetEmployeeTimeCardListItems(GetEmployeeParameter queryParameters);

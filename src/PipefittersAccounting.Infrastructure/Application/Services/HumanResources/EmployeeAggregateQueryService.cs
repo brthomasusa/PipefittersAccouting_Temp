@@ -1,4 +1,3 @@
-
 using PipefittersAccounting.Infrastructure.Application.Queries.HumanResources;
 using PipefittersAccounting.Infrastructure.Interfaces.HumanResources;
 using PipefittersAccounting.Infrastructure.Persistence.DatabaseContext;
@@ -14,8 +13,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
 
         public EmployeeAggregateQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters) =>
-            await GetEmployeeDetailQuery.Query(queryParameters, _dapperCtx);
+        public async Task<OperationResult<EmployeeReadModel>> GetEmployeeReadModel(GetEmployeeParameter queryParameters) =>
+            await GetEmployeeReadModelQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<PagedList<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters) =>
             await GetEmployeeListItemsQuery.Query(queryParameters, _dapperCtx);
@@ -38,7 +37,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.HumanResourc
         public async Task<OperationResult<int>> GetCountOfEmployeeTimeCards(GetEmployeeParameter queryParameters)
             => await GetCountOfEmployeeTimeCardsQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
+        public async Task<OperationResult<TimeCardReadModel>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
             => await GetEmployeeTimeCardDetailQuery.Query(queryParameters, _dapperCtx);
 
         public async Task<OperationResult<List<TimeCardListItem>>> GetEmployeeTimeCardListItems(GetEmployeeParameter queryParameters)

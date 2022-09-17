@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 {
     public class GetEventIdentificationInfoQuery
     {
-        public async static Task<OperationResult<EventIdentificationInfo>> Query(EventIdentificationParameter queryParameters,
+        public async static Task<OperationResult<EconomicEventReadModel>> Query(EconomicEventParameter queryParameters,
                                                                                          DapperContext ctx)
         {
             try
@@ -25,21 +25,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    EventIdentificationInfo eventInfo =
-                        await connection.QueryFirstOrDefaultAsync<EventIdentificationInfo>(sql, parameters);
+                    EconomicEventReadModel eventInfo =
+                        await connection.QueryFirstOrDefaultAsync<EconomicEventReadModel>(sql, parameters);
 
                     if (eventInfo is null)
                     {
                         string msg = $"Unable to locate an economic event with Id '{queryParameters.EventId}'!";
-                        return OperationResult<EventIdentificationInfo>.CreateFailure(msg);
+                        return OperationResult<EconomicEventReadModel>.CreateFailure(msg);
                     }
 
-                    return OperationResult<EventIdentificationInfo>.CreateSuccessResult(eventInfo);
+                    return OperationResult<EconomicEventReadModel>.CreateSuccessResult(eventInfo);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<EventIdentificationInfo>.CreateFailure(ex.Message);
+                return OperationResult<EconomicEventReadModel>.CreateFailure(ex.Message);
             }
         }
     }

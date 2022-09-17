@@ -20,8 +20,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         {
             ValidationResult validationResult = new();
 
-            AgentIdentificationParameter queryParameters = new() { AgentId = loanAgreement.FinancierId };
-            OperationResult<AgentIdentificationInfo> agentResult =
+            ExternalAgentParameter queryParameters = new() { AgentId = loanAgreement.FinancierId };
+            OperationResult<ExternalAgentReadModel> agentResult =
                 await _qrySvc.GetExternalAgentIdentificationInfo(queryParameters);
 
             // Is the agent id known to the system?

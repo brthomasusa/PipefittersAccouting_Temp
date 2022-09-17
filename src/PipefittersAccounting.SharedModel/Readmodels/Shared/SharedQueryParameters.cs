@@ -2,12 +2,12 @@
 
 namespace PipefittersAccounting.SharedModel.Readmodels.Shared
 {
-    public class EventIdentificationParameter
+    public class EconomicEventParameter
     {
         public Guid EventId { get; set; }
     }
 
-    public class AgentIdentificationParameter
+    public class ExternalAgentParameter
     {
         public Guid AgentId { get; set; }
     }

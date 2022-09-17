@@ -9,7 +9,7 @@ namespace PipefittersAccounting.UI.HumanResources.Components
     public partial class EmployeeDetailDialog
     {
         private Modal? _detailModalRef;
-        private EmployeeDetail? _employee;
+        private EmployeeReadModel? _employee;
         private string selectedTab = "generalInfo";
 
         [Parameter] public Guid EmployeeId { get; set; }
@@ -34,7 +34,7 @@ namespace PipefittersAccounting.UI.HumanResources.Components
         {
             GetEmployeeParameter getEmployeeParameters = new() { EmployeeID = this.EmployeeId };
 
-            OperationResult<EmployeeDetail> result =
+            OperationResult<EmployeeReadModel> result =
                 await EmployeeService!.GetEmployeeDetails(getEmployeeParameters);
 
             if (result.Success)

@@ -18,7 +18,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         private GetEmployeesParameters? _getEmployeesParameters;
         private GetEmployeesByLastNameParameters? _getEmployeesByLastNameParameters;
         private List<EmployeeListItem>? _employeeList;
-        private EmployeeDetail? _selectedEmployee;
+        private EmployeeReadModel? _selectedEmployee;
         private MetaData? _metaData;
         private Func<int, int, Task>? _pagerChangedEventHandler;
 
@@ -36,7 +36,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         {
             GetEmployeeParameter queryParam = new() { EmployeeID = emploeeId };
 
-            OperationResult<EmployeeDetail> result =
+            OperationResult<EmployeeReadModel> result =
                 await EmployeeService!.GetEmployeeDetails(queryParam);
 
             if (result.Success)

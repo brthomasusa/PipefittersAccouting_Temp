@@ -66,7 +66,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
             _state.EmployeeWriteModel!.StateCode = _state.EmployeeWriteModel!.StateCode.ToUpper();
             _state.EmployeeWriteModel!.MaritalStatus = _state.EmployeeWriteModel!.MaritalStatus.ToUpper();
 
-            OperationResult<EmployeeDetail> result = await EmployeeService!.CreateEmployeeInfo(_state.EmployeeWriteModel!);
+            OperationResult<EmployeeReadModel> result = await EmployeeService!.CreateEmployeeInfo(_state.EmployeeWriteModel!);
 
             if (result.Success)
             {

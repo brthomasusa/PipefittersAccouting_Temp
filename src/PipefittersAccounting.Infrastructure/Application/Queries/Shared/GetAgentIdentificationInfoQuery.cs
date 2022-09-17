@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 {
     public class GetAgentIdentificationInfoQuery
     {
-        public async static Task<OperationResult<AgentIdentificationInfo>> Query(AgentIdentificationParameter queryParameters,
+        public async static Task<OperationResult<ExternalAgentReadModel>> Query(ExternalAgentParameter queryParameters,
                                                                                          DapperContext ctx)
         {
             try
@@ -25,21 +25,21 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.Shared
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    AgentIdentificationInfo agentInfo =
-                        await connection.QueryFirstOrDefaultAsync<AgentIdentificationInfo>(sql, parameters);
+                    ExternalAgentReadModel agentInfo =
+                        await connection.QueryFirstOrDefaultAsync<ExternalAgentReadModel>(sql, parameters);
 
                     if (agentInfo is null)
                     {
                         string msg = $"Unable to locate an external agent with Id '{queryParameters.AgentId}'!";
-                        return OperationResult<AgentIdentificationInfo>.CreateFailure(msg);
+                        return OperationResult<ExternalAgentReadModel>.CreateFailure(msg);
                     }
 
-                    return OperationResult<AgentIdentificationInfo>.CreateSuccessResult(agentInfo);
+                    return OperationResult<ExternalAgentReadModel>.CreateSuccessResult(agentInfo);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<AgentIdentificationInfo>.CreateFailure(ex.Message);
+                return OperationResult<ExternalAgentReadModel>.CreateFailure(ex.Message);
             }
         }
     }

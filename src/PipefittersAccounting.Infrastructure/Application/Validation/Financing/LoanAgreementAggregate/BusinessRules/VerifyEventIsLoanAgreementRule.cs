@@ -20,9 +20,9 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.Financing.
         {
             ValidationResult validationResult = new();
 
-            EventIdentificationParameter queryParameters = new() { EventId = loanAgreement.LoanId };
+            EconomicEventParameter queryParameters = new() { EventId = loanAgreement.LoanId };
 
-            OperationResult<EventIdentificationInfo> eventResult =
+            OperationResult<EconomicEventReadModel> eventResult =
                 await _qrySvc.GetEconomicEventIdentificationInfo(queryParameters);
 
             // Is the event id known to the system?

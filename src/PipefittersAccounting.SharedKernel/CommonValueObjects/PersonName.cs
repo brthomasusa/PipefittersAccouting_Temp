@@ -15,9 +15,9 @@ namespace PipefittersAccounting.SharedKernel.CommonValueObjects
             MiddleInitial = mi;
         }
 
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string MiddleInitial { get; init; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+        public string? MiddleInitial { get; init; }
 
         public static PersonName Create(string last, string first, string mi)
         {

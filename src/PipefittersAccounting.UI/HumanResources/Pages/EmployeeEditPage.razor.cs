@@ -29,7 +29,7 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
         {
             GetEmployeeParameter queryParameters = new() { EmployeeID = EmployeeId };
 
-            OperationResult<EmployeeDetail> result =
+            OperationResult<EmployeeReadModel> result =
                 await EmployeeService!.GetEmployeeDetails(queryParameters);
 
             if (result.Success)

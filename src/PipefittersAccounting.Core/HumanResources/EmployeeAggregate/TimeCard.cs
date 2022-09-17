@@ -1,6 +1,5 @@
 #pragma warning disable CS8618
 
-using PipefittersAccounting.Core.HumanResources.EmployeeAggregate.ValueObjects;
 using PipefittersAccounting.SharedKernel;
 using PipefittersAccounting.SharedKernel.CommonValueObjects;
 

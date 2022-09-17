@@ -93,7 +93,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         }
 
         [HttpGet("detail/{employeeId:Guid}", Name = "Details")]
-        public async Task<ActionResult<EmployeeDetail>> Details(Guid employeeId)
+        public async Task<ActionResult<EmployeeReadModel>> Details(Guid employeeId)
         {
             GetEmployeeParameter queryParams =
             new GetEmployeeParameter
@@ -101,7 +101,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
                 EmployeeID = employeeId
             };
 
-            OperationResult<EmployeeDetail> result = await _qrySvc.GetEmployeeDetails(queryParams);
+            OperationResult<EmployeeReadModel> result = await _qrySvc.GetEmployeeReadModel(queryParams);
 
             if (result.Success)
             {
@@ -125,7 +125,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             if (writeResult.Success)
             {
                 GetEmployeeParameter queryParams = new() { EmployeeID = writeModel.EmployeeId };
-                OperationResult<EmployeeDetail> queryResult = await _qrySvc.GetEmployeeDetails(queryParams);
+                OperationResult<EmployeeReadModel> queryResult = await _qrySvc.GetEmployeeReadModel(queryParams);
 
                 if (queryResult.Success)
                 {

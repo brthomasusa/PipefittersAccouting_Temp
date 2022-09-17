@@ -87,11 +87,11 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
         }
 
         [HttpGet("timecard/{timeCardId:Guid}")]
-        public async Task<ActionResult<TimeCardDetail>> GetTimeCard(Guid timeCardId)
+        public async Task<ActionResult<TimeCardReadModel>> GetTimeCard(Guid timeCardId)
         {
             GetTimeCardParameter queryParameter = new() { TimeCardId = timeCardId };
 
-            OperationResult<TimeCardDetail> result = await _qrySvc.GetEmployeeTimeCardDetails(queryParameter);
+            OperationResult<TimeCardReadModel> result = await _qrySvc.GetEmployeeTimeCardDetails(queryParameter);
 
             if (result.Success)
             {
@@ -111,7 +111,7 @@ namespace PipefittersAccounting.WebApi.Controllers.HumanResources
             {
                 GetTimeCardParameter queryParameter = new() { TimeCardId = writeModel.TimeCardId };
 
-                OperationResult<TimeCardDetail> result = await _qrySvc.GetEmployeeTimeCardDetails(queryParameter);
+                OperationResult<TimeCardReadModel> result = await _qrySvc.GetEmployeeTimeCardDetails(queryParameter);
 
                 if (result.Success)
                 {

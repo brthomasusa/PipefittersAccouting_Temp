@@ -2,7 +2,7 @@ using PipefittersAccounting.SharedModel.Interfaces;
 
 namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
 {
-    public class EmployeeDetail : IReadModel
+    public class EmployeeReadModel : IReadModel
     {
         public Guid EmployeeId { get; set; }
         public Guid SupervisorId { get; set; }
@@ -55,7 +55,7 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public string? EmployeeTypeName { get; set; }
     }
 
-    public class TimeCardDetail
+    public class TimeCardReadModel
     {
         public Guid TimeCardId { get; set; }
         public Guid EmployeeId { get; set; }

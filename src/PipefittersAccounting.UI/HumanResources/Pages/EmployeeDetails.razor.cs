@@ -8,14 +8,14 @@ namespace PipefittersAccounting.UI.HumanResources.Pages
     public partial class EmployeeDetails
     {
         [Parameter] public Guid EmployeeId { get; set; }
-        [Parameter] public EmployeeDetail? EmployeeDetailModel { get; set; }
+        [Parameter] public EmployeeReadModel? EmployeeDetailModel { get; set; }
         [Inject] public IEmployeeRepository? EmployeeService { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             GetEmployeeParameter queryParameters = new() { EmployeeID = EmployeeId };
 
-            OperationResult<EmployeeDetail> result =
+            OperationResult<EmployeeReadModel> result =
                 await EmployeeService!.GetEmployeeDetails(queryParameters);
 
             if (result.Success)

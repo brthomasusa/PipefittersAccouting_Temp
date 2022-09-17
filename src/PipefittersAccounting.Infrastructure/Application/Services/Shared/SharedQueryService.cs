@@ -13,10 +13,10 @@ namespace PipefittersAccounting.Infrastructure.Application.Services.Shared
 
         public SharedQueryService(DapperContext ctx) => _dapperCtx = ctx;
 
-        public async Task<OperationResult<AgentIdentificationInfo>> GetExternalAgentIdentificationInfo(AgentIdentificationParameter queryParameters)
+        public async Task<OperationResult<ExternalAgentReadModel>> GetExternalAgentIdentificationInfo(ExternalAgentParameter queryParameters)
             => await GetAgentIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
 
-        public async Task<OperationResult<EventIdentificationInfo>> GetEconomicEventIdentificationInfo(EventIdentificationParameter queryParameters)
+        public async Task<OperationResult<EconomicEventReadModel>> GetEconomicEventIdentificationInfo(EconomicEventParameter queryParameters)
             => await GetEventIdentificationInfoQuery.Query(queryParameters, _dapperCtx);
     }
 }

@@ -47,7 +47,7 @@ namespace PipefittersAccounting.SharedModel
             };
         }
 
-        public static EmployeeWriteModel Map(this EmployeeDetail input)
+        public static EmployeeWriteModel Map(this EmployeeReadModel input)
         {
             return new()
             {

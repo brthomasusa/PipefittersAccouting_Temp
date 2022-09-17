@@ -25,7 +25,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Guid agentID = new Guid("4B900A74-E2D9-4837-B9A4-9E828752716E");
             GetEmployeeParameter qryParam = new GetEmployeeParameter() { EmployeeID = agentID };
 
-            OperationResult<EmployeeDetail> result = await _queryService.GetEmployeeDetails(qryParam);
+            OperationResult<EmployeeReadModel> result = await _queryService.GetEmployeeReadModel(qryParam);
 
             Assert.True(result.Success);
             Assert.Equal(agentID, result.Result.EmployeeId);
@@ -39,7 +39,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             Guid agentID = new Guid("12300A74-E2D9-4837-B9A4-9E828752716E");
             GetEmployeeParameter qryParam = new GetEmployeeParameter() { EmployeeID = agentID };
 
-            OperationResult<EmployeeDetail> result = await _queryService.GetEmployeeDetails(qryParam);
+            OperationResult<EmployeeReadModel> result = await _queryService.GetEmployeeReadModel(qryParam);
 
             Assert.False(result.Success);
             string errMsg = $"No employee record found where EmployeeId equals '{qryParam.EmployeeID}'.";
@@ -178,7 +178,7 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Hu
             GetTimeCardParameter qryParam =
                 new() { TimeCardId = new Guid("d4ad0ad8-7e03-4bb2-8ce0-04e5e95428a1") };
 
-            OperationResult<TimeCardDetail> result = await _queryService.GetEmployeeTimeCardDetails(qryParam);
+            OperationResult<TimeCardReadModel> result = await _queryService.GetEmployeeTimeCardDetails(qryParam);
 
             Assert.True(result.Success);
             Assert.Equal("Roberto W Tamburello", result.Result.EmployeeFullName);

@@ -19,7 +19,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         }
 
         // Alter system state with WriteModels
-        public async Task<OperationResult<EmployeeDetail>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
+        public async Task<OperationResult<EmployeeReadModel>> CreateEmployeeInfo(EmployeeWriteModel writeModel)
             => await CreateEmployeeHttpClient.Execute(writeModel, _client, _options);
 
         public async Task<OperationResult<bool>> EditEmployeeInfo(EmployeeWriteModel writeModel)
@@ -38,7 +38,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
             => await DeleteTimeCardHttpClient.Execute(writeModel, _client, _options);
 
         // Query system state with ReadModels        
-        public async Task<OperationResult<EmployeeDetail>> GetEmployeeDetails(GetEmployeeParameter queryParameters)
+        public async Task<OperationResult<EmployeeReadModel>> GetEmployeeDetails(GetEmployeeParameter queryParameters)
             => await GetEmployeeDetailHttpClient.Query(queryParameters, _client, _options);
 
         public async Task<OperationResult<PagingResponse<EmployeeListItem>>> GetEmployeeListItems(GetEmployeesParameters queryParameters)
@@ -53,7 +53,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
         public async Task<OperationResult<List<EmployeeTypes>>> GetEmployeeTypes()
             => await GetEmployeeTypesHttpClient.Query(_client, _options);
 
-        public Task<OperationResult<TimeCardDetail>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
+        public Task<OperationResult<TimeCardReadModel>> GetEmployeeTimeCardDetails(GetTimeCardParameter queryParameters)
             => throw new NotImplementedException();
 
         public Task<OperationResult<List<TimeCardListItem>>> GetEmployeeTimeCardListItems(GetEmployeeParameter queryParameters)

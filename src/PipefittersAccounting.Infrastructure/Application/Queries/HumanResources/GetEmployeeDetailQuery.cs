@@ -6,16 +6,16 @@ using PipefittersAccounting.SharedModel.Readmodels.HumanResources;
 
 namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResources
 {
-    public class GetEmployeeDetailQuery
+    public class GetEmployeeReadModelQuery
     {
-        public async static Task<OperationResult<EmployeeDetail>> Query(GetEmployeeParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<EmployeeReadModel>> Query(GetEmployeeParameter queryParameters, DapperContext ctx)
         {
             try
             {
                 if (await IsValidEmployeeID(queryParameters.EmployeeID, ctx) == false)
                 {
                     string errMsg = $"No employee record found where EmployeeId equals '{queryParameters.EmployeeID}'.";
-                    return OperationResult<EmployeeDetail>.CreateFailure(errMsg);
+                    return OperationResult<EmployeeReadModel>.CreateFailure(errMsg);
                 }
 
                 var sql =
@@ -42,13 +42,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    EmployeeDetail detail = await connection.QueryFirstOrDefaultAsync<EmployeeDetail>(sql, parameters);
-                    return OperationResult<EmployeeDetail>.CreateSuccessResult(detail);
+                    EmployeeReadModel detail = await connection.QueryFirstOrDefaultAsync<EmployeeReadModel>(sql, parameters);
+                    return OperationResult<EmployeeReadModel>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<EmployeeDetail>.CreateFailure(ex.Message);
+                return OperationResult<EmployeeReadModel>.CreateFailure(ex.Message);
             }
         }
 

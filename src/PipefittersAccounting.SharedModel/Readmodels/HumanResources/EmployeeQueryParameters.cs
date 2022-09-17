@@ -28,12 +28,6 @@ namespace PipefittersAccounting.SharedModel.Readmodels.HumanResources
         public int PageSize { get; set; }
     }
 
-    public class GetTimeCardsWithPagingInfoParameter
-    {
-        public Guid EmployeeId { get; set; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-    }
 
     public class UniqueEmployeeNameParameters
     {

@@ -131,7 +131,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, _options);
+            var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeReadModel>(jsonResponse, _options);
 
             Assert.Equal("Ken", employeeDetails.FirstName);
             Assert.Equal("Sanchez", employeeDetails.LastName);
@@ -160,7 +160,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, _options);
+                    var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeReadModel>(jsonResponse, _options);
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var employeeDetails = JsonSerializer.Deserialize<EmployeeDetail>(content, _options);
+            var employeeDetails = JsonSerializer.Deserialize<EmployeeReadModel>(content, _options);
 
             Assert.Equal(model.FirstName, employeeDetails.FirstName);
             Assert.Equal(model.LastName, employeeDetails.LastName);
@@ -199,7 +199,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var employeeDetails = JsonSerializer.Deserialize<EmployeeDetail>(content, _options);
+            var employeeDetails = JsonSerializer.Deserialize<EmployeeReadModel>(content, _options);
 
             Assert.Equal(model.FirstName, employeeDetails.FirstName);
             Assert.Equal(model.LastName, employeeDetails.LastName);
@@ -364,7 +364,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStreamAsync();
-            var timecard = await JsonSerializer.DeserializeAsync<TimeCardDetail>(jsonResponse, _options);
+            var timecard = await JsonSerializer.DeserializeAsync<TimeCardReadModel>(jsonResponse, _options);
 
             Assert.Equal(168, timecard.RegularHours);
             Assert.Equal(4, timecard.OvertimeHours);
@@ -393,7 +393,7 @@ namespace PipefittersAccounting.IntegrationTests.Controllers.HumanResources
                     response.EnsureSuccessStatusCode();
 
                     var jsonResponse = await response.Content.ReadAsStreamAsync();
-                    var timeCard = await JsonSerializer.DeserializeAsync<TimeCardDetail>(jsonResponse, _options);
+                    var timeCard = await JsonSerializer.DeserializeAsync<TimeCardReadModel>(jsonResponse, _options);
 
                     Assert.Equal(new DateTime(2022, 3, 31), timeCard.PayPeriodEnded);
                 }

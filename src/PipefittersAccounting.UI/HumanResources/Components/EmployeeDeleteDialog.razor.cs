@@ -12,7 +12,7 @@ namespace PipefittersAccounting.UI.HumanResources.Components
         private bool _isLoading;
         private Modal? _modalRef;
         [Parameter] public bool ShowDialog { get; set; }
-        [Parameter] public EmployeeDetail? EmployeeReadModel { get; set; }
+        [Parameter] public EmployeeReadModel? EmployeeReadModel { get; set; }
         [Parameter] public EventCallback<string> OnDialogCloseEventHandler { get; set; }
         [Inject] public IEmployeeRepository? EmployeeService { get; set; }
         [Inject] public IMessageService? MessageService { get; set; }

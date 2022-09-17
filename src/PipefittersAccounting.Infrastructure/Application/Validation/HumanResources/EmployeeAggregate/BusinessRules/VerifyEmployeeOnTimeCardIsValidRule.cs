@@ -20,8 +20,8 @@ namespace PipefittersAccounting.Infrastructure.Application.Validation.HumanResou
         {
             ValidationResult validationResult = new();
 
-            AgentIdentificationParameter queryParameters = new() { AgentId = employee.EmployeeId };
-            OperationResult<AgentIdentificationInfo> agentResult =
+            ExternalAgentParameter queryParameters = new() { AgentId = employee.EmployeeId };
+            OperationResult<ExternalAgentReadModel> agentResult =
                 await _qrySvc.GetExternalAgentIdentificationInfo(queryParameters);
 
             // Is the agent id known to the system?

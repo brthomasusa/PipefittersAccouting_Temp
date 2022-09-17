@@ -117,8 +117,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetExternalAgentIdentificationInfo_CashAccountQueryService_ShouldSucceed()
         {
-            AgentIdentificationParameter queryParameters = new() { AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601") };
-            OperationResult<AgentIdentificationInfo> result = await _sharedQryService.GetExternalAgentIdentificationInfo(queryParameters);
+            ExternalAgentParameter queryParameters = new() { AgentId = new Guid("94b1d516-a1c3-4df8-ae85-be1f34966601") };
+            OperationResult<ExternalAgentReadModel> result = await _sharedQryService.GetExternalAgentIdentificationInfo(queryParameters);
 
             Assert.True(result.Success);
 
@@ -129,8 +129,8 @@ namespace PipefittersAccounting.IntegrationTests.SqlServerDapper.QueryService.Fi
         [Fact]
         public async Task GetEconomicEventIdentificationInfo_CashAccountQueryService_ShouldSucceed()
         {
-            EventIdentificationParameter queryParameters = new() { EventId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1") };
-            OperationResult<EventIdentificationInfo> result = await _sharedQryService.GetEconomicEventIdentificationInfo(queryParameters);
+            EconomicEventParameter queryParameters = new() { EventId = new Guid("41ca2b0a-0ed5-478b-9109-5dfda5b2eba1") };
+            OperationResult<EconomicEventReadModel> result = await _sharedQryService.GetEconomicEventIdentificationInfo(queryParameters);
 
             Assert.True(result.Success);
 

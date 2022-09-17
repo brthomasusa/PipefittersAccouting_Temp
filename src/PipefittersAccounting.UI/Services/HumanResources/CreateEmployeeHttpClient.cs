@@ -9,7 +9,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 {
     public class CreateEmployeeHttpClient
     {
-        public static async Task<OperationResult<EmployeeDetail>> Execute
+        public static async Task<OperationResult<EmployeeReadModel>> Execute
         (
             EmployeeWriteModel model,
             HttpClient client,
@@ -37,15 +37,15 @@ namespace PipefittersAccounting.UI.Services.HumanResources
                         response.EnsureSuccessStatusCode();
 
                         var jsonResponse = await response.Content.ReadAsStreamAsync();
-                        var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeDetail>(jsonResponse, options);
+                        var employeeDetails = await JsonSerializer.DeserializeAsync<EmployeeReadModel>(jsonResponse, options);
 
-                        return OperationResult<EmployeeDetail>.CreateSuccessResult(employeeDetails!);
+                        return OperationResult<EmployeeReadModel>.CreateSuccessResult(employeeDetails!);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<EmployeeDetail>.CreateFailure(ex.Message);
+                return OperationResult<EmployeeReadModel>.CreateFailure(ex.Message);
             }
         }
     }

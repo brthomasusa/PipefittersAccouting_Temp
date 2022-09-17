@@ -8,7 +8,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 {
     public class GetEmployeeTimeCardDetailQuery
     {
-        public async static Task<OperationResult<TimeCardDetail>> Query(GetTimeCardParameter queryParameters, DapperContext ctx)
+        public async static Task<OperationResult<TimeCardReadModel>> Query(GetTimeCardParameter queryParameters, DapperContext ctx)
         {
             try
             {
@@ -39,13 +39,13 @@ namespace PipefittersAccounting.Infrastructure.Application.Queries.HumanResource
 
                 using (var connection = ctx.CreateConnection())
                 {
-                    TimeCardDetail detail = await connection.QueryFirstOrDefaultAsync<TimeCardDetail>(sql, parameters);
-                    return OperationResult<TimeCardDetail>.CreateSuccessResult(detail);
+                    TimeCardReadModel detail = await connection.QueryFirstOrDefaultAsync<TimeCardReadModel>(sql, parameters);
+                    return OperationResult<TimeCardReadModel>.CreateSuccessResult(detail);
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<TimeCardDetail>.CreateFailure(ex.Message);
+                return OperationResult<TimeCardReadModel>.CreateFailure(ex.Message);
             }
         }
     }

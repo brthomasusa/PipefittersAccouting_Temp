@@ -8,8 +8,8 @@ namespace PipefittersAccounting.Infrastructure.Interfaces
     public interface ISharedQueryService
     {
 
-        Task<OperationResult<AgentIdentificationInfo>> GetExternalAgentIdentificationInfo(AgentIdentificationParameter queryParameters);
+        Task<OperationResult<ExternalAgentReadModel>> GetExternalAgentIdentificationInfo(ExternalAgentParameter queryParameters);
 
-        Task<OperationResult<EventIdentificationInfo>> GetEconomicEventIdentificationInfo(EventIdentificationParameter queryParameters);
+        Task<OperationResult<EconomicEventReadModel>> GetEconomicEventIdentificationInfo(EconomicEventParameter queryParameters);
     }
 }

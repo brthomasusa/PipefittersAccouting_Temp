@@ -9,7 +9,7 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 {
     public class GetEmployeeDetailHttpClient
     {
-        public static async Task<OperationResult<EmployeeDetail>> Query
+        public static async Task<OperationResult<EmployeeReadModel>> Query
         (
             GetEmployeeParameter queryParameters,
             HttpClient client,
@@ -24,24 +24,24 @@ namespace PipefittersAccounting.UI.Services.HumanResources
 
                 if (response.IsSuccessStatusCode)
                 {
-                    EmployeeDetail? employeeDetail = JsonSerializer.Deserialize<EmployeeDetail>(content, options);
+                    EmployeeReadModel? employeeDetail = JsonSerializer.Deserialize<EmployeeReadModel>(content, options);
                     if (employeeDetail is not null)
                     {
-                        return OperationResult<EmployeeDetail>.CreateSuccessResult(employeeDetail);
+                        return OperationResult<EmployeeReadModel>.CreateSuccessResult(employeeDetail);
                     }
                     else
                     {
-                        return OperationResult<EmployeeDetail>.CreateFailure($"Employee with Id: '{queryParameters.EmployeeID}' was not found.");
+                        return OperationResult<EmployeeReadModel>.CreateFailure($"Employee with Id: '{queryParameters.EmployeeID}' was not found.");
                     }
                 }
                 else
                 {
-                    return OperationResult<EmployeeDetail>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
+                    return OperationResult<EmployeeReadModel>.CreateFailure($"Status code: {response.StatusCode.ToString()}");
                 }
             }
             catch (Exception ex)
             {
-                return OperationResult<EmployeeDetail>.CreateFailure(ex.Message);
+                return OperationResult<EmployeeReadModel>.CreateFailure(ex.Message);
             }
         }
     }
