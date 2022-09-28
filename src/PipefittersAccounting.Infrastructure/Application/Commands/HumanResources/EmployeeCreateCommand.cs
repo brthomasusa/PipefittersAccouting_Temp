@@ -30,9 +30,7 @@ namespace PipefittersAccounting.Infrastructure.Application.Commands.HumanResourc
         }
 
         protected override async Task<ValidationResult> Validate()
-        {
-            return await ValidationService.IsValidCreateEmployeeInfo(WriteModel);
-        }
+            => await ValidationService.IsValidCreateEmployeeInfo(WriteModel);
 
         protected override async Task<OperationResult<bool>> ProcessCommand()
         {
